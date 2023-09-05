@@ -60,32 +60,54 @@ const CareerProfile = ({ profileDashboard }: any) => {
         }
       </div>
       <div className="grid grid-cols-2 gap-4">
-        {careerProfileDetails[0]?.industry?.title &&
-          <div>
-            <div className="text-sm	text-gray-500">Current industry</div>
-            <div className="text-sm font-bold text-gray-500">{careerProfileDetails[0]?.industry?.title}</div>
-          </div>
-        }
-        {careerProfileDetails[0]?.department?.title &&
-          <div>
-            <div className="text-sm	text-gray-500">Department</div>
-            <div className="text-sm font-bold text-gray-500">{careerProfileDetails[0]?.department?.title}</div>
-          </div>
-        }
-        {careerProfileDetails[0]?.roleCategory?.title &&
-          <div>
-            <div className="text-sm	text-gray-500">Role category</div>
-            <div className="font-bold text-gray-500">{careerProfileDetails[0]?.roleCategory?.title}</div>
-          </div>
-        }
-        {careerProfileDetails[0]?.jobRole?.title &&
-          <div>
-            <div className="text-sm	text-gray-500">Job role</div>
-            <div className="font-bold text-gray-500">{careerProfileDetails[0]?.jobRole?.title}</div>
-          </div>
-        }
+
         <div>
-          <div className="text-sm	text-gray-500">Desired job type</div>
+          <div className="text-gray-500">Current industry</div>
+          {careerProfileDetails[0]?.industry?.title &&
+            <div className="text-sm font-bold text-gray-500">{careerProfileDetails[0]?.industry?.title}</div>
+          }
+          {!careerProfileDetails[0]?.industry?.title &&
+            <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add expected salary</button>
+          }
+        </div>
+
+
+        <div>
+          <div className="text-gray-500">Department</div>
+          {careerProfileDetails[0]?.department?.title &&
+            <div className="text-sm font-bold text-gray-500">{careerProfileDetails[0]?.department?.title}</div>
+          }
+          {!careerProfileDetails[0]?.department?.title &&
+            <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add department</button>
+          }
+        </div>
+
+
+        <div>
+          <div className="text-gray-500">Role category</div>
+          {careerProfileDetails[0]?.roleCategory?.title &&
+            <div className="font-bold text-gray-500">{careerProfileDetails[0]?.roleCategory?.title}</div>
+          }
+          {!careerProfileDetails[0]?.roleCategory?.title &&
+            <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add role category</button>
+
+          }
+        </div>
+
+
+        <div>
+          <div className="text-gray-500">Job role</div>
+          {careerProfileDetails[0]?.jobRole?.title &&
+            <div className="font-bold text-gray-500">{careerProfileDetails[0]?.jobRole?.title}</div>
+          }
+          {!careerProfileDetails[0]?.jobRole?.title &&
+            <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add job role</button>
+
+          }
+        </div>
+
+        <div>
+          <div className="text-gray-500">Desired job type</div>
           <div className="text-sm">
             {careerProfileDetails[0]?.careerProfileJobType.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.jobType.title},</div>)}
             {!careerProfileDetails[0]?.careerProfileJobType &&
@@ -94,7 +116,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
           </div>
         </div>
         <div>
-          <div className="text-sm	text-gray-500">Desired employment type</div>
+          <div className="text-gray-500">Desired employment type</div>
           <div className="text-sm">
             {careerProfileDetails[0]?.careerProfileEmployeeType.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.employeeType.title},</div>)}
             {!careerProfileDetails[0]?.careerProfileEmployeeType &&
@@ -102,7 +124,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
             }
           </div>
         </div>
-        <div><div className="text-sm">Preferred shift</div>
+        <div><div className="text-gray-500">Preferred shift</div>
           <div className="text-sm">
             {careerProfileDetails[0]?.careerProfilePreferredShift.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.preferredShift.title},</div>)}
             {!careerProfileDetails[0]?.careerProfilePreferredShift &&
@@ -111,7 +133,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
           </div>
         </div>
         <div >
-          <div className="text-sm	text-gray-500">Preferred work location</div>
+          <div className="text-gray-500">Preferred work location</div>
           <div className="text-sm">
             {careerProfileDetails[0]?.careerProfilePreferredLocations.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.location.title},</div>)}
             {!careerProfileDetails[0]?.careerProfilePreferredLocations &&
@@ -121,8 +143,11 @@ const CareerProfile = ({ profileDashboard }: any) => {
         </div>
         {careerProfileDetails[0]?.expectedSalary &&
           <div>
-            <div className="text-sm	text-gray-500">Expected salary</div>
+            <div className="text-gray-500">Expected salary</div>
             <div className="text-sm font-bold text-gray-500">{careerProfileDetails[0]?.currency?.title}{careerProfileDetails[0]?.expectedSalary}</div>
+            {!careerProfileDetails[0]?.expectedSalary &&
+              <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add expected salary</button>
+            }
           </div>
         }
       </div>

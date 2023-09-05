@@ -55,7 +55,6 @@ const CareerProfileSchema = yup
   .required();
 
 const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: any) => {
-  console.log("profileDashboard=====", profileDashboard);
 
   const dispatch = useAppDispatch();
   const { success: industrySuccess, industry } = useAppSelector((state) => state.getIndustry);
@@ -94,14 +93,14 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
   }, [setValue, profileDashboard]);
 
   const onSubmit = (data: IFormInputs) => {
-    console.log("data", data);
+    const jobType = Array.isArray(data?.jobType) ? data?.jobType?.map(jobType => ({ jobType: jobType })) : [{ jobType: data?.jobType }];
+    const employeeType = Array.isArray(data?.employeeType) ? data?.employeeType?.map(employeeType => ({ employeeType })) : [{ employeeType: data?.employeeType }];
+    const preferredLocations = Array.isArray(selectedLocation) ? [selectedLocation]?.map(location => ({ location })) : [{ location: selectedLocation }];
+    const preferredShift = Array.isArray(data?.preferredShift) ? data?.preferredShift?.map(preferredShift => ({ preferredShift })) : [{ preferredShift: data?.preferredShift }];;
 
-    const jobType = data?.jobType?.map(jobType => ({ jobType: jobType }));
-    const employeeType = data?.employeeType?.map(employeeType => ({ employeeType }));
-    const preferredLocations = [selectedLocation]?.map(location => ({ location }));
-    const preferredShift = data?.preferredShift?.map(preferredShift => ({ preferredShift }));
-
-    dispatch(careerProfileUpdate({ industry: selectedIndustry, department: selectedDepartment, roleCategory: selectedRoleCategory, jobRole: selectedJobRole, careerProfileJobType: jobType, careerProfileEmployeeType: employeeType, careerProfilePreferredLocations: preferredLocations, careerProfilePreferredShift: preferredShift, currency: data.currency, expectedSalary: data.expectedSalary, jobSeekerProfile: id }));
+    dispatch(careerProfileUpdate({ industry: selectedIndustry, department: selectedDepartment, roleCategory: selectedRoleCategory, jobRole: selectedJobRole, careerProfileJobType: jobType, careerProfileEmployeeType: employeeType, careerProfilePreferredLocations: preferredLocations, careerProfilePreferredShift: preferredShift, currency: selectCurrency, expectedSalary: data.expectedSalary, jobSeekerProfile: id })).then((res) => {
+      closeDialog()
+    })
   }
 
   useEffect(() => {
@@ -138,7 +137,10 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
       dispatch(clearGetPreferredShiftSlice());
 
   }, [dispatch, roleCategorySuccess, industrySuccess, departmentSuccess, jobRoleSuccess, currencySuccess, locationSuccess, employeeTypeSuccess, jobTypeSuccess, preferredShiftSuccess]);
-  console.log("selectedLocation", selectedLocation);
+
+  const handleChangeCurrency = (val: string) => {
+    setSelectCurrency(val);
+  }
 
   return (
     <div className="flex flex-col">
@@ -248,8 +250,8 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
           <div className='float-left mr-3'>
             <select
 
-              {...register("currency")} className='W-12 block p-2.5  text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none' value={selectCurrency}>
-              <option>select</option>
+              {...register("currency")} className='W-12 block p-2.5  text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none' value={selectCurrency} onChange={(event) => handleChangeCurrency(event.target.value)}>
+              <option value={''}>select</option>
               {currency.map(item => <option key={item?.id} value={item?.id}>{item.title}</option>)}
             </select>
           </div>
