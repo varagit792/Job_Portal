@@ -8,6 +8,15 @@ const AutocompleteBox = ({ control, isMulti = false, defaultValue, handleChange,
   } else {
     defaultValueSet = defaultValue;
   }
+  if (!isMulti) {
+    var values = dropdownData.filter(function (option: any) {
+      return option.value === defaultValue;
+    })
+  }
+  if (isMulti) {
+     values = [""]
+  }
+
   return (
     <>
       <Controller
@@ -22,6 +31,7 @@ const AutocompleteBox = ({ control, isMulti = false, defaultValue, handleChange,
               defaultValue={defaultValueSet} // This should be like [val1,val2]
               onChange={handleChange}
               options={dropdownData}
+              value={values}
               placeholder={placeholder}
             />
           )

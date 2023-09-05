@@ -37,12 +37,27 @@ const CareerProfile = ({ profileDashboard }: any) => {
   const closeDialog = () => {
     setIsOpen(false);
   };
-  console.log("profileDashboard=====", profileDashboard);
+  console.log("profileDashboard=====", careerProfileDetails);
 
   return (
     <div className="w-full rounded-2xl bg-white p-4 mt-5">
-      <div className="flex items-center mb-2">
-        <h1>Career Profile</h1><span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer"> <FiEdit2 onClick={openModal} /> </span>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 font-bold">
+          <h1>Career profile</h1>
+          {
+            careerProfileDetails?.length > 0 &&
+            <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
+              <FiEdit2 onClick={openModal} />
+            </span>
+          }
+        </div>
+        {
+          careerProfileDetails?.length === 0 ?
+            <h1 className="text-blue-600 font-medium cursor-pointer"
+              onClick={openModal}>
+              Add career profile
+            </h1> : ''
+        }
       </div>
       <div className="grid grid-cols-2 gap-4">
         {careerProfileDetails[0]?.industry?.title &&
@@ -74,7 +89,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
           <div className="text-sm">
             {careerProfileDetails[0]?.careerProfileJobType.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.jobType.title},</div>)}
             {!careerProfileDetails[0]?.careerProfileJobType &&
-              <a href={void (0)} onClick={openModal} className="text-sm font-bold text-gray-500 cursor-pointer">Add desired job type</a>
+              <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add desired job type</button>
             }
           </div>
         </div>
@@ -83,7 +98,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
           <div className="text-sm">
             {careerProfileDetails[0]?.careerProfileEmployeeType.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.employeeType.title},</div>)}
             {!careerProfileDetails[0]?.careerProfileEmployeeType &&
-              <a href={void (0)} onClick={openModal} className="text-sm font-bold text-gray-500 cursor-pointer">employment type</a>
+              <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add employment type</button>
             }
           </div>
         </div>
@@ -91,7 +106,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
           <div className="text-sm">
             {careerProfileDetails[0]?.careerProfilePreferredShift.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.preferredShift.title},</div>)}
             {!careerProfileDetails[0]?.careerProfilePreferredShift &&
-              <a href={void (0)} onClick={openModal} className="text-sm font-bold text-gray-500 cursor-pointer">Add preferred</a>
+              <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add preferred shift</button>
             }
           </div>
         </div>
@@ -100,7 +115,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
           <div className="text-sm">
             {careerProfileDetails[0]?.careerProfilePreferredLocations.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.location.title},</div>)}
             {!careerProfileDetails[0]?.careerProfilePreferredLocations &&
-              <a href={void (0)} onClick={openModal} className="text-sm font-bold text-gray-500 cursor-pointer">Add Preferred work location</a>
+              <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add Preferred work location</button>
             }
           </div>
         </div>

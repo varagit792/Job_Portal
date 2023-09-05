@@ -14,6 +14,7 @@ import { clearGetLocationSlice, locationGet } from '../../../../store/reducers/d
 import { clearGetEmployeeTypeSlice, employeeTypeGet } from '../../../../store/reducers/dropdown/employeeType';
 import { clearGetJobTypeSlice, jobTypeGet } from '../../../../store/reducers/dropdown/jobType';
 import { clearGetPreferredShiftSlice, preferredShiftGet } from '../../../../store/reducers/dropdown/preferredShift';
+import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
 
 
 interface IFormInputs {
@@ -54,6 +55,8 @@ const CareerProfileSchema = yup
   .required();
 
 const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: any) => {
+  console.log("profileDashboard=====", profileDashboard);
+
   const dispatch = useAppDispatch();
   const { success: industrySuccess, industry } = useAppSelector((state) => state.getIndustry);
   const { success: departmentSuccess, department } = useAppSelector((state) => state.getDepartment);
@@ -65,23 +68,21 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
   const { success: jobTypeSuccess, jobType } = useAppSelector((state) => state.getJobType);
   const { success: preferredShiftSuccess, preferredShift } = useAppSelector((state) => state.getPreferredShift);
 
-  const [selectedIndustry, setSelectedIndustry] = useState(profileDashboard[0]?.industry);
-  const [selectedDepartment, setSelectedDepartment] = useState(profileDashboard[0]?.department);
-  const [selectedRoleCategory, setSelectedRoleCategory] = useState(profileDashboard[0]?.roleCategory);
-  const [selectedJobRole, setSelectedJobRole] = useState(profileDashboard[0]?.jobRole);
+  const [selectedIndustry, setSelectedIndustry] = useState(profileDashboard[0]?.industry?.id);
+  const [selectedDepartment, setSelectedDepartment] = useState(profileDashboard[0]?.department?.id);
+  const [selectedRoleCategory, setSelectedRoleCategory] = useState(profileDashboard[0]?.roleCategory?.id);
+  const [selectedJobRole, setSelectedJobRole] = useState(profileDashboard[0]?.jobRole.id);
   const [selectExpectedSalary, setSelectExpectedSalary] = useState(profileDashboard[0]?.expectedSalary);
   const [selectCurrency, setSelectCurrency] = useState(profileDashboard[0]?.currency?.id);
   const [selectEmployeeType, setSelectEmployeeType] = useState<any>(profileDashboard[0]?.careerProfileEmployeeType);
-  const [selectedLocation, setSelectedLocation] = useState(profileDashboard[0]?.careerProfilePreferredLocations[0]?.location);
+  const [selectedLocation, setSelectedLocation] = useState(profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.id);
   const [selectJobType, setSelectJobType] = useState(profileDashboard[0]?.careerProfileJobType);
   const [selectPreferredShift, setSelectPreferredShift] = useState(profileDashboard[0]?.careerProfilePreferredShift);
-
-
-  const [query, setQuery] = useState("");
 
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     formState: { errors }
   } = useForm<IFormInputs>({
@@ -97,10 +98,10 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
 
     const jobType = data?.jobType?.map(jobType => ({ jobType: jobType }));
     const employeeType = data?.employeeType?.map(employeeType => ({ employeeType }));
-    const preferredLocations = [selectedLocation.id]?.map(location => ({ location }));
+    const preferredLocations = [selectedLocation]?.map(location => ({ location }));
     const preferredShift = data?.preferredShift?.map(preferredShift => ({ preferredShift }));
 
-    dispatch(careerProfileUpdate({ industry: selectedIndustry.id, department: selectedDepartment.id, roleCategory: selectedRoleCategory.id, jobRole: selectedJobRole.id, careerProfileJobType: jobType, careerProfileEmployeeType: employeeType, careerProfilePreferredLocations: preferredLocations, careerProfilePreferredShift: preferredShift, currency: data.currency, expectedSalary: data.expectedSalary, jobSeekerProfile: id }));
+    dispatch(careerProfileUpdate({ industry: selectedIndustry, department: selectedDepartment, roleCategory: selectedRoleCategory, jobRole: selectedJobRole, careerProfileJobType: jobType, careerProfileEmployeeType: employeeType, careerProfilePreferredLocations: preferredLocations, careerProfilePreferredShift: preferredShift, currency: data.currency, expectedSalary: data.expectedSalary, jobSeekerProfile: id }));
   }
 
   useEffect(() => {
@@ -137,6 +138,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
       dispatch(clearGetPreferredShiftSlice());
 
   }, [dispatch, roleCategorySuccess, industrySuccess, departmentSuccess, jobRoleSuccess, currencySuccess, locationSuccess, employeeTypeSuccess, jobTypeSuccess, preferredShiftSuccess]);
+  console.log("selectedLocation", selectedLocation);
 
   return (
     <div className="flex flex-col">
@@ -147,64 +149,51 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
         {formSummary}
       </span>
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="pt-7 font-bold">Current industry</div>
+        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Current industry</div>
         <div>
-          {/* <AutocompleteBox
-            selected={selectedIndustry}
-            setSelected={setSelectedIndustry}
-            query={query}
-            setQuery={setQuery}
-            dropDownData={industry}
-            placeHolder={"Enter industry"}
-            register={register}
-            inputFieldName={"industry"}
-            databaseFieldName={'title'}
-          /> */}
-          <Select options={industry} />
+          <AutocompleteBox
+            control={control}
+            fieldName={"industry"}
+            dropdownData={industry.map(({ id, title }: any) => ({ value: id, label: title }))}
+            handleChange={(data: any) => setSelectedIndustry(data?.value)}
+            defaultValue={selectedIndustry}
+            placeholder={"Select industry"}
+          />
         </div>
-        <div className="pt-7 font-bold">Department</div>
+        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Department</div>
         <div>
-          {/* <AutocompleteBox
-            selected={selectedDepartment}
-            setSelected={setSelectedDepartment}
-            query={query}
-            setQuery={setQuery}
-            arrayDropDownContent={department}
-            placeHolder={"Enter department"}
-            register={register}
-            inputFieldName={"department"}
-            databaseFieldName={'title'} /> */}
-          <Select options={department} />
+          <AutocompleteBox
+            control={control}
+            fieldName={"department"}
+            dropdownData={department.map(({ id, title }: any) => ({ value: id, label: title }))}
+            handleChange={(data: any) => setSelectedDepartment(data?.value)}
+            defaultValue={selectedDepartment}
+            placeholder={"Select department"}
+          />
         </div>
-        <div className="pt-7 font-bold">Role category</div>
+        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Role category</div>
         <div>
-          {/* <AutocompleteBox
-            selected={selectedRoleCategory}
-            setSelected={setSelectedRoleCategory}
-            query={query}
-            setQuery={setQuery}
-            arrayDropDownContent={roleCategory}
-            placeHolder={"Enter role category"}
-            register={register}
-            inputFieldName={"roleCategory"}
-            databaseFieldName={'title'} /> */}
-          <Select options={roleCategory} />
+          <AutocompleteBox
+            control={control}
+            fieldName={"roleCategory"}
+            dropdownData={roleCategory.map(({ id, title }: any) => ({ value: id, label: title }))}
+            handleChange={(data: any) => setSelectedRoleCategory(data?.value)}
+            defaultValue={selectedRoleCategory}
+            placeholder={"Select role category"}
+          />
         </div>
-        <div className="pt-7 font-bold">Job role</div>
+        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Job role</div>
         <div>
-          {/* <AutocompleteBox
-            selected={selectedJobRole}
-            setSelected={setSelectedJobRole}
-            query={query}
-            setQuery={setQuery}
-            arrayDropDownContent={jobRole}
-            placeHolder={"Enter job role"}
-            register={register}
-            inputFieldName={"jobRole"}
-            databaseFieldName={'title'} /> */}
-          <Select options={jobRole} />
+          <AutocompleteBox
+            control={control}
+            fieldName={"jobRole"}
+            dropdownData={jobRole.map(({ id, title }: any) => ({ value: id, label: title }))}
+            handleChange={(data: any) => setSelectedJobRole(data?.value)}
+            defaultValue={selectedJobRole}
+            placeholder={"Select job role"}
+          />
         </div>
-        <div className="pt-7 font-bold">Desired job type</div>
+        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Desired job type</div>
         <div className='grid grid-cols-3 gap-4'>
           {jobType.map(item => <div key={item.id}>
             <input
@@ -216,7 +205,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
             />{item?.title}
           </div>)}
         </div>
-        <div className="pt-7 font-bold">Desired employment type</div>
+        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Desired employment type</div>
         <div className='grid grid-cols-3 gap-4'>
           {employeeType.map(item => <div key={item.id}>
             <input
@@ -229,7 +218,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
           </div>)}
         </div>
 
-        <div className="pt-7 font-bold">Preferred shift</div>
+        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Preferred shift</div>
         <div className='grid grid-cols-3 gap-4'>
           {preferredShift.map((item, key) => <div key={item.id}>
             <input
@@ -242,25 +231,19 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
           </div>
           )}
         </div>
-        <div className="pt-7 font-bold">Preferred work location (Max 10)</div>
+        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Preferred work location (Max 10)</div>
         <div>
-          {/* <AutocompleteBox
-            selected={selectedLocation}
-            setSelected={setSelectedLocation}
-            query={query}
-            setQuery={setQuery}
-            arrayDropDownContent={location}
-            placeHolder={"Enter preferred work location"}
-            register={register}
-            inputFieldName={"preferredWorkLocation"}
-            databaseFieldName={'title'} /> */}
-          <Select
+
+          <AutocompleteBox
+            control={control}
+            fieldName={"location"}
+            dropdownData={location.map(({ id, title }: any) => ({ value: id, label: title }))}
+            handleChange={(data: any) => setSelectedLocation(data?.value)}
             defaultValue={selectedLocation}
-            isMulti
-            name="location"
-            options={location} />
+            placeholder={"Select location"}
+          />
         </div>
-        <div className="pt-7 font-bold">Expected salary</div>
+        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Expected salary</div>
         <div className='w-full'>
           <div className='float-left mr-3'>
             <select
