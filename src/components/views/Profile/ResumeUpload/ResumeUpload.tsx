@@ -6,44 +6,53 @@ import { BiDownload } from 'react-icons/bi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { resumeDelete, clearresumeDeleteState } from '../../../../store/reducers/jobSeekerProfile/deleteResume';
 import axios from 'axios';
+import { clearGetProfileDashboardSlice, profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
 
 const ResumeUpload = () => {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [formDataResponse, setFormDataResponse] = useState<any>('');
-  const dispatchUpload = useAppDispatch();
-  const dispatchDelete = useAppDispatch();
-  const { success, errorMessage, error, formData } = useAppSelector((state) => state.jobSeekerResumeUpload)
+  const dispatch = useAppDispatch();
+  const { success, errorMessage, error, formData } = useAppSelector((state) => state.jobSeekerResumeUpload);
+  const [resumeFile, setResumeFile] = useState<string>('');
+  const [resumeCompletePath, setResumeCompletePath] = useState<string>('');
+  const { success: successProfile, profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
   const { success: successDelete, errorMessage: errorMessageDelete, error: errorDelete, formData: formDataDelete } =
     useAppSelector((state) => state.jobSeekerDeleteResume);
 
-  const resumeFile = formDataResponse.resumeFile;
-  const resumeCompletePath = `${process.env.REACT_APP_RESUME_FILE_LOCATION}/${formDataResponse.resumePath}`
-
   useEffect(() => {
     if (success) {
-      setFormDataResponse(formData);
+      dispatch(profileDashboardGet());
       alert('Resume successfully uploaded');
-      dispatchUpload(clearUploadState);
+      dispatch(clearUploadState);
     }
     if (error) {
       alert(`${errorMessage}`);
-      dispatchUpload(clearUploadState)
+      dispatch(clearUploadState)
     }
-  }, [success, error, errorMessage, dispatchUpload, formData]);
+  }, [success, error, errorMessage, dispatch, formData]);
 
   useEffect(() => {
     if (successDelete) {
-      setFormDataResponse(formDataDelete);
+      dispatch(profileDashboardGet());
       alert('Resume Deleted successfully uploaded');
-      dispatchDelete(clearresumeDeleteState);
+      dispatch(clearresumeDeleteState);
     }
     if (errorDelete) {
       alert(`${errorMessageDelete}`);
-      dispatchDelete(clearresumeDeleteState)
+      dispatch(clearresumeDeleteState)
     }
-  }, [successDelete, errorDelete, errorMessageDelete, dispatchDelete, formDataDelete]);
+  }, [successDelete, errorDelete, errorMessageDelete, dispatch, formDataDelete]);
 
+  useEffect(() => {
+    if (successProfile) {
+      dispatch(clearGetProfileDashboardSlice);
+    }
+  }, [successProfile]);
+
+  useEffect(() => {
+    setResumeFile(profileDashboard[0]?.resumeFile)
+    setResumeCompletePath(`${process.env.REACT_APP_RESUME_FILE_LOCATION}/${profileDashboard[0]?.resumePath}`)
+  }, [profileDashboard]);
   const handleFileChange = async (event: ChangeEvent) => {
     event.preventDefault();
     const selectedFile = fileInputRef.current && fileInputRef.current.files && fileInputRef.current.files[0];
@@ -53,7 +62,7 @@ const ResumeUpload = () => {
       formData.append('file', selectedFile);
 
       try {
-        dispatchUpload(resumeUpload(formData))
+        dispatch(resumeUpload(formData))
 
         if (fileInputRef.current) {
           fileInputRef.current.value = '';
@@ -77,7 +86,7 @@ const ResumeUpload = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', formDataResponse.resumeFile); // Replace with the desired filename
+      link.setAttribute('download', profileDashboard[0]?.resumeFile); // Replace with the desired filename
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -91,19 +100,19 @@ const ResumeUpload = () => {
       resumeFile: formData.resumeFile,
       resumePath: formData.resumePath
     }
-    dispatchDelete(resumeDelete(data));
+    dispatch(resumeDelete(data));
   }
- 
+
   return (
     <div className="w-full rounded-2xl bg-white p-4">
-      <h1 className="mb-4">Resume</h1>
+      <h1 className="mb-4 font-bold">Resume</h1>
       <p className="mb-4 text-sm text-gray-500">
         Resume is the most important document recruiters look for. Recruiters generally do not look at profiles without resumes.
         {(resumeFile && (
           <div>
             <br />
             <div className="flex justify-between">
-              <p>{resumeFile}</p>
+              <p className="text-gray-600 font-semibold">{resumeFile}</p>
               <div className="flex flex-row">
                 <div className="text-blue-600 text-lg cursor-pointer">
                   <div onClick={downloadFile}>

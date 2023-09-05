@@ -17,6 +17,7 @@ import CareerProfile from './CareerProfile/CareerProfile';
 import defaultPicture from '../../../../src/assets/jpeg/default_picture.jpg';
 import Modal from '../../commonComponents/Modal';
 import ProfilePictureUploadForm from './ProfilePictureUpload/ProfilePictureUploadForm';
+import ProfileBasicDetails from './ProfileBasicDetails/ProfileBasicDetails';
 
 const Profile = () => {
 
@@ -85,49 +86,20 @@ const Profile = () => {
             </div>
             {
               isOpen && <div className="col-start-2 col-end-6">
-              <Modal
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                modalBody={
-                  <ProfilePictureUploadForm
-                    closeDialog={closeDialog}
-                  />
-                }
-              />
-            </div>
+                <Modal
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
+                  modalBody={
+                    <ProfilePictureUploadForm
+                      closeDialog={closeDialog}
+                    />
+                  }
+                />
+              </div>
             }
-            <div className="col-start-2 col-end-6">
-              <div className="mb-4">
-                <div className="flex items-center">
-                  <h1 className="font-semibold text-2xl">Dibyalochan Parida</h1><span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer"> <FiEdit2 /> </span>
-                </div>
-                <span><span className="font-thin text-sm">Profile last updated - </span><span className="text-sm">08Aug , 2023</span></span>
-              </div>
-              <hr className="mb-4" />
-              <div className="grid grid-cols-2">
-                <div>
-                  <div className="mb-2 flex items-center text-sm font-medium text-gray-500">
-                    <SlLocationPin /><span className="ml-1">Balasore, INDIA</span>
-                  </div>
-                  <div className="mb-2 flex items-center text-sm font-medium text-gray-500">
-                    <BsBriefcase /><span className="ml-1">Fresher</span>
-                  </div>
-                  <div className="flex items-center text-sm font-medium text-gray-500">
-                    <BsCalendar4 /><span className="ml-1">Add availability to join</span>
-                  </div>
-                </div>
-                <div className="border-l border-gray-300">
-                  <div className="ml-2">
-                    <div className="mb-2 flex items-center text-sm font-medium text-gray-500">
-                      <BsTelephone /><span className="ml-1 mr-1">7064772937</span><MdVerified color="green" />
-                    </div>
-                    <div className="flex items-center text-sm font-medium text-gray-500">
-                      <HiOutlineMail /><span className="ml-1 mr-1">dibyalochanparida@gmail.com</span><MdVerified color="green" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+           
+            {/* display profile basic details */}
+            <ProfileBasicDetails/>
           </div>
         </div>
         <div className="grid grid-cols-4 mt-5">
