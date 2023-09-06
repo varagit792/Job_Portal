@@ -1,6 +1,7 @@
 import React from 'react';
 import AllRoutes from './AllRoutes';
 import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
 
 const App = () => {
 
@@ -8,6 +9,7 @@ const App = () => {
     <div className="h-screen">
       <Header />
       <AllRoutes />
+      <Footer />
     </div>
   );
 }

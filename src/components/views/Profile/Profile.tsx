@@ -74,82 +74,84 @@ const Profile = () => {
   }
 
   return (
-    <div className="bg-zinc-100 font-sans">
-      <div className="px-40 py-10 flex justify-center flex-col">
-        {/* card */}
-        <div className="w-full rounded-2xl bg-white p-8">
-          <div className="grid grid-cols-5 h-full">
-            <div className="h-full w-full flex justify-start items-center">
-              <div className="rounded-full h-full">
-                <img src={profilePicPath} alt="logo" height="100%" className="rounded-full object-fill h-30 w-40" onClick={openModal} />
+    <>
+      <div className="h-[10%] w-full"></div>
+      <div className="bg-zinc-100 font-sans">
+        <div className="px-40 py-10 flex justify-center flex-col">
+          {/* card */}
+          <div className="w-full rounded-2xl bg-white p-8">
+            <div className="grid grid-cols-5 h-full">
+              <div className="h-full w-full flex justify-start items-center">
+                <div className="rounded-full h-full">
+                  <img src={profilePicPath} alt="logo" height="100%" className="rounded-full object-fill h-30 w-40" onClick={openModal} />
+                </div>
               </div>
+              {
+                isOpen && <div className="col-start-2 col-end-6">
+                  <Modal
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
+                    modalBody={
+                      <ProfilePictureUploadForm
+                        closeDialog={closeDialog}
+                      />
+                    }
+                  />
+                </div>
+              }
+
+              {/* display profile basic details */}
+              <ProfileBasicDetails />
             </div>
-            {
-              isOpen && <div className="col-start-2 col-end-6">
-                <Modal
-                  isOpen={isOpen}
-                  setIsOpen={setIsOpen}
-                  modalBody={
-                    <ProfilePictureUploadForm
-                      closeDialog={closeDialog}
-                    />
-                  }
-                />
-              </div>
-            }
-           
-            {/* display profile basic details */}
-            <ProfileBasicDetails/>
           </div>
-        </div>
-        <div className="grid grid-cols-4 mt-5">
-          <div>
-            {/* card */}
-            <div className="mr-5 rounded-lg border bg-white p-5 sticky top-[13%]">
-              <h1 className="font-semibold mb-1">Quick links</h1>
-              <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                <span>Resume</span>
-                <span className="text-blue-600 font-semibold">Update</span>
-              </button>
-              <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                <span>Resume headline</span>
-              </button>
-              <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                <span>Key skills</span>
-              </button>
-              <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                <span>Education</span>
-                <span className="text-blue-600 font-semibold">Add</span>
-              </button>
-              <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                <span>IT skills</span>
-              </button>
-              <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                <span>Projects</span>
-                <span className="text-blue-600 font-semibold">Add</span>
-              </button>
-              <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                <span>Profile summary</span>
-                {!profileDashboard[0]?.profileSummary
-                  &&
+          <div className="grid grid-cols-4 mt-5">
+            <div>
+              {/* card */}
+              <div className="mr-5 rounded-lg border bg-white p-5 sticky top-[13%]">
+                <h1 className="font-semibold mb-1">Quick links</h1>
+                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
+                  <span>Resume</span>
+                  <span className="text-blue-600 font-semibold">Update</span>
+                </button>
+                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
+                  <span>Resume headline</span>
+                </button>
+                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
+                  <span>Key skills</span>
+                </button>
+                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
+                  <span>Education</span>
                   <span className="text-blue-600 font-semibold">Add</span>
-                }
-              </button>
-              <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                <span>Accomplishments</span>
-              </button>
-              <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                <span>Career profile</span>
-              </button>
-              <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                <span>Personal details</span>
-              </button>
+                </button>
+                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
+                  <span>IT skills</span>
+                </button>
+                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
+                  <span>Projects</span>
+                  <span className="text-blue-600 font-semibold">Add</span>
+                </button>
+                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
+                  <span>Profile summary</span>
+                  {!profileDashboard[0]?.profileSummary
+                    &&
+                    <span className="text-blue-600 font-semibold">Add</span>
+                  }
+                </button>
+                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
+                  <span>Accomplishments</span>
+                </button>
+                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
+                  <span>Career profile</span>
+                </button>
+                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
+                  <span>Personal details</span>
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="col-start-2 col-end-5">
-            {/* card  profile upload*/}
-            <ResumeUpload />
-            {/* <div className="w-full rounded-2xl bg-white p-4">
+            <div className="col-start-2 col-end-5">
+              {/* card  profile upload*/}
+              <ResumeUpload />
+              {/* <div className="w-full rounded-2xl bg-white p-4">
               <h1 className="mb-4">Resume</h1>
               <p className="mb-4 text-sm text-gray-500">
                 Resume is the most important document recruiters look for. Recruiters generally do not look at profiles without resumes.
@@ -163,31 +165,32 @@ const Profile = () => {
               </div>
             </div> */}
 
-            {/* card */}
-            <ResumeHeadline />
-            {/* card */}
-            <KeySkills profileDashboard={profileDashboard} />
-            {/* card */}
-            <Education />
-            <ProfileSummary />
-            <PersonalDetails />
-            {/* card */}
+              {/* card */}
+              <ResumeHeadline />
+              {/* card */}
+              <KeySkills profileDashboard={profileDashboard} />
+              {/* card */}
+              <Education />
+              <ProfileSummary />
+              <PersonalDetails />
+              {/* card */}
 
-            {/* card */}
-            <CareerProfile profileDashboard={profileDashboard} />
-            {/* card */}
+              {/* card */}
+              <CareerProfile profileDashboard={profileDashboard} />
+              {/* card */}
 
-            <div className="w-full rounded-2xl bg-white p-4 mt-5">
-              <div className="flex items-center justify-between mb-4">
-                <h1>Employment</h1>
-                <h1 className="text-blue-600 font-medium">Add employment</h1>
+              <div className="w-full rounded-2xl bg-white p-4 mt-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h1>Employment</h1>
+                  <h1 className="text-blue-600 font-medium">Add employment</h1>
+                </div>
+                <span className="text-sm text-gray-500">Mention your employment details including your current and previous company work experience.</span>
               </div>
-              <span className="text-sm text-gray-500">Mention your employment details including your current and previous company work experience.</span>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
