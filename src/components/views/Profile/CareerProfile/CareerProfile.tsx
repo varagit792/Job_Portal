@@ -135,7 +135,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
         <div >
           <div className="text-gray-500">Preferred work location</div>
           <div className="text-sm">
-            {careerProfileDetails[0]?.careerProfilePreferredLocations.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.location.title},</div>)}
+            {careerProfileDetails[0]?.careerProfilePreferredLocations.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.location?.title},</div>)}
             {!careerProfileDetails[0]?.careerProfilePreferredLocations &&
               <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add Preferred work location</button>
             }
