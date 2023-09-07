@@ -15,3 +15,27 @@ export const getInstituteList = async () => {
 export const getPassOutYearList = async () => {
   return await axios.get(`${process.env.REACT_APP_API_PATH}/passOutYear/get`).then((res:any)=> res.data.data)
 }
+
+export const getTotalYearsExpList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/totalExpYear/get`).then((res:any)=> res.data.data)
+}
+
+export const getTotalMonthsExpList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/totalExpMonth/get`).then((res:any)=> res.data.data)
+}
+
+export const getJoiningDateYearList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/joiningDateYear/get`).then((res:any)=> res.data.data)
+}
+
+export const getJoiningDateMonthList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/joiningDateMonth/get`).then((res:any)=> res.data.data)
+}
+
+export const getCurencyList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/currency/get`).then((res:any)=> res.data.data)
+}
+
+export const getNoticePeriodList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/noticePeriod/get`).then((res:any)=> res.data.data)
+}
