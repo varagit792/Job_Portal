@@ -19,7 +19,7 @@ const AutocompleteBox = ({ control, defaultValue, handleChange, fieldName, dropd
             className="text-sm"
             classNamePrefix="dropdown"
             options={dropdownData}
-            value={defaultValue}
+            defaultValue={defaultValue}
 
           />
         )}

@@ -38,7 +38,6 @@ interface OptionField {
 
 
 const CareerProfileSchema = yup.object().shape({
-  // profileSummary: yup.string().optional(),
   industry: yup.object().shape({
     value: yup.string().required("Please select industry"),
     label: yup.string().required("Please select industry"),
@@ -80,31 +79,43 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
   const { success: jobTypeSuccess, jobType } = useAppSelector((state) => state.getJobType);
   const { success: preferredShiftSuccess, preferredShift } = useAppSelector((state) => state.getPreferredShift);
 
-  const [selectedIndustry, setSelectedIndustry] = useState({ label: profileDashboard[0]?.industry?.title, value: profileDashboard[0]?.industry?.id });
-  const [selectedDepartment, setSelectedDepartment] = useState({ label: profileDashboard[0]?.department?.title, value: profileDashboard[0]?.department?.id });
-  const [selectedRoleCategory, setSelectedRoleCategory] = useState({ label: profileDashboard[0]?.roleCategory?.title, value: profileDashboard[0]?.roleCategory?.id });
-  const [selectedJobRole, setSelectedJobRole] = useState({ label: profileDashboard[0]?.jobRole?.title, value: profileDashboard[0]?.jobRole?.id });
-  const [selectExpectedSalary, setSelectExpectedSalary] = useState(profileDashboard[0]?.expectedSalary);
-  const [selectCurrency, setSelectCurrency] = useState(profileDashboard[0]?.currency?.id);
-  const [selectEmployeeType, setSelectEmployeeType] = useState<any>(profileDashboard[0]?.careerProfileEmployeeType);
-  const [selectedLocation, setSelectedLocation] = useState({ label: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.title, value: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.id });
-  const [selectJobType, setSelectJobType] = useState(profileDashboard[0]?.careerProfileJobType);
-  const [selectPreferredShift, setSelectPreferredShift] = useState(profileDashboard[0]?.careerProfilePreferredShift);
+  //const [selectedIndustry, setSelectedIndustry] = useState({ label: profileDashboard[0]?.industry?.title, value: profileDashboard[0]?.industry?.id });
+  //const [selectedDepartment, setSelectedDepartment] = useState({ label: profileDashboard[0]?.department?.title, value: profileDashboard[0]?.department?.id });
+  //const [selectedRoleCategory, setSelectedRoleCategory] = useState({ label: profileDashboard[0]?.roleCategory?.title, value: profileDashboard[0]?.roleCategory?.id });
+  //const [selectedJobRole, setSelectedJobRole] = useState({ label: profileDashboard[0]?.jobRole?.title, value: profileDashboard[0]?.jobRole?.id });
+  // const [selectExpectedSalary, setSelectExpectedSalary] = useState(profileDashboard[0]?.expectedSalary);
+  //const [selectCurrency, setSelectCurrency] = useState(profileDashboard[0]?.currency?.id);
+  // const [selectEmployeeType, setSelectEmployeeType] = useState<any>(profileDashboard[0]?.careerProfileEmployeeType);
+  // const [selectedLocation, setSelectedLocation] = useState({ label: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.title, value: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.id });
+  //const [selectJobType, setSelectJobType] = useState(profileDashboard[0]?.careerProfileJobType);
+  //const [selectPreferredShift, setSelectPreferredShift] = useState(profileDashboard[0]?.careerProfilePreferredShift);
 
   const {
     register,
     handleSubmit,
     control,
+    watch,
     setValue,
     formState: { errors }
   } = useForm<IFormInputs>({
     resolver: yupResolver(CareerProfileSchema)
   });
 
-  // useEffect(() => {
-  //   if (profileDashboard)
-  //     setValue('profileSummary', profileDashboard);
-  // }, [setValue, profileDashboard]);
+  useEffect(() => {
+    if (profileDashboard) {
+      setValue('industry', profileDashboard[0]?.industry);
+      setValue('department', profileDashboard[0]?.department);
+      setValue('roleCategory', profileDashboard[0]?.roleCategory);
+      setValue('roleCategory', profileDashboard[0]?.roleCategory);
+      setValue('jobRole', profileDashboard[0]?.jobRole);
+      setValue('expectedSalary', profileDashboard[0]?.expectedSalary);
+      setValue('currency', profileDashboard[0]?.currency);
+      setValue('employeeType', profileDashboard[0]?.careerProfileEmployeeType);
+      setValue('preferredWorkLocation', profileDashboard[0]?.careerProfilePreferredLocations[0]?.location);
+      setValue('jobType', profileDashboard[0]?.careerProfileJobType);
+      setValue('preferredShift', profileDashboard[0]?.careerProfilePreferredShift);
+    }
+  }, [setValue, profileDashboard]);
 
   const onSubmit = (data: IFormInputs) => {
     console.log("data==========", data);
@@ -114,7 +125,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
     const preferredLocations = Array.isArray(data?.preferredWorkLocation) ? [data?.preferredWorkLocation]?.map(location => ({ location: data?.preferredWorkLocation.value })) : [{ location: data?.preferredWorkLocation.value }];
     const preferredShift = Array.isArray(data?.preferredShift) ? data?.preferredShift?.map(preferredShift => ({ preferredShift })) : [{ preferredShift: data?.preferredShift }];
 
-    dispatch(careerProfileUpdate({ industry: data.industry.value, department: data.department.value, roleCategory: data.roleCategory.value, jobRole: data.jobRole.value, careerProfileJobType: jobType, careerProfileEmployeeType: employeeType, careerProfilePreferredLocations: preferredLocations, careerProfilePreferredShift: preferredShift, currency: selectCurrency, expectedSalary: data.expectedSalary, jobSeekerProfile: id })).then((res) => {
+    dispatch(careerProfileUpdate({ industry: data.industry.value, department: data.department.value, roleCategory: data.roleCategory.value, jobRole: data.jobRole.value, careerProfileJobType: jobType, careerProfileEmployeeType: employeeType, careerProfilePreferredLocations: preferredLocations, careerProfilePreferredShift: preferredShift, currency: data.currency, expectedSalary: data.expectedSalary, jobSeekerProfile: id })).then((res) => {
       closeDialog();
     })
 
@@ -158,13 +169,9 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
 
   }, [dispatch, roleCategorySuccess, industrySuccess, departmentSuccess, jobRoleSuccess, currencySuccess, locationSuccess, employeeTypeSuccess, jobTypeSuccess, preferredShiftSuccess]);
 
-  const handleChangeCurrency = (val: string) => {
-    setSelectCurrency(val);
-  }
 
-  console.log("selectJobType==", selectJobType);
   console.log("profileDashboard===", profileDashboard);
-  console.log("selectedIndustry-->", selectedIndustry);
+  console.log(watch("industry"));
 
 
   return (
@@ -193,11 +200,8 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
               <Select
                 // defaultValue={options[0]}
                 {...field}
-                isClearable // enable isClearable to demonstrate extra error handling
-                isSearchable={false}
+                value={{ label: profileDashboard[0]?.industry?.title, value: profileDashboard[0]?.industry?.id }}
                 className="react-dropdown"
-                defaultValue={selectedIndustry}
-                value={selectedIndustry}
                 classNamePrefix="dropdown"
                 options={industry.map(({ id, title }: any) => ({ value: id, label: title }))}
               />
@@ -212,9 +216,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
             control={control}
             fieldName={"department"}
             dropdownData={department.map(({ id, title }: any) => ({ value: id, label: title }))}
-            handleChange={(data: any) => setSelectedDepartment(data?.value)}
-            defaultValue={selectedDepartment}
-            autoRegister={{ ...register("department") }}
+            value={{ label: profileDashboard[0]?.department?.title, value: profileDashboard[0]?.department?.id }}
             placeholder={"Select department"}
           />
           {errors?.department && <p className="font-normal text-xs text-red-500 absolute">{errors?.department?.label?.message}</p>}
@@ -225,9 +227,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
             control={control}
             fieldName={"roleCategory"}
             dropdownData={roleCategory.map(({ id, title }: any) => ({ value: id, label: title }))}
-            handleChange={(data: any) => setSelectedRoleCategory(data?.value)}
-            register={{ ...register("roleCategory") }}
-            defaultValue={selectedRoleCategory}
+            defaultValue={{ label: profileDashboard[0]?.roleCategory?.title, value: profileDashboard[0]?.roleCategory?.id }}
             placeholder={"Select role category"}
           />
           {errors?.roleCategory && <p className="font-normal text-xs text-red-500 absolute">{errors?.roleCategory?.label?.message}</p>}
@@ -238,7 +238,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
             control={control}
             fieldName={"jobRole"}
             dropdownData={jobRole.map(({ id, title }: any) => ({ value: id, label: title }))}
-            defaultValue={selectedJobRole}
+            defaultValue={{ label: profileDashboard[0]?.jobRole?.title, value: profileDashboard[0]?.jobRole?.id }}
             placeholder={"Select job role"}
           />
           {errors?.jobRole && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobRole?.label?.message}</p>}
@@ -248,7 +248,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
           {jobType.map((item, key) => <div key={item.id}>
             <input
               type='checkbox'
-              defaultChecked={selectJobType?.map((item1: any) => item1?.jobType?.id === item?.id)[key] === true ? true : false}
+              defaultChecked={profileDashboard[0]?.careerProfileJobType?.map((item1: any) => item1?.jobType?.id === item?.id)[key] === true ? true : false}
               value={item.id}
               {...register("jobType")}
               className='mx-3 w-4 h-4'
@@ -264,7 +264,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
             <input
               type='checkbox'
               value={item.id}
-              defaultChecked={selectEmployeeType?.map((item1: any) => item1?.employeeType?.id === item?.id)[key] === true ? true : false}
+              defaultChecked={profileDashboard[0]?.careerProfileEmployeeType?.map((item1: any) => item1?.employeeType?.id === item?.id)[key] === true ? true : false}
               {...register("employeeType")}
               className='mx-3 w-4 h-4'
             />{item.title}
@@ -277,7 +277,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
             <input
               type='checkbox'
               value={item.id}
-              defaultChecked={selectPreferredShift?.map((item1: any) => item1?.preferredShift?.id === item?.id)[key] === true ? true : false}
+              defaultChecked={profileDashboard[0]?.careerProfilePreferredShift?.map((item1: any) => item1?.preferredShift?.id === item?.id)[key] === true ? true : false}
               {...register("preferredShift")}
               className='mx-3 w-4 h-4'
             />{item.title}
@@ -292,7 +292,6 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
             control={control}
             fieldName={"preferredWorkLocation"}
             dropdownData={location.map(({ id, title }: any) => ({ value: id, label: title }))}
-            defaultValue={selectedLocation}
             placeholder={"Select location"}
           />
           {errors?.preferredWorkLocation && <p className="font-normal text-xs text-red-500 absolute">{errors?.preferredWorkLocation?.message}</p>}
@@ -301,14 +300,14 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
         <div className='w-full'>
           <div className='float-left mr-3'>
             <select
-              {...register("currency")} className='W-96 block p-2.5  text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none' value={selectCurrency} onChange={(event) => handleChangeCurrency(event.target.value)}>
+              {...register("currency")} className='W-96 block p-2.5  text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none' value={profileDashboard[0]?.currency?.id}>
               <option value={''}>select</option>
               {currency.map(item => <option key={item?.id} value={item?.id}>{item.title}</option>)}
             </select>
             {errors?.currency && <p className="font-normal text-xs text-red-500 absolute">{errors?.currency?.message}</p>}
           </div>
           <div className='float-left '>
-            <input defaultValue={selectExpectedSalary} className=' block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none'  {...register("expectedSalary")} />
+            <input defaultValue={profileDashboard[0]?.expectedSalary} className=' block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none'  {...register("expectedSalary")} />
             {errors?.expectedSalary && <p className="font-normal text-xs text-red-500 absolute">{errors?.expectedSalary?.message}</p>}
           </div>
         </div>
