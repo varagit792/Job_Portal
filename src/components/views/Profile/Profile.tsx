@@ -18,6 +18,7 @@ import defaultPicture from '../../../../src/assets/jpeg/default_picture.jpg';
 import Modal from '../../commonComponents/Modal';
 import ProfilePictureUploadForm from './ProfilePictureUpload/ProfilePictureUploadForm';
 import ProfileBasicDetails from './ProfileBasicDetails/ProfileBasicDetails';
+import Employment from './Employment/Employment';
 
 const Profile = () => {
 
@@ -178,15 +179,8 @@ const Profile = () => {
               {/* card */}
               <CareerProfile profileDashboard={profileDashboard} />
               {/* card */}
-
-              <div className="w-full rounded-2xl bg-white p-4 mt-5">
-                <div className="flex items-center justify-between mb-4">
-                  <h1>Employment</h1>
-                  <h1 className="text-blue-600 font-medium">Add employment</h1>
-                </div>
-                <span className="text-sm text-gray-500">Mention your employment details including your current and previous company work experience.</span>
-              </div>
-            </div>
+              <Employment/>
+            </div>            
           </div>
         </div>
       </div>
