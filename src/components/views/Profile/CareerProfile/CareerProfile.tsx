@@ -10,6 +10,7 @@ import { clearGetCareerProfileDetails, careerProfileDetailsGet } from '../../../
 const CareerProfile = ({ profileDashboard }: any) => {
   const dispatch = useAppDispatch();
   const { success } = useAppSelector((state) => state.updateProfileDashboard);
+  const { success: successCareerProfileUpdate } = useAppSelector((state) => state.updateCareerProfile);
   const { success: careerProfileSuccess, careerProfileDetails } = useAppSelector((state) => state.getCareerProfile);
   const [isOpen, setIsOpen] = useState(false);
   const formSummary = "This information will help the recruiters  know about your current job profile and also your desired job criteria. This will also help us personalize your job recommendations.";
@@ -19,17 +20,18 @@ const CareerProfile = ({ profileDashboard }: any) => {
       dispatch(clearUpdateCareerProfileUpdateSlice());
       dispatch(profileDashboardGet());
     }
-  }, [success, dispatch]);
+    if (successCareerProfileUpdate) {
+      setIsOpen(false);
+      dispatch(clearUpdateCareerProfileUpdateSlice());
+      dispatch(careerProfileDetailsGet());
+    }
+    if (careerProfileSuccess)
+      dispatch(clearGetCareerProfileDetails());
+  }, [success, dispatch, successCareerProfileUpdate, careerProfileSuccess]);
 
   useEffect(() => {
     dispatch(careerProfileDetailsGet());
   }, [dispatch])
-
-
-  useEffect(() => {
-    if (careerProfileSuccess)
-      dispatch(clearGetCareerProfileDetails());
-  }, [dispatch, careerProfileSuccess])
 
   const openModal = () => {
     setIsOpen(true);
@@ -37,7 +39,6 @@ const CareerProfile = ({ profileDashboard }: any) => {
   const closeDialog = () => {
     setIsOpen(false);
   };
-  console.log("profileDashboard=====", careerProfileDetails);
 
   return (
     <div className="w-full rounded-2xl bg-white p-4 mt-5">
