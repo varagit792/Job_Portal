@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 
 interface Headline {
   keySkills: string,
+  jobSeekerId: string
 }
 export interface keySkillsState {
   loading: boolean;
@@ -23,11 +24,12 @@ const initialState: keySkillsState = {
 
 export const keySkillsUpdate = createAsyncThunk(
   "profile/keySkills", async (data: Headline) => {
-   
+
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobSeekerProfile/keySkills`,
         {
           keySkills: data.keySkills,
+          jobSeekerId: data.jobSeekerId
         }, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

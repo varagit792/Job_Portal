@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getCourseList, getCurencyList, getEducationTypeList, getInstituteList, getJoiningDateMonthList, getJoiningDateYearList, getNoticePeriodList, getPassOutYearList, getTotalMonthsExpList, getTotalYearsExpList } from '../../../utils/utils';
+import { getCourseList, getCurrencyList, getEducationTypeList, getInstituteList, getJoiningDateMonthList, getJoiningDateYearList, getNoticePeriodList, getPassOutYearList, getTotalMonthsExpList, getTotalYearsExpList } from '../../../utils/utils';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { jobSeekerEducationAdd } from '../../../../store/reducers/jobSeekerProfile/jobSeekerEducation';
@@ -12,7 +12,7 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
   const [courses, setCourses] = useState([]);
   const [eductionType, setEducationType] = useState([]);
   const [experienceYears, setExperienceYears] = useState([]);
-  const [experienceMonths, setExperienceMonths] = useState([]);  
+  const [experienceMonths, setExperienceMonths] = useState([]);
   const [joiningDateYear, setJoiningDateYear] = useState([]);
   const [joiningDateMonth, setJoiningDateMonth] = useState([]);
   const [currency, setCurrency] = useState([]);
@@ -20,13 +20,13 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
   const [institute, setInstitute] = useState([]);
   const [passOutYear, setPassOutYear] = useState([]);
   const [educationData, setEducationData] = useState({
-    id:selectedEducation?.id && selectedEducation?.id,
-    courseType: selectedEducation?.courseType ? selectedEducation?.courseType :  '',
+    id: selectedEducation?.id && selectedEducation?.id,
+    courseType: selectedEducation?.courseType ? selectedEducation?.courseType : '',
     education: selectedEducation?.education ? selectedEducation?.education : '',
-    institute: selectedEducation?.institute ? selectedEducation?.institute :'',
+    institute: selectedEducation?.institute ? selectedEducation?.institute : '',
     passingYear: selectedEducation?.passingYear ? selectedEducation?.passingYear : '',
-    percentage: selectedEducation?.percentage ? selectedEducation?.percentage :'',
-    specialization: selectedEducation?.specialization ? selectedEducation?.specialization :''
+    percentage: selectedEducation?.percentage ? selectedEducation?.percentage : '',
+    specialization: selectedEducation?.specialization ? selectedEducation?.specialization : ''
   })
 
   const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
@@ -71,7 +71,7 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
     (async () => {
       const experienceYearsList = await getTotalYearsExpList()
       if (Object.keys(experienceYearsList).length) {
-          setExperienceYears(experienceYearsList as any)
+        setExperienceYears(experienceYearsList as any)
       }
     })();
   }, [])
@@ -80,7 +80,7 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
     (async () => {
       const experienceMonthsList = await getTotalMonthsExpList()
       if (Object.keys(experienceMonthsList).length) {
-          setExperienceMonths(experienceMonthsList as any)
+        setExperienceMonths(experienceMonthsList as any)
       }
     })();
   }, [])
@@ -89,7 +89,7 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
     (async () => {
       const joiningDateYearList = await getJoiningDateYearList()
       if (Object.keys(joiningDateYearList).length) {
-          setJoiningDateYear(joiningDateYearList as any)
+        setJoiningDateYear(joiningDateYearList as any)
       }
     })();
   }, [])
@@ -98,16 +98,16 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
     (async () => {
       const joiningDateMonthList = await getJoiningDateMonthList()
       if (Object.keys(joiningDateMonthList).length) {
-          setJoiningDateMonth(joiningDateMonthList as any)
+        setJoiningDateMonth(joiningDateMonthList as any)
       }
     })();
   }, [])
 
   useEffect(() => {
     (async () => {
-      const currencyList = await getCurencyList()
+      const currencyList = await getCurrencyList()
       if (Object.keys(currencyList).length) {
-          setCurrency(currencyList as any)
+        setCurrency(currencyList as any)
       }
     })();
   }, [])
@@ -116,7 +116,7 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
     (async () => {
       const noticePeriodList = await getNoticePeriodList()
       if (Object.keys(noticePeriodList).length) {
-          setNoticePeriod(noticePeriodList as any)
+        setNoticePeriod(noticePeriodList as any)
       }
     })();
   }, [])
@@ -136,12 +136,12 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
   }, [])
 
   const handleChange = (event: any) => {
-    const { name, value, id, checked  } = event.target;
+    const { name, value, id, checked } = event.target;
     console.log("name and value-->", event, id, checked, name, value);
     if (name === "courseType") {
       setEducationData({ ...educationData, ['courseType']: id as any })
     } else {
-      setEducationData({ ...educationData, [name]: value as any }) 
+      setEducationData({ ...educationData, [name]: value as any })
     }
   }
 
@@ -156,13 +156,13 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
       passingYear: educationData.passingYear,
       percentage: educationData.percentage,
       specialization: educationData.specialization,
-      id:educationData.id
+      id: educationData.id
     })
     dispatch(jobSeekerEducationAdd(data as any));
   };
 
   console.log("selectedEducation-->", selectedEducation);
-  
+
   return (
     <div>
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
@@ -198,22 +198,22 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
         <div className="mb-4">
           <label htmlFor="education" className="block text-sm font-medium leading-6 text-gray-900">Total Experience</label>
           <div className="grid grid-cols-4 gap-4 ">
-          <div className="mt-1 col-span-2">
-            <select onChange={handleChange} id="education" name="education" autoComplete="education-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
-              <option>select years</option>
-              {
-                experienceYears?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)
-              }
-            </select>
-          </div>
-          <div className="mt-1 col-span-2">
-            <select onChange={handleChange} id="education" name="education" autoComplete="education-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
-              <option>select months</option>
-              {
-                experienceMonths?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)
-              }
-            </select>
-          </div>
+            <div className="mt-1 col-span-2">
+              <select onChange={handleChange} id="education" name="education" autoComplete="education-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
+                <option>select years</option>
+                {
+                  experienceYears?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)
+                }
+              </select>
+            </div>
+            <div className="mt-1 col-span-2">
+              <select onChange={handleChange} id="education" name="education" autoComplete="education-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
+                <option>select months</option>
+                {
+                  experienceMonths?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)
+                }
+              </select>
+            </div>
           </div>
         </div>
 
@@ -234,45 +234,45 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
         <div className="mb-4">
           <label htmlFor="joiningDate" className="block text-sm font-medium leading-6 text-gray-900">Joining Date</label>
           <div className="grid grid-cols-4 gap-4 ">
-          <div className="mt-1 col-span-2">
-            <select onChange={handleChange} id="joiningDate" name="joiningDate" autoComplete="joiningDate" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
-              <option>select year</option>
-              {
-                joiningDateYear?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)
-              }
-            </select>
-          </div>
-          <div className="mt-1 col-span-2">
-            <select onChange={handleChange} id="education" name="education" autoComplete="education-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
-              <option>select month</option>
-              {
-                joiningDateMonth?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)
-              }
-            </select>
-          </div>
+            <div className="mt-1 col-span-2">
+              <select onChange={handleChange} id="joiningDate" name="joiningDate" autoComplete="joiningDate" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
+                <option>select year</option>
+                {
+                  joiningDateYear?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)
+                }
+              </select>
+            </div>
+            <div className="mt-1 col-span-2">
+              <select onChange={handleChange} id="education" name="education" autoComplete="education-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
+                <option>select month</option>
+                {
+                  joiningDateMonth?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)
+                }
+              </select>
+            </div>
           </div>
         </div>
 
         <div className="mb-4">
           <label htmlFor="education" className="block text-sm font-medium leading-6 text-gray-900">Current Salary</label>
           <div className="grid grid-cols-8 gap-4 ">
-          <div className="mt-1 col-span-1">
-            <select onChange={handleChange} id="education" name="education" autoComplete="education-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
-              <option>select currency</option>
-              {
-                currency?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)
-              }
-            </select>
-          </div>
-          <div className="mt-1 col-span-7">
-            {/* <select onChange={handleChange} id="education" name="education" autoComplete="education-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
+            <div className="mt-1 col-span-1">
+              <select onChange={handleChange} id="education" name="education" autoComplete="education-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
+                <option>select currency</option>
+                {
+                  currency?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)
+                }
+              </select>
+            </div>
+            <div className="mt-1 col-span-7">
+              {/* <select onChange={handleChange} id="education" name="education" autoComplete="education-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
               <option>select education</option>
               {
                 eductionType?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)
               }
             </select> */}
               <input onKeyUp={handleChange} defaultValue={selectedEducation && selectedEducation?.percentage} type="number" name="percentage" id="percentage" autoComplete="percentage" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-          </div>
+            </div>
           </div>
         </div>
 
@@ -293,7 +293,7 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
         <div className="col-span-full mb-4">
           <label htmlFor="percentage" className="block text-sm font-medium leading-6 text-gray-900">Notice Period</label>
           <div className="mt-2">
-          <select onChange={handleChange} id="noticePeriod" name="noticePeriod" autoComplete="noticePeriod" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
+            <select onChange={handleChange} id="noticePeriod" name="noticePeriod" autoComplete="noticePeriod" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
               <option>select notice period</option>
               {
                 noticePeriod?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)

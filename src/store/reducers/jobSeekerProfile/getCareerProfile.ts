@@ -11,7 +11,7 @@ interface CareerProfileData {
   jobRole: { title: string, id: number }
   careerProfileJobType: [{ jobType: { title: string } }]
   careerProfileEmployeeType: [{ employeeType: { title: string } }]
-  careerProfilePreferredLocations: [{ location: { title: string } }]
+  careerProfilePreferredLocations: [{ location: { title: string, id: number } }]
   careerProfilePreferredShift: [{ preferredShift: { title: string } }]
   currency: { title: string, id: number }
   expectedSalary: string | null
