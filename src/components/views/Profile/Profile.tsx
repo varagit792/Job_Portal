@@ -104,6 +104,22 @@ const Profile = () => {
               {/* display profile basic details */}
               <ProfileBasicDetails />
             </div>
+            {
+              isOpen && <div className="col-start-2 col-end-6">
+                <Modal
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
+                  modalBody={
+                    <ProfilePictureUploadForm
+                      closeDialog={closeDialog}
+                    />
+                  }
+                />
+              </div>
+            }
+
+            {/* display profile basic details */}
+            <ProfileBasicDetails />
           </div>
           <div className="grid grid-cols-4 mt-5">
             <div>

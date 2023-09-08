@@ -14,7 +14,7 @@ import ProfileBasicDetailsForm from "./ProfileBasicDetailsForm";
 const ProfileBasicDetails = () => {
   const dispatch = useAppDispatch();
   const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
-  const {success,userData } = useAppSelector((state)=>state.getUser)
+  const { success, userData } = useAppSelector((state) => state.getUser)
   const [isOpen, setIsOpen] = useState<boolean>(false);
   useEffect(() => {
     dispatch(getUserData());
@@ -35,14 +35,13 @@ const ProfileBasicDetails = () => {
     setIsOpen(false);
   }
 
-  console.log('profile ', profileDashboard[0]);
   return (
     <div>
       <div className="col-start-2 col-end-6">
         <div className="mb-4">
           <div className="flex items-center">
             <h1 className="font-semibold text-2xl">{userData.name}</h1>
-            <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer" onClick={openModal }> <FiEdit2 /> </span>
+            <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer" onClick={openModal}> <FiEdit2 /> </span>
           </div>
           <span><span className="font-thin text-sm">Profile last updated - </span><span className="text-sm">08Aug , 2023</span></span>
         </div>
@@ -71,15 +70,17 @@ const ProfileBasicDetails = () => {
           </div>
         </div>
       </div>
-      <Modal
+      {isOpen && <Modal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         modalBody={
           <ProfileBasicDetailsForm
             closeDialog={closeDialog}
+            profileDashboard={profileDashboard}
+            userData={userData}
           />
         }
-      />
+      />}
     </div>
   )
 }

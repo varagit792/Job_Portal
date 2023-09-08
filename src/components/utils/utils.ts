@@ -39,3 +39,19 @@ export const getCurencyList = async () => {
 export const getNoticePeriodList = async () => {
   return await axios.get(`${process.env.REACT_APP_API_PATH}/noticePeriod/get`).then((res:any)=> res.data.data)
 }
+export const getTotalExpYearList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/totalExpYear/get`).then((res: any) => res.data.data)
+}
+
+export const getTotalExpMonthList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/totalExpMonth/get`).then((res: any) => res.data.data)
+}
+
+export const getLocationList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/location/get`).then((res: any) => res.data.data)
+}
+
+export const getCurrencyList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/currency/get`).then((res: any) => res.data.data)
+}
+
