@@ -18,7 +18,7 @@ export class registerUserState {
     loading!: boolean;
     error!: boolean;
     success!: boolean;
-    profileBasicDetails!: ProfileBasicDetails;
+    profileBasicDetails!: any;
     errorMessage: string | undefined;
 }
 
@@ -61,12 +61,12 @@ const updateProfileBasicDetailsSlice = createSlice({
                 state.error = false;
             });
         builder.addCase(
-            updateProfileBasicDetails.fulfilled, (state, action: PayloadAction<ProfileBasicDetails>) => {
+            updateProfileBasicDetails.fulfilled, (state, action: PayloadAction<any>) => {
                 console.log('basic details ', action.payload);
                 state.loading = false;
                 state.success = true;
                 state.error = false;
-                state.profileBasicDetails = action.payload;
+                state.profileBasicDetails = profileBasicDetails;
             });
         builder.addCase(
             updateProfileBasicDetails.rejected, (state, action) => {

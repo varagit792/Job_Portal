@@ -4,10 +4,13 @@ import Cookies from 'js-cookie';
 
 
 interface ProfileDashboard {
+    profileLastUpdated:any;
+    noticePeriod: any;
+    jobSeekerType: string;
     resumeFile: string;
     resumePath: string;
     currentCountry: string;
-    currentLocation: string;
+    currentLocation: any;
     workStatus: boolean;
     profilePictureFile: string;
     profilePicturePath: string;

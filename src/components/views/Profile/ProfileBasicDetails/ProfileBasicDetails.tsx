@@ -9,12 +9,18 @@ import { getUserData } from "../../../../store/reducers/user/getUserDetails";
 import { clearGetUserDataSlice } from "../../../../store/reducers/user/getUserDetails";
 import Modal from "../../../commonComponents/Modal";
 import ProfileBasicDetailsForm from "./ProfileBasicDetailsForm";
+import { format, formatDistanceToNow, parseISO } from "date-fns"
+import { clearUpdateProfileBasicDetailsSlice } from "../../../../store/reducers/jobSeekerProfile/profileBasicDetailsUpdate"
+import { profileDashboardGet } from "../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet"
 
 
 const ProfileBasicDetails = () => {
+  
   const dispatch = useAppDispatch();
   const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
-  const { success, userData } = useAppSelector((state) => state.getUser)
+  const { success, userData } = useAppSelector((state) => state.getUser);
+  const {success:successBasicDetails} =useAppSelector((state)=>state.updateProfileBasicDetails)
+  const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   useEffect(() => {
     dispatch(getUserData());
@@ -25,7 +31,17 @@ const ProfileBasicDetails = () => {
       dispatch(clearGetUserDataSlice)
     }
   }, [dispatch, success]);
-  const isFresher = profileDashboard[0]?.workStatus;
+
+  
+  useEffect(() => {
+    console.log('basic success useffect', successBasicDetails)
+    if (successBasicDetails) {
+      setIsOpen(false);
+      dispatch(clearUpdateProfileBasicDetailsSlice);
+      dispatch(profileDashboardGet());
+      dispatch(getUserData());
+    }
+  }, [dispatch, successBasicDetails]);
 
   const openModal = () => {
     setIsOpen(true);
@@ -35,6 +51,13 @@ const ProfileBasicDetails = () => {
     setIsOpen(false);
   }
 
+  const parsedDate = parseISO(profileDashboard[0]?.profileLastUpdated)
+  useEffect(() => {
+    if (!isNaN(parsedDate.getDate())) {
+      setLastUpdatedTimestamp(parsedDate);
+    }
+  }, [profileDashboard])
+  
   return (
     <div>
       <div className="col-start-2 col-end-6">
@@ -43,20 +66,21 @@ const ProfileBasicDetails = () => {
             <h1 className="font-semibold text-2xl">{userData.name}</h1>
             <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer" onClick={openModal}> <FiEdit2 /> </span>
           </div>
-          <span><span className="font-thin text-sm">Profile last updated - </span><span className="text-sm">08Aug , 2023</span></span>
+          {lastUpdatedTimestamp !== null && (<span><span className="font-thin text-sm">Profile last updated - </span><span className="text-sm">  {formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true }
+          )}</span></span>)}
         </div>
         <hr className="mb-4" />
         <div className="grid grid-cols-2">
           <div>
             <div className="mb-2 flex items-center text-sm font-medium text-gray-500">
-              <SlLocationPin /><span className="ml-1">{profileDashboard[0]?.currentLocation},  {profileDashboard[0]?.currentCountry}</span>
+              <SlLocationPin /><span className="ml-1">{profileDashboard[0]?.currentLocation?.title},  {profileDashboard[0]?.currentCountry}</span>
             </div>
             <div className="mb-2 flex items-center text-sm font-medium text-gray-500">
-              <BsBriefcase /><span className="ml-1">{isFresher ? 'Fresher' : 'Experienced'}</span>
+              <BsBriefcase /><span className="ml-1">{profileDashboard[0]?.jobSeekerType}</span>
             </div>
-            <div className="flex items-center text-sm font-medium text-gray-500">
-              <BsCalendar4 /><span className="ml-1">Notice Period</span>
-            </div>
+            {(profileDashboard[0]?.jobSeekerType === "Experienced" && <div className="flex items-center text-sm font-medium text-gray-500">
+              <BsCalendar4 /><span className="ml-1">{profileDashboard[0]?.noticePeriod?.title}</span>
+            </div>)}
           </div>
           <div className="border-l border-gray-300">
             <div className="ml-2">

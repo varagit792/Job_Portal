@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../..';
-import { getTotalExpMonthList, getTotalExpYearList, getLocationList, getNoticePeriodList, getCurrencyList } from '../../../utils/utils';
-import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
+import { useAppDispatch} from '../../../..';
+import { getTotalExpMonthList, getTotalExpYearList, getLocationList, getNoticePeriodList} from '../../../utils/utils';
 import { LiaRupeeSignSolid } from 'react-icons/lia';
 import { Controller, useForm } from 'react-hook-form';
 import { filterArray } from '../../../utils/filterArray';
 import { updateProfileBasicDetails } from '../../../../store/reducers/jobSeekerProfile/profileBasicDetailsUpdate';
 import Select from 'react-select';
+import * as yup from 'yup';
 
 type Parameters = {
   closeDialog: () => void;
@@ -27,6 +27,10 @@ interface IFormInputs {
   email: string
 }
 
+const basicDetailsSchema = yup.object({
+
+})
+
 const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard, userData }) => {
   const dispatch = useAppDispatch();
   // dropdown constants
@@ -34,17 +38,9 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
   const [totalExpYearList, setTotalExpYearList] = useState<any>([]);
   const [locationList, setLocationList] = useState<any>([]);
   const [noticePeriodList, setNoticePeriodList] = useState<any>([]);
-  const [currencyList, setCurrencyList] = useState<any>([]);
-  console.log('profile dashboard ', profileDashboard);
-  //dropdown selected fields
-  const [selectedTotalExpMonth, setSelectedTotalExpMonth] = useState<any>(profileDashboard[0]?.totalExpMonth?.id);
-  const [selectedTotalExpYear, setSelectedTotalExpYear] = useState<any>(profileDashboard[0]?.totalExpYear?.id);
-  const [selectedLocation, setSelectedLocation] = useState<any>(profileDashboard[0]?.currentLocation?.id);
-  const [selectedNoticePeriod, setSelectedNoticePeriod] = useState<any>(profileDashboard[0]?.noticePeriod?.id);
-
+ 
   //react hook form controls
   const {
-    register,
     control,
     setValue,
     watch,
@@ -74,8 +70,6 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
     })();
   }, []);
 
-
-
   useEffect(() => {
     (async () => {
       const totalExpYear = await getTotalExpYearList();
@@ -97,31 +91,21 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      const currency = await getCurrencyList();
-      setCurrencyList(currency);
-    })();
-  }, []);
-  //jobSeekerType options
-
   const options = ['Fresher', 'Experienced'];
 
   const handleButtonClick = (noticePeriodOption: any) => {
-    setSelectedNoticePeriod(noticePeriodOption);
     setValue("noticePeriod", noticePeriodOption);
   };
 
   const onSubmit = (data: IFormInputs) => {
-
-    const monthArray = filterArray(totalExpMonthList, selectedTotalExpMonth?.value);
-    const yearArray = filterArray(totalExpYearList, selectedTotalExpYear?.value);
-    const locationArray = filterArray(locationList, selectedLocation?.value);
-    const currencyArray = filterArray(currencyList, 1);
+    
+    const monthArray = filterArray(totalExpMonthList, data?.totalExpMonth?.value);
+    const yearArray = filterArray(totalExpYearList, data?.totalExpYear?.value);
+    const locationArray = filterArray(locationList, data?.currentLocation.value);
+    
     data.totalExpMonth = monthArray[0];
     data.totalExpYear = yearArray[0];
     data.currentLocation = locationArray[0];
-    data.currentCurrency = currencyArray[0];
     console.log('data in submit  ', data);
     dispatch(updateProfileBasicDetails(data));
 
@@ -203,14 +187,15 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
               <div className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-lg ">
                 <Controller
                   control={control}
-                  name="totalExpMonth"
+                name="totalExpMonth"
+                
                   render={({ field }) => (
                     <Select
                       {...field}
                       isClearable
                       placeholder=""
                       options={totalExpMonthList?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                      defaultValue={watch('totalExpMonth')}
+                      defaultValue={getValues("totalExpMonth")}
                     />
                   )}
                 />
@@ -296,7 +281,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
                       <button
                         type="button"
                         {...field}
-                        className={selectedNoticePeriod === noticePeriod?.id ? noticePeriodClassHighLighted : noticePeriodClass}
+                        className={watch("noticePeriod")?.id === noticePeriod?.id ? noticePeriodClassHighLighted : noticePeriodClass}
                         onClick={() => handleButtonClick(noticePeriod)
                         }
                       >
