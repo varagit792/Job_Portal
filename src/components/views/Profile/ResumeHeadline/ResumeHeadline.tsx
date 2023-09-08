@@ -31,7 +31,7 @@ const ResumeHeadline = () => {
   return (
     <div className="w-full rounded-2xl bg-white p-4 mt-5" >
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
+        <div className="flex items-center justify-between mb-4 font-bold">
           <h1>Resume headline</h1>
           {
             profileDashboard[0]?.resumeHeadline
@@ -63,6 +63,7 @@ const ResumeHeadline = () => {
         modalBody={
           <ResumeHeadlineForm
             resumeHeadlineSummery={resumeHeadlineSummery}
+
             id={profileDashboard[0]?.id}
             defaultResumeHeadline={profileDashboard[0]?.resumeHeadline}
             closeDialog={closeDialog} />

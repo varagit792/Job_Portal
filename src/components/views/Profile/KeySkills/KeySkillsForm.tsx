@@ -10,6 +10,7 @@ import Select from 'react-select'
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
 
 interface IFormInputs {
+  jobSeekerId: string
   keySkills: {
     value: string;
     label: string
@@ -17,11 +18,9 @@ interface IFormInputs {
 
 }
 
-
-const KeySkillsForm = ({ keySkill, setKeySkill, keySkillFetch, setKeySkillFetch, isAddDelete, setIsAddDeleted, setIsOpen }: any) => {
+const KeySkillsForm = ({ keySkill, profileDashboard, setDatabaseSkillSet, keySkillFetch, setKeySkillFetch, isAddDelete, setIsAddDeleted, closeDialog }: any) => {
   const dispatch = useAppDispatch();
   const [query, setQuery] = useState("");
-
   const { success } = useAppSelector((state) => state.keySkills);
   const {
     register,
@@ -33,21 +32,19 @@ const KeySkillsForm = ({ keySkill, setKeySkill, keySkillFetch, setKeySkillFetch,
 
   // OnSubmit button
   const onSubmit = async (data: IFormInputs) => {
-    console.log(data?.keySkills?.label, keySkillFetch);
-
     if (!isInArray(data?.keySkills?.label, keySkillFetch)) {
 
       dispatch(keySkillsUpdate({
+        jobSeekerId: profileDashboard[0]?.id,
         keySkills: keySkillFetch.toString(),
-
       })).then(() => {
-        setIsAddDeleted({ state: "2", message: "Area of Expertise / Specialization added successfully", color: "green" });
-        setIsOpen(false);
+        setDatabaseSkillSet(keySkillFetch);
+        setIsAddDeleted({ state: "2", message: "Key skill added successfully", color: "green" });
+        closeDialog(false);
       });
     } else {
       setIsAddDeleted({ state: "1", message: "Already added!!", color: "red" });
     }
-
   };
 
   // Check the item in array
@@ -76,7 +73,6 @@ const KeySkillsForm = ({ keySkill, setKeySkill, keySkillFetch, setKeySkillFetch,
   }
 
   const handleChange = (data: any) => {
-    console.log(data);
 
     if (!isInArray(data?.label, keySkillFetch)) {
       if (data?.label !== '')
@@ -118,14 +114,10 @@ const KeySkillsForm = ({ keySkill, setKeySkill, keySkillFetch, setKeySkillFetch,
                 dropdownData={keySkill.map(({ id, title }: any) => ({ value: id, label: title }))}
                 handleChange={handleChange}
                 isMulti={false}
-                defaultValue={[]}
                 placeholder={"Select key skill"}
               />
               {errors.keySkills && <p className="font-normal text-xs text-red-500">{errors.keySkills.message}</p>}
-
             </div>
-
-
             <div className="mt-10 mb-10 text-sm text-gray-500 mb-3">
               <h2>Or you can select from the suggested set of skills</h2>
               <div className="flex flex-wrap mt-5">
@@ -138,7 +130,7 @@ const KeySkillsForm = ({ keySkill, setKeySkill, keySkillFetch, setKeySkillFetch,
               </div>
             </div>
             <div className='float-right'>
-              <button type="button" onClick={() => setIsOpen(false)} className="mr-3">Cancel</button>
+              <button type="button" onClick={closeDialog} className="mr-3">Cancel</button>
               <button type="submit" className="rounded-3xl bg-blue-600 text-white px-5 py-1.5">Save</button>
             </div>
           </form>

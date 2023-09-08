@@ -118,6 +118,9 @@ const Profile = () => {
                   <span>Resume headline</span>
                 </button>
                 <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
+                  <span>Career profile</span>
+                </button>
+                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
                   <span>Key skills</span>
                 </button>
                 <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
@@ -141,9 +144,7 @@ const Profile = () => {
                 <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
                   <span>Accomplishments</span>
                 </button>
-                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                  <span>Career profile</span>
-                </button>
+
                 <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
                   <span>Personal details</span>
                 </button>
@@ -169,6 +170,9 @@ const Profile = () => {
               {/* card */}
               <ResumeHeadline />
               {/* card */}
+              {/* card */}
+              <CareerProfile profileDashboard={profileDashboard} />
+              {/* card */}
               <KeySkills profileDashboard={profileDashboard} />
               {/* card */}
               <Education />
@@ -176,11 +180,9 @@ const Profile = () => {
               <PersonalDetails />
               {/* card */}
 
-              {/* card */}
-              <CareerProfile profileDashboard={profileDashboard} />
-              {/* card */}
-              <Employment/>
-            </div>            
+
+              <Employment />
+            </div>
           </div>
         </div>
       </div>
