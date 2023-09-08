@@ -58,11 +58,7 @@ const Profile = () => {
       profilePictureCompletePath = `${process.env.REACT_APP_PROFILE_PICTURE_FILE_LOCATION}/${profileDashboard?.profilePicturePath}`;
       setProfilePicPath(profilePictureCompletePath as any)
     } else {
-      //let profilePicture = defaultPicture;
-      //if (profilePictureCompletePath) {
-      //profilePicture = profilePictureCompletePath;
       setProfilePicPath(defaultPicture as any)
-      //}
     }
 
   }, [profileDashboard])
@@ -87,20 +83,6 @@ const Profile = () => {
                   <img src={profilePicPath} alt="logo" height="100%" className="rounded-full object-fill h-30 w-40" onClick={openModal} />
                 </div>
               </div>
-              {
-                isOpen && <div className="col-start-2 col-end-6">
-                  <Modal
-                    isOpen={isOpen}
-                    setIsOpen={setIsOpen}
-                    modalBody={
-                      <ProfilePictureUploadForm
-                        closeDialog={closeDialog}
-                      />
-                    }
-                  />
-                </div>
-              }
-
               {/* display profile basic details */}
               <ProfileBasicDetails />
             </div>
@@ -118,8 +100,6 @@ const Profile = () => {
               </div>
             }
 
-            {/* display profile basic details */}
-            <ProfileBasicDetails />
           </div>
           <div className="grid grid-cols-4 mt-5">
             <div>
@@ -169,20 +149,7 @@ const Profile = () => {
             <div className="col-start-2 col-end-5">
               {/* card  profile upload*/}
               <ResumeUpload />
-              {/* <div className="w-full rounded-2xl bg-white p-4">
-              <h1 className="mb-4">Resume</h1>
-              <p className="mb-4 text-sm text-gray-500">
-                Resume is the most important document recruiters look for. Recruiters generally do not look at profiles without resumes.
-              </p>
-              <div className="p-10 border border-dashed border-gray-500 rounded-2xl flex flex-col justify-center items-center">
-                <label className="cursor-pointer px-3 py-1 mb-1 rounded-3xl border-2 border-blue-400">
-                  <input type="file" className="hidden" />
-                  Upload resume
-                </label>
-                <span className=" text-gray-400">Supported Formats: doc, docx, rtf, pdf, upto 2 MB</span>
-              </div>
-            </div> */}
-
+              
               {/* card */}
               <ResumeHeadline />
               {/* card */}
@@ -195,7 +162,6 @@ const Profile = () => {
               <ProfileSummary />
               <PersonalDetails />
               {/* card */}
-
 
               <Employment />
             </div>
