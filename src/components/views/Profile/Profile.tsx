@@ -54,8 +54,8 @@ const Profile = () => {
   useEffect(() => {
     let profilePictureCompletePath;
 
-    if (profileDashboard[0]?.profilePicturePath) {
-      profilePictureCompletePath = `${process.env.REACT_APP_PROFILE_PICTURE_FILE_LOCATION}/${profileDashboard[0]?.profilePicturePath}`;
+    if (profileDashboard?.profilePicturePath) {
+      profilePictureCompletePath = `${process.env.REACT_APP_PROFILE_PICTURE_FILE_LOCATION}/${profileDashboard?.profilePicturePath}`;
       setProfilePicPath(profilePictureCompletePath as any)
     } else {
       //let profilePicture = defaultPicture;
@@ -152,7 +152,7 @@ const Profile = () => {
                 </button>
                 <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
                   <span>Profile summary</span>
-                  {!profileDashboard[0]?.profileSummary
+                  {!profileDashboard?.profileSummary
                     &&
                     <span className="text-blue-600 font-semibold">Add</span>
                   }

@@ -34,7 +34,7 @@ const ResumeHeadline = () => {
         <div className="flex items-center justify-between mb-4 font-bold">
           <h1>Resume headline</h1>
           {
-            profileDashboard[0]?.resumeHeadline
+            profileDashboard?.resumeHeadline
             &&
             <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
               <FiEdit2 onClick={openModal} />
@@ -42,7 +42,7 @@ const ResumeHeadline = () => {
           }
         </div>
         {
-          !profileDashboard[0]?.resumeHeadline
+          !profileDashboard?.resumeHeadline
           &&
           <h1 className="text-blue-600 font-medium cursor-pointer"
             onClick={openModal}>
@@ -52,10 +52,10 @@ const ResumeHeadline = () => {
       </div>
       <span className="text-sm text-gray-500">
         {
-          !profileDashboard[0]?.resumeHeadline
+          !profileDashboard?.resumeHeadline
           && resumeHeadlineSummery
         }
-        {profileDashboard[0]?.resumeHeadline}
+        {profileDashboard?.resumeHeadline}
       </span>
       <Modal
         isOpen={isOpen}
@@ -64,8 +64,8 @@ const ResumeHeadline = () => {
           <ResumeHeadlineForm
             resumeHeadlineSummery={resumeHeadlineSummery}
 
-            id={profileDashboard[0]?.id}
-            defaultResumeHeadline={profileDashboard[0]?.resumeHeadline}
+            id={profileDashboard?.id}
+            defaultResumeHeadline={profileDashboard?.resumeHeadline}
             closeDialog={closeDialog} />
         }
       />

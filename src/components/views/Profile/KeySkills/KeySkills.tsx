@@ -33,9 +33,9 @@ const KeySkills = ({ profileDashboard }: any) => {
   };
 
   useEffect(() => {
-    if (profileDashboard[0]?.keySkills) {
-      setKeySkillFetch(profileDashboard[0]?.keySkills && profileDashboard[0]?.keySkills?.split(","));
-      setDatabaseSkillSet(profileDashboard[0]?.keySkills && profileDashboard[0]?.keySkills?.split(","));
+    if (profileDashboard?.keySkills) {
+      setKeySkillFetch(profileDashboard?.keySkills && profileDashboard?.keySkills?.split(","));
+      setDatabaseSkillSet(profileDashboard?.keySkills && profileDashboard?.keySkills?.split(","));
     }
 
   }, [profileDashboard])

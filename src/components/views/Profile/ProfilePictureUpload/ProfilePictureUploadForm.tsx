@@ -41,7 +41,7 @@ const ProfilePictureUploadForm: FC<Parameters> = ({ closeDialog }) => {
     }
   }, [successDelete, errorDelete, errorMessageDelete, dispatch]);
 
-  const profilePictureFile = profileDashboard[0]?.profilePictureFile;
+  const profilePictureFile = profileDashboard?.profilePictureFile;
   let uploadFile = 'Upload photo';
   if (profilePictureFile) {
     uploadFile = 'Change photo';
@@ -125,7 +125,7 @@ const ProfilePictureUploadForm: FC<Parameters> = ({ closeDialog }) => {
       </form>
       <div className="flex flex-col justify-center items-center">
         <p className="text-sm text-gray-400">By uploading your photograph, you certify that jobportal.com has the right to display this photograph to
-        {/* <div className="flex"> */}the recruiters and that the uploaded file does not violate our
+          {/* <div className="flex"> */}the recruiters and that the uploaded file does not violate our
           <span className="ml-2 text-blue-600 text-sm font-bold">Terms of services.</span></p>
         {/* </div> */}
       </div>

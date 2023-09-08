@@ -15,11 +15,11 @@ import { profileDashboardGet } from "../../../../store/reducers/jobSeekerProfile
 
 
 const ProfileBasicDetails = () => {
-  
+
   const dispatch = useAppDispatch();
   const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
   const { success, userData } = useAppSelector((state) => state.getUser);
-  const {success:successBasicDetails} =useAppSelector((state)=>state.updateProfileBasicDetails)
+  const { success: successBasicDetails } = useAppSelector((state) => state.updateProfileBasicDetails)
   const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   useEffect(() => {
@@ -32,7 +32,7 @@ const ProfileBasicDetails = () => {
     }
   }, [dispatch, success]);
 
-  
+
   useEffect(() => {
     console.log('basic success useffect', successBasicDetails)
     if (successBasicDetails) {
@@ -51,13 +51,13 @@ const ProfileBasicDetails = () => {
     setIsOpen(false);
   }
 
-  const parsedDate = parseISO(profileDashboard[0]?.profileLastUpdated)
+  const parsedDate = parseISO(profileDashboard?.profileLastUpdated)
   useEffect(() => {
     if (!isNaN(parsedDate.getDate())) {
       setLastUpdatedTimestamp(parsedDate);
     }
   }, [profileDashboard])
-  
+
   return (
     <div>
       <div className="col-start-2 col-end-6">
@@ -73,13 +73,13 @@ const ProfileBasicDetails = () => {
         <div className="grid grid-cols-2">
           <div>
             <div className="mb-2 flex items-center text-sm font-medium text-gray-500">
-              <SlLocationPin /><span className="ml-1">{profileDashboard[0]?.currentLocation?.title},  {profileDashboard[0]?.currentCountry}</span>
+              <SlLocationPin /><span className="ml-1">{profileDashboard?.currentLocation?.title},  {profileDashboard?.currentCountry}</span>
             </div>
             <div className="mb-2 flex items-center text-sm font-medium text-gray-500">
-              <BsBriefcase /><span className="ml-1">{profileDashboard[0]?.jobSeekerType}</span>
+              <BsBriefcase /><span className="ml-1">{profileDashboard?.jobSeekerType}</span>
             </div>
-            {(profileDashboard[0]?.jobSeekerType === "Experienced" && <div className="flex items-center text-sm font-medium text-gray-500">
-              <BsCalendar4 /><span className="ml-1">{profileDashboard[0]?.noticePeriod?.title}</span>
+            {(profileDashboard?.jobSeekerType === "Experienced" && <div className="flex items-center text-sm font-medium text-gray-500">
+              <BsCalendar4 /><span className="ml-1">{profileDashboard?.noticePeriod?.title}</span>
             </div>)}
           </div>
           <div className="border-l border-gray-300">

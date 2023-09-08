@@ -49,13 +49,13 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
     getValues
   } = useForm<IFormInputs>({
     defaultValues: {
-      jobSeekerType: profileDashboard[0]?.jobSeekerType,
-      totalExpYear: { value: profileDashboard[0]?.totalExpYear?.id, label: profileDashboard[0]?.totalExpYear?.title },
-      totalExpMonth: { value: profileDashboard[0]?.totalExpMonth?.id, label: profileDashboard[0]?.totalExpMonth?.title },
-      currentLocation: { value: profileDashboard[0]?.currentLocation?.id, label: profileDashboard[0]?.currentLocation?.title },
-      currentCurrency: profileDashboard[0]?.currentCurrency,
-      currentSalary: profileDashboard[0]?.currentSalary,
-      noticePeriod: profileDashboard[0]?.noticePeriod,
+      jobSeekerType: profileDashboard?.jobSeekerType,
+      totalExpYear: { value: profileDashboard?.totalExpYear?.id, label: profileDashboard?.totalExpYear?.title },
+      totalExpMonth: { value: profileDashboard?.totalExpMonth?.id, label: profileDashboard?.totalExpMonth?.title },
+      currentLocation: { value: profileDashboard?.currentLocation?.id, label: profileDashboard?.currentLocation?.title },
+      currentCurrency: profileDashboard?.currentCurrency,
+      currentSalary: profileDashboard?.currentSalary,
+      noticePeriod: profileDashboard?.noticePeriod,
       name: userData?.name,
       email: userData?.email,
       mobileNumber: userData?.mobileNumber
