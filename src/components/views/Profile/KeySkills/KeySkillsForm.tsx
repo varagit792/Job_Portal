@@ -108,12 +108,10 @@ const KeySkillsForm = ({ keySkill, profileDashboard, setDatabaseSkillSet, keySki
         <div className="col-start-1 col-end-4">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
-              <AutocompleteBox
-                control={control}
-                fieldName={"keySkills"}
-                dropdownData={keySkill.map(({ id, title }: any) => ({ value: id, label: title }))}
-                handleChange={handleChange}
-                isMulti={false}
+              <Select
+                {...register("keySkills")}
+                options={keySkill.map(({ id, title }: any) => ({ value: id, label: title }))}
+                onChange={handleChange}
                 placeholder={"Select key skill"}
               />
               {errors.keySkills && <p className="font-normal text-xs text-red-500">{errors.keySkills.message}</p>}

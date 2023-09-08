@@ -6,7 +6,6 @@ const AutocompleteBox = ({ control, defaultValue, handleChange, fieldName, dropd
 
   return (
     <>
-
       <Controller
         name={`${fieldName}`}
         control={control}
@@ -20,32 +19,12 @@ const AutocompleteBox = ({ control, defaultValue, handleChange, fieldName, dropd
             classNamePrefix="dropdown"
             options={dropdownData}
             defaultValue={defaultValue}
-            onChange={handleChange}
+            value={defaultValue}
             placeholder={placeholder}
 
           />
         )}
       />
-      {/* <Controller
-        name={fieldName}
-        control={control}
-        render={({ field }) => {
-          return (
-            <Select
-              {...field}
-              isClearable
-              isSearchable={false}
-              isMulti={isMulti}
-              className='text-sm'
-              defaultValue={defaultValueSet} // This should be like [val1,val2]
-              onChange={handleChange}
-              options={dropdownData}
-              value={values}
-              placeholder={placeholder}
-            />
-          )
-        }}
-      /> */}
     </>
   )
 }

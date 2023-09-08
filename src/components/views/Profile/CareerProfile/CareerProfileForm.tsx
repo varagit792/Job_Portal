@@ -183,7 +183,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
             control={control}
             fieldName={"roleCategory"}
             dropdownData={roleCategory.map(({ id, title }: any) => ({ value: id, label: title }))}
-            defaultValue={{ label: profileDashboard[0]?.roleCategory?.title, value: profileDashboard[0]?.roleCategory?.id }}
+            default={watch("roleCategory")}
             placeholder={"Select role category"}
           />
           {errors?.roleCategory && <p className="font-normal text-xs text-red-500 absolute">{errors?.roleCategory?.label?.message}</p>}
@@ -194,7 +194,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
             control={control}
             fieldName={"jobRole"}
             dropdownData={jobRole.map(({ id, title }: any) => ({ value: id, label: title }))}
-            defaultValue={{ label: profileDashboard[0]?.jobRole?.title, value: profileDashboard[0]?.jobRole?.id }}
+            default={watch("jobRole")}
             placeholder={"Select job role"}
           />
           {errors?.jobRole && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobRole?.label?.message}</p>}
