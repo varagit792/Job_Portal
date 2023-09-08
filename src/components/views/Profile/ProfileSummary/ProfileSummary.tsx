@@ -34,7 +34,7 @@ const ProfileSummary = () => {
                 <div className="flex items-center">
                     <h1>Profile summary</h1>
                     {
-                        profileDashboard[0]?.profileSummary
+                        profileDashboard?.profileSummary
                         &&
                         <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
                             <FiEdit2 onClick={openModal} />
@@ -42,7 +42,7 @@ const ProfileSummary = () => {
                     }
                 </div>
                 {
-                    !profileDashboard[0]?.profileSummary
+                    !profileDashboard?.profileSummary
                     &&
                     <h1 className="text-blue-600 font-medium cursor-pointer"
                         onClick={openModal}>
@@ -52,10 +52,10 @@ const ProfileSummary = () => {
             </div>
             <span className="text-sm text-gray-500">
                 {
-                    !profileDashboard[0]?.profileSummary
+                    !profileDashboard?.profileSummary
                     && testSummary
                 }
-                {profileDashboard[0]?.profileSummary}
+                {profileDashboard?.profileSummary}
             </span>
             <Modal
                 isOpen={isOpen}
@@ -63,8 +63,8 @@ const ProfileSummary = () => {
                 modalBody={
                     <ProfileSummaryForm
                         testSummary={testSummary}
-                        id={profileDashboard[0]?.id}
-                        defaultProfileSummary={profileDashboard[0]?.profileSummary}
+                        id={profileDashboard?.id}
+                        defaultProfileSummary={profileDashboard?.profileSummary}
                         closeDialog={closeDialog} />
                 }
             />

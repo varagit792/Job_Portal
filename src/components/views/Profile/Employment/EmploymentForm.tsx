@@ -31,7 +31,7 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
 
   const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
 
-  const id = profileDashboard?.[0]?.id;
+  const id = profileDashboard?.id;
   const dispatch = useAppDispatch();
 
   const {

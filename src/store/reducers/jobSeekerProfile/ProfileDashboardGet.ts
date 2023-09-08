@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 
 interface ProfileDashboard {
-    profileLastUpdated:any;
+    profileLastUpdated: any;
     noticePeriod: any;
     jobSeekerType: string;
     resumeFile: string;
@@ -23,14 +23,14 @@ interface registerUserState {
     loading: boolean;
     error: boolean;
     success: boolean;
-    profileDashboard: Array<ProfileDashboard>;
+    profileDashboard: ProfileDashboard;
     errorMessage: string | undefined;
 }
 const initialState: registerUserState = {
     loading: false,
     error: false,
     success: false,
-    profileDashboard: [],
+    profileDashboard: {} as any,
     errorMessage: undefined,
 }
 
@@ -62,7 +62,7 @@ const getProfileDashboardSlice = createSlice({
             state.success = false;
             state.error = false;
         });
-        builder.addCase(profileDashboardGet.fulfilled, (state, action: PayloadAction<ProfileDashboard[]>) => {
+        builder.addCase(profileDashboardGet.fulfilled, (state, action: PayloadAction<ProfileDashboard>) => {
             state.loading = false;
             state.success = true;
             state.error = false;
@@ -72,7 +72,7 @@ const getProfileDashboardSlice = createSlice({
             state.success = false;
             state.loading = false;
             state.error = true;
-            state.profileDashboard = [];
+            state.profileDashboard = {} as any;
             state.errorMessage = action.error.message;
         });
     },

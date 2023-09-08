@@ -35,7 +35,7 @@ const KeySkillsForm = ({ keySkill, profileDashboard, setDatabaseSkillSet, keySki
     if (!isInArray(data?.keySkills?.label, keySkillFetch)) {
 
       dispatch(keySkillsUpdate({
-        jobSeekerId: profileDashboard[0]?.id,
+        jobSeekerId: profileDashboard?.id,
         keySkills: keySkillFetch.toString(),
       })).then(() => {
         setDatabaseSkillSet(keySkillFetch);

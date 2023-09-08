@@ -50,8 +50,8 @@ const ResumeUpload = () => {
   }, [successProfile]);
 
   useEffect(() => {
-    setResumeFile(profileDashboard[0]?.resumeFile)
-    setResumeCompletePath(`${process.env.REACT_APP_RESUME_FILE_LOCATION}/${profileDashboard[0]?.resumePath}`)
+    setResumeFile(profileDashboard?.resumeFile)
+    setResumeCompletePath(`${process.env.REACT_APP_RESUME_FILE_LOCATION}/${profileDashboard?.resumePath}`)
   }, [profileDashboard]);
   const handleFileChange = async (event: ChangeEvent) => {
     event.preventDefault();
@@ -86,7 +86,7 @@ const ResumeUpload = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', profileDashboard[0]?.resumeFile); // Replace with the desired filename
+      link.setAttribute('download', profileDashboard?.resumeFile); // Replace with the desired filename
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

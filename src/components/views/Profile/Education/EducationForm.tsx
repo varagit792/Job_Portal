@@ -14,18 +14,18 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
   const [institute, setInstitute] = useState([]);
   const [passOutYear, setPassOutYear] = useState([]);
   const [educationData, setEducationData] = useState({
-    id:selectedEducation?.id && selectedEducation?.id,
-    courseType: selectedEducation?.courseType ? selectedEducation?.courseType :  '',
+    id: selectedEducation?.id && selectedEducation?.id,
+    courseType: selectedEducation?.courseType ? selectedEducation?.courseType : '',
     education: selectedEducation?.education ? selectedEducation?.education : '',
-    institute: selectedEducation?.institute ? selectedEducation?.institute :'',
+    institute: selectedEducation?.institute ? selectedEducation?.institute : '',
     passingYear: selectedEducation?.passingYear ? selectedEducation?.passingYear : '',
-    percentage: selectedEducation?.percentage ? selectedEducation?.percentage :'',
-    specialization: selectedEducation?.specialization ? selectedEducation?.specialization :''
+    percentage: selectedEducation?.percentage ? selectedEducation?.percentage : '',
+    specialization: selectedEducation?.specialization ? selectedEducation?.specialization : ''
   })
 
   const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
 
-  const id = profileDashboard?.[0]?.id;
+  const id = profileDashboard?.id;
   const dispatch = useAppDispatch();
 
   const {
@@ -76,12 +76,12 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
   }, [])
 
   const handleChange = (event: any) => {
-    const { name, value, id, checked  } = event.target;
+    const { name, value, id, checked } = event.target;
     console.log("name and value-->", event, id, checked, name, value);
     if (name === "courseType") {
       setEducationData({ ...educationData, ['courseType']: id as any })
     } else {
-      setEducationData({ ...educationData, [name]: value as any }) 
+      setEducationData({ ...educationData, [name]: value as any })
     }
   }
 
@@ -96,13 +96,13 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
       passingYear: educationData.passingYear,
       percentage: educationData.percentage,
       specialization: educationData.specialization,
-      id:educationData.id
+      id: educationData.id
     })
     dispatch(jobSeekerEducationAdd(data as any));
   };
 
   console.log("selectedEducation-->", selectedEducation);
-  
+
   return (
     <div>
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
