@@ -145,7 +145,6 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
 
     dispatch(careerProfileUpdate({ industry: data.industry.value, department: data.department.value, roleCategory: data.roleCategory.value, jobRole: data.jobRole.value, careerProfileJobType: jobType, careerProfileEmployeeType: employeeType, careerProfilePreferredLocations: preferredLocations, careerProfilePreferredShift: preferredShift, currency: data.currency.value, expectedSalary: data.expectedSalary, jobSeekerProfile: id }));
   }
-  console.log(watch("jobType"));
 
   return (
     <div className="flex flex-col">

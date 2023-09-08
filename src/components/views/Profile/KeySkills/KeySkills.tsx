@@ -51,9 +51,6 @@ const KeySkills = ({ profileDashboard }: any) => {
     closeDialog={closeDialog}
   />;
 
-  console.log(databaseSkillSet);
-
-
   return (
     <div className="w-full rounded-2xl bg-white p-4 mt-5">
       {isAddDelete.state && <p className={`font-normal text-xs text-green-500`}>{isAddDelete.message} </p>}

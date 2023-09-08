@@ -34,8 +34,6 @@ const initialState: registerUserState = {
 export const careerProfileUpdate = createAsyncThunk(
   "careerProfile", async (data: CareerProfileUpdate) => {
     try {
-      console.log("data====", data);
-
       const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobSeekerProfile/careerProfile`,
         data,
         {

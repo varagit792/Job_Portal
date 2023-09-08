@@ -15,11 +15,12 @@ const AutocompleteBox = ({ control, defaultValue, handleChange, fieldName, dropd
             // defaultValue={options[0]}
             {...field}
             isClearable // enable isClearable to demonstrate extra error handling
-            isSearchable={false}
+            isSearchable={true}
             className="text-sm"
             classNamePrefix="dropdown"
             options={dropdownData}
             defaultValue={defaultValue}
+            onChange={handleChange}
             placeholder={placeholder}
 
           />
