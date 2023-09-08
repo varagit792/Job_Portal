@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useAppDispatch} from '../../../..';
-import { getTotalExpMonthList, getTotalExpYearList, getLocationList, getNoticePeriodList} from '../../../utils/utils';
+import { useAppDispatch } from '../../../..';
+import { getLocationList, getNoticePeriodList, getTotalMonthsExpList, getTotalYearsExpList } from '../../../utils/utils';
 import { LiaRupeeSignSolid } from 'react-icons/lia';
 import { Controller, useForm } from 'react-hook-form';
 import { filterArray } from '../../../utils/filterArray';
@@ -38,7 +38,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
   const [totalExpYearList, setTotalExpYearList] = useState<any>([]);
   const [locationList, setLocationList] = useState<any>([]);
   const [noticePeriodList, setNoticePeriodList] = useState<any>([]);
- 
+
   //react hook form controls
   const {
     control,
@@ -65,14 +65,14 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
   console.log('watch default', watch('totalExpMonth'))
   useEffect(() => {
     (async () => {
-      const totalExpMonth = await getTotalExpMonthList();
+      const totalExpMonth = await getTotalMonthsExpList();
       setTotalExpMonthList(totalExpMonth);
     })();
   }, []);
 
   useEffect(() => {
     (async () => {
-      const totalExpYear = await getTotalExpYearList();
+      const totalExpYear = await getTotalYearsExpList();
       setTotalExpYearList(totalExpYear);
     })();
   }, []);
@@ -98,11 +98,11 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
   };
 
   const onSubmit = (data: IFormInputs) => {
-    
+
     const monthArray = filterArray(totalExpMonthList, data?.totalExpMonth?.value);
     const yearArray = filterArray(totalExpYearList, data?.totalExpYear?.value);
     const locationArray = filterArray(locationList, data?.currentLocation.value);
-    
+
     data.totalExpMonth = monthArray[0];
     data.totalExpYear = yearArray[0];
     data.currentLocation = locationArray[0];
@@ -179,7 +179,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
                       placeholder=""
                       options={totalExpYearList?.map(({ id, title }: any) => ({ value: id, label: title }))}
                       defaultValue={watch('totalExpYear')}
-                      
+
                     />
                   )}
                 />
@@ -187,8 +187,8 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
               <div className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-lg ">
                 <Controller
                   control={control}
-                name="totalExpMonth"
-                
+                  name="totalExpMonth"
+
                   render={({ field }) => (
                     <Select
                       {...field}
