@@ -41,20 +41,20 @@ const CareerProfileSchema = yup.object().shape({
     value: yup.string().required("Please select department"),
     label: yup.string().required("Please select department"),
   }),
-  jobType: yup.array().min(1).of(yup.string().required()).required("Job type"),
+  jobType: yup.array().min(1).of(yup.string().required()).required("Please check Job type"),
   jobRole: yup.object().shape({
     value: yup.string().required("Please select job role"),
     label: yup.string().required("Please select job role"),
   }),
-  employeeType: yup.array().min(1).of(yup.string().required()).required("employee type"),
-  preferredShift: yup.array().min(1).of(yup.string().required()).required("preferred shift"),
+  employeeType: yup.array().min(1).of(yup.string().required()).required("Please check employee type"),
+  preferredShift: yup.array().min(1).of(yup.string().required()).required("Please check preferred shift"),
   preferredWorkLocation: yup.object().shape({
     value: yup.string().required("Please select role category"),
     label: yup.string().required("Please select role category"),
   }),
   currency: yup.object().shape({
-    value: yup.string().required("Please select currency"),
-    label: yup.string().required("Please select currency"),
+    value: yup.string().required("Select currency"),
+    label: yup.string().required("Select currency"),
   }),
   expectedSalary: yup.string().label("Please enter expected salary").required(),
 }).required();
@@ -81,6 +81,13 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
   } = useForm<IFormInputs>({
     resolver: yupResolver(CareerProfileSchema),
     defaultValues: {
+      industry: { value: '', label: '' },
+      department: { value: '', label: '' },
+      roleCategory: { value: '', label: '' },
+      jobRole: { value: '', label: '' },
+      preferredWorkLocation: { value: '', label: '' },
+      currency: { value: '', label: '' },
+      expectedSalary: '',
       jobType: [],
       employeeType: [],
       preferredShift: []
@@ -145,6 +152,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
 
     dispatch(careerProfileUpdate({ industry: data.industry.value, department: data.department.value, roleCategory: data.roleCategory.value, jobRole: data.jobRole.value, careerProfileJobType: jobType, careerProfileEmployeeType: employeeType, careerProfilePreferredLocations: preferredLocations, careerProfilePreferredShift: preferredShift, currency: data.currency.value, expectedSalary: data.expectedSalary, jobSeekerProfile: id }));
   }
+  console.log(errors);
 
   return (
     <div className="flex flex-col">
@@ -250,7 +258,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
             dropdownData={location.map(({ id, title }: any) => ({ value: id, label: title }))}
             placeholder={"Select location"}
           />
-          {errors?.preferredWorkLocation && <p className="font-normal text-xs text-red-500 absolute">{errors?.preferredWorkLocation?.message}</p>}
+          {errors?.preferredWorkLocation && <p className="font-normal text-xs text-red-500 absolute">{errors?.preferredWorkLocation?.label?.message}</p>}
         </div>
         <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Expected salary</div>
         <div className='w-full'>
@@ -263,7 +271,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
               placeholder={"Select currency"}
             />
 
-            {errors?.currency && <p className="font-normal text-xs text-red-500 absolute">{errors?.currency?.message}</p>}
+            {errors?.currency && <p className="font-normal text-xs text-red-500 absolute">{errors?.currency?.label?.message}</p>}
           </div>
           <div className='float-left '>
             <input defaultValue={profileDashboard[0]?.expectedSalary} className=' block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none'  {...register("expectedSalary")} />
