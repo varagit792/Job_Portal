@@ -4,16 +4,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
-
-const people = [
-    { id: 1, name: 'Wade Cooper' },
-    { id: 2, name: 'Arlene Mccoy' },
-    { id: 3, name: 'Devon Webb' },
-    { id: 4, name: 'Tom Cook' },
-    { id: 5, name: 'Tanya Fox' },
-    { id: 6, name: 'Hellen Schmidt' },
-]
-
 const SignUpSchema = yup
     .object({
         profileSummary: yup.object().required(),
@@ -21,8 +11,7 @@ const SignUpSchema = yup
     .required();
 
 const PersonalDetailsForm = () => {
-    const [selected, setSelected] = useState<any>({ id: 0, name: '' });
-    console.log(selected)
+
     const {
         register,
         handleSubmit,
@@ -32,10 +21,6 @@ const PersonalDetailsForm = () => {
     } = useForm<any>({
         resolver: yupResolver(SignUpSchema)
     });
-
-    useEffect(() => {
-        setValue('profileSummary', selected);
-    }, [setValue, selected]);
 
     const onSubmit = (data: any) => {
         console.log("data", data);
@@ -119,11 +104,14 @@ const PersonalDetailsForm = () => {
                 <div className="mb-5">
                     <h6 className="font-semibold mb-3">Work permit for USA</h6>
                     <div className="">
-                        <AutocompleteBox
-                            selected={selected}
-                            setSelected={setSelected}
-                            dropDownData={people}
-                        />
+                        {/* <AutocompleteBox
+                            control={control}
+                            fieldName={"department"}
+                            dropdownData={department.map(({ id, title }: any) => ({ value: id, label: title }))}
+                            handleChange={(data: any) => setSelectedDepartment(data?.value)}
+                            defaultValue={selectedDepartment}
+                            placeholder={"Select department"}
+                        /> */}
                     </div>
                 </div>
                 <div className="mt-5 flex justify-end items-center">
