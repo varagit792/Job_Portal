@@ -26,6 +26,7 @@ import jobSeekerPictureUploadSlice from './jobSeekerProfile/uploadProfilePicture
 import jobSeekerDeleteProfilePictureReducer from './jobSeekerProfile/deleteProfilePicture';
 import getUserDataReducer from './user/getUserDetails';
 import updateProfileBasicDetailsReducer from './jobSeekerProfile/profileBasicDetailsUpdate';
+import personalDetailsSlice from './jobSeekerProfile/personalDetails';
 
 
 export const reducer = combineReducers({
@@ -54,5 +55,6 @@ export const reducer = combineReducers({
     jobSeekerUploadProfilePicture: jobSeekerPictureUploadSlice,
     jobSeekerDeleteProfilePicture: jobSeekerDeleteProfilePictureReducer,
     getUser: getUserDataReducer,
-    updateProfileBasicDetails: updateProfileBasicDetailsReducer
+    updateProfileBasicDetails: updateProfileBasicDetailsReducer,
+    personalDetails: personalDetailsSlice
 });
