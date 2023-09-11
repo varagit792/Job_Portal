@@ -1,65 +1,122 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from '../../../commonComponents/Modal';
 import PersonalDetailsForm from './PersonalDetailsForm';
 import { FiEdit2 } from "react-icons/fi";
+import { useAppSelector, useAppDispatch } from '../../../../';
+import { profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
+import { clearPersonalDetailsSlice } from '../../../../store/reducers/jobSeekerProfile/personalDetails';
 
 const PersonalDetails = () => {
+    const dispatch = useAppDispatch();
+    const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
+    const { success } = useAppSelector((state) => state.personalDetails);
     const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        if (success) {
+            setIsOpen(false);
+            dispatch(clearPersonalDetailsSlice());
+            dispatch(profileDashboardGet());
+        }
+    }, [success, dispatch]);
+
     const openModal = () => {
         setIsOpen(true);
+    };
+    const closeDialog = () => {
+        setIsOpen(false);
     };
     return (
         <div className="w-full rounded-2xl bg-white p-4 mt-5" >
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center">
                     <h1>Personal details</h1>
-                    <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer" onClick={openModal}>
-                        <FiEdit2 />
-                    </span>
+                    {profileDashboard?.personalDetails &&
+                        <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer" onClick={openModal}>
+                            <FiEdit2 />
+                        </span>
+                    }
                 </div>
+                {
+                    !profileDashboard?.personalDetails
+                    &&
+                    <h1 className="text-blue-600 font-medium cursor-pointer"
+                        onClick={openModal}>
+                        Add Personal Details
+                    </h1>
+                }
             </div>
             <div className="grid grid-cols-2">
                 <div>
                     <div className="mb-3">
                         <h2 className="text-slate-500">Personal</h2>
-                        <button className="text-blue-600 text-sm font-semibold">Add Personal</button>
+                        {
+                            !profileDashboard?.personalDetails?.gender || !profileDashboard?.personalDetails?.maritalStatus ?
+                                <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add Personal</button>
+                                :
+                                <span className="font-semibold">{profileDashboard?.personalDetails?.gender}{profileDashboard?.personalDetails?.maritalStatus && `, ${profileDashboard?.personalDetails?.maritalStatus}`} ,<button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add more info</button></span>
+                        }
                     </div>
                     <div className="mb-3">
                         <h2 className="text-slate-500">Date of birth</h2>
-                        <button className="text-blue-600 text-sm font-semibold">Add Date of birth</button>
+                        {
+                            !profileDashboard?.personalDetails?.birthDate ?
+                                <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add Date of birth</button>
+                                :
+                                <span className="font-semibold">{profileDashboard?.personalDetails?.birthDate}</span>
+                        }
+
                     </div>
                     <div className="mb-3">
                         <h2 className="text-slate-500">Category</h2>
-                        <button className="text-blue-600 text-sm font-semibold">Add Category</button>
+                        {
+                            !profileDashboard?.personalDetails?.category ?
+                                <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add Category</button>
+                                :
+                                <span className="font-semibold">{profileDashboard?.personalDetails?.category}</span>
+                        }
                     </div>
                     <div>
                         <h2 className="text-slate-500">Differently abled</h2>
-                        <button className="text-blue-600 text-sm font-semibold">Add Differently abled</button>
+                        {
+                            !profileDashboard?.personalDetails ?
+                                <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add Differently abled</button>
+                                :
+                                <span className="font-semibold">{!profileDashboard?.personalDetails?.differentlyAbled ? "No" : "Yes"}</span>
+                        }
                     </div>
                 </div>
                 <div>
                     <div className="mb-3">
                         <h2 className="text-slate-500">Career break</h2>
-                        <button className="text-blue-600 text-sm font-semibold">Add Career break</button>
-                    </div>
-                    <div className="mb-3">
-                        <h2 className="text-slate-500">Work permit</h2>
-                        <button className="text-blue-600 text-sm font-semibold">Add Work permit</button>
+                        {
+                            !profileDashboard?.personalDetails ?
+                                <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add Career break</button>
+                                :
+                                <span className="font-semibold">{!profileDashboard?.personalDetails?.careerBreak ? "No" : "Yes"}</span>
+                        }
                     </div>
                     <div className="mb-3">
                         <h2 className="text-slate-500">Address</h2>
-                        <button className="text-blue-600 text-sm font-semibold">Add Address</button>
-                    </div>
-                    <div>
-                        <h2 className="text-slate-500">Languages</h2>
-                        <button className="text-blue-600 text-sm font-semibold">Add Languages</button>
+                        {
+                            !profileDashboard?.personalDetails?.permanentAddress || !profileDashboard?.personalDetails?.homeTown || !profileDashboard?.personalDetails?.pinCode ?
+                                <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add Address</button>
+                                :
+                                <span className="font-semibold">{profileDashboard?.personalDetails?.permanentAddress}{profileDashboard?.personalDetails?.homeTown && `, ${profileDashboard?.personalDetails?.homeTown}`}{profileDashboard?.personalDetails?.pinCode && `, ${profileDashboard?.personalDetails?.pinCode}`}</span>
+                        }
                     </div>
                 </div>
             </div>
             <Modal
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
-                modalBody={<PersonalDetailsForm />}
+                modalBody={
+                    <PersonalDetailsForm
+                        id={profileDashboard?.id}
+                        defaultPersonalDetails={profileDashboard?.personalDetails}
+                        closeDialog={closeDialog}
+                    />
+                }
             />
         </div>
     )

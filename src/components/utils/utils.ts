@@ -44,3 +44,18 @@ export const getLocationList = async () => {
   return await axios.get(`${process.env.REACT_APP_API_PATH}/location/get`).then((res: any) => res.data.data)
 }
 
+export const getDayList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/days/get`).then((res: any) => res.data.data)
+}
+
+export const getMaritalStatusList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/maritalStatus/get`).then((res: any) => res.data.data)
+}
+
+export const getCategoryList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/category/get`).then((res: any) => res.data.data)
+}
+
+export const getGenderList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/gender/get`).then((res: any) => res.data.data)
+}
