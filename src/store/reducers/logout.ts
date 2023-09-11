@@ -9,7 +9,7 @@ export interface logOutUserState {
   loading: boolean;
   error: boolean;
   success: boolean;
-  logout: Array<User>;
+  logoutUser: Array<User>;
   errorMessage: string | undefined;
 
 }
@@ -17,7 +17,7 @@ const initialState: logOutUserState = {
   loading: false,
   error: false,
   success: false,
-  logout: [],
+  logoutUser: [],
   errorMessage: undefined,
 }
 
@@ -47,13 +47,13 @@ const logOutSlice = createSlice({
       state.loading = false;
       state.success = true;
       state.error = false;
-      state.logout = action.payload;
+      state.logoutUser = action.payload;
     });
     builder.addCase(logOutUser.rejected, (state, action) => {
       state.success = false;
       state.loading = false;
       state.error = true;
-      state.logout = [];
+      state.logoutUser = [];
       state.errorMessage = action.error.message;
     });
   },

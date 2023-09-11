@@ -27,11 +27,15 @@ import jobSeekerDeleteProfilePictureReducer from './jobSeekerProfile/deleteProfi
 import getUserDataReducer from './user/getUserDetails';
 import updateProfileBasicDetailsReducer from './jobSeekerProfile/profileBasicDetailsUpdate';
 import personalDetailsSlice from './jobSeekerProfile/personalDetails';
+import logOutSlice from './logout'
+import loginSlice from './signIn'
 
 
 export const reducer = combineReducers({
     // Register
     register: registerSlice,
+    login: loginSlice,
+    logOut: logOutSlice,
     jobSeekerResumeUpload: jobSeekerUploadReducer,
     updateProfileDashboard: updateProfileDashboardSlice,
     updateCareerProfile: updateCareerProfileUpdateSlice,

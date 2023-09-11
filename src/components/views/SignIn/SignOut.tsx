@@ -4,7 +4,7 @@ import { clearLogOutSlice, logOutUser } from '../../../store/reducers/logout';
 
 const SignOut = () => {
   const dispatch = useAppDispatch();
-  const { success, logout } = useAppSelector((state) => state.getLogout);
+  const { success, logoutUser } = useAppSelector((state) => state.logOut);
 
   useEffect(() => {
     dispatch(logOutUser());
@@ -19,7 +19,7 @@ const SignOut = () => {
 
   }, [dispatch, success]);
 
-  console.log("logOutUser", logOutUser);
+  //console.log("logOutUser", logOutUser);
 
 
   return (

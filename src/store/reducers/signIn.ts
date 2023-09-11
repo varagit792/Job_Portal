@@ -9,7 +9,7 @@ export interface signInUserState {
   loading: boolean;
   error: boolean;
   success: boolean;
-  user: Array<User>;
+  login: Array<User>;
   errorMessage: string | undefined;
 
 }
@@ -17,7 +17,7 @@ const initialState: signInUserState = {
   loading: false,
   error: false,
   success: false,
-  user: [],
+  login: [],
   errorMessage: undefined,
 }
 
@@ -51,13 +51,13 @@ const signInSlice = createSlice({
       state.loading = false;
       state.success = true;
       state.error = false;
-      state.user = action.payload;
+      state.login = action.payload;
     });
     builder.addCase(signInUser.rejected, (state, action) => {
       state.success = false;
       state.loading = false;
       state.error = true;
-      state.user = [];
+      state.login = [];
       state.errorMessage = action.error.message;
     });
   },
