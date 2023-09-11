@@ -70,7 +70,7 @@ const ProfileBasicDetails = () => {
           )}</span></span>)}
         </div>
         <hr className="mb-4" />
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-2 col-start-2 col-end-5">
           <div>
             <div className="mb-2 flex items-center text-sm font-medium text-gray-500">
               <SlLocationPin /><span className="ml-1">{profileDashboard?.currentLocation?.title},  {profileDashboard?.currentCountry}</span>
@@ -79,7 +79,7 @@ const ProfileBasicDetails = () => {
               <BsBriefcase /><span className="ml-1">{profileDashboard?.jobSeekerType}</span>
             </div>
             {(profileDashboard?.jobSeekerType === "Experienced" && <div className="flex items-center text-sm font-medium text-gray-500">
-              <BsCalendar4 /><span className="ml-1">{profileDashboard?.noticePeriod?.title}</span>
+              <BsCalendar4 /><span className="ml-1 w-full">{profileDashboard?.noticePeriod?.title}</span>
             </div>)}
           </div>
           <div className="border-l border-gray-300">

@@ -7,6 +7,7 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { resumeDelete, clearresumeDeleteState } from '../../../../store/reducers/jobSeekerProfile/deleteResume';
 import axios from 'axios';
 import { clearGetProfileDashboardSlice, profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 
 const ResumeUpload = () => {
 
@@ -15,6 +16,7 @@ const ResumeUpload = () => {
   const { success, errorMessage, error, formData } = useAppSelector((state) => state.jobSeekerResumeUpload);
   const [resumeFile, setResumeFile] = useState<string>('');
   const [resumeCompletePath, setResumeCompletePath] = useState<string>('');
+  const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<Date | null>(null);
   const { success: successProfile, profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
   const { success: successDelete, errorMessage: errorMessageDelete, error: errorDelete, formData: formDataDelete } =
     useAppSelector((state) => state.jobSeekerDeleteResume);
@@ -53,6 +55,13 @@ const ResumeUpload = () => {
     setResumeFile(profileDashboard?.resumeFile)
     setResumeCompletePath(`${process.env.REACT_APP_RESUME_FILE_LOCATION}/${profileDashboard?.resumePath}`)
   }, [profileDashboard]);
+
+  const parsedDate = parseISO(profileDashboard?.profileLastUpdated);
+  useEffect(() => {
+    if (!isNaN(parsedDate.getDate())) {
+      setLastUpdatedTimestamp(parsedDate);
+    }
+  }, [profileDashboard])
   const handleFileChange = async (event: ChangeEvent) => {
     event.preventDefault();
     const selectedFile = fileInputRef.current && fileInputRef.current.files && fileInputRef.current.files[0];
@@ -105,9 +114,13 @@ const ResumeUpload = () => {
 
   return (
     <div className="w-full rounded-2xl bg-white p-4">
-      <h1 className="mb-4 font-bold">Resume</h1>
-      <p className="mb-4 text-sm text-gray-500">
+      <h1 className="mb-2font-bold">Resume</h1>
+      <p className="text-sm text-gray-500">
         Resume is the most important document recruiters look for. Recruiters generally do not look at profiles without resumes.
+      </p>
+      {lastUpdatedTimestamp !== null && (<span><span className="font-thin text-sm">Profile last updated - </span><span className="text-sm">  {formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true }
+      )}</span></span>)}
+      <div className="mb-4">
         {(resumeFile && (
           <div>
             <br />
@@ -125,7 +138,8 @@ const ResumeUpload = () => {
 
           </div>
         ))}
-      </p>
+        </div>
+      
       <form >
         <div className="p-10 border border-dashed border-gray-500 rounded-2xl flex flex-col justify-center items-center">
           <label className="cursor-pointer px-3 py-1 mb-1 rounded-3xl border-2 border-blue-400">
