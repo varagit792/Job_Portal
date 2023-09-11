@@ -7,6 +7,7 @@ import { filterArray } from '../../../utils/filterArray';
 import { updateProfileBasicDetails } from '../../../../store/reducers/jobSeekerProfile/profileBasicDetailsUpdate';
 import Select from 'react-select';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 type Parameters = {
   closeDialog: () => void;
@@ -15,21 +16,59 @@ type Parameters = {
 }
 
 interface IFormInputs {
-  totalExpMonth: any
-  totalExpYear: any
-  name: string
-  jobSeekerType: string;
-  currentLocation: any
-  currentCurrency: any
-  currentSalary: string
-  mobileNumber: string
-  noticePeriod: any
-  email: string
+  totalExpMonth: { value: string; label: string; },
+  totalExpYear: { value: string; label: string; },
+  name: string,
+  jobSeekerType: string,
+  currentLocation: { value: string; label: string; },
+  currentSalary: string,
+  mobileNumber: string,
+  noticePeriod: string,
+  email: string,
 }
 
 const basicDetailsSchema = yup.object({
+  // name: yup.string().required(),
+  // email: yup.string().email().required(),
+  // mobileNumber: yup.string()
+  //   .required('Mobile number is required')
+  //   .matches(/^[0-9]{10}$/, 'Mobile number must be a valid 10-digit number'),
+  // currentSalary: yup.string().nullable().matches(
+  //   /^\d{1,3}(,\d{3})*(\.\d+)?$/,
+  //   'Current salary should be valid'
+  // ),
+  // jobSeekerType: yup.string().required('Please select a jobSeekerType option.'),
+  // noticePeriod: yup.string().required('Please select a notice period.'),
+  // currentLocation: yup.object().shape({
+  //   value: yup.string().required("Please select current location"),
+  //   label: yup.string().required("Please select current location"),
+  // }),
 
-})
+  // totalExpMonth: yup.object().shape({
+  //   value: yup.string(),
+  //   label: yup.string(),
+  // }),
+  // totalExpYear: yup.object().shape({
+  //   value: yup.string().required("Please select year"),
+  //   label: yup.string().required("Please select year"),
+  // })
+
+}).required();
+
+
+// interface IFormInputs {
+//   totalExpMonth: any
+//   totalExpYear: any
+//   name: string
+//   jobSeekerType: string;
+//   currentLocation: any
+//   currentCurrency: any
+//   currentSalary: string
+//   mobileNumber: string
+//   noticePeriod: any
+//   email: string
+// }
+
 
 const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard, userData }) => {
   const dispatch = useAppDispatch();
@@ -49,20 +88,30 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
     getValues
   } = useForm<IFormInputs>({
     defaultValues: {
-      jobSeekerType: profileDashboard?.jobSeekerType,
-      totalExpYear: { value: profileDashboard?.totalExpYear?.id, label: profileDashboard?.totalExpYear?.title },
-      totalExpMonth: { value: profileDashboard?.totalExpMonth?.id, label: profileDashboard?.totalExpMonth?.title },
-      currentLocation: { value: profileDashboard?.currentLocation?.id, label: profileDashboard?.currentLocation?.title },
-      currentCurrency: profileDashboard?.currentCurrency,
-      currentSalary: profileDashboard?.currentSalary,
-      noticePeriod: profileDashboard?.noticePeriod,
-      name: userData?.name,
-      email: userData?.email,
-      mobileNumber: userData?.mobileNumber
-    }
+      // jobSeekerType: '',
+      // totalExpYear: { value: '', label: '' } ,
+      // totalExpMonth: { value: '', label: '' } , 
+      // currentLocation: { value: '', label: '' },
+      // currentSalary: '',
+      // noticePeriod: '',
+      // name: '',
+      // email: '',
+      // mobileNumber: ''
+    },
+    // resolver: yupResolver(basicDetailsSchema)
   });
 
-  console.log('watch default', watch('totalExpMonth'))
+  useEffect(() => {
+    setValue('currentLocation', { value: profileDashboard?.currentLocation?.id, label: profileDashboard?.currentLocation?.title });
+    setValue('currentSalary', profileDashboard?.currentSalary);
+    setValue('jobSeekerType', profileDashboard?.jobSeekerType);
+    setValue('email', userData?.email);
+    setValue('mobileNumber', userData?.mobileNumber);
+    setValue('name', userData?.name);
+    setValue('totalExpMonth', { value: profileDashboard?.totalExpMonth?.id, label: profileDashboard?.totalExpMonth?.title });
+    setValue('totalExpYear', { value: profileDashboard?.totalExpYear?.id, label: profileDashboard?.totalExpYear?.title });
+  }, [profileDashboard, setValue])
+
   useEffect(() => {
     (async () => {
       const totalExpMonth = await getTotalMonthsExpList();
@@ -99,13 +148,14 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
 
   const onSubmit = (data: IFormInputs) => {
 
-    const monthArray = filterArray(totalExpMonthList, data?.totalExpMonth?.value);
-    const yearArray = filterArray(totalExpYearList, data?.totalExpYear?.value);
-    const locationArray = filterArray(locationList, data?.currentLocation.value);
-
+    const monthArray = filterArray(totalExpMonthList, parseInt(data?.totalExpMonth?.value));
+    const yearArray = filterArray(totalExpYearList, parseInt(data?.totalExpYear?.value));
+    const locationArray = filterArray(locationList, parseInt(data?.currentLocation.value));
+    const noticeArray = filterArray(noticePeriodList, (parseInt(data?.noticePeriod)))
     data.totalExpMonth = monthArray[0];
     data.totalExpYear = yearArray[0];
     data.currentLocation = locationArray[0];
+    data.noticePeriod = noticeArray[0];
     console.log('data in submit  ', data);
     dispatch(updateProfileBasicDetails(data));
 
@@ -281,7 +331,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
                       <button
                         type="button"
                         {...field}
-                        className={watch("noticePeriod")?.id === noticePeriod?.id ? noticePeriodClassHighLighted : noticePeriodClass}
+                        className={watch("noticePeriod") === noticePeriod?.id ? noticePeriodClassHighLighted : noticePeriodClass}
                         onClick={() => handleButtonClick(noticePeriod)
                         }
                       >

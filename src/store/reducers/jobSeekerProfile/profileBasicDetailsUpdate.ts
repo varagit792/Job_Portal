@@ -8,7 +8,6 @@ class ProfileBasicDetails {
     name!: string;
     jobSeekerType!: string;
     currentLocation: any
-    currentCurrency: any
     currentSalary!: string;
     mobileNumber!: string;
     noticePeriod: any

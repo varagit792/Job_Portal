@@ -34,7 +34,6 @@ const ProfileBasicDetails = () => {
 
 
   useEffect(() => {
-    console.log('basic success useffect', successBasicDetails)
     if (successBasicDetails) {
       setIsOpen(false);
       dispatch(clearUpdateProfileBasicDetailsSlice);
@@ -82,7 +81,7 @@ const ProfileBasicDetails = () => {
               <BsCalendar4 /><span className="ml-1 w-full">{profileDashboard?.noticePeriod?.title}</span>
             </div>)}
           </div>
-          <div className="border-l border-gray-300">
+          <div className="border-l border-gray-300 ml-64">
             <div className="ml-2">
               <div className="mb-2 flex items-center text-sm font-medium text-gray-500">
                 <BsTelephone /><span className="ml-1 mr-1">{userData.mobileNumber}</span><MdVerified color="green" />
