@@ -110,7 +110,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
         <div>
           <div className="text-gray-500">Desired job type</div>
           <div className="text-sm">
-            {careerProfileDetails[0]?.careerProfileJobType.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.jobType.title},</div>)}
+            {careerProfileDetails[0]?.careerProfileJobType.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.jobType?.title},</div>)}
             {!careerProfileDetails[0]?.careerProfileJobType &&
               <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add desired job type</button>
             }
@@ -119,7 +119,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
         <div>
           <div className="text-gray-500">Desired employment type</div>
           <div className="text-sm">
-            {careerProfileDetails[0]?.careerProfileEmployeeType.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.employeeType.title},</div>)}
+            {careerProfileDetails[0]?.careerProfileEmployeeType.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.employeeType?.title},</div>)}
             {!careerProfileDetails[0]?.careerProfileEmployeeType &&
               <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add employment type</button>
             }
@@ -127,7 +127,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
         </div>
         <div><div className="text-gray-500">Preferred shift</div>
           <div className="text-sm">
-            {careerProfileDetails[0]?.careerProfilePreferredShift.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.preferredShift.title},</div>)}
+            {careerProfileDetails[0]?.careerProfilePreferredShift.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.preferredShift?.title},</div>)}
             {!careerProfileDetails[0]?.careerProfilePreferredShift &&
               <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add preferred shift</button>
             }
