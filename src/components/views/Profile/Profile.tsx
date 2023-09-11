@@ -149,7 +149,7 @@ const Profile = () => {
             <div className="col-start-2 col-end-5">
               {/* card  profile upload*/}
               <ResumeUpload />
-              
+
               {/* card */}
               <ResumeHeadline />
               {/* card */}

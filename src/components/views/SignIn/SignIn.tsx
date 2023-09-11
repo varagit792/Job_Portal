@@ -43,6 +43,7 @@ const SignIn = () => {
   useEffect(() => {
     if (success) {
       navigate('/homePage');
+      window.location.reload();
       dispatch(clearSignInSlice());
     }
   }, [success, navigate, dispatch]);
