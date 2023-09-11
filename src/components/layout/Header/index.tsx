@@ -77,7 +77,7 @@ const Header = () => {
                 </div>
                 <div className="border border-gray-200 h-8"></div>
                 <div className="text-[#312E81]">
-                    <button className="py-2 px-3">Log In</button>
+                    <Link to="/login" className="rounded-lg bg-[#EEF2FF] py-2 px-3 mx-3">Log In</Link>
                     <Link to="/registration" className="rounded-lg bg-[#EEF2FF] py-2 px-3">Sign Up</Link>
                 </div>
             </div>

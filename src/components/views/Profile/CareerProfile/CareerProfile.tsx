@@ -155,7 +155,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
       <Modal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        modalBody={<CareerProfileForm formSummary={formSummary} id={profileDashboard[0]?.id} profileDashboard={careerProfileDetails} closeDialog={closeDialog} />}
+        modalBody={<CareerProfileForm formSummary={formSummary} id={profileDashboard?.id} profileDashboard={careerProfileDetails} closeDialog={closeDialog} />}
       />
     </div>
 
