@@ -11,7 +11,6 @@ const PersonalDetails = () => {
     const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
     const { success } = useAppSelector((state) => state.personalDetails);
     const [isOpen, setIsOpen] = useState(false);
-
     useEffect(() => {
         if (success) {
             setIsOpen(false);

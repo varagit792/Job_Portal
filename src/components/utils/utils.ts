@@ -59,3 +59,7 @@ export const getCategoryList = async () => {
 export const getGenderList = async () => {
   return await axios.get(`${process.env.REACT_APP_API_PATH}/gender/get`).then((res: any) => res.data.data)
 }
+
+export const getProficiencyList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/proficiency/get`).then((res: any) => res.data.data)
+}

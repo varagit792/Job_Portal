@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { Controller } from 'react-hook-form';
 import Select from 'react-select';
-import { getGenderList, getMaritalStatusList, getDayList, getJoiningDateMonthList, getJoiningDateYearList, getCategoryList } from '../../../utils/utils';
+import { getGenderList, getMaritalStatusList, getDayList, getJoiningDateMonthList, getJoiningDateYearList, getCategoryList, getProficiencyList } from '../../../utils/utils';
 import { personalDetails } from '../../../../store/reducers/jobSeekerProfile/personalDetails';
 import { useAppDispatch } from '../../../../';
 
@@ -32,6 +32,7 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
     const [monthList, setMonthList] = useState([]);
     const [yearList, setYearList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
+    const [proficiencyList, setProficiencyList] = useState([]);
 
     const {
         register,
@@ -49,16 +50,31 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
             careerBreak: defaultPersonalDetails?.careerBreak,
             permanentAddress: defaultPersonalDetails?.permanentAddress,
             homeTown: defaultPersonalDetails?.homeTown,
-            pinCode: defaultPersonalDetails?.pinCode
+            pinCode: defaultPersonalDetails?.pinCode,
+            language: [],
         },
         resolver: yupResolver(SignUpSchema)
     });
-    console.log(watch())
+
+    const { fields, append, remove } = useFieldArray({
+        name: 'language',
+        control
+    });
 
     useEffect(() => {
         setValue('day', dayList?.find((item: any) => item?.label === defaultPersonalDetails?.birthDate?.split("-")?.[0]));
         setValue('month', monthList?.find((item: any) => item?.label === defaultPersonalDetails?.birthDate?.split("-")?.[1]));
         setValue('year', yearList?.find((item: any) => item?.label === defaultPersonalDetails?.birthDate?.split("-")?.[2]));
+        setValue('language', defaultPersonalDetails?.language?.map((item: any) => {
+            return {
+                languageId: item?.languageId,
+                language: item?.language,
+                proficiency: proficiencyList?.find((field: any) => field?.label === item?.proficiency),
+                read: item?.read,
+                write: item?.write,
+                speak: item?.speak
+            }
+        }));
     }, [setValue, defaultPersonalDetails, dayList, monthList, yearList]);
 
     useEffect(() => {
@@ -86,7 +102,11 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
             const categoryList = await getCategoryList();
             setCategoryList(categoryList);
         })();
-    }, [])
+        (async () => {
+            const proficiencyList = await getProficiencyList();
+            setProficiencyList(proficiencyList?.map(({ id, title }: any) => ({ value: id, label: title })));
+        })();
+    }, []);
 
     const onSubmit = (data: any) => {
         dispatch(personalDetails({
@@ -100,10 +120,16 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
             careerBreak: data?.careerBreak,
             permanentAddress: data?.permanentAddress,
             homeTown: data?.homeTown,
-            pinCode: data?.pinCode
+            pinCode: data?.pinCode,
+            language: data?.language?.map((item: any) => {
+                return {
+                    ...item,
+                    proficiency: item?.proficiency?.label
+                }
+            })
         }));
-    }
-    console.log(watch('careerBreak'));
+    };
+    console.log(watch("permanentAddress"))
     return (
         <div>
             <h1 className="text-black font-semibold text-xl mb-4">Personal details</h1>
@@ -279,6 +305,100 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
                     />
                     {errors.pinCode && <p className="font-normal text-xs text-red-500 mt-1">{errors.pinCode.message as string}</p>}
                 </div>
+                <div className="mb-5">
+                    <h1 className="font-semibold mb-3 text-xl">Language</h1>
+                    {fields.map((item: any, index) => (
+                        <div className="mb-5" key={item.id}>
+                            <div className="grid grid-cols-2 gap-4 mb-3">
+                                <div>
+                                    <label className="mb-1 block">Language<span className="text-red-500">*</span></label>
+                                    <input
+                                        type="text"
+                                        {...register(`language.${index}.language`)}
+                                        placeholder="Enter Language"
+                                        className="w-full rounded border border-gray-300 px-2 py-1.5"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-1 block">Proficiency<span className="text-red-500">*</span></label>
+                                    <Controller
+                                        name={`language.${index}.proficiency`}
+                                        control={control}
+                                        render={({ field }) => (
+                                            <Select
+                                                {...field}
+                                                isClearable
+                                                isSearchable={true}
+                                                className="text-sm"
+                                                classNamePrefix="dropdown"
+                                                options={proficiencyList}
+                                                defaultValue={item?.proficiency}
+                                                placeholder="Select Proficiency"
+                                            />
+                                        )}
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-4 gap-3">
+                                <div>
+                                    <Controller
+                                        control={control}
+                                        name={`language.${index}.read`}
+                                        render={({ field }) => (
+                                            <input type="checkbox" {...field} defaultChecked={item?.read} />
+                                        )}
+                                    />
+                                    <label className="ml-1">Read</label>
+                                </div>
+                                <div>
+                                    <Controller
+                                        control={control}
+                                        name={`language.${index}.write`}
+                                        defaultValue={item?.write}
+                                        render={({ field }) => (
+                                            <input type="checkbox" {...field} defaultChecked={item?.write} />
+                                        )}
+                                    />
+                                    <label className="ml-1">Write</label>
+                                </div>
+                                <div>
+                                    <Controller
+                                        control={control}
+                                        name={`language.${index}.speak`}
+                                        defaultValue={item?.speak}
+                                        render={({ field }) => (
+                                            <input type="checkbox" {...field} defaultChecked={item?.speak} />
+                                        )}
+                                    />
+                                    <label className="ml-1">Speak</label>
+                                </div>
+                                <div className="flex justify-end items-center">
+                                    <button
+                                        type="button"
+                                        className="text-blue-700 font-semibold"
+                                        onClick={() => remove(index)}
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                    <button
+                        type="button"
+                        className="text-blue-700 font-semibold"
+                        onClick={() =>
+                            append({
+                                language: "",
+                                proficiency: "",
+                                read: false,
+                                write: false,
+                                speak: false
+                            })}>
+                        Add another language
+                    </button>
+                </div>
+
                 <div className="mt-5 flex justify-end items-center">
                     <div>
                         <button
