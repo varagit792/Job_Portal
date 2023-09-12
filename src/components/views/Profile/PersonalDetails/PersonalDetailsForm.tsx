@@ -6,6 +6,7 @@ import { Controller } from 'react-hook-form';
 import Select from 'react-select';
 import { getGenderList, getMaritalStatusList, getDayList, getJoiningDateMonthList, getJoiningDateYearList, getCategoryList, getProficiencyList } from '../../../utils/utils';
 import { personalDetails } from '../../../../store/reducers/jobSeekerProfile/personalDetails';
+import { deletePersonalDetailsLanguages } from '../../../../store/reducers/jobSeekerProfile/deletePersonalDetailsLanguages';
 import { useAppDispatch } from '../../../../';
 
 const SignUpSchema = yup
@@ -33,6 +34,7 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
     const [yearList, setYearList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
     const [proficiencyList, setProficiencyList] = useState([]);
+    const [deletedLanguages, setDeletedLanguages] = useState<number[]>([]);
 
     const {
         register,
@@ -121,15 +123,21 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
             permanentAddress: data?.permanentAddress,
             homeTown: data?.homeTown,
             pinCode: data?.pinCode,
-            language: data?.language?.map((item: any) => {
-                return {
-                    ...item,
-                    proficiency: item?.proficiency?.label
-                }
+            ...(data?.language.length > 0 && {
+                language: data?.language?.map((item: any) => {
+                    return {
+                        ...item,
+                        proficiency: item?.proficiency?.label
+                    }
+                })
             })
-        }));
+        })).then(() => {
+            if (deletedLanguages?.length > 0) {
+                dispatch(deletePersonalDetailsLanguages(deletedLanguages)).then(() => setDeletedLanguages([]));
+            }
+        })
     };
-    console.log(watch("permanentAddress"))
+
     return (
         <div>
             <h1 className="text-black font-semibold text-xl mb-4">Personal details</h1>
@@ -376,7 +384,14 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
                                     <button
                                         type="button"
                                         className="text-blue-700 font-semibold"
-                                        onClick={() => remove(index)}
+                                        onClick={() => {
+                                            if (!item?.languageId) {
+                                                remove(index)
+                                            } else {
+                                                setDeletedLanguages(prevArray => [...prevArray, Number(item?.languageId)]);
+                                                remove(index);
+                                            }
+                                        }}
                                     >
                                         Delete
                                     </button>
@@ -395,7 +410,7 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
                                 write: false,
                                 speak: false
                             })}>
-                        Add another language
+                        {watch("language")?.length > 0 ? "Add another language" : "Add language"}
                     </button>
                 </div>
 
@@ -416,8 +431,8 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
                         </button>
                     </div>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     )
 }
 
