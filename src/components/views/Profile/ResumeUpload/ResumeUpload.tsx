@@ -24,11 +24,9 @@ const ResumeUpload = () => {
   useEffect(() => {
     if (success) {
       dispatch(profileDashboardGet());
-      alert('Resume successfully uploaded');
       dispatch(clearUploadState);
     }
     if (error) {
-      alert(`${errorMessage}`);
       dispatch(clearUploadState)
     }
   }, [success, error, errorMessage, dispatch, formData]);
@@ -36,11 +34,9 @@ const ResumeUpload = () => {
   useEffect(() => {
     if (successDelete) {
       dispatch(profileDashboardGet());
-      alert('Resume Deleted successfully uploaded');
       dispatch(clearresumeDeleteState);
     }
     if (errorDelete) {
-      alert(`${errorMessageDelete}`);
       dispatch(clearresumeDeleteState)
     }
   }, [successDelete, errorDelete, errorMessageDelete, dispatch, formDataDelete]);
@@ -56,7 +52,7 @@ const ResumeUpload = () => {
     setResumeCompletePath(`${process.env.REACT_APP_RESUME_FILE_LOCATION}/${profileDashboard?.resumePath}`)
   }, [profileDashboard]);
 
-  const parsedDate = parseISO(profileDashboard?.profileLastUpdated);
+  const parsedDate = parseISO(profileDashboard?.resumeLastUpdated);
   useEffect(() => {
     if (!isNaN(parsedDate.getDate())) {
       setLastUpdatedTimestamp(parsedDate);
