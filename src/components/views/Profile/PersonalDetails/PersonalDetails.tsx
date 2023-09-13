@@ -1,23 +1,33 @@
 import { useState, useEffect } from 'react';
 import Modal from '../../../commonComponents/Modal';
 import PersonalDetailsForm from './PersonalDetailsForm';
-import { FiEdit2 } from "react-icons/fi";
 import { useAppSelector, useAppDispatch } from '../../../../';
 import { profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
 import { clearPersonalDetailsSlice } from '../../../../store/reducers/jobSeekerProfile/personalDetails';
+import { clearDeletePersonalDetailsLanguages } from '../../../../store/reducers/jobSeekerProfile/deletePersonalDetailsLanguages';
+import { FiEdit2 } from "react-icons/fi";
+import { AiOutlineCheckCircle } from "react-icons/ai";
+import { RxCrossCircled } from "react-icons/rx";
 
 const PersonalDetails = () => {
     const dispatch = useAppDispatch();
     const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
     const { success } = useAppSelector((state) => state.personalDetails);
+    const { success: languagesDeletedSuccess } = useAppSelector((state) => state.deletePersonalDetailsLanguages);
     const [isOpen, setIsOpen] = useState(false);
+
     useEffect(() => {
         if (success) {
             setIsOpen(false);
             dispatch(clearPersonalDetailsSlice());
             dispatch(profileDashboardGet());
         }
-    }, [success, dispatch]);
+        if (languagesDeletedSuccess) {
+            setIsOpen(false);
+            dispatch(profileDashboardGet());
+            dispatch(clearDeletePersonalDetailsLanguages());
+        }
+    }, [success, dispatch, languagesDeletedSuccess]);
 
     const openModal = () => {
         setIsOpen(true);
@@ -106,6 +116,34 @@ const PersonalDetails = () => {
                     </div>
                 </div>
             </div>
+            {
+                profileDashboard?.personalDetails?.language?.length > 0 &&
+                <>
+                    <hr className="mt-4 mb-4" />
+                    <div className="flex justify-between items-center mb-4">
+                        <span className="font-semibold">Language</span>
+                        <button className="text-blue-700 font-semibold" onClick={openModal}>Add language</button>
+                    </div>
+                    <table className="w-full">
+                        <tr className=" border-b border-gray-200">
+                            <th className="text-left text-gray-500 font-normal">Languages</th>
+                            <th className="text-left text-gray-500 font-normal">Proficiency</th>
+                            <th className="text-left text-gray-500 font-normal">Read</th>
+                            <th className="text-left text-gray-500 font-normal">Write</th>
+                            <th className="text-left text-gray-500 font-normal">Speak</th>
+                        </tr>
+                        {profileDashboard?.personalDetails?.language?.map((item: any, index: number) => (
+                            <tr key={index}>
+                                <td className="text-left">{item?.language}</td>
+                                <td className="text-left">{item?.proficiency}</td>
+                                <td className="text-left">{item?.read ? <AiOutlineCheckCircle color="green" /> : <RxCrossCircled color="red" />}</td>
+                                <td className="text-left">{item?.write ? <AiOutlineCheckCircle color="green" /> : <RxCrossCircled color="red" />}</td>
+                                <td className="text-left">{item?.speak ? <AiOutlineCheckCircle color="green" /> : <RxCrossCircled color="red" />}</td>
+                            </tr>
+                        ))}
+                    </table>
+                </>
+            }
             <Modal
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
@@ -120,5 +158,4 @@ const PersonalDetails = () => {
         </div>
     )
 }
-
 export default PersonalDetails;
