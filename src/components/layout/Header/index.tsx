@@ -29,7 +29,7 @@ const Header = () => {
 
 
     return (
-        <nav className="h-[10%] w-full bg-[#fff] font-sans border-b border-[#E0E1E6] px-20 flex items-center justify-between box-border fixed top-0 z-50">
+        <nav className="h-[10%] w-full bg-[#fff] font-sans border-b border-[#E0E1E6] px-32 flex items-center justify-between box-border fixed top-0 z-50">
             <div className="flex space-x-6 items-center">
                 <Link className="text-[#4F46E5] border border-[#4F46E5] p-1 rounded-md font-semibold" to="/">JOB PORTAL</Link>
                 <div className="border border-gray-200 h-8"></div>
