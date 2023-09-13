@@ -125,7 +125,7 @@ const PersonalDetails = () => {
                         <button className="text-blue-700 font-semibold" onClick={openModal}>Add language</button>
                     </div>
                     <table className="w-full">
-                        <tr className=" border-b border-gray-200">
+                        <tr>
                             <th className="text-left text-gray-500 font-normal">Languages</th>
                             <th className="text-left text-gray-500 font-normal">Proficiency</th>
                             <th className="text-left text-gray-500 font-normal">Read</th>
