@@ -114,7 +114,7 @@ const ResumeUpload = () => {
       <p className="text-sm text-gray-500">
         Resume is the most important document recruiters look for. Recruiters generally do not look at profiles without resumes.
       </p>
-      {lastUpdatedTimestamp !== null && (<span><span className="font-thin text-sm">Profile last updated - </span><span className="text-sm">  {formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true }
+      {(resumeFile && lastUpdatedTimestamp !== null) && (<span><span className="font-thin text-sm">Resume last updated - </span><span className="text-sm">  {formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true }
       )}</span></span>)}
       <div className="mb-4">
         {(resumeFile && (
