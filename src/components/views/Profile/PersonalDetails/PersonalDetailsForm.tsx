@@ -13,15 +13,27 @@ const SignUpSchema = yup
     .object({
         gender: yup.string().label("Gender").required(),
         maritalStatus: yup.string().label("Marital status").required(),
-        day: yup.mixed().required().label("Selected Day"),
-        month: yup.mixed().required().label("Selected Month"),
-        year: yup.mixed().required().label("Selected Year"),
+        day: yup.mixed().required().label("Day"),
+        month: yup.mixed().required().label("Month"),
+        year: yup.mixed().required().label("Year"),
         category: yup.string().label("Category").required(),
         differentlyAbled: yup.boolean().label("Differently abled").required(),
         careerBreak: yup.boolean().label("Career Break").required(),
         permanentAddress: yup.string().label("permanent Address").required(),
         homeTown: yup.string().label("Home Town").required(),
-        pinCode: yup.string().label("Pincode").required()
+        pinCode: yup.string().label("Pincode").required(),
+        language: yup
+            .array()
+            .of(
+                yup.object({
+                    language: yup.string().required().label("Language"),
+                    proficiency: yup.object().shape({
+                        value: yup.string().required(),
+                        label: yup.string().required(),
+                    }),
+                })
+            )
+            .required(),
     })
     .required();
 
@@ -315,7 +327,7 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
                 </div>
                 <div className="mb-5">
                     <h1 className="font-semibold mb-3 text-xl">Language</h1>
-                    {fields.map((item: any, index) => (
+                    {fields.map((item: any, index: number) => (
                         <div className="mb-5" key={item.id}>
                             <div className="grid grid-cols-2 gap-4 mb-3">
                                 <div>
@@ -326,6 +338,7 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
                                         placeholder="Enter Language"
                                         className="w-full rounded border border-gray-300 px-2 py-1.5"
                                     />
+                                    {(errors?.language !== undefined && (errors?.language as any)[index]?.language) && <p className="font-normal text-xs text-red-500 mt-1">{(errors?.language as any)[index]?.language?.message}</p>}
                                 </div>
                                 <div>
                                     <label className="mb-1 block">Proficiency<span className="text-red-500">*</span></label>
@@ -345,6 +358,7 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
                                             />
                                         )}
                                     />
+                                    {(errors?.language !== undefined && (errors?.language as any)[index]?.proficiency) && <p className="font-normal text-xs text-red-500 mt-1">Select Proficiency</p>}
                                 </div>
                             </div>
                             <div className="grid grid-cols-4 gap-3">
