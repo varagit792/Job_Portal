@@ -7,7 +7,7 @@ import LinkDin from '../../../assets/svg/linkdin.svg';
 
 const Footer = () => {
     return (
-        <div className="h-[50%] bg-[#312E81] px-20 flex items-center">
+        <div className="h-[50%] bg-[#312E81] px-32 flex items-center">
             <div className="w-full">
                 <div className="grid grid-cols-3 gap-5 w-full">
                     <div className="flex flex-col items-start justify-between">
