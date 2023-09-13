@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 
 
 interface ProfileDashboard {
+    resumeLastUpdated:any;
     profileLastUpdated: any;
     noticePeriod: any;
     jobSeekerType: string;

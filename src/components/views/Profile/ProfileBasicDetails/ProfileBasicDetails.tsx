@@ -34,7 +34,6 @@ const ProfileBasicDetails = () => {
 
 
   useEffect(() => {
-    console.log('basic success useffect', successBasicDetails)
     if (successBasicDetails) {
       setIsOpen(false);
       dispatch(clearUpdateProfileBasicDetailsSlice);
@@ -69,7 +68,7 @@ const ProfileBasicDetails = () => {
           {lastUpdatedTimestamp !== null && (<span><span className="font-thin text-sm">Profile last updated - </span><span className="text-sm">  {formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true }
           )}</span></span>)}
         </div>
-        <hr className="mb-4" />
+        <hr className="mb-4 w-4/5" />
         <div className="grid grid-cols-2 col-start-2 col-end-5">
           <div>
             <div className="mb-2 flex items-center text-sm font-medium text-gray-500">
@@ -78,11 +77,15 @@ const ProfileBasicDetails = () => {
             <div className="mb-2 flex items-center text-sm font-medium text-gray-500">
               <BsBriefcase /><span className="ml-1">{profileDashboard?.jobSeekerType}</span>
             </div>
-            {(profileDashboard?.jobSeekerType === "Experienced" && <div className="flex items-center text-sm font-medium text-gray-500">
-              <BsCalendar4 /><span className="ml-1 w-full">{profileDashboard?.noticePeriod?.title}</span>
+            {(profileDashboard?.jobSeekerType === "Experienced" &&
+              <div className="flex items-center text-sm font-medium text-gray-500">
+                <BsCalendar4 />
+                <div className="ml-1 w-96 ">
+                  Available to join in {profileDashboard?.noticePeriod?.title}
+                </div>
             </div>)}
           </div>
-          <div className="border-l border-gray-300">
+          <div className="border-l border-gray-300 ml-48">
             <div className="ml-2">
               <div className="mb-2 flex items-center text-sm font-medium text-gray-500">
                 <BsTelephone /><span className="ml-1 mr-1">{userData.mobileNumber}</span><MdVerified color="green" />

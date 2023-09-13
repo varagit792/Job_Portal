@@ -21,10 +21,8 @@ const ProfilePictureUploadForm: FC<Parameters> = ({ closeDialog }) => {
     if (success) {
       dispatch(profileDashboardGet());
       dispatch(clearPictureUploadState());
-      alert('Profile Picture successfully uploaded');
     }
     if (error) {
-      alert(`${errorMessage}`);
       dispatch(clearPictureUploadState)
     }
   }, [success, error, errorMessage, dispatch]);
@@ -33,10 +31,8 @@ const ProfilePictureUploadForm: FC<Parameters> = ({ closeDialog }) => {
     if (successDelete) {
       dispatch(profileDashboardGet());
       dispatch(clearDeleteProfilePictureState());
-      alert('Profile Picture successfully Deleted');
     }
     if (errorDelete) {
-      alert(`${errorMessageDelete}`);
       dispatch(clearDeleteProfilePictureState)
     }
   }, [successDelete, errorDelete, errorMessageDelete, dispatch]);
