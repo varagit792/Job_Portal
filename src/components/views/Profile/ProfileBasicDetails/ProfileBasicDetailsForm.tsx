@@ -8,7 +8,6 @@ import { updateProfileBasicDetails } from '../../../../store/reducers/jobSeekerP
 import Select from 'react-select';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { set } from 'date-fns';
 
 type Parameters = {
   closeDialog: () => void;
@@ -50,7 +49,9 @@ const basicDetailsSchema = yup.object({
   currentLocation: yup.object().shape({
     value: yup.string().required("Please select current location"),
     label: yup.string().required("Please select current location"),
+    // })
   }).required("Please select current location"),
+
 
   // totalExpYear: yup.object().shape({
   //   value: yup.string().required('Please select total experience years'),
@@ -133,7 +134,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
     setValue('totalExpMonth', { value: profileDashboard?.totalExpMonth?.id, label: profileDashboard?.totalExpMonth?.title });
     setValue('totalExpYear', { value: profileDashboard?.totalExpYear?.id, label: profileDashboard?.totalExpYear?.title });
     setValue('noticePeriod', profileDashboard?.noticePeriod?.title);
-  }, [profileDashboard, setValue])
+  }, [profileDashboard, setValue, userData])
 
   useEffect(() => {
     (async () => {
@@ -175,7 +176,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
     const monthArray = filterArray(totalExpMonthList, parseInt(data?.totalExpMonth?.value));
     const yearArray = filterArray(totalExpYearList, parseInt(data?.totalExpYear?.value));
     const locationArray = filterArray(locationList, parseInt(data?.currentLocation.value));
-    const noticeArray = filterArray(noticePeriodList, (parseInt(data?.noticePeriod)))
+    const noticeArray =  noticePeriodList.filter((notice:any)=>notice?.title === data.noticePeriod)
     data.totalExpMonth = monthArray[0];
     data.totalExpYear = yearArray[0];
     data.currentLocation = locationArray[0];
@@ -260,7 +261,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
                     />
                   )}
                 />
-                {watch('jobSeekerType') === 'Experienced' && errors.totalExpYear && <p className="font-normal text-xs text-red-500 ">{errors.totalExpYear.message as string}</p>}
+              {watch('jobSeekerType') === 'Experienced' && errors.totalExpYear && <p className="font-normal text-xs text-red-500 ">Please select total exp years</p>}
               </div>
               <div className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-lg ">
                 <Controller
@@ -276,7 +277,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
                     />
                   )}
                 />
-                {watch('jobSeekerType') === 'Experienced' && errors.totalExpMonth && <p className="font-normal text-xs text-red-500 ">{errors.totalExpMonth.message as string}</p>}
+                {watch('jobSeekerType') === 'Experienced' && errors.totalExpMonth && <p className="font-normal text-xs text-red-500 ">Please select total exp months</p>}
               </div>
             </div>
             <div>
@@ -320,9 +321,9 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
                 />
               )}
             />
-
+            {errors.currentLocation && ((errors.currentLocation as any)?.label?.message ? (<p className="font-normal text-xs text-red-500 ">{(errors.currentLocation as any)?.label?.message} </p>) : <p className="font-normal text-xs text-red-500 ">{(errors.currentLocation as any)?.message} </p>)}
           </div>
-          {errors.currentLocation && <p className="font-normal text-xs text-red-500 ">{errors.currentLocation.message as string}</p>}
+          
         </div>
         <h1 className="font-medium mb-6">Mobile number</h1>
         <div>
