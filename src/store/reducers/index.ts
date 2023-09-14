@@ -30,6 +30,7 @@ import personalDetailsSlice from './jobSeekerProfile/personalDetails';
 import logOutSlice from './logout'
 import loginSlice from './signIn'
 import deletePersonalDetailsLanguagesSlice from './jobSeekerProfile/deletePersonalDetailsLanguages';
+import jobSeekerEmployment from './jobSeekerProfile/jobSeekerEmploymentAdd';
 
 
 export const reducer = combineReducers({
@@ -45,6 +46,7 @@ export const reducer = combineReducers({
     keySkills: keySkillsSlice,
     education: jobSeekerEducation,
     educationDetails: getEducationDetails,
+    employment: jobSeekerEmployment,
     getIndustry: getIndustrySlice,
     getDepartment: getDepartmentSlice,
     getRoleCategory: getRoleCategorySlice,
