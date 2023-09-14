@@ -38,7 +38,7 @@ const PersonalDetails = () => {
     return (
         <div className="w-full rounded-2xl bg-white p-4 mt-5" >
             <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center">
+                <div className="flex items-center font-bold">
                     <h1>Personal details</h1>
                     {profileDashboard?.personalDetails &&
                         <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer" onClick={openModal}>
