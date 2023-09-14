@@ -4,29 +4,20 @@ import { BiSearch } from 'react-icons/bi';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { getFirstLetterOfName } from '../../utils/filterArray';
 
 const Header = () => {
 
-    const [auth, setAuth] = useState(false)
-    const [name, setName] = useState('')
+    let userName: string;
+    (localStorage.getItem('Name')) ? userName = localStorage.getItem('Name') || '' : userName = Cookies.get('name') || '';
 
-    if (process.env.REACT_APP_API_PATH === undefined) {
-        throw new Error(' JWT secret cannot be undefined')
-    };
-    const appAPIPath = process.env.REACT_APP_API_PATH
-    axios.defaults.withCredentials = true;
-    useEffect(() => {
-        axios.get(`${appAPIPath}/auth/verifyUser`).then(res => {
+    let loginStatus = false;
+    if (Cookies.get('token') !== undefined)
+        loginStatus = true;
 
-            if (res.data.Status === 'Success') {
-                setAuth(true);
-                setName(res.data.Name?.split('@')[0]);
-            }
-        })
-    }, []);
-
-
-
+    const [auth, setAuth] = useState(loginStatus)
+    const [name, setName] = useState(getFirstLetterOfName(userName));
 
     return (
         <nav className="h-[10%] w-full bg-[#fff] font-sans border-b border-[#E0E1E6] px-32 flex items-center justify-between box-border fixed top-0 z-50">
@@ -99,17 +90,16 @@ const Header = () => {
                     </Menu>
                 </div>
                 <div className="border border-gray-200 h-8"></div>
+                <div className='float-left'> <img className='float-right' src='./ellipse32.svg' alt="image" /> <img src='./bell-Icons.svg' alt="image" /></div>
                 <div className="text-[#312E81]">
+
                     {auth ?
                         <>
                             <Menu as="div" className="relative inline-block text-left">
                                 <div>
+
                                     <Menu.Button className="inline-flex w-full justify-center items-center text-[#312E81] m-0 p-0.5">
-                                        <Link to="/profile" > {name}</Link>
-                                        <ChevronDownIcon
-                                            className="ml-1 mr-1 h-5 w-5"
-                                            aria-hidden="true"
-                                        />
+                                        <div className="w-9 h-9 bg-green-600 text-lg text-white rounded-full pt-1">{name}</div>
                                     </Menu.Button>
                                 </div>
                                 <Transition
@@ -141,7 +131,7 @@ const Header = () => {
 
 
                         </> : <>
-                            <Link to="/login" className="rounded-lg bg-[#EEF2FF] py-2 px-3 mx-3">Log In</Link>
+                            <Link to="/login" className=" py-2 px-3 mx-3">Log In</Link>
                             <Link to="/registration" className="rounded-lg bg-[#EEF2FF] py-2 px-3">Sign Up</Link>
                         </>
                     }

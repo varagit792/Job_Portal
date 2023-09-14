@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../..';
 import { clearLogOutSlice, logOutUser } from '../../../store/reducers/logout';
 import { useNavigate } from 'react-router';
+import Cookies from 'js-cookie';
 
 const SignOut = () => {
   const dispatch = useAppDispatch();
@@ -19,6 +20,9 @@ const SignOut = () => {
 
 
   if (logoutUser) {
+    Cookies.remove('token');
+    localStorage.removeItem("token");
+    localStorage.removeItem("Name");
     navigate('/login');
     window.location.reload();
   }

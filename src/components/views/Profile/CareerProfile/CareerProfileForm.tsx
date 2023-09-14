@@ -14,6 +14,7 @@ import { clearGetEmployeeTypeSlice, employeeTypeGet } from '../../../../store/re
 import { clearGetJobTypeSlice, jobTypeGet } from '../../../../store/reducers/dropdown/jobType';
 import { clearGetPreferredShiftSlice, preferredShiftGet } from '../../../../store/reducers/dropdown/preferredShift';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
+import SingleCheckbox from './SingleCheckbox';
 
 interface IFormInputs {
   industry: { value: string; label: string; }
@@ -209,13 +210,13 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
         <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Desired job type</div>
         <div className='grid grid-cols-3 gap-4'>
           {jobType.map((item, key) => <div key={item.id}>
-            <input
-              type='checkbox'
-              defaultChecked={profileDashboard[0]?.careerProfileJobType?.map((item1: any) => item1?.jobType?.id === item?.id)[key] === true ? true : false}
-              value={item.id}
-              {...register("jobType")}
-              className='mx-3 w-4 h-4'
-            />{item?.title}
+            <SingleCheckbox
+              register={register}
+              fieldName="jobType"
+              dbFieldName="jobType"
+              singleData={item}
+              checkData={profileDashboard[0]?.careerProfileJobType}
+            />
           </div>)}
           <div className='grid grid-cols-3 gap-4'></div>
 
@@ -224,26 +225,26 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
         <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Desired employment type</div>
         <div className='grid grid-cols-3 gap-4'>
           {employeeType.map((item, key) => <div key={item.id}>
-            <input
-              type='checkbox'
-              value={item.id}
-              defaultChecked={profileDashboard[0]?.careerProfileEmployeeType?.map((item1: any) => item1?.employeeType?.id === item?.id)[key] === true ? true : false}
-              {...register("employeeType")}
-              className='mx-3 w-4 h-4'
-            />{item.title}
+            <SingleCheckbox
+              register={register}
+              fieldName="employeeType"
+              dbFieldName="employeeType"
+              singleData={item}
+              checkData={profileDashboard[0]?.careerProfileEmployeeType}
+            />
           </div>)}
         </div>
         {errors?.employeeType && <div className="font-normal text-xs text-red-500 ">{errors?.employeeType?.message}</div>}
         <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Preferred shift</div>
         <div className='grid grid-cols-3 gap-4'>
           {preferredShift.map((item, key) => <div key={item.id}>
-            <input
-              type='checkbox'
-              value={item.id}
-              defaultChecked={profileDashboard[0]?.careerProfilePreferredShift?.map((item1: any) => item1?.preferredShift?.id === item?.id)[key] === true ? true : false}
-              {...register("preferredShift")}
-              className='mx-3 w-4 h-4'
-            />{item.title}
+            <SingleCheckbox
+              register={register}
+              fieldName="preferredShift"
+              dbFieldName="preferredShift"
+              singleData={item}
+              checkData={profileDashboard[0]?.careerProfilePreferredShift}
+            />
           </div>
           )}
         </div>
