@@ -45,7 +45,7 @@ const responsive = {
 const ButtonGroup = ({ next, previous, goToSlide, ...rest }: any) => {
     const { carouselState: { currentSlide } } = rest;
     return (
-        <div className="carousel-button-group mt-2 gap-2 flex justify-end 
+        <div className="carousel-button-group gap-2 flex justify-end 
         items-center w-full">
             <button className='block p-3 bg-[#818CF8] text-white rounded-l-md' onClick={() =>
                 previous()}> <FiChevronLeft /></button>
@@ -105,7 +105,7 @@ const HomePage = () => {
                     </div>
                 </div>
                 <div className="col-start-3 col-end-8">
-                    <div className="bg-gradient-to-r from-[#EEF2FF] to-[#C7D2FE] rounded-lg mb-20 grid grid-cols-5 gap-8 px-10 py-20">
+                    <div className="bg-gradient-to-r from-[#EEF2FF] to-[#C7D2FE] rounded-lg mb-12 grid grid-cols-5 gap-8 px-10 py-20">
                         <div className="col-start-1 col-end-4 flex flex-col justify-center">
                             <h1 className="text-3xl font-bold text-[#312E81] flex flex-col items-start justify-start mb-10">
                                 <span>Discover your <span className="text-[#818CF8]">dream job</span> & empower you career</span>
@@ -119,245 +119,47 @@ const HomePage = () => {
                         </div>
                     </div>
                     <div className="mb-10">
-                        <div className="flex justify-between items-center mb-10">
-                            <h1 className="text-2xl font-bold">Most demanding categories</h1>
-                            <button className="text-lg flex justify-center items-center text-[#312E81] font-medium"><span className="mr-2">All Categories</span><img src={ArrowRight} alt="ArrowRight" /></button>
+                        <div className="flex justify-between items-center mb-10 font-bold">
+                            <h1 className="text-xl">Most demanding categories</h1>
+                            <button className="flex justify-center items-center text-[#312E81] text-base"><span className="mr-2">All Categories</span><img src={ArrowRight} alt="ArrowRight" /></button>
                         </div>
                         <div className="grid grid-cols-3 gap-4 mb-4">
                             <div className="p-5 shadow-sm rounded-lg bg-[#FFF] flex justify-between items-center">
-                                <h1 className="text-lg font-semibold">Product Management</h1>
-                                <span className="text-sm m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
+                                <h1 className="text-base font-semibold">Product Management</h1>
+                                <span className="text-xs m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
                             </div>
                             <div className="p-5 shadow-sm rounded-lg bg-[#FFF] flex justify-between items-center">
-                                <h1 className="text-lg font-semibold">Human Resources</h1>
-                                <span className="text-sm m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
+                                <h1 className="text-base font-semibold">Human Resources</h1>
+                                <span className="text-xs m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
                             </div>
                             <div className="p-5 shadow-sm rounded-lg bg-[#FFF] flex justify-between items-center">
-                                <h1 className="text-lg font-semibold">Design</h1>
-                                <span className="text-sm m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
+                                <h1 className="text-base font-semibold">Design</h1>
+                                <span className="text-xs m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-4">
                             <div className="p-5 shadow-sm rounded-lg bg-[#FFF] flex justify-between items-center">
-                                <h1 className="text-lg font-semibold">Retail</h1>
-                                <span className="text-sm m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
+                                <h1 className="text-base font-semibold">Retail</h1>
+                                <span className="text-xs m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
                             </div>
                             <div className="p-5 shadow-sm rounded-lg bg-[#FFF] flex justify-between items-center">
-                                <h1 className="text-lg font-semibold">Marketing</h1>
-                                <span className="text-sm m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
+                                <h1 className="text-base font-semibold">Marketing</h1>
+                                <span className="text-xs m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
                             </div>
                             <div className="p-5 shadow-sm rounded-lg bg-[#FFF] flex justify-between items-center">
-                                <h1 className="text-lg font-semibold">Finance</h1>
-                                <span className="text-sm m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
+                                <h1 className="text-base font-semibold">Finance</h1>
+                                <span className="text-xs m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
                             </div>
                             <div className="p-5 shadow-sm rounded-lg bg-[#FFF] flex justify-between items-center">
-                                <h1 className="text-lg font-semibold">Logistics</h1>
-                                <span className="text-sm m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
+                                <h1 className="text-base font-semibold">Logistics</h1>
+                                <span className="text-xs m-0 px-3 py-2 rounded-full bg-[#F1F5F9]">12</span>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <div className="flex justify-between items-center mb-10">
-                            <h1 className="text-2xl font-bold">Job recommendations</h1>
-                            <button className="text-lg flex justify-center items-center text-[#312E81] font-medium"><span className="mr-2">All Jobs</span><img src={ArrowRight} alt="ArrowRight" /></button>
-                        </div>
-                        <Carousel
-                            swipeable={false}
-                            draggable={false}
-                            showDots={false}
-                            responsive={responsive}
-                            ssr={true} // means to render carousel on server-side.
-                            infinite={true}
-                            autoPlay={true}
-                            autoPlaySpeed={4000}
-                            keyBoardControl={true}
-                            customTransition="all .5"
-                            transitionDuration={500}
-                            arrows={false}
-                            renderButtonGroupOutside={true}
-                            customButtonGroup={<ButtonGroup />}
-                        >
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 my-4">
-                                <div className="flex items-start justify-between mb-3">
-                                    <img src={compenyBrand} alt="compenyBrand" />
-                                    <div className="">
-                                        <button className="p-2">
-                                            <img src={BookMark} alt="BookMark" />
-                                        </button>
-                                        <button className="p-2">
-                                            <img src={ThreeDots} alt="ThreeDots" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <h1 className="text-xl font-bold">Dot net developer</h1>
-                                <span className="text-[#94A3B8]">Ratna Global Tech</span>
-                                <hr className="my-5" />
-                                <div className="mb-3 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={ExperienceIcon} alt="ExperienceIcon" /><span className="ml-2">6+ yrs exp.</span>
-                                </div>
-                                <div className="mb-3 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={MoneyIcon} alt="MoneyIcon" /><span className="ml-2">12 LPA</span>
-                                </div>
-                                <div className="mb-5 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
-                                </div>
-                                <div className="flex">
-                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2">Remote</button>
-                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg">Full-time</button>
-                                </div>
-                            </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 my-4">
-                                <div className="flex items-start justify-between mb-3">
-                                    <img src={compenyBrand} alt="compenyBrand" />
-                                    <div className="">
-                                        <button className="p-2">
-                                            <img src={BookMark} alt="BookMark" />
-                                        </button>
-                                        <button className="p-2">
-                                            <img src={ThreeDots} alt="ThreeDots" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <h1 className="text-xl font-bold">Dot net developer</h1>
-                                <span className="text-[#94A3B8]">Ratna Global Tech</span>
-                                <hr className="my-5" />
-                                <div className="mb-3 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={ExperienceIcon} alt="ExperienceIcon" /><span className="ml-2">6+ yrs exp.</span>
-                                </div>
-                                <div className="mb-3 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={MoneyIcon} alt="MoneyIcon" /><span className="ml-2">12 LPA</span>
-                                </div>
-                                <div className="mb-5 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
-                                </div>
-                                <div className="flex">
-                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2">Remote</button>
-                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg">Full-time</button>
-                                </div>
-                            </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 my-4">
-                                <div className="flex items-start justify-between mb-3">
-                                    <img src={compenyBrand} alt="compenyBrand" />
-                                    <div className="">
-                                        <button className="p-2">
-                                            <img src={BookMark} alt="BookMark" />
-                                        </button>
-                                        <button className="p-2">
-                                            <img src={ThreeDots} alt="ThreeDots" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <h1 className="text-xl font-bold">Dot net developer</h1>
-                                <span className="text-[#94A3B8]">Ratna Global Tech</span>
-                                <hr className="my-5" />
-                                <div className="mb-3 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={ExperienceIcon} alt="ExperienceIcon" /><span className="ml-2">6+ yrs exp.</span>
-                                </div>
-                                <div className="mb-3 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={MoneyIcon} alt="MoneyIcon" /><span className="ml-2">12 LPA</span>
-                                </div>
-                                <div className="mb-5 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
-                                </div>
-                                <div className="flex">
-                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2">Remote</button>
-                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg">Full-time</button>
-                                </div>
-                            </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 my-4">
-                                <div className="flex items-start justify-between mb-3">
-                                    <img src={compenyBrand} alt="compenyBrand" />
-                                    <div className="">
-                                        <button className="p-2">
-                                            <img src={BookMark} alt="BookMark" />
-                                        </button>
-                                        <button className="p-2">
-                                            <img src={ThreeDots} alt="ThreeDots" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <h1 className="text-xl font-bold">Dot net developer</h1>
-                                <span className="text-[#94A3B8]">Ratna Global Tech</span>
-                                <hr className="my-5" />
-                                <div className="mb-3 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={ExperienceIcon} alt="ExperienceIcon" /><span className="ml-2">6+ yrs exp.</span>
-                                </div>
-                                <div className="mb-3 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={MoneyIcon} alt="MoneyIcon" /><span className="ml-2">12 LPA</span>
-                                </div>
-                                <div className="mb-5 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
-                                </div>
-                                <div className="flex">
-                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2">Remote</button>
-                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg">Full-time</button>
-                                </div>
-                            </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 my-4">
-                                <div className="flex items-start justify-between mb-3">
-                                    <img src={compenyBrand} alt="compenyBrand" />
-                                    <div className="">
-                                        <button className="p-2">
-                                            <img src={BookMark} alt="BookMark" />
-                                        </button>
-                                        <button className="p-2">
-                                            <img src={ThreeDots} alt="ThreeDots" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <h1 className="text-xl font-bold">Dot net developer</h1>
-                                <span className="text-[#94A3B8]">Ratna Global Tech</span>
-                                <hr className="my-5" />
-                                <div className="mb-3 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={ExperienceIcon} alt="ExperienceIcon" /><span className="ml-2">6+ yrs exp.</span>
-                                </div>
-                                <div className="mb-3 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={MoneyIcon} alt="MoneyIcon" /><span className="ml-2">12 LPA</span>
-                                </div>
-                                <div className="mb-5 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
-                                </div>
-                                <div className="flex">
-                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2">Remote</button>
-                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg">Full-time</button>
-                                </div>
-                            </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 my-4">
-                                <div className="flex items-start justify-between mb-3">
-                                    <img src={compenyBrand} alt="compenyBrand" />
-                                    <div className="">
-                                        <button className="p-2">
-                                            <img src={BookMark} alt="BookMark" />
-                                        </button>
-                                        <button className="p-2">
-                                            <img src={ThreeDots} alt="ThreeDots" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <h1 className="text-xl font-bold">Dot net developer</h1>
-                                <span className="text-[#94A3B8]">Ratna Global Tech</span>
-                                <hr className="my-5" />
-                                <div className="mb-3 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={ExperienceIcon} alt="ExperienceIcon" /><span className="ml-2">6+ yrs exp.</span>
-                                </div>
-                                <div className="mb-3 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={MoneyIcon} alt="MoneyIcon" /><span className="ml-2">12 LPA</span>
-                                </div>
-                                <div className="mb-5 text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
-                                </div>
-                                <div className="flex">
-                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2">Remote</button>
-                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg">Full-time</button>
-                                </div>
-                            </div>
-                        </Carousel>
-                    </div>
-                    <hr className="my-10" />
-                    <div>
-                        <div className="flex justify-between items-center mb-10">
-                            <h1 className="text-2xl font-bold">Top companies hiring</h1>
-                            <button className="text-lg flex justify-center items-center text-[#312E81] font-medium"><span className="mr-2">All Jobs</span><img src={ArrowRight} alt="ArrowRight" /></button>
+                        <div className="flex justify-between items-center mb-10 font-bold">
+                            <h1 className="text-xl">Job recommendations</h1>
+                            <button className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">All Jobs</span><img src={ArrowRight} alt="ArrowRight" /></button>
                         </div>
                         <Carousel
                             swipeable={false}
@@ -375,84 +177,224 @@ const HomePage = () => {
                             renderButtonGroupOutside={true}
                             customButtonGroup={<ButtonGroup />}
                         >
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 my-4">
+                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
                                 <div className="flex items-start justify-between mb-3">
                                     <img src={compenyBrand} alt="compenyBrand" />
-                                    <button className="px-3 py-2 bg-gray-200 rounded-md">
+                                    <div>
+                                        <button className="p-2">
+                                            <img src={BookMark} alt="BookMark" />
+                                        </button>
+                                        <button className="p-2">
+                                            <img src={ThreeDots} alt="ThreeDots" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <h1 className="text-base font-bold">Dot net developer</h1>
+                                <span className="text-[#94A3B8] text-sm">Ratna Global Tech</span>
+                                <hr className="my-5" />
+                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" /><span className="ml-2">6+ yrs exp.</span>
+                                </div>
+                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">12 LPA</span>
+                                </div>
+                                <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
+                                </div>
+                                <div className="flex">
+                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">Remote</button>
+                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">Full-time</button>
+                                </div>
+                            </div>
+                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
+                                <div className="flex items-start justify-between mb-3">
+                                    <img src={compenyBrand} alt="compenyBrand" />
+                                    <div>
+                                        <button className="p-2">
+                                            <img src={BookMark} alt="BookMark" />
+                                        </button>
+                                        <button className="p-2">
+                                            <img src={ThreeDots} alt="ThreeDots" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <h1 className="text-base font-bold">Dot net developer</h1>
+                                <span className="text-[#94A3B8] text-sm">Ratna Global Tech</span>
+                                <hr className="my-5" />
+                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" /><span className="ml-2">6+ yrs exp.</span>
+                                </div>
+                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">12 LPA</span>
+                                </div>
+                                <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
+                                </div>
+                                <div className="flex">
+                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">Remote</button>
+                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">Full-time</button>
+                                </div>
+                            </div>
+                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
+                                <div className="flex items-start justify-between mb-3">
+                                    <img src={compenyBrand} alt="compenyBrand" />
+                                    <div>
+                                        <button className="p-2">
+                                            <img src={BookMark} alt="BookMark" />
+                                        </button>
+                                        <button className="p-2">
+                                            <img src={ThreeDots} alt="ThreeDots" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <h1 className="text-base font-bold">Dot net developer</h1>
+                                <span className="text-[#94A3B8] text-sm">Ratna Global Tech</span>
+                                <hr className="my-5" />
+                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" /><span className="ml-2">6+ yrs exp.</span>
+                                </div>
+                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">12 LPA</span>
+                                </div>
+                                <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
+                                </div>
+                                <div className="flex">
+                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">Remote</button>
+                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">Full-time</button>
+                                </div>
+                            </div>
+                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
+                                <div className="flex items-start justify-between mb-3">
+                                    <img src={compenyBrand} alt="compenyBrand" />
+                                    <div>
+                                        <button className="p-2">
+                                            <img src={BookMark} alt="BookMark" />
+                                        </button>
+                                        <button className="p-2">
+                                            <img src={ThreeDots} alt="ThreeDots" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <h1 className="text-base font-bold">Dot net developer</h1>
+                                <span className="text-[#94A3B8] text-sm">Ratna Global Tech</span>
+                                <hr className="my-5" />
+                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" /><span className="ml-2">6+ yrs exp.</span>
+                                </div>
+                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">12 LPA</span>
+                                </div>
+                                <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
+                                </div>
+                                <div className="flex">
+                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">Remote</button>
+                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">Full-time</button>
+                                </div>
+                            </div>
+                        </Carousel>
+                    </div>
+                    <hr className="my-10" />
+                    <div>
+                        <div className="flex justify-between items-center mb-10 font-bold">
+                            <h1 className="text-xl">Top companies hiring</h1>
+                            <button className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">All Jobs</span><img src={ArrowRight} alt="ArrowRight" /></button>
+                        </div>
+                        <Carousel
+                            swipeable={false}
+                            draggable={false}
+                            showDots={false}
+                            responsive={responsive}
+                            ssr={true} // means to render carousel on server-side.
+                            infinite={true}
+                            autoPlay={true}
+                            autoPlaySpeed={4000}
+                            keyBoardControl={true}
+                            customTransition="all .5"
+                            transitionDuration={500}
+                            arrows={false}
+                            renderButtonGroupOutside={true}
+                            customButtonGroup={<ButtonGroup />}
+                        >
+                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 mb-5">
+                                <div className="flex items-start justify-between mb-3">
+                                    <img src={compenyBrand} alt="compenyBrand" />
+                                    <button className="px-3 py-2 bg-gray-200 rounded-md text-xs">
                                         15 Jobs
                                     </button>
                                 </div>
-                                <h1 className="text-xl font-bold mb-1">Ratna Global Tech</h1>
-                                <div className="text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
+                                <h1 className="text-base font-bold mb-1">Ratna Global Tech</h1>
+                                <div className="text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
                                 </div>
-                                <hr className="my-5" />
-                                <div className="flex justify-start items-center">
+                                <hr className="my-4" />
+                                <div className="flex justify-start items-center text-xs">
                                     <div className="flex justify-start items-center">
-                                        <img src={StarIcon} alt="StarIcon" />
+                                        <img src={StarIcon} alt="StarIcon" width="15rem" height="15rem" />
                                         <span className="ml-1">3.5</span>
                                     </div>
                                     <span className="border border-gray-300 h-5 mx-2"></span>
                                     <span className="text-[#64748B]">5k+ Reviews</span>
                                 </div>
                             </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 my-4">
+                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 mb-5">
                                 <div className="flex items-start justify-between mb-3">
                                     <img src={compenyBrand} alt="compenyBrand" />
-                                    <button className="px-3 py-2 bg-gray-200 rounded-md">
+                                    <button className="px-3 py-2 bg-gray-200 rounded-md text-xs">
                                         15 Jobs
                                     </button>
                                 </div>
-                                <h1 className="text-xl font-bold mb-1">Ratna Global Tech</h1>
-                                <div className="text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
+                                <h1 className="text-base font-bold mb-1">Ratna Global Tech</h1>
+                                <div className="text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
                                 </div>
-                                <hr className="my-5" />
-                                <div className="flex justify-start items-center">
+                                <hr className="my-4" />
+                                <div className="flex justify-start items-center text-xs">
                                     <div className="flex justify-start items-center">
-                                        <img src={StarIcon} alt="StarIcon" />
+                                        <img src={StarIcon} alt="StarIcon" width="15rem" height="15rem" />
                                         <span className="ml-1">3.5</span>
                                     </div>
                                     <span className="border border-gray-300 h-5 mx-2"></span>
                                     <span className="text-[#64748B]">5k+ Reviews</span>
                                 </div>
                             </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 my-4">
+                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 mb-5">
                                 <div className="flex items-start justify-between mb-3">
                                     <img src={compenyBrand} alt="compenyBrand" />
-                                    <button className="px-3 py-2 bg-gray-200 rounded-md">
+                                    <button className="px-3 py-2 bg-gray-200 rounded-md text-xs">
                                         15 Jobs
                                     </button>
                                 </div>
-                                <h1 className="text-xl font-bold mb-1">Ratna Global Tech</h1>
-                                <div className="text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
+                                <h1 className="text-base font-bold mb-1">Ratna Global Tech</h1>
+                                <div className="text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
                                 </div>
-                                <hr className="my-5" />
-                                <div className="flex justify-start items-center">
+                                <hr className="my-4" />
+                                <div className="flex justify-start items-center text-xs">
                                     <div className="flex justify-start items-center">
-                                        <img src={StarIcon} alt="StarIcon" />
+                                        <img src={StarIcon} alt="StarIcon" width="15rem" height="15rem" />
                                         <span className="ml-1">3.5</span>
                                     </div>
                                     <span className="border border-gray-300 h-5 mx-2"></span>
                                     <span className="text-[#64748B]">5k+ Reviews</span>
                                 </div>
                             </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 my-4">
+                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 mb-5">
                                 <div className="flex items-start justify-between mb-3">
                                     <img src={compenyBrand} alt="compenyBrand" />
-                                    <button className="px-3 py-2 bg-gray-200 rounded-md">
+                                    <button className="px-3 py-2 bg-gray-200 rounded-md text-xs">
                                         15 Jobs
                                     </button>
                                 </div>
-                                <h1 className="text-xl font-bold mb-1">Ratna Global Tech</h1>
-                                <div className="text-[#475569] text-sm flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
+                                <h1 className="text-base font-bold mb-1">Ratna Global Tech</h1>
+                                <div className="text-[#475569] text-xs flex justify-start items-center">
+                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
                                 </div>
-                                <hr className="my-5" />
-                                <div className="flex justify-start items-center">
+                                <hr className="my-4" />
+                                <div className="flex justify-start items-center text-xs">
                                     <div className="flex justify-start items-center">
-                                        <img src={StarIcon} alt="StarIcon" />
+                                        <img src={StarIcon} alt="StarIcon" width="15rem" height="15rem" />
                                         <span className="ml-1">3.5</span>
                                     </div>
                                     <span className="border border-gray-300 h-5 mx-2"></span>
@@ -463,55 +405,55 @@ const HomePage = () => {
                     </div>
                     <hr className="my-10" />
                     <div>
-                        <div className="flex justify-between items-center mb-10">
-                            <h1 className="text-2xl font-bold">Featured cities</h1>
-                            <button className="text-lg flex justify-center items-center text-[#312E81] font-medium"><span className="mr-2">All Cities</span><img src={ArrowRight} alt="ArrowRight" /></button>
+                        <div className="flex justify-between items-center mb-10 font-bold">
+                            <h1 className="text-xl">Featured cities</h1>
+                            <button className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">All Cities</span><img src={ArrowRight} alt="ArrowRight" /></button>
                         </div>
                         <div className="grid grid-cols-3 gap-4 mb-4">
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg">
-                                <div className="flex justify-between items-center mb-3 text-lg font-semibold">
+                            <div className="p-4 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg flex flex-col justify-center items-start">
+                                <div className="flex justify-between items-center mb-3 text-sm font-semibold w-full">
                                     <span>Hyderabad, India</span>
-                                    <button><img src={ArrowRight} alt="ArrowRight" /></button>
+                                    <button><img src={ArrowRight} alt="ArrowRight" width="8rem" height="8rem" /></button>
                                 </div>
-                                <button className="px-2 py-1 bg-gray-200 rounded-md text-sm">
+                                <button className="px-2 py-1 bg-gray-200 rounded-md text-xs">
                                     130 jobs
                                 </button>
                             </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg">
-                                <div className="flex justify-between items-center mb-3 text-lg font-semibold">
+                            <div className="p-4 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg flex flex-col justify-center items-start">
+                                <div className="flex justify-between items-center mb-3 text-sm font-semibold w-full">
                                     <span>Delhi, India</span>
-                                    <button><img src={ArrowRight} alt="ArrowRight" /></button>
+                                    <button><img src={ArrowRight} alt="ArrowRight" width="8rem" height="8rem" /></button>
                                 </div>
-                                <button className="px-2 py-1 bg-gray-200 rounded-md text-sm">
+                                <button className="px-2 py-1 bg-gray-200 rounded-md text-xs">
                                     130 jobs
                                 </button>
                             </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg">
-                                <div className="flex justify-between items-center mb-3 text-lg font-semibold">
+                            <div className="p-4 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg flex flex-col justify-center items-start">
+                                <div className="flex justify-between items-center mb-3 text-sm font-semibold w-full">
                                     <span>Noida, India</span>
-                                    <button><img src={ArrowRight} alt="ArrowRight" /></button>
+                                    <button><img src={ArrowRight} alt="ArrowRight" width="8rem" height="8rem" /></button>
                                 </div>
-                                <button className="px-2 py-1 bg-gray-200 rounded-md text-sm">
+                                <button className="px-2 py-1 bg-gray-200 rounded-md text-xs">
                                     130 jobs
                                 </button>
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg">
-                                <div className="flex justify-between items-center mb-3 text-lg font-semibold">
+                            <div className="p-4 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg flex flex-col justify-center items-start">
+                                <div className="flex justify-between items-center mb-3 text-sm font-semibold w-full">
                                     <span>Pune, India</span>
-                                    <button><img src={ArrowRight} alt="ArrowRight" /></button>
+                                    <button><img src={ArrowRight} alt="ArrowRight" width="8rem" height="8rem" /></button>
                                 </div>
-                                <button className="px-2 py-1 bg-gray-200 rounded-md text-sm">
+                                <button className="px-2 py-1 bg-gray-200 rounded-md text-xs">
                                     130 jobs
                                 </button>
                             </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg">
-                                <div className="flex justify-between items-center mb-3 text-lg font-semibold">
+                            <div className="p-4 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg flex flex-col justify-center items-start">
+                                <div className="flex justify-between items-center mb-3 text-sm font-semibold w-full">
                                     <span>Bangalore, India</span>
-                                    <button><img src={ArrowRight} alt="ArrowRight" /></button>
+                                    <button><img src={ArrowRight} alt="ArrowRight" width="8rem" height="8rem" /></button>
                                 </div>
-                                <button className="px-2 py-1 bg-gray-200 rounded-md text-sm">
+                                <button className="px-2 py-1 bg-gray-200 rounded-md text-xs">
                                     130 jobs
                                 </button>
                             </div>
