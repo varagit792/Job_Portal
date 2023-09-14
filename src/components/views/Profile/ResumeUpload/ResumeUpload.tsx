@@ -114,7 +114,7 @@ const ResumeUpload = () => {
 
   return (
     <div className="w-full rounded-2xl bg-white p-4">
-      <h1 className="mb-2font-bold">Resume</h1>
+      <h1 className="mb-2 font-bold">Resume</h1>
       <p className="text-sm text-gray-500">
         Resume is the most important document recruiters look for. Recruiters generally do not look at profiles without resumes.
       </p>
@@ -138,8 +138,8 @@ const ResumeUpload = () => {
 
           </div>
         ))}
-        </div>
-      
+      </div>
+
       <form >
         <div className="p-10 border border-dashed border-gray-500 rounded-2xl flex flex-col justify-center items-center">
           <label className="cursor-pointer px-3 py-1 mb-1 rounded-3xl border-2 border-blue-400">

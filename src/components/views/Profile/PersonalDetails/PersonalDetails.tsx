@@ -38,7 +38,7 @@ const PersonalDetails = () => {
     return (
         <div className="w-full rounded-2xl bg-white p-4 mt-5" >
             <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center">
+                <div className="flex items-center font-bold">
                     <h1>Personal details</h1>
                     {profileDashboard?.personalDetails &&
                         <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer" onClick={openModal}>
@@ -125,7 +125,7 @@ const PersonalDetails = () => {
                         <button className="text-blue-700 font-semibold" onClick={openModal}>Add language</button>
                     </div>
                     <table className="w-full">
-                        <tr className=" border-b border-gray-200">
+                        <tr>
                             <th className="text-left text-gray-500 font-normal">Languages</th>
                             <th className="text-left text-gray-500 font-normal">Proficiency</th>
                             <th className="text-left text-gray-500 font-normal">Read</th>

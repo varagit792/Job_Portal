@@ -31,7 +31,7 @@ const ProfileSummary = () => {
     return (
         <div className="w-full rounded-2xl bg-white p-4 mt-5" >
             <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center">
+                <div className="flex items-center font-bold">
                     <h1>Profile summary</h1>
                     {
                         profileDashboard?.profileSummary
