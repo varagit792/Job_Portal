@@ -140,7 +140,7 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
   const onSubmit = (data: IFormInputs) => {
     let educationData = [];
     educationData.push({
-      jobSeekerProfile: data?.id,
+      jobSeekerProfile: id,
       courseType: data?.courseType,
       education: data?.education?.label,
       institute: data?.institute?.label,
