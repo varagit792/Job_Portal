@@ -66,7 +66,7 @@ const Profile = () => {
     <>
       <div className="h-[10%] w-full"></div>
       <div className="bg-zinc-100 font-sans">
-        <div className="px-40 py-10 flex justify-center flex-col">
+        <div className="px-32 py-10 flex justify-center flex-col">
           {/* card */}
           <div className="w-full rounded-2xl bg-white p-8">
             <div className="grid grid-cols-5 h-full">

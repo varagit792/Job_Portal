@@ -326,9 +326,11 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
     console.log("data-->", data)
     //const joiningDateMonthArray = data?.joiningDateMonth?.value;
 
+
     //let empData = {};
-    const empData = {
-      id:data?.id && data.id,
+    const empData:any = { 
+      //...(data?.id && { id: data?.id }),
+      id:selectedEmployment?.id ? selectedEmployment?.id : null,
       jobSeekerProfile:id,
       isCurrentEmployment: data.currentEmployment === "Yes" ? true : false,
       employmentType: data.employmentType,
@@ -353,6 +355,7 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
     // workedFromMonth: data.joiningDateMonth,
     monthlyStipend: data.monthlyStipend,
     }
+   
     console.log("empData-->", empData);
 
     dispatch(jobSeekerEmploymentAdd(empData as any));
