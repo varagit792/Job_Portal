@@ -18,7 +18,9 @@ interface ProfileDashboard {
     id: number,
     profileSummary: string,
     resumeHeadline: string,
-    personalDetails: any
+    personalDetails: any,
+    educations: any,
+    employments:any
 }
 
 interface registerUserState {

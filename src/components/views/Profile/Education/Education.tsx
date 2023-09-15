@@ -62,8 +62,10 @@ export default function Education() {
                   }} />
               </span>
             </div>
-              {item?.specialization && (<><span className="text-sm text-gray-500">{item?.specialization}</span><br /></>)}
-            <span className="text-sm text-gray-500">{item?.passingYear}</span>
+              You have completed your <span className="text-sm text-gray-600 font-bold">{item?.education}</span> with specialization in <span className="text-sm text-gray-600 font-bold">{(item?.education === "10th" || item?.education === "12th") ? item?.board : item?.specialization}</span> from the institute <span className="text-sm text-gray-600 font-bold">{item?.institute}</span> and passed out in the year <span className="text-sm text-gray-600 font-bold">{item?.passingYear}</span>
+              {/* {item?.specialization && (<><span className="text-sm text-gray-500">{item?.specialization}</span><br /></>)}
+              <span className="text-sm text-gray-500">{item?.passingYear}</span> */}
+              <hr className='mt-2'/>
           </div>
           ))
           : <span className="text-sm text-gray-500">Mention your education details.</span>
