@@ -90,7 +90,10 @@ const Header = () => {
                     </Menu>
                 </div>
                 <div className="border border-gray-200 h-8"></div>
-                <div className='float-left'> <img className='float-right' src='./ellipse32.svg' alt="image" /> <img src='./bell-Icons.svg' alt="image" /></div>
+                {auth && <div className='float-left'>
+                    <img className='float-right' src='./ellipse32.svg' alt="image" />
+                    <img src='./bell-Icons.svg' alt="image" />
+                </div>}
                 <div className="text-[#312E81]">
 
                     {auth ?

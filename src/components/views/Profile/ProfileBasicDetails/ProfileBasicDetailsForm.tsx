@@ -194,10 +194,10 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
   return (
     <div>
       <h1 className="text-xl font-semibold mr-6 ml-6">Basic details</h1>
-      <br />
       <form action="" className="m-6" id="my-form" onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label htmlFor="name" className="font-medium">Name</label>
+          {/* <label htmlFor="name" className="font-medium">Name</label> */}
+          <h1 className="font-medium mb-2 mt-4">Name</h1>
           <Controller
             name="name"
             control={control}
@@ -244,7 +244,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
         </div>
         {watch('jobSeekerType') === 'Experienced' &&
           (<div>
-            <h1 className="font-medium mb-6">Total experience</h1>
+            <h1 className="font-medium mb-2 mt-4">Total experience</h1>
             <div className="flex flex-row gap-5">
               <div className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-lg">
                 <Controller
@@ -281,7 +281,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
               </div>
             </div>
             <div>
-              <h1 className="font-medium mb-6 mt-6">Current salary</h1>
+              <h1 className="font-medium mb-2 mt-4">Current salary</h1>
               <div className="flex flex-row">
                 <span className="border border-gray-300 rounded-xl py-2 px-4 text-gray-300">
                   <LiaRupeeSignSolid />
@@ -306,8 +306,8 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
           </div>
           )}
         <div>
-          <h1 className="font-medium mb-6">Current location</h1>
-          <div className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-lg  mb-6">
+          <h1 className="font-medium mb-2 mt-4">Current location</h1>
+          <div className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-lg  mb-4">
             <Controller
               control={control}
               name="currentLocation"
@@ -325,7 +325,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
           </div>
           
         </div>
-        <h1 className="font-medium mb-6">Mobile number</h1>
+        <h1 className="font-medium mb-2 mt-4">Mobile number</h1>
         <div>
           <Controller
             name="mobileNumber"
@@ -342,7 +342,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
           />
           {errors.mobileNumber && <p className="font-normal text-xs text-red-500 ">{errors.mobileNumber.message as string}</p>}
         </div>
-        <h1 className="font-medium mb-6 mt-6">Email address</h1>
+        <h1 className="font-medium mb-2 mt-4">Email address</h1>
         <Controller
           name="email"
           control={control}
@@ -357,10 +357,11 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
           )}
         />
 
+<h1 className="font-medium mt-4 mb-2">Notice Period</h1>
         <div className="flex flex-wrap flex-row mt-3">
           {
             noticePeriodList?.map((noticePeriod: any) =>
-              <div key={noticePeriod?.id}>
+              <div key={noticePeriod?.id}>                
                 <Controller
                   name="noticePeriod"
                   control={control}
