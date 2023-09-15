@@ -845,7 +845,7 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
                 render={({ field }) => (
                   <Select
                     {...field}
-                    isClearable
+                    //isClearable
                     placeholder=""
                     options={currency?.map(({ id, title }: any) => ({ value: id, label: title }))}
                     defaultValue={watch("currentSalType")}

@@ -6,7 +6,8 @@ import Cookies from 'js-cookie';
 interface EducationData {
   jobSeekerProfile: number,
   courseType: string
-  education: string
+    education: string
+    board:string
   institute: string
   passingYear: string
   percentage: string

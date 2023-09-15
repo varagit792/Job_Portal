@@ -117,8 +117,10 @@ const Profile = () => {
                   <span>IT skills</span>
                 </button>
                 <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                  <span>Projects</span>
-                  <span className="text-blue-600 font-semibold">Add</span>
+                  <span>Employment</span>
+                  <span className="text-blue-600 font-semibold">
+                    {(profileDashboard?.employments && !(Object.keys(profileDashboard?.employments).length)) ? 'Add' : 'Edit'}
+                  </span>
                 </button>
                 <a href="#profileSummary" className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
                   <span>Profile summary</span>
