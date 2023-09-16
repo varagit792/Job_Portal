@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { getCourseList, getEducationTypeList, getInstituteList, getPassOutYearList } from '../../../utils/utils';
+import { getBoardList, getCourseList, getEducationTypeList, getInstituteList, getPassOutYearList } from '../../../utils/utils';
 import { Controller, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { jobSeekerEducationAdd } from '../../../../store/reducers/jobSeekerProfile/jobSeekerEducation';
 import Select from 'react-select';
-
-// interface IFormInputs {
-//   keySkills: string;
-// }
 interface IFormInputs {
   id: number,
-    courseType: string,
-    education: { value: string; label: string; },
-    institute: { value: string; label: string; },
-    passingYear: { value: string; label: string; },
-    percentage: number,
-    specialization: { value: string; label: string; }
+  courseType: string,
+  education: { value: string; label: string; },
+  institute: { value: string; label: string; },
+  passingYear: { value: string; label: string; },
+  board: { value: string; label: string; },
+  percentage: number,
+  specialization: { value: string; label: string; }
 }
 
 const options = ['Part Time', 'Full Time', 'Distance'];
@@ -25,28 +22,12 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
   const [eductionType, setEducationType] = useState([]);
   const [institute, setInstitute] = useState([]);
   const [passOutYear, setPassOutYear] = useState([]);
-  const [educationData, setEducationData] = useState({
-    id: selectedEducation?.id && selectedEducation?.id,
-    courseType: selectedEducation?.courseType ? selectedEducation?.courseType : '',
-    education: selectedEducation?.education ? selectedEducation?.education : '',
-    institute: selectedEducation?.institute ? selectedEducation?.institute : '',
-    passingYear: selectedEducation?.passingYear ? selectedEducation?.passingYear : '',
-    percentage: selectedEducation?.percentage ? selectedEducation?.percentage : '',
-    specialization: selectedEducation?.specialization ? selectedEducation?.specialization : ''
-  })
+  const [board, setBoard] = useState([]);
 
   const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
 
   const id = profileDashboard?.id;
   const dispatch = useAppDispatch();
-
-  // const {
-  //   //register,
-  //   handleSubmit,
-  //   //formState: { errors }
-  // } = useForm<IFormInputs>({
-  //   //resolver: yupResolver(ResumeSchema)
-  // });
 
   //react hook form controls
   const {
@@ -67,6 +48,11 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
       institute: selectedEducation?.institute
         ? {
           value: (institute?.filter((item: any) => item?.title === selectedEducation?.institute) as any)?.[0]?.id, label: selectedEducation?.institute
+        } 
+        : '',
+        board: selectedEducation?.board
+        ? {
+          value: (board?.filter((item: any) => item?.title === selectedEducation?.board) as any)?.[0]?.id, label: selectedEducation?.board
         } 
         : '',
       specialization: selectedEducation?.specialization
@@ -93,7 +79,7 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
   }, [])
 
   //console.log("selectedEducation-->", (institute?.filter((item:any)=> item?.title === selectedEducation?.institute) as any)[0].id);
-  
+    
   useEffect(() => {
     (async () => {
       const eductionTypeList = await getEducationTypeList()
@@ -126,15 +112,12 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
     })();
   }, [])
 
-  const handleChange = (event: any) => {
-    const { name, value, id, checked } = event.target;
-    console.log("name and value-->", event, id, checked, name, value);
-    if (name === "courseType") {
-      setEducationData({ ...educationData, ['courseType']: id as any })
-    } else {
-      setEducationData({ ...educationData, [name]: value as any })
-    }
-  }
+  useEffect(() => {
+    (async () => {
+      const boardList = await getBoardList()
+      setBoard(boardList as any)
+    })();
+  }, [])
 
   // OnSubmit button
   const onSubmit = (data: IFormInputs) => {
@@ -143,6 +126,7 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
       jobSeekerProfile: id,
       courseType: data?.courseType,
       education: data?.education?.label,
+      board: data?.board?.label,
       institute: data?.institute?.label,
       passingYear: data?.passingYear?.label,
       percentage: data?.percentage,
@@ -153,8 +137,6 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
     dispatch(jobSeekerEducationAdd(educationData as any));
   };
 
-  console.log("selectedEducation-->", selectedEducation);
-
   return (
     <div>
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
@@ -162,12 +144,6 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
         <div className="col-span-full mb-4">
           <label htmlFor="education" className="block text-sm font-medium leading-6 text-gray-900">Education</label>
           <div className="mt-1">
-            {/* <select onChange={handleChange} id="education" name="education" autoComplete="education-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEducation && selectedEducation?.education !== ""}>
-              <option>select education</option>
-              {
-                eductionType?.map((item: any) => <option selected={isEdit && selectedEducation && selectedEducation?.education === item?.title}>{item?.title}</option>)
-              }
-            </select> */}
             <Controller
                   control={control}
                   name="education"
@@ -185,15 +161,31 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
           </div>
         </div>
 
+        {(watch('education')?.label === "10th" || watch('education')?.label === "12th") &&
+          <div className="col-span-full mb-4">
+          <label htmlFor="board" className="block text-sm font-medium leading-6 text-gray-900">Board</label>
+          <div className="mt-1">
+            <Controller
+                  control={control}
+                  name="board"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      placeholder="Select board"
+                      options={board?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={watch('board')}
+
+                    />
+                  )}
+                />
+          </div>
+        </div>
+        }
+
         <div className="col-span-full mb-4">
           <label htmlFor="institute" className="block text-sm font-medium leading-6 text-gray-900">Institute</label>
           <div className="mt-1">
-            {/* <select onChange={handleChange} id="institute" name="institute" autoComplete="institute" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
-              <option>select institute</option>
-              {
-                institute?.map((item: any) => <option selected={selectedEducation && selectedEducation?.institute === item?.title}>{item?.title}</option>)
-              }
-            </select> */}
             <Controller
                   control={control}
                   name="institute"
@@ -204,23 +196,16 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
                       placeholder="Select institute"
                       options={institute?.map(({ id, title }: any) => ({ value: id, label: title }))}
                       defaultValue={watch('institute')}
-
                     />
                   )}
                 />
           </div>
         </div>
 
-        {(educationData?.education !== "10th" && educationData?.education !== "12th") &&
+        {(watch('education')?.label !== "10th" && watch('education')?.label !== "12th") &&
           <div className="col-span-full mb-4">
             <label htmlFor="specialization" className="block text-sm font-medium leading-6 text-gray-900">Specialization</label>
-            <div className="mt-1">
-              {/* <select onChange={handleChange} id="specialization" name="specialization" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
-                <option>select specialization</option>
-                {
-                  courses?.map((item: any) => <option selected={selectedEducation && selectedEducation?.specialization === item?.title}>{item?.title}</option>)
-                }
-              </select> */}
+            <div className="mt-1">              
               <Controller
                   control={control}
                   name="specialization"
@@ -231,7 +216,6 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
                       placeholder="Select specialization"
                       options={courses?.map(({ id, title }: any) => ({ value: id, label: title }))}
                       defaultValue={watch('specialization')}
-
                     />
                   )}
                 />
@@ -241,18 +225,6 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
         <div className="col-span-full mb-4">
           <label htmlFor="courseType" className="block text-sm font-medium leading-6 text-gray-900">Course Type</label>
           <div className="mt-2 flex justify-between items-center">
-            {/* <div className="flex items-center">
-              <input onChange={handleChange} defaultChecked={selectedEducation && selectedEducation?.courseType === "fullTime"} id="fullTime" name="courseType" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600 mr-1" />
-              <label htmlFor="fullTime" className="text-sm font-medium leading-6 text-gray-900">Full Time</label>
-            </div>
-            <div className="flex items-center">
-              <input onChange={handleChange} defaultChecked={selectedEducation && selectedEducation?.courseType === "partTime"} id="partTime" name="courseType" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600 mr-1" />
-              <label htmlFor="partTime" className="text-sm font-medium leading-6 text-gray-900">Part Time</label>
-            </div>
-            <div className="flex items-center">
-              <input onChange={handleChange} defaultChecked={selectedEducation && selectedEducation?.courseType === "distance"} id="distance" name="courseType" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600 mr-1" />
-              <label htmlFor="distance" className="text-sm font-medium leading-6 text-gray-900">Distance</label>
-            </div> */}
             {
             options.map((option) => (
               <div key={option}>
@@ -285,12 +257,6 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
         <div className="col-span-full mb-4">
           <label htmlFor="passingYear" className="block text-sm font-medium leading-6 text-gray-900">Passing Year</label>
           <div className="mt-1">
-            {/* <select onChange={handleChange} id="passingYear" name="passingYear" autoComplete="passingYear" className="block w-full rounded-md border-0 py-1.5   text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
-              <option>select year</option>
-              {
-                passOutYear?.map((item: any) => <option selected={selectedEducation && selectedEducation?.passingYear === item?.title}>{item?.title}</option>)
-              }
-            </select> */}
             <Controller
                   control={control}
                   name="passingYear"
@@ -301,7 +267,6 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
                       placeholder="Select passing year"
                       options={passOutYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
                       defaultValue={watch('passingYear')}
-
                     />
                   )}
                 />
@@ -311,7 +276,6 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
         <div className="col-span-full mb-4">
           <label htmlFor="percentage" className="block text-sm font-medium leading-6 text-gray-900">Percentage</label>
           <div className="mt-2">
-            {/* <input onKeyUp={handleChange} defaultValue={selectedEducation && selectedEducation?.percentage} type="number" name="percentage" id="percentage" autoComplete="percentage" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" /> */}
             <Controller
             name="percentage"
             control={control}

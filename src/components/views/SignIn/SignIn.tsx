@@ -8,6 +8,7 @@ import { googleAuthSignUp } from '../../../store/reducers/googleAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import { signInUser, clearSignInSlice } from '../../../store/reducers/signIn';
+import job_img from '../../../assets/jpeg/job_img2.jpeg'
 
 interface IFormInputs {
   email: string;
@@ -70,7 +71,7 @@ const SignIn = () => {
           <div className="">
           <div className="grid grid-cols-3 gap-4 bg-gradient-to-r">
             <div className='h-full col-start-1 col-end-3 bg-white shadow rounded-xl'>
-              <img src='./loginBannerLatest.png' height="100%" width="100%" className='rounded-lg' />
+              <img src={job_img} className='rounded-lg object-cover h-full w-full' />
             </div>
             <div className="h-full">
               <div className="col-start-2 col-end-4 bg-white shadow rounded-xl">

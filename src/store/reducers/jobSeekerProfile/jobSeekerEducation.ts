@@ -5,7 +5,8 @@ import Cookies from 'js-cookie';
 interface JobSeekerEducation {
   jobSeekerProfile: number,
   courseType: string
-  education: string
+    education: string
+    board:string
   institute: string
   passingYear: string
   percentage: string
