@@ -7,6 +7,8 @@ import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 import { keySkillsGet } from '../../../../store/reducers/dropdown/keySkills';
 import { filterArray } from '../../../utils/filterArray';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 //import { number } from 'yup';
 
 // interface IFormInputs {
@@ -18,29 +20,29 @@ const currentEmployment = ['Yes', 'No'];
 const employmentType = ['Full Time', 'Internship'];
 
 interface IFormInputs {
-    id: number
-    currentEmployment: string
-    employmentType: string
-    totalExpYears: any
-    totalExpMonths:any
-    currentCompanyName: any
-    currentDesignation: any
-    joiningDateYear: any
-    joiningDateMonth: any
-    currentSalType: any
-    currentSalary: number
-    skillsUsed: any
-    jobProfile: string
-    noticePeriod: any
-    previousCompanyName: any    
-    previousDesignation: any
-    workedTillYear: any
-    workedTillMonth: any
-    location: any    
-    department: any
-    workedFromYear: any
-    workedFromMonth: any
-    monthlyStipend: number
+  id: number
+  currentEmployment: string
+  employmentType: string
+  totalExpYears: any
+  totalExpMonths: any
+  currentCompanyName: any
+  currentDesignation: any
+  joiningDateYear: any
+  joiningDateMonth: any
+  currentSalType: any
+  currentSalary: number
+  skillsUsed: any
+  jobProfile: string
+  noticePeriod: any
+  previousCompanyName: any
+  previousDesignation: any
+  workedTillYear: any
+  workedTillMonth: any
+  location: any
+  department: any
+  workedFromYear: any
+  workedFromMonth: any
+  monthlyStipend: number
 }
 
 export default function ({ closeDialog, educationDetails, selectedEmployment, isEdit }: any) {
@@ -57,54 +59,231 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
   const [department, setDepartment] = useState<any>([]);
   const [currency, setCurrency] = useState<any>([]);
   const [noticePeriod, setNoticePeriod] = useState<any>([]);
-  const [institute, setInstitute] = useState([]);
-  const [passOutYear, setPassOutYear] = useState([]);
-  const [educationData, setEducationData] = useState({
-    id: selectedEmployment?.id && selectedEmployment?.id,
-    courseType: selectedEmployment?.courseType ? selectedEmployment?.courseType : '',
-    education: selectedEmployment?.education ? selectedEmployment?.education : '',
-    institute: selectedEmployment?.institute ? selectedEmployment?.institute : '',
-    passingYear: selectedEmployment?.passingYear ? selectedEmployment?.passingYear : '',
-    percentage: selectedEmployment?.percentage ? selectedEmployment?.percentage : '',
-    specialization: selectedEmployment?.specialization ? selectedEmployment?.specialization : ''
-  })
-  const [employmentData, setEmploymentData] = useState({
-    id: selectedEmployment?.id && selectedEmployment?.id,
-    currentEmployment: selectedEmployment?.isCurrentEmployment && selectedEmployment?.isCurrentEmployment === true ? 'Yes' : 'No',
-    employmentType: selectedEmployment?.employmentType ? selectedEmployment?.employmentType : '',
-    totalExpYears: selectedEmployment?.totalExpYearsId ? selectedEmployment?.totalExpYearsId : '',
-    totalExpMonths: selectedEmployment?.totalExpMonthsId ? selectedEmployment?.totalExpMonthsId : '',
-    currentCompanyName: selectedEmployment?.companyName ? selectedEmployment?.companyName : '',
-    currentDesignation: selectedEmployment?.designation ? selectedEmployment?.designation : '',
-    joiningDateYear: selectedEmployment?.joiningDateYear ? selectedEmployment?.joiningDateYear : null,
-    joiningDateMonth: selectedEmployment?.joiningDateMonth ? selectedEmployment?.joiningDateMonth : null,
-    currentSalType: selectedEmployment?.currencyTypeId ? selectedEmployment?.currencyTypeId : '',
-    currentSalary: selectedEmployment?.currentSalary ? selectedEmployment?.currentSalary : null,
-    skillsUsed: selectedEmployment?.jobSeekerProfileEmploymentSkills ? selectedEmployment?.jobSeekerProfileEmploymentSkills : '',
-    jobProfile: selectedEmployment?.jobProfile ? selectedEmployment?.jobProfile : '',
-    noticePeriod: selectedEmployment?.noticePeriodId ? selectedEmployment?.noticePeriodId : '',
-    previousCompanyName: selectedEmployment?.companyName ? selectedEmployment?.companyName : '',    
-    previousDesignation: selectedEmployment?.designation ? selectedEmployment?.designation : '',
-    workedTillYear: selectedEmployment?.workedTillYear ? selectedEmployment?.workedTillYear : '',
-    workedTillMonth: selectedEmployment?.workedTillMonth ? selectedEmployment?.workedTillMonth : '',
-    location: selectedEmployment?.locationId ? selectedEmployment?.locationId : '',     
-    department: selectedEmployment?.departmentId ? selectedEmployment?.departmentId : '',
-    workedFromYear: selectedEmployment?.joiningDateYear ? selectedEmployment?.joiningDateYear : null,
-    workedFromMonth: selectedEmployment?.joiningDateMonth ? selectedEmployment?.joiningDateMonth : null,
-    monthlyStipend: selectedEmployment?.monthlyStipend ? selectedEmployment?.monthlyStipend : null,
-  })
 
   const dispatch = useAppDispatch();
 
   const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
-  const { success: keySkillsSuccess, keySkills  } = useAppSelector((state) => state.getKeySkills);
+  const { success: keySkillsSuccess, keySkills } = useAppSelector((state) => state.getKeySkills);
 
   const id = profileDashboard?.id;
-  
-  console.log("profileDashboard-->", profileDashboard);
-  console.log("selectedEmployment-->", selectedEmployment);
-  
 
+  const EmploymentDetailsSchema = yup.object({
+    currentEmployment: yup.string().required('Current Employment is required'),
+    employmentType: yup.string().required('Employment Type is required'),
+    jobProfile: yup.string().when("currentEmployment", {
+      //is: 'Yes' || 'No',
+      is: (currentEmployment: any) => {
+        return (currentEmployment === 'Yes' || currentEmployment === 'No') && true
+      },
+      then: () => yup.string().when("employmentType", {
+        is: 'Full Time',
+        then: (schema) => schema.required("Please enter Job Profile"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    skillsUsed: yup.object().when("currentEmployment", {
+      is: 'Yes',
+      then: () => yup.object().when("employmentType", {
+        is: 'Full Time',
+        then: (schema) => schema.required("Please select skills used"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    previousCompanyName: yup.object().when("currentEmployment", {
+      is: 'No',
+      then: () => yup.object().when("employmentType", {
+        //is: 'Full Time' || 'Internship',
+        is: (employmentType: any) => {
+          return (employmentType === 'Full Time' || employmentType === 'Internship') && true
+        },
+        then: (schema) => schema.required("Please select previous company"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    previousDesignation: yup.object().when("currentEmployment", {
+      is: 'No',
+      then: () => yup.object().when("employmentType", {
+        is: 'Full Time',
+        then: (schema) => schema.required("Please select previous designation"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    workedTillYear: yup.object().when("currentEmployment", {
+      is: 'No',
+      then: () => yup.object().when("employmentType", {
+        is: 'Full Time',
+        then: (schema) => schema.required("Please select worked till year"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    workedTillMonth: yup.object().when("currentEmployment", {
+      is: 'No',
+      then: () => yup.object().when("employmentType", {
+        is: 'Full Time',
+        then: (schema) => schema.required("Please select worked till month"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    department: yup.object().when("currentEmployment", {
+      //is: 'Yes' || 'No',
+      is: (currentEmployment: any) => {
+        return (currentEmployment === 'Yes' || currentEmployment === 'No') && true
+      },
+      then: () => yup.object().when("employmentType", {
+        is: 'Internship',
+        then: (schema) => schema.required("Please select department"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    workedFromYear: yup.object().when("currentEmployment", {
+      //is: 'Yes' || 'No',
+      is: (currentEmployment: any) => {
+        return (currentEmployment === 'Yes' || currentEmployment === 'No') && true
+      },
+      then: () => yup.object().when("employmentType", {
+        is: 'Internship',
+        then: (schema) => schema.required("Please select worked from year"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    workedFromMonth: yup.object().when("currentEmployment", {
+      //is: 'Yes' || 'No',
+      is: (currentEmployment: any) => {
+        return (currentEmployment === 'Yes' || currentEmployment === 'No') && true
+      },
+      then: () => yup.object().when("employmentType", {
+        is: 'Internship',
+        then: (schema) => schema.required("Please select worked from month"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    monthlyStipend: yup.number().when("currentEmployment", {
+      //is: 'Yes' || 'No',
+      is: (currentEmployment: any) => {
+        return (currentEmployment === 'Yes' || currentEmployment === 'No') && true
+      },
+      then: () => yup.number().when("employmentType", {
+        is: 'Internship',
+        then: (schema) => schema.required("Please enter the monthly stipend"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    currentCompanyName: yup.object().when("currentEmployment", {
+      is: 'Yes',
+      then: () => yup.object().when("employmentType", {
+        //is: ('Full Time' || 'Internship'),
+        is: (employmentType: any) => {
+          return (employmentType === 'Full Time' || employmentType === 'Internship') && true
+        },
+        then: (schema) => schema.required("Please select current company"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    currentDesignation: yup.object().when("currentEmployment", {
+      is: 'Yes',
+      then: () => yup.object().when("employmentType", {
+        is: 'Full Time',
+        then: (schema) => schema.required("Please select current designation"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    currentSalType: yup.object().when("currentEmployment", {
+      is: 'Yes',
+      then: () => yup.object().when("employmentType", {
+        //is: ('Full Time' || 'Internship'),
+        is: (employmentType: any) => {
+          return (employmentType === 'Full Time' || employmentType === 'Internship') && true
+        },
+        then: (schema) => schema.required("Please select currency type"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    currentSalary: yup.number().when("currentEmployment", {
+      is: 'Yes',
+      then: () => yup.number().when("employmentType", {
+        is: 'Full Time',
+        then: (schema) => schema.required("Please select current salary"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    noticePeriod: yup.object().when("currentEmployment", {
+      is: 'Yes',
+      then: () => yup.object().when("employmentType", {
+        is: 'Full Time',
+        then: (schema) => schema.required("Please select notice period"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    location: yup.object().when("currentEmployment", {
+      //is: 'Yes' || 'No',
+      is: (currentEmployment: any) => {
+        return (currentEmployment === 'Yes' || currentEmployment === 'No') && true
+      },
+      then: () => yup.object().when("employmentType", {
+        is: 'Internship',
+        then: (schema) => schema.required("Please select location"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    totalExpYears: yup.object().when("currentEmployment", {
+      is: 'Yes',
+      then: () => yup.object().when("employmentType", {
+        is: 'Full Time',
+        then: (schema) => schema.required("Please select total experience years"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    totalExpMonths: yup.object().when("currentEmployment", {
+      is: 'Yes',
+      then: () => yup.object().when("employmentType", {
+        is: 'Full Time',
+        then: (schema) => schema.required("Please select total experience months"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    joiningDateYear: yup.object().when("currentEmployment", {
+      //is: 'Yes' || 'No',
+      is: (currentEmployment: any) => {
+        return (currentEmployment === 'Yes' || currentEmployment === 'No') && true
+      },
+      then: () => yup.object().when("employmentType", {
+        is: 'Full Time',
+        then: (schema) => schema.required("Please select joining date year"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    joiningDateMonth: yup.object().when("currentEmployment", {
+      //is: 'Yes',
+      is: (currentEmployment: any) => {
+        return (currentEmployment === 'Yes' || currentEmployment === 'No') && true
+      },
+      then: () => yup.object().when("employmentType", {
+        is: 'Full Time',
+        then: (schema) => schema.required("Please select joining date month"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+  }).required();
 
   const {
     control,
@@ -116,29 +295,21 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
   } = useForm<IFormInputs>({
     defaultValues: {
       id: profileDashboard?.id && profileDashboard?.id,
-      currentEmployment: selectedEmployment?.isCurrentEmployment && selectedEmployment?.isCurrentEmployment === true ? 'Yes' :(selectedEmployment?.isCurrentEmployment === false ? 'No' : ''),
+      currentEmployment: selectedEmployment?.isCurrentEmployment && selectedEmployment?.isCurrentEmployment === true ? 'Yes' : (selectedEmployment?.isCurrentEmployment === false ? 'No' : ''),
       employmentType: selectedEmployment?.employmentType ? selectedEmployment?.employmentType : '',
       totalExpYears: selectedEmployment?.totalExpYears
         ? { value: selectedEmployment?.totalExpYears?.id, label: selectedEmployment?.totalExpYears?.title }
-        : '',
+        : {},
       totalExpMonths: selectedEmployment?.totalExpMonths
         ? { value: selectedEmployment?.totalExpMonths?.id, label: selectedEmployment?.totalExpMonths?.title }
-        : '',
+        : {},
       currentCompanyName: selectedEmployment?.companyName
         ? { value: currentCompany?.filter(({ id, title }: any) => title === selectedEmployment?.companyName && id), label: selectedEmployment?.companyName }
-        : '',
+        : {},
       currentDesignation: selectedEmployment?.designation
         //? selectedEmployment?.designation : '',
         ? { value: designation?.filter(({ id, title }: any) => title === selectedEmployment?.designation && id), label: selectedEmployment?.designation }
-        : '',
-      joiningDateYear: selectedEmployment?.joiningDateYear
-        //? selectedEmployment?.joiningDateYear : null,
-        ? { value: selectedEmployment?.joiningDateYear?.id, label: selectedEmployment?.joiningDateYear?.title }
-        : null,
-      joiningDateMonth: selectedEmployment?.joiningDateMonth
-        //? selectedEmployment?.joiningDateMonth : null,
-        ? { value: selectedEmployment?.joiningDateMonth?.id, label: selectedEmployment?.joiningDateMonth?.title }
-        : null,
+        : {},
       currentSalType: selectedEmployment?.currencyType
         //? selectedEmployment?.currencyType : '',
         ? { value: selectedEmployment?.currencyType?.id, label: selectedEmployment?.currencyType?.title }
@@ -152,26 +323,93 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
       noticePeriod: selectedEmployment?.noticePeriod
         //? selectedEmployment?.noticePeriod : '',
         ? { value: selectedEmployment?.noticePeriod?.id, label: selectedEmployment?.noticePeriod?.title }
+        : {},
+      previousCompanyName: selectedEmployment?.companyName
+        //? selectedEmployment?.companyName : '',    
+        ? { value: currentCompany?.filter(({ id, title }: any) => title === selectedEmployment?.companyName && id), label: selectedEmployment?.companyName }
         : '',
-      previousCompanyName: selectedEmployment?.companyName ? selectedEmployment?.companyName : '',    
-      previousDesignation: selectedEmployment?.designation ? selectedEmployment?.designation : '',
-      workedTillYear: selectedEmployment?.workedTillYear ? selectedEmployment?.workedTillYear : '',
-      workedTillMonth: selectedEmployment?.workedTillMonth ? selectedEmployment?.workedTillMonth : '',
-      location: selectedEmployment?.locationId ? selectedEmployment?.locationId : '',     
-      department: selectedEmployment?.departmentId ? selectedEmployment?.departmentId : '',
-      workedFromYear: selectedEmployment?.joiningDateYear ? selectedEmployment?.joiningDateYear : null,
-      workedFromMonth: selectedEmployment?.joiningDateMonth ? selectedEmployment?.joiningDateMonth : null,
+      previousDesignation: selectedEmployment?.designation
+        //? selectedEmployment?.designation : '',
+        ? { value: designation?.filter(({ id, title }: any) => title === selectedEmployment?.designation && id), label: selectedEmployment?.designation }
+        : {},
+      joiningDateYear: selectedEmployment?.joiningDateYear
+        //? selectedEmployment?.joiningDateYear : null,
+        ? { value: selectedEmployment?.joiningDateYear?.id, label: selectedEmployment?.joiningDateYear?.title }
+        : null,
+      joiningDateMonth: selectedEmployment?.joiningDateMonth
+        //? selectedEmployment?.joiningDateMonth : null,
+        ? { value: selectedEmployment?.joiningDateMonth?.id, label: selectedEmployment?.joiningDateMonth?.title }
+        : null,
+      workedFromMonth: selectedEmployment?.workedFromMonth
+        //? selectedEmployment?.joiningDateMonth
+        ? {
+          value: filterArray(joiningDateYear, selectedEmployment?.workedFromMonth)?.[0]?.id
+          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
+          , label: filterArray(joiningDateYear, selectedEmployment?.workedFromMonth)?.[0]?.title
+          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
+        }
+        : null,
+      workedTillYear: selectedEmployment?.workedTillYear
+        //? selectedEmployment?.workedTillYear : '',
+        ? {
+          value: filterArray(joiningDateYear, selectedEmployment?.workedTillYear)?.[0]?.id
+          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
+          , label: filterArray(joiningDateYear, selectedEmployment?.workedTillYear)?.[0]?.title
+          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
+        }
+        : '',
+      workedTillMonth: selectedEmployment?.workedTillMonth
+        ? {
+          value: filterArray(joiningDateYear, selectedEmployment?.workedTillMonth)?.[0]?.id
+          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
+          , label: filterArray(joiningDateYear, selectedEmployment?.workedTillMonth)?.[0]?.title
+          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
+        }
+        : '',
+      location: selectedEmployment?.location
+        //? selectedEmployment?.locationId : '',     
+        ? { value: selectedEmployment?.location?.id, label: selectedEmployment?.location?.title }
+        : null,
+      department: selectedEmployment?.department
+        //? selectedEmployment?.departmentId : '',
+        ? { value: selectedEmployment?.department?.id, label: selectedEmployment?.department?.title }
+        : null,
       monthlyStipend: selectedEmployment?.monthlyStipend ? selectedEmployment?.monthlyStipend : null,
-     }
+    },
+    resolver: yupResolver(EmploymentDetailsSchema as any)
   });
 
-  // const {
-  //   //register,
-  //   handleSubmit,
-  //   //formState: { errors }
-  // } = useForm<IFormInputs>({
-  //   //resolver: yupResolver(ResumeSchema)
-  // });
+  useEffect(() => {
+    const workedFromYear = filterArray(joiningDateYear, selectedEmployment?.workedFromYear)
+    const workedFromMonth = filterArray(joiningDateMonth, selectedEmployment?.workedFromMonth)
+    const workedTillYear = filterArray(joiningDateYear, selectedEmployment?.workedTillYear)
+    const workedTillMonth = filterArray(joiningDateMonth, selectedEmployment?.workedTillMonth)
+
+    setValue('workedFromYear', selectedEmployment?.workedFromYear &&
+    {
+      value: workedFromYear?.[0]?.id,
+      label: workedFromYear?.[0]?.title
+    }
+    );
+    setValue('workedFromMonth', selectedEmployment?.workedFromMonth &&
+    {
+      value: workedFromMonth?.[0]?.id,
+      label: workedFromMonth?.[0]?.title
+    }
+    );
+    setValue('workedTillYear', selectedEmployment?.workedTillYear &&
+    {
+      value: workedTillYear?.[0]?.id,
+      label: workedTillYear?.[0]?.title
+    }
+    );
+    setValue('workedTillMonth', selectedEmployment?.workedTillMonth &&
+    {
+      value: workedTillMonth?.[0]?.id,
+      label: workedTillMonth?.[0]?.title
+    }
+    );
+  }, [selectedEmployment, setValue, joiningDateYear])
 
   useEffect(() => {
     dispatch(keySkillsGet());
@@ -180,7 +418,7 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
   useEffect(() => {
     setSkillsUsed(keySkills as any)
   }, [keySkills])
-  
+
   useEffect(() => {
     (async () => {
       const courseList = await getCourseList()
@@ -215,24 +453,6 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
       setLocationList(locationList as any)
     })();
   }, [])
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const eductionTypeList = await getEducationTypeList()
-  //     console.log("educationDetails-->", educationDetails);
-  //     const coursesString = [] as any
-  //     if (Object.keys(educationDetails).length && !Object.keys(selectedEmployment).length && !isEdit) {
-  //       educationDetails.map((item: any) => {
-  //         coursesString.push(item.education)
-  //         const filteredCourses = eductionTypeList.filter((item1: any) => !coursesString.includes(item1.title))
-  //         console.log("filteredCourses-->", filteredCourses);
-  //         setEducationType(filteredCourses as any)
-  //       })
-  //     } else {
-  //       setEducationType(eductionTypeList as any)
-  //     }
-  //   })();
-  // }, [])
 
   useEffect(() => {
     (async () => {
@@ -288,163 +508,110 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
     })();
   }, [])
 
-  useEffect(() => {
-    (async () => {
-      const instituteList = await getInstituteList()
-      setInstitute(instituteList as any)
-    })();
-  }, [])
-
-  useEffect(() => {
-    (async () => {
-      const passOutYearList = await getPassOutYearList()
-      setPassOutYear(passOutYearList as any)
-    })();
-  }, [])
-
-  const handleChange = (event: any) => {
-    const { name, value, id, checked } = event.target;
-    console.log("name and value-->", event, id, checked, name, value);
-    if (name === "currentEmployment" || name === "employmentType") {
-      setEmploymentData({ ...employmentData, [name]: id as any })
-    } else {
-      setEmploymentData({ ...employmentData, [name]: value as any })
-    }
-  }
-
-  console.log('watch default', watch('currentEmployment'))
-  console.log('watch default', watch('employmentType'))
-  
   // OnSubmit button
   const onSubmit = (data: IFormInputs) => {
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr',
-      'May', 'June', 'July', 'Aug',
-      'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-    
-    console.log("data-->", data)
-    //const joiningDateMonthArray = data?.joiningDateMonth?.value;
+    // const months = [
+    //   'Jan', 'Feb', 'Mar', 'Apr',
+    //   'May', 'June', 'July', 'Aug',
+    //   'Sep', 'Oct', 'Nov', 'Dec'
+    // ];
 
-
-    //let empData = {};
-    const empData:any = { 
+    const empData: any = {
       //...(data?.id && { id: data?.id }),
-      id:selectedEmployment?.id ? selectedEmployment?.id : null,
-      jobSeekerProfile:id,
+      id: selectedEmployment?.id ? selectedEmployment?.id : null,
+      jobSeekerProfile: id,
       isCurrentEmployment: data.currentEmployment === "Yes" ? true : false,
-      employmentType: data.employmentType,
-      totalExpYears: data.totalExpYears.value,
-      totalExpMonths: data.totalExpMonths.value,
-      companyName: data.currentCompanyName ? data?.currentCompanyName?.label : data.previousCompanyName?.label,
-      designation: data.currentDesignation ? data.currentDesignation?.label : data.previousDesignation?.label,
-      joiningDateYear: data.joiningDateYear ? data.joiningDateYear?.value : data.workedFromYear?.value,
-      joiningDateMonth: data.joiningDateMonth ? (data.joiningDateMonth?.value as any) : (data.workedFromMonth?.value as any),
+      employmentType: data?.employmentType,
+      totalExpYears: data?.totalExpYears?.value,
+      totalExpMonths: data?.totalExpMonths?.value,
+      companyName: data.currentEmployment === "Yes" ? data?.currentCompanyName?.label : data.previousCompanyName?.label,
+      designation: data.currentEmployment === "Yes" ? data.currentDesignation?.label : data.previousDesignation?.label,
+      joiningDateYear: data.joiningDateYear ? data.joiningDateYear?.value : null,
+      joiningDateMonth: data.joiningDateMonth ? (data.joiningDateMonth?.value as any) : null,
       currencyType: data.currentSalType?.value,
       currentSalary: data.currentSalary,
       jobSeekerProfileEmploymentSkills: [data?.skillsUsed?.value],
       jobProfile: data.jobProfile,
-      noticePeriod: data.noticePeriod?.value,      
-    //previousCompanyName: data.companyName,    
-    //previousDesignation: data.designation,
-    workedTillYear: data.workedTillYear ? (data.workedTillYear?.value as any) : null,
-    workedTillMonth: data.workedTillMonth ? (data.workedTillMonth?.value as any) : null,
-    location: data.location?.value,     
-    department: data.department?.value,
-    //joiningDateYear: data.workedFromYear,
-    // workedFromMonth: data.joiningDateMonth,
-    monthlyStipend: data.monthlyStipend,
+      noticePeriod: data.noticePeriod?.value,
+      //previousCompanyName: data.companyName,    
+      //previousDesignation: data.designation,
+      workedTillYear: data.workedTillYear ? (data.workedTillYear?.value as any) : null,
+      workedTillMonth: data.workedTillMonth ? (data.workedTillMonth?.value as any) : null,
+      location: data.location?.value,
+      department: data.department?.value,
+      workedFromYear: data.workedFromYear ? (data.workedFromYear?.value as any) : null,
+      workedFromMonth: data.workedFromMonth ? (data.workedFromMonth?.value as any) : null,
+      monthlyStipend: data.monthlyStipend,
     }
-   
-    console.log("empData-->", empData);
 
     dispatch(jobSeekerEmploymentAdd(empData as any));
   };
 
-  console.log("employmentData?.currentEmployment-->", employmentData?.currentEmployment);
-  console.log("employmentData?.employmentType-->", employmentData?.employmentType);
-
   return (
     <div>
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="text-lg font-medium text-gray-900">Add Employment</h1>
+        <h1 className="mb-2 text-lg font-medium text-gray-900">Add Employment</h1>
         <div className="col-span-full mb-4">
           <label htmlFor="currentEmployment" className="block text-sm font-medium leading-6 text-gray-900">Is this your current employment?</label>
           <div className="grid grid-cols-4 gap-4 mt-2 mt-2 flex justify-between items-center">
-            {/* <div className="col-span-2 flex items-center">
-              <input onChange={handleChange} defaultChecked={selectedEmployment && selectedEmployment?.courseType === "fullTime"} id="yes" name="currentEmployment" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600 mr-1" />
-              <label htmlFor="fullTime" className="text-sm font-medium leading-6 text-gray-900">Yes</label>
-            </div>
-            <div className="col-span-2 flex items-center">
-              <input onChange={handleChange} defaultChecked={selectedEmployment && selectedEmployment?.courseType === "partTime"} id="no" name="currentEmployment" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600 mr-1" />
-              <label htmlFor="partTime" className="text-sm font-medium leading-6 text-gray-900">No</label>
-            </div> */}
             {
-            currentEmployment.map((option) => (
-              <div key={option}>
-                <label className="mr-3">
-                  {option}
-                  <Controller
-                    name="currentEmployment"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                      <input
-                        type="radio"
-                        className="ml-5"
-                        {...field}
-                        checked={getValues("currentEmployment") === option}
-                        onChange={() => {
-                          setValue("currentEmployment", option);
-                        }}
-                      />
-                    )}
-                  />
-                </label>
+              currentEmployment.map((option) => (
+                <div key={option}>
+                  <label className="mr-3">
+                    {option}
+                    <Controller
+                      name="currentEmployment"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <input
+                          type="radio"
+                          className="ml-5"
+                          {...field}
+                          checked={getValues("currentEmployment") === option}
+                          onChange={() => {
+                            setValue("currentEmployment", option);
+                          }}
+                        />
+                      )}
+                    />
+                  </label>
 
-              </div>
-            ))
-          }
+                </div>
+              ))
+            }
           </div>
         </div>
 
         <div className="col-span-full mb-4">
           <label htmlFor="employmentType" className="block text-sm font-medium leading-6 text-gray-900">Employment type</label>
           <div className="grid grid-cols-4 gap-4 mt-2 flex justify-between items-center">
-            {/* <div className="col-span-2 flex items-center">
-              <input onChange={handleChange} defaultChecked={selectedEmployment && selectedEmployment?.courseType === "fullTime"} id="fullTime" name="employmentType" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600 mr-1" />
-              <label htmlFor="fullTime" className="text-sm font-medium leading-6 text-gray-900">Full Time</label>
-            </div>
-            <div className="col-span-2 flex items-center">
-              <input onChange={handleChange} defaultChecked={selectedEmployment && selectedEmployment?.courseType === "partTime"} id="internship" name="employmentType" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600 mr-1" />
-              <label htmlFor="internship" className="text-sm font-medium leading-6 text-gray-900">Internship</label>
-            </div> */}
             {
-            employmentType.map((option) => (
-              <div key={option}>
-                <label className="mr-3">
-                  {option}
-                  <Controller
-                    name="employmentType"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                      <input
-                        type="radio"
-                        className="ml-5"
-                        {...field}
-                        checked={getValues("employmentType") === option}
-                        onChange={() => {
-                          setValue("employmentType", option);
-                        }}
-                      />
-                    )}
-                  />
-                </label>
+              employmentType.map((option) => (
+                <div key={option}>
+                  <label className="mr-3">
+                    {option}
+                    <Controller
+                      name="employmentType"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <input
+                          type="radio"
+                          className="ml-5"
+                          {...field}
+                          checked={getValues("employmentType") === option}
+                          onChange={() => {
+                            setValue("employmentType", option);
+                          }}
+                        />
+                      )}
+                    />
+                  </label>
 
-              </div>
-            ))
-          }
+                </div>
+              ))
+            }
           </div>
         </div>
 
@@ -453,46 +620,36 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
             <label htmlFor="totalExp" className="block text-sm font-medium leading-6 text-gray-900">Total Experience</label>
             <div className="grid grid-cols-4 gap-4 ">
               <div className="mt-1 col-span-2">
-                {/* <select onChange={handleChange} id="totalExpYears" name="totalExpYears" autoComplete="totalExpYears" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEmployment && selectedEmployment?.education !== ""}>
-                  <option>select years</option>
-                  {
-                    experienceYears?.map((item: any) => <option selected={isEdit && selectedEmployment && selectedEmployment?.education === item?.title}>{item?.title}</option>)
-                  }
-                </select> */}
                 <Controller
-                control={control}
-                name="totalExpYears"
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    isClearable
-                    placeholder="select experience years"
-                    options={experienceYears?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                    defaultValue={watch("totalExpYears")}
-                  />
-                )}
-              />
+                  control={control}
+                  name="totalExpYears"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      placeholder="select experience years"
+                      options={experienceYears?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={watch("totalExpYears")}
+                    />
+                  )}
+                />
+                {errors.totalExpYears && <p className="font-normal text-xs text-red-500">{errors?.totalExpYears?.message as any}</p>}
               </div>
               <div className="mt-1 col-span-2">
-                {/* <select onChange={handleChange} id="totalExpMonths" name="totalExpMonths" autoComplete="totalExpMonths" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEmployment && selectedEmployment?.education !== ""}>
-                  <option>select months</option>
-                  {
-                    experienceMonths?.map((item: any) => <option selected={isEdit && selectedEmployment && selectedEmployment?.education === item?.title}>{item?.title}</option>)
-                  }
-                </select> */}
                 <Controller
-                control={control}
-                name="totalExpMonths"
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    isClearable
-                    placeholder="select experience months"
-                    options={experienceMonths?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                    defaultValue={watch("totalExpMonths")}
-                  />
-                )}
-              />
+                  control={control}
+                  name="totalExpMonths"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      placeholder="select experience months"
+                      options={experienceMonths?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={watch("totalExpMonths")}
+                    />
+                  )}
+                />
+                {errors.totalExpMonths && <p className="font-normal text-xs text-red-500">Please select total months</p>}
               </div>
             </div>
           </div>
@@ -502,7 +659,6 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
           <div className="col-span-full mb-4">
             <label htmlFor="currentCompanyName" className="block text-sm font-medium leading-6 text-gray-900">Current Company Name</label>
             <div className="mt-2">
-              {/* <input onKeyUp={handleChange} defaultValue={selectedEmployment && selectedEmployment?.percentage} type="text" name="currentCompanyName" id="currentCompanyName" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" /> */}
               <Controller
                 control={control}
                 name="currentCompanyName"
@@ -516,6 +672,7 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
                   />
                 )}
               />
+              {errors.currentCompanyName && <p className="font-normal text-xs text-red-500">{errors.currentCompanyName.message as string}</p>}
             </div>
           </div>
         }
@@ -524,7 +681,6 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
           <div className="col-span-full mb-4">
             <label htmlFor="previousCompanyName" className="block text-sm font-medium leading-6 text-gray-900">Pevious Company Name</label>
             <div className="mt-2">
-              {/* <input onKeyUp={handleChange} defaultValue={selectedEmployment && selectedEmployment?.percentage} type="text" name="previousCompanyName" id="previousCompanyName" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" /> */}
               <Controller
                 control={control}
                 name="previousCompanyName"
@@ -538,6 +694,7 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
                   />
                 )}
               />
+              {errors.previousCompanyName && <p className="font-normal text-xs text-red-500">{errors.previousCompanyName.message as string}</p>}
             </div>
           </div>
         }
@@ -546,20 +703,20 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
           <div className="col-span-full mb-4">
             <label htmlFor="location" className="block text-sm font-medium leading-6 text-gray-900">Location</label>
             <div className="mt-2">
-              {/* <input onKeyUp={handleChange} defaultValue={selectedEmployment && selectedEmployment?.percentage} type="text" name="location" id="location" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" /> */}
               <Controller
-            control={control}
-            name="location"
-            render={({ field }) => (
-              <Select
-                {...field}
-                isClearable
-                placeholder="Tell us about your location"
-                options={locationList?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                defaultValue={watch("location")}
+                control={control}
+                name="location"
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    isClearable
+                    placeholder="Tell us about your location"
+                    options={locationList?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                    defaultValue={watch("location")}
+                  />
+                )}
               />
-            )}
-          />
+              {errors.location && <p className="font-normal text-xs text-red-500">{errors.location.message as string}</p>}
             </div>
           </div>
         }
@@ -568,7 +725,6 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
           <div className="col-span-full mb-4">
             <label htmlFor="department" className="block text-sm font-medium leading-6 text-gray-900">Department</label>
             <div className="mt-2">
-              {/* <input onKeyUp={handleChange} defaultValue={selectedEmployment && selectedEmployment?.percentage} type="text" name="department" id="department" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" /> */}
               <Controller
                 control={control}
                 name="department"
@@ -582,6 +738,7 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
                   />
                 )}
               />
+              {errors.department && <p className="font-normal text-xs text-red-500">{errors.department.message as string}</p>}
             </div>
           </div>
         }
@@ -590,7 +747,6 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
           <div className="col-span-full mb-4">
             <label htmlFor="currentDesignation" className="block text-sm font-medium leading-6 text-gray-900">Current Designation</label>
             <div className="mt-2">
-              {/* <input onKeyUp={handleChange} defaultValue={selectedEmployment && selectedEmployment?.percentage} type="text" name="currentDesignation" id="currentDesignation" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" /> */}
               <Controller
                 control={control}
                 name="currentDesignation"
@@ -604,6 +760,7 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
                   />
                 )}
               />
+              {errors.currentDesignation && <p className="font-normal text-xs text-red-500">{errors.currentDesignation.message as string}</p>}
             </div>
           </div>
         }
@@ -612,7 +769,6 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
           <div className="col-span-full mb-4">
             <label htmlFor="previousDesignation" className="block text-sm font-medium leading-6 text-gray-900">Previous Designation</label>
             <div className="mt-2">
-              {/* <input onKeyUp={handleChange} defaultValue={selectedEmployment && selectedEmployment?.percentage} type="text" name="previousDesignation" id="previousDesignation" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" /> */}
               <Controller
                 control={control}
                 name="previousDesignation"
@@ -626,6 +782,7 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
                   />
                 )}
               />
+              {errors.previousDesignation && <p className="font-normal text-xs text-red-500">{errors.previousDesignation.message as string}</p>}
             </div>
           </div>
         }
@@ -635,46 +792,36 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
             <label htmlFor="joiningDate" className="block text-sm font-medium leading-6 text-gray-900">Joining Date</label>
             <div className="grid grid-cols-4 gap-4 ">
               <div className="mt-1 col-span-2">
-                {/* <select onChange={handleChange} id="joiningDateYear" name="joiningDateYear" autoComplete="joiningDateYear" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEmployment && selectedEmployment?.education !== ""}>
-                  <option>select year</option>
-                  {
-                    joiningDateYear?.map((item: any) => <option selected={isEdit && selectedEmployment && selectedEmployment?.education === item?.title}>{item?.title}</option>)
-                  }
-                </select> */}
                 <Controller
-                control={control}
-                name="joiningDateYear"
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    isClearable
-                    placeholder="select joining year"
-                    options={joiningDateYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                    defaultValue={watch("joiningDateYear")}
-                  />
-                )}
-              />
+                  control={control}
+                  name="joiningDateYear"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      placeholder="select joining year"
+                      options={joiningDateYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={watch("joiningDateYear")}
+                    />
+                  )}
+                />
+                {errors.joiningDateYear && <p className="font-normal text-xs text-red-500">{errors.joiningDateYear.message as string}</p>}
               </div>
               <div className="mt-1 col-span-2">
-                {/* <select onChange={handleChange} id="joiningDateMonth" name="joiningDateMonth" autoComplete="joiningDateMonth" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEmployment && selectedEmployment?.education !== ""}>
-                  <option>select month</option>
-                  {
-                    joiningDateMonth?.map((item: any) => <option selected={isEdit && selectedEmployment && selectedEmployment?.education === item?.title}>{item?.title}</option>)
-                  }
-                </select> */}
                 <Controller
-                control={control}
-                name="joiningDateMonth"
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    isClearable
-                    placeholder="select joining month"
-                    options={joiningDateMonth?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                    defaultValue={watch("joiningDateMonth")}
-                  />
-                )}
-              />
+                  control={control}
+                  name="joiningDateMonth"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      placeholder="select joining month"
+                      options={joiningDateMonth?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={watch("joiningDateMonth")}
+                    />
+                  )}
+                />
+                {errors.joiningDateMonth && <p className="font-normal text-xs text-red-500">{errors.joiningDateMonth.message as string}</p>}
               </div>
             </div>
           </div>
@@ -685,47 +832,36 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
             <label htmlFor="workingFrom" className="block text-sm font-medium leading-6 text-gray-900">Working From</label>
             <div className="grid grid-cols-4 gap-4 ">
               <div className="mt-1 col-span-2">
-                {/* <select onChange={handleChange} id="workingFrom" name="workingFrom" autoComplete="workingFrom" className="block 
-                w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEmployment && selectedEmployment?.education !== ""}>
-                  <option>select year</option>
-                  {
-                    joiningDateYear?.map((item: any) => <option selected={isEdit && selectedEmployment && selectedEmployment?.education === item?.title}>{item?.title}</option>)
-                  }
-                </select> */}
                 <Controller
-                control={control}
-                name="workedFromYear"
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    isClearable
-                    placeholder="select working from year"
-                    options={joiningDateYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                    defaultValue={watch("workedFromYear")}
-                  />
-                )}
-              />
+                  control={control}
+                  name="workedFromYear"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      placeholder="select working from year"
+                      options={joiningDateYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={watch("workedFromYear")}
+                    />
+                  )}
+                />
+                {errors.workedFromYear && <p className="font-normal text-xs text-red-500">{errors.workedFromYear.message as string}</p>}
               </div>
               <div className="mt-1 col-span-2">
-                {/* <select onChange={handleChange} id="joiningDateMonth" name="joiningDateMonth" autoComplete="joiningDateMonth" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEmployment && selectedEmployment?.education !== ""}>
-                  <option>select month</option>
-                  {
-                    joiningDateMonth?.map((item: any) => <option selected={isEdit && selectedEmployment && selectedEmployment?.education === item?.title}>{item?.title}</option>)
-                  }
-                </select> */}
                 <Controller
-                control={control}
-                name="workedFromMonth"
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    isClearable
-                    placeholder="select worked from month"
-                    options={joiningDateMonth?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                    defaultValue={watch("workedFromMonth")}
-                  />
-                )}
-              />
+                  control={control}
+                  name="workedFromMonth"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      placeholder="select worked from month"
+                      options={joiningDateMonth?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={watch("workedFromMonth")}
+                    />
+                  )}
+                />
+                {errors.workedFromMonth && <p className="font-normal text-xs text-red-500">{errors.workedFromMonth.message as string}</p>}
               </div>
             </div>
           </div>
@@ -736,46 +872,36 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
             <label htmlFor="workedTill" className="block text-sm font-medium leading-6 text-gray-900">Worked Till</label>
             <div className="grid grid-cols-4 gap-4 ">
               <div className="mt-1 col-span-2">
-                {/* <select onChange={handleChange} id="workedTillYear" name="workedTillYear" autoComplete="workedTillYear" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEmployment && selectedEmployment?.education !== ""}>
-                  <option>select year</option>
-                  {
-                    joiningDateYear?.map((item: any) => <option selected={isEdit && selectedEmployment && selectedEmployment?.education === item?.title}>{item?.title}</option>)
-                  }
-                </select> */}
                 <Controller
-                control={control}
-                name="workedTillYear"
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    isClearable
-                    placeholder="select worked till year"
-                    options={joiningDateYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                    defaultValue={watch("workedTillYear")}
-                  />
-                )}
-              />
+                  control={control}
+                  name="workedTillYear"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      placeholder="select worked till year"
+                      options={joiningDateYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={watch("workedTillYear")}
+                    />
+                  )}
+                />
+                {errors.workedTillYear && <p className="font-normal text-xs text-red-500">{errors.workedTillYear.message as string}</p>}
               </div>
               <div className="mt-1 col-span-2">
-                {/* <select onChange={handleChange} id="workedTillMonth" name="workedTillMonth" autoComplete="workedTillMonth" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEmployment && selectedEmployment?.education !== ""}>
-                  <option>select month</option>
-                  {
-                    joiningDateMonth?.map((item: any) => <option selected={isEdit && selectedEmployment && selectedEmployment?.education === item?.title}>{item?.title}</option>)
-                  }
-                </select> */}
                 <Controller
-                control={control}
-                name="workedTillMonth"
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    isClearable
-                    placeholder="select worked till month"
-                    options={joiningDateMonth?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                    defaultValue={watch("workedTillMonth")}
-                  />
-                )}
-              />
+                  control={control}
+                  name="workedTillMonth"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      placeholder="select worked till month"
+                      options={joiningDateMonth?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={watch("workedTillMonth")}
+                    />
+                  )}
+                />
+                {errors.workedTillMonth && <p className="font-normal text-xs text-red-500">{errors.workedTillMonth.message as string}</p>}
               </div>
             </div>
           </div>
@@ -786,41 +912,36 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
             <label htmlFor="monthlyStipend" className="block text-sm font-medium leading-6 text-gray-900">Monthly Stipend</label>
             <div className="grid grid-cols-8 gap-4 ">
               <div className="mt-1 col-span-1">
-                {/* <select onChange={handleChange} id="monthlyStipendType" name="monthlyStipendType" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEmployment && selectedEmployment?.education !== ""}>
-                  <option>select currency type</option>
-                  {
-                    currency?.map((item: any) => <option selected={isEdit && selectedEmployment && selectedEmployment?.education === item?.title}>{item?.title}</option>)
-                  }
-                </select> */}
                 <Controller
-                control={control}
-                name="currentSalType"
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    isClearable
-                    placeholder=""
-                    options={currency?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                    defaultValue={watch("currentSalType")}
-                  />
-                )}
-              />
+                  control={control}
+                  name="currentSalType"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      //isClearable
+                      placeholder=""
+                      options={currency?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={watch("currentSalType")}
+                    />
+                  )}
+                />
+                {errors.currentSalType && <p className="font-normal text-xs text-red-500">{errors.currentSalType.message as string}</p>}
               </div>
               <div className="mt-1 col-span-7">
-                {/* <input onKeyUp={handleChange} defaultValue={selectedEmployment && selectedEmployment?.percentage} type="number" name="monthlyStipend" id="monthlyStipend" autoComplete="monthlyStipend" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" /> */}
                 <Controller
-            name="monthlyStipend"
-            control={control}
-            //defaultValue={userData?.name}
-            render={({ field }) => (
-              <input
-                type="number"
-                {...field}
-                className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5 mt-1"
-                readOnly={false}
-              />
-            )}
-          />
+                  name="monthlyStipend"
+                  control={control}
+                  //defaultValue={userData?.name}
+                  render={({ field }) => (
+                    <input
+                      type="number"
+                      {...field}
+                      className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5 mt-1"
+                      readOnly={false}
+                    />
+                  )}
+                />
+                {errors.monthlyStipend && <p className="font-normal text-xs text-red-500">{errors.monthlyStipend.message as string}</p>}
               </div>
             </div>
           </div>
@@ -833,41 +954,36 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
             <label htmlFor="currentSalary" className="block text-sm font-medium leading-6 text-gray-900">Current Salary</label>
             <div className="grid grid-cols-8 gap-4 ">
               <div className="mt-1 col-span-1">
-                {/* <select onChange={handleChange} id="currentSalType" name="currentSalType" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEmployment && selectedEmployment?.education !== ""}>
-                  <option>select currency type</option>
-                  {
-                    currency?.map((item: any) => <option selected={isEdit && selectedEmployment && selectedEmployment?.education === item?.title}>{item?.title}</option>)
-                  }
-                </select> */}
                 <Controller
-                control={control}
-                name="currentSalType"
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    //isClearable
-                    placeholder=""
-                    options={currency?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                    defaultValue={watch("currentSalType")}
-                  />
-                )}
-              />
+                  control={control}
+                  name="currentSalType"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      //isClearable
+                      placeholder=""
+                      options={currency?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={watch("currentSalType")}
+                    />
+                  )}
+                />
+                {errors.currentSalType && <p className="font-normal text-xs text-red-500">{errors.currentSalType.message as string}</p>}
               </div>
               <div className="mt-1 col-span-7">
-                {/* <input onKeyUp={handleChange} defaultValue={selectedEmployment && selectedEmployment?.percentage} type="number" name="currentSalary" id="currentSalary" autoComplete="currentSalary" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" /> */}
                 <Controller
-            name="currentSalary"
-            control={control}
-            //defaultValue={userData?.name}
-            render={({ field }) => (
-              <input
-                type="number"
-                {...field}
-                className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5 mt-1"
-                readOnly={false}
-              />
-            )}
-          />
+                  name="currentSalary"
+                  control={control}
+                  //defaultValue={userData?.name}
+                  render={({ field }) => (
+                    <input
+                      type="number"
+                      {...field}
+                      className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5 mt-1"
+                      readOnly={false}
+                    />
+                  )}
+                />
+                {errors.currentSalary && <p className="font-normal text-xs text-red-500">{errors.currentSalary.message as string}</p>}
               </div>
             </div>
           </div>
@@ -876,9 +992,6 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
         {watch('currentEmployment') === "Yes" && watch('employmentType') === "Full Time" &&
           <div className="col-span-full mb-4">
             <label htmlFor="skillsUsed" className="block text-sm font-medium leading-6 text-gray-900">Skills Used</label>
-            {/* <div className="mt-2">
-              <input onKeyUp={handleChange} defaultValue={selectedEmployment && selectedEmployment?.percentage} type="text" name="skillsUsed" id="skillsUsed" autoComplete="skillsUsed" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-            </div> */}
             <div className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-lg  mb-6">
               <Controller
                 control={control}
@@ -894,6 +1007,7 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
                 )}
               />
             </div>
+            {errors.skillsUsed && <p className="font-normal text-xs text-red-500">{errors.skillsUsed.message as string}</p>}
           </div>
         }
 
@@ -901,19 +1015,19 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
           <div className="col-span-full mb-4">
             <label htmlFor="jobProfile" className="block text-sm font-medium leading-6 text-gray-900">Job Profile</label>
             <div className="mt-2">
-              {/* <textarea onKeyUp={handleChange} defaultValue={selectedEmployment && selectedEmployment?.percentage} name="jobProfile" id="jobProfile" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" /> */}
               <Controller
-            name="jobProfile"
-            control={control}
-            //defaultValue={userData?.name}
-            render={({ field }) => (
-              <textarea
-                {...field}
-                className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5 mt-1"
-                readOnly={false}
+                name="jobProfile"
+                control={control}
+                //defaultValue={userData?.name}
+                render={({ field }) => (
+                  <textarea
+                    {...field}
+                    className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5 mt-1"
+                    readOnly={false}
+                  />
+                )}
               />
-            )}
-          />
+              {errors.jobProfile && <p className="font-normal text-xs text-red-500">{errors.jobProfile.message as string}</p>}
             </div>
           </div>
         }
@@ -922,12 +1036,6 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
           <div className="col-span-full mb-4">
             <label htmlFor="percentage" className="block text-sm font-medium leading-6 text-gray-900">Notice Period</label>
             <div className="mt-2">
-              {/* <select onChange={handleChange} id="noticePeriod" name="noticePeriod" autoComplete="noticePeriod" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" disabled={isEdit && selectedEmployment && selectedEmployment?.education !== ""}>
-                <option>select notice period</option>
-                {
-                  noticePeriod?.map((item: any) => <option selected={isEdit && selectedEmployment && selectedEmployment?.education === item?.title}>{item?.title}</option>)
-                }
-              </select> */}
               <Controller
                 control={control}
                 name="noticePeriod"
@@ -941,6 +1049,7 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
                   />
                 )}
               />
+              {errors.noticePeriod && <p className="font-normal text-xs text-red-500">{errors.noticePeriod.message as string}</p>}
             </div>
           </div>
         }
