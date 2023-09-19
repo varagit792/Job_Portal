@@ -4,7 +4,7 @@ import CreateProfile from '../../../assets/svg/createProfile.svg';
 import CreateProfile1 from '../../../assets/svg/createProfile1.svg';
 import SearchIcon from '../../../assets/svg/searchIcon.svg';
 import ArrowRight from '../../../assets/svg/ArrowRight.svg';
-import compenyBrand from '../../../assets/png/compenyBrand.png';
+import companyBrand from '../../../assets/png/companyBrand.png';
 import ThreeDots from '../../../assets/svg/threeDots.svg';
 import BookMark from '../../../assets/svg/bookMark.svg';
 import CreateContactIcons from '../../../assets/svg/CreateContactIcons.svg';
@@ -107,7 +107,7 @@ const LandingPage = () => {
                 >
                     <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
                         <div className="flex items-start justify-between mb-3">
-                            <img src={compenyBrand} alt="compenyBrand" />
+                            <img src={companyBrand} alt="companyBrand" />
                             <div>
                                 <button className="p-2">
                                     <img src={BookMark} alt="BookMark" />
@@ -136,7 +136,7 @@ const LandingPage = () => {
                     </div>
                     <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
                         <div className="flex items-start justify-between mb-3">
-                            <img src={compenyBrand} alt="compenyBrand" />
+                            <img src={companyBrand} alt="companyBrand" />
                             <div>
                                 <button className="p-2">
                                     <img src={BookMark} alt="BookMark" />
@@ -165,7 +165,7 @@ const LandingPage = () => {
                     </div>
                     <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
                         <div className="flex items-start justify-between mb-3">
-                            <img src={compenyBrand} alt="compenyBrand" />
+                            <img src={companyBrand} alt="companyBrand" />
                             <div>
                                 <button className="p-2">
                                     <img src={BookMark} alt="BookMark" />
@@ -194,7 +194,7 @@ const LandingPage = () => {
                     </div>
                     <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
                         <div className="flex items-start justify-between mb-3">
-                            <img src={compenyBrand} alt="compenyBrand" />
+                            <img src={companyBrand} alt="companyBrand" />
                             <div>
                                 <button className="p-2">
                                     <img src={BookMark} alt="BookMark" />
@@ -289,7 +289,7 @@ const LandingPage = () => {
                 >
                     <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 mb-5">
                         <div className="flex items-start justify-between mb-3">
-                            <img src={compenyBrand} alt="compenyBrand" />
+                            <img src={companyBrand} alt="companyBrand" />
                             <button className="px-3 py-2 bg-gray-200 rounded-md text-xs">
                                 15 Jobs
                             </button>
@@ -310,7 +310,7 @@ const LandingPage = () => {
                     </div>
                     <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 mb-5">
                         <div className="flex items-start justify-between mb-3">
-                            <img src={compenyBrand} alt="compenyBrand" />
+                            <img src={companyBrand} alt="companyBrand" />
                             <button className="px-3 py-2 bg-gray-200 rounded-md text-xs">
                                 15 Jobs
                             </button>
@@ -331,7 +331,7 @@ const LandingPage = () => {
                     </div>
                     <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 mb-5">
                         <div className="flex items-start justify-between mb-3">
-                            <img src={compenyBrand} alt="compenyBrand" />
+                            <img src={companyBrand} alt="companyBrand" />
                             <button className="px-3 py-2 bg-gray-200 rounded-md text-xs">
                                 15 Jobs
                             </button>
@@ -352,7 +352,7 @@ const LandingPage = () => {
                     </div>
                     <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 mb-5">
                         <div className="flex items-start justify-between mb-3">
-                            <img src={compenyBrand} alt="compenyBrand" />
+                            <img src={companyBrand} alt="companyBrand" />
                             <button className="px-3 py-2 bg-gray-200 rounded-md text-xs">
                                 15 Jobs
                             </button>

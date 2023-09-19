@@ -14,6 +14,7 @@ import getIndustrySlice from './dropdown/industry';
 import getDepartmentSlice from './dropdown/department';
 import getRoleCategorySlice from './dropdown/roleCategory';
 import getJobRoleSlice from './dropdown/jobRole';
+import getCitySlice from './dropdown/city';
 import getJobTitleSlice from './dropdown/jobTitle';
 import getCurrencySlice from './dropdown/currency';
 import getLocationSlice from './dropdown/location';
@@ -50,6 +51,7 @@ export const reducer = combineReducers({
     educationDetails: getEducationDetails,
     employment: jobSeekerEmployment,
     getIndustry: getIndustrySlice,
+    getCity: getCitySlice,
     getDepartment: getDepartmentSlice,
     getRoleCategory: getRoleCategorySlice,
     getJobRole: getJobRoleSlice,

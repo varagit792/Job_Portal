@@ -26,10 +26,10 @@ const MostDemandingCategory = () => {
           <button className="flex justify-center items-center text-[#312E81] text-base"><span className="mr-2">All Categories</span><img src={ArrowRight} alt="ArrowRight" /></button>
         </div>
         <div className="grid grid-cols-3 gap-4 mb-4">
-          {jobTitle.slice(0, 3).map(item => <CategoryItem item={item} count={12} />)}
+          {jobTitle?.slice(0, 3)?.map(item => <CategoryItem item={item} count={12} />)}
         </div>
         <div className="grid grid-cols-4 gap-4">
-          {jobTitle.slice(3, 7).map(item => <CategoryItem item={item} count={12} />)}
+          {jobTitle?.slice(3, 7)?.map(item => <CategoryItem item={item} count={12} />)}
 
         </div>
       </div>
