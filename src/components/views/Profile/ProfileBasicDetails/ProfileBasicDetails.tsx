@@ -9,13 +9,15 @@ import { getUserData } from "../../../../store/reducers/user/getUserDetails";
 import { clearGetUserDataSlice } from "../../../../store/reducers/user/getUserDetails";
 import Modal from "../../../commonComponents/Modal";
 import ProfileBasicDetailsForm from "./ProfileBasicDetailsForm";
-import { format, formatDistanceToNow, parseISO } from "date-fns"
-import { clearUpdateProfileBasicDetailsSlice } from "../../../../store/reducers/jobSeekerProfile/profileBasicDetailsUpdate"
-import { profileDashboardGet } from "../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet"
+import { format, formatDistanceToNow, parseISO } from "date-fns";
+import { clearUpdateProfileBasicDetailsSlice } from "../../../../store/reducers/jobSeekerProfile/profileBasicDetailsUpdate";
+import { profileDashboardGet } from "../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet";
+import PhoneIcon from '../../../../assets/svg/Phone.svg';
+import EmailIcon from '../../../../assets/svg/Email.svg';
+import LocationIcon from '../../../../assets/svg/LocationIcon.svg';
 
 
 const ProfileBasicDetails = () => {
-
   const dispatch = useAppDispatch();
   const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
   const { success, userData } = useAppSelector((state) => state.getUser);
@@ -58,8 +60,8 @@ const ProfileBasicDetails = () => {
   }, [profileDashboard])
 
   return (
-    <div>
-      <div className="col-start-2 col-end-6">
+    <>
+      {/* <div className="col-start-2 col-end-6">
         <div className="mb-4">
           <div className="flex items-center">
             <h1 className="font-semibold text-2xl">{userData.name}</h1>
@@ -83,7 +85,7 @@ const ProfileBasicDetails = () => {
                 <div className="ml-1 w-96 ">
                   Available to join in {profileDashboard?.noticePeriod?.title}
                 </div>
-            </div>)}
+              </div>)}
           </div>
           <div className="border-l border-gray-300 ml-48">
             <div className="ml-2">
@@ -93,6 +95,33 @@ const ProfileBasicDetails = () => {
               <div className="flex items-center text-sm font-medium text-gray-500">
                 <HiOutlineMail /><span className="ml-1 mr-1">{userData.email}</span><MdVerified color="green" />
               </div>
+            </div>
+          </div>
+        </div>
+      </div> */}
+      <div className="px-7 pb-7 pt-5">
+        <div className="flex items-center">
+          <h1 className="text-lg font-bold mb-1">{userData?.name}</h1>
+          <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer" onClick={openModal}> <FiEdit2 /> </span>
+        </div>
+        <div className="flex justify-start items-center text-[#475569] text-base">
+          <h1 className="mr-2">UI/ UX Designer</h1>
+          <h1>@ Ratna Global Tech</h1>
+        </div>
+        <hr className="my-5 bg-[#E0E7FF]" />
+        <div className="text-sm text-[#64748B]">
+          <div className="flex justify-start items-center mb-3">
+            <img src={EmailIcon} alt="EmailIcon" width="12rem" height="12rem" />
+            <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{userData?.email}</span>
+          </div>
+          <div className="flex justify-start items-center">
+            <div className="flex justify-start items-center mr-2">
+              <img src={PhoneIcon} alt="PhoneIcon" width="12rem" height="12rem" />
+              <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{userData.mobileNumber}</span>
+            </div>
+            <div className="flex justify-start items-center">
+              <img src={LocationIcon} alt="LocationIcon" width="12rem" height="12rem" />
+              <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{profileDashboard?.currentLocation?.title && `${profileDashboard?.currentLocation?.title},`} {profileDashboard?.currentCountry}</span>
             </div>
           </div>
         </div>
@@ -108,7 +137,7 @@ const ProfileBasicDetails = () => {
           />
         }
       />}
-    </div>
+    </>
   )
 }
 
