@@ -176,7 +176,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
     const monthArray = filterArray(totalExpMonthList, parseInt(data?.totalExpMonth?.value));
     const yearArray = filterArray(totalExpYearList, parseInt(data?.totalExpYear?.value));
     const locationArray = filterArray(locationList, parseInt(data?.currentLocation.value));
-    const noticeArray =  noticePeriodList.filter((notice:any)=>notice?.title === data.noticePeriod)
+    const noticeArray = noticePeriodList.filter((notice: any) => notice?.title === data.noticePeriod)
     data.totalExpMonth = monthArray[0];
     data.totalExpYear = yearArray[0];
     data.currentLocation = locationArray[0];
@@ -261,7 +261,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
                     />
                   )}
                 />
-              {watch('jobSeekerType') === 'Experienced' && errors.totalExpYear && <p className="font-normal text-xs text-red-500 ">Please select total exp years</p>}
+                {watch('jobSeekerType') === 'Experienced' && errors.totalExpYear && <p className="font-normal text-xs text-red-500 ">Please select total exp years</p>}
               </div>
               <div className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-lg ">
                 <Controller
@@ -323,7 +323,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
             />
             {errors.currentLocation && ((errors.currentLocation as any)?.label?.message ? (<p className="font-normal text-xs text-red-500 ">{(errors.currentLocation as any)?.label?.message} </p>) : <p className="font-normal text-xs text-red-500 ">{(errors.currentLocation as any)?.message} </p>)}
           </div>
-          
+
         </div>
         <h1 className="font-medium mb-2 mt-4">Mobile number</h1>
         <div>
@@ -357,11 +357,11 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
           )}
         />
 
-<h1 className="font-medium mt-4 mb-2">Notice Period</h1>
+        <h1 className="font-medium mt-4 mb-2">Notice Period</h1>
         <div className="flex flex-wrap flex-row mt-3">
           {
             noticePeriodList?.map((noticePeriod: any) =>
-              <div key={noticePeriod?.id}>                
+              <div key={noticePeriod?.id}>
                 <Controller
                   name="noticePeriod"
                   control={control}
