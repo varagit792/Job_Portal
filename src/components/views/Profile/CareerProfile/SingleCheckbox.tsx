@@ -4,7 +4,7 @@ export default function SingleCheckbox({ singleData, register, fieldName, dbFiel
 
 
   let status = false;
-  checkData.map((checkItem: any) => {
+  checkData?.map((checkItem: any) => {
     if (checkItem?.[dbFieldName]?.id === singleData?.id)
       status = true
   });

@@ -31,6 +31,7 @@ import logOutSlice from './logout'
 import loginSlice from './signIn'
 import deletePersonalDetailsLanguagesSlice from './jobSeekerProfile/deletePersonalDetailsLanguages';
 import jobSeekerEmployment from './jobSeekerProfile/jobSeekerEmploymentAdd';
+import getProfileIndicatorSlice from './jobSeekerProfile/profileIndicator';
 
 
 export const reducer = combineReducers({
@@ -64,5 +65,6 @@ export const reducer = combineReducers({
     getUser: getUserDataReducer,
     updateProfileBasicDetails: updateProfileBasicDetailsReducer,
     personalDetails: personalDetailsSlice,
-    deletePersonalDetailsLanguages: deletePersonalDetailsLanguagesSlice
+    deletePersonalDetailsLanguages: deletePersonalDetailsLanguagesSlice,
+    getProfileIndicator: getProfileIndicatorSlice,
 });

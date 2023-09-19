@@ -18,6 +18,7 @@ import MoneyIcon from '../../../assets/svg/MoneyIcon.svg';
 import ExperienceIcon from '../../../assets/svg/ExperienceIcon.svg';
 import { FiChevronLeft } from 'react-icons/fi';
 import { BiChevronRight } from 'react-icons/bi';
+import ProfileIndicator from "./ProfileIndicator";
 
 const responsive = {
     superLargeDesktop: {
@@ -89,11 +90,7 @@ const HomePage = () => {
                                 </div>
                             </div>
                             <hr className="mt-5 mb-5" />
-                            <div className="w-full bg-[#C7D2FE] rounded-md mb-2">
-                                <div className="bg-blue-700 text-center text-xs font-medium h-2.5 relative rounded-md" style={{ width: "40%" }}>
-                                    <span className="bg-[#EEF2FF] rounded-md border border-[#C7D2FE] text-[#312E81] absolute right-0 top-1/2 px-1 py-0.5 -translate-y-1/2">40%</span>
-                                </div>
-                            </div>
+                            <ProfileIndicator />
                             <div className="flex justify-between items-center">
                                 <h1 className="text-gray-500 text-sm">Profile Completed</h1>
                                 <Link to="/profile" className="border-b border-black text-sm">Add Details</Link>

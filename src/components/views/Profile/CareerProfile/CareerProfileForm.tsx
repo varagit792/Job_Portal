@@ -168,7 +168,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
           <AutocompleteBox
             control={control}
             fieldName={"industry"}
-            dropdownData={industry.map(({ id, title }: any) => ({ value: id, label: title }))}
+            dropdownData={industry?.map(({ id, title }: any) => ({ value: id, label: title }))}
             default={watch("industry")}
             placeholder={"Select industry"}
           />
@@ -190,7 +190,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
           <AutocompleteBox
             control={control}
             fieldName={"roleCategory"}
-            dropdownData={roleCategory.map(({ id, title }: any) => ({ value: id, label: title }))}
+            dropdownData={roleCategory?.map(({ id, title }: any) => ({ value: id, label: title }))}
             default={watch("roleCategory")}
             placeholder={"Select role category"}
           />
@@ -201,7 +201,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
           <AutocompleteBox
             control={control}
             fieldName={"jobRole"}
-            dropdownData={jobRole.map(({ id, title }: any) => ({ value: id, label: title }))}
+            dropdownData={jobRole?.map(({ id, title }: any) => ({ value: id, label: title }))}
             default={watch("jobRole")}
             placeholder={"Select job role"}
           />
@@ -209,7 +209,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
         </div>
         <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Desired job type</div>
         <div className='grid grid-cols-3 gap-4'>
-          {jobType.map((item, key) => <div key={item.id}>
+          {jobType?.map((item, key) => <div key={item.id}>
             <SingleCheckbox
               register={register}
               fieldName="jobType"
@@ -224,7 +224,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
         {errors?.jobType && <div className="font-normal text-xs text-red-500 ">{errors?.jobType?.message}</div>}
         <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Desired employment type</div>
         <div className='grid grid-cols-3 gap-4'>
-          {employeeType.map((item, key) => <div key={item.id}>
+          {employeeType?.map((item, key) => <div key={item.id}>
             <SingleCheckbox
               register={register}
               fieldName="employeeType"
@@ -237,7 +237,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
         {errors?.employeeType && <div className="font-normal text-xs text-red-500 ">{errors?.employeeType?.message}</div>}
         <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Preferred shift</div>
         <div className='grid grid-cols-3 gap-4'>
-          {preferredShift.map((item, key) => <div key={item.id}>
+          {preferredShift?.map((item, key) => <div key={item.id}>
             <SingleCheckbox
               register={register}
               fieldName="preferredShift"
@@ -255,7 +255,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
           <AutocompleteBox
             control={control}
             fieldName={"preferredWorkLocation"}
-            dropdownData={location.map(({ id, title }: any) => ({ value: id, label: title }))}
+            dropdownData={location?.map(({ id, title }: any) => ({ value: id, label: title }))}
             placeholder={"Select location"}
           />
           {errors?.preferredWorkLocation && <p className="font-normal text-xs text-red-500 absolute">{errors?.preferredWorkLocation?.label?.message}</p>}
@@ -266,7 +266,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
             <AutocompleteBox
               control={control}
               fieldName={"currency"}
-              dropdownData={currency.map(({ id, title }: any) => ({ value: id, label: title }))}
+              dropdownData={currency?.map(({ id, title }: any) => ({ value: id, label: title }))}
               default={watch("currency")}
               placeholder={"Select currency"}
             />
