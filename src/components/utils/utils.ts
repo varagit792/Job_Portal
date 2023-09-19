@@ -8,6 +8,10 @@ export const getEducationTypeList = async () => {
   return await axios.get(`${process.env.REACT_APP_API_PATH}/educationtype/get`).then((res: any) => res.data.data)
 }
 
+export const getBoardList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/board/get`).then((res: any) => res.data.data)
+}
+
 export const getInstituteList = async () => {
   return await axios.get(`${process.env.REACT_APP_API_PATH}/universityInstitute/get`).then((res: any) => res.data.data)
 }
