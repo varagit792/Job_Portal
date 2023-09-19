@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
 import Education from './Education/Education';
 import ResumeHeadline from './ResumeHeadline/ResumeHeadline';
 import KeySkills from './KeySkills/KeySkills';
@@ -13,6 +14,7 @@ import ProfilePictureUploadForm from './ProfilePictureUpload/ProfilePictureUploa
 import ProfileBasicDetails from './ProfileBasicDetails/ProfileBasicDetails';
 import Employment from './Employment/Employment';
 import defaultPicture from '../../../../src/assets/jpeg/default_picture.jpg';
+import Edit_icon from '../../../assets/svg/Edit_icon.svg';
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -65,107 +67,131 @@ const Profile = () => {
   return (
     <>
       <div className="h-[10%] w-full"></div>
-      <div className="bg-zinc-100 font-sans">
-        <div className="px-32 py-10 flex justify-center flex-col">
-          {/* card */}
-          <div className="w-full rounded-2xl bg-white p-8">
-            <div className="grid grid-cols-5 h-full">
-              <div className="h-full w-full flex justify-start items-center">
-                <div className="rounded-full h-full">
-                  <img src={profilePicPath} alt="logo" height="100%" className="rounded-full object-fill h-30 w-40" onClick={openModal} />
+      <div className="bg-[#F8FAFC] font-sans px-32 py-10">
+
+        <div className="grid grid-cols-10 gap-10">
+          <div className="col-start-1 col-end-4">
+            <div className="border border-[#E0E7FF] rounded-lg bg-white px-10 py-10 sticky top-[13%]">
+              <div className="w-full bg-[#C7D2FE] rounded-md mb-5">
+                <div className="bg-blue-700 text-center text-xs font-medium h-2.5 relative rounded-md" style={{ width: "40%" }}>
+                  <span className="bg-[#EEF2FF] rounded-md border border-[#C7D2FE] text-[#312E81] absolute right-0 top-1/2 px-1 py-0.5 -translate-y-1/2">40%</span>
                 </div>
               </div>
-              <ProfileBasicDetails />
-            </div>
-            {
-              isOpen && <div className="col-start-2 col-end-6">
-                <Modal
-                  isOpen={isOpen}
-                  setIsOpen={setIsOpen}
-                  modalBody={
-                    <ProfilePictureUploadForm
-                      closeDialog={closeDialog}
-                    />
-                  }
-                />
+              <div className="flex justify-between items-center">
+                <h1 className="text-gray-500 text-sm">Profile Completed</h1>
+                <Link to="/profile" className="border-b border-black text-sm">Add Details</Link>
               </div>
-            }
+
+              <hr className="my-10" />
+
+              <a href="#resumeUpload" className="text-sm mb-10 w-full flex justify-between">
+                <span className="font-semibold">Resume</span>
+                <u className="text-[#475569]">Edit</u>
+              </a>
+              <a href="#resumeHeadline" className="text-sm mb-10 w-full flex justify-between">
+                <span className="font-semibold">Resume headline</span>
+                <u className="text-[#475569]">Edit</u>
+              </a>
+              <a href="#careerProfile" className="text-sm mb-10 w-full flex justify-between">
+                <span className="font-semibold">Career profile</span>
+                <u className="text-[#475569]">Add</u>
+              </a>
+              <a href="#keySkills" className="text-sm mb-10 w-full flex justify-between">
+                <span className="font-semibold">Key skills</span>
+                <u className="text-[#475569]">Add</u>
+              </a>
+              <a href="#education" className="text-sm mb-10 w-full flex justify-between">
+                <span className="font-semibold">Education</span>
+                <u className="text-[#475569]">Add</u>
+              </a>
+              <a href="#education" className="text-sm mb-10 w-full flex justify-between">
+                <span className="font-semibold">IT skills</span>
+                <u className="text-[#475569]">Add</u>
+              </a>
+              <a href="#education" className="text-sm mb-10 w-full flex justify-between">
+                <span className="font-semibold">Projects</span>
+                <u className="text-[#475569]">Add</u>
+              </a>
+
+              <a href="#profileSummary" className="text-sm mb-10 w-full flex justify-between">
+                <span className="font-semibold">Profile summary</span>
+                {!profileDashboard?.profileSummary ?
+                  <u className="text-[#475569]">Add</u>
+                  :
+                  <u className="text-[#475569]">Edit</u>
+                }
+              </a>
+              <a href="#education" className="text-sm mb-10 w-full flex justify-between">
+                <span className="font-semibold">Accomplishments</span>
+                <u className="text-[#475569]">Add</u>
+              </a>
+              <a href="#personalDetails" className="text-sm w-full flex justify-between">
+                <span className="font-semibold">Personal details</span>
+                <u className="text-[#475569]">Add</u>
+              </a>
+            </div>
           </div>
-          <div className="grid grid-cols-4 mt-5">
-            <div>
-              {/* card */}
-              <div className="mr-5 rounded-lg border bg-white p-5 sticky top-[13%]">
-                <h1 className="font-semibold mb-1">Quick links</h1>
-                <a href="#resumeUpload" className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                  <span>Resume</span>
-                  <span className="text-blue-600 font-semibold">Update</span>
-                </a>
-                <a href="#resumeHeadline" className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                  <span>Resume headline</span>
-                </a>
-                <a href="#careerProfile" className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                  <span>Career profile</span>
-                </a>
-                <a href="#keySkills" className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                  <span>Key skills</span>
-                </a>
-                <a href="#education" className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                  <span>Education</span>
-                  <span className="text-blue-600 font-semibold">Add</span>
-                </a>
-                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                  <span>IT skills</span>
-                </button>
-                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                  <span>Employment</span>
-                  <span className="text-blue-600 font-semibold">
-                    {(profileDashboard?.employments && !(Object.keys(profileDashboard?.employments).length)) ? 'Add' : 'Edit'}
-                  </span>
-                </button>
-                <a href="#profileSummary" className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                  <span>Profile summary</span>
-                  {!profileDashboard?.profileSummary
-                    &&
-                    <span className="text-blue-600 font-semibold">Add</span>
-                  }
-                </a>
-                <button className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                  <span>Accomplishments</span>
-                </button>
-                <a href="#personalDetails" className="text-sm mt-3 px-3 py-1.5 hover:bg-gray-200 hover:text-black hover:font-semibold w-full rounded-2xl flex justify-between">
-                  <span>Personal details</span>
-                </a>
+          <div className="col-start-4 col-end-11">
+            {/* card */}
+            <div className="grid grid-cols-5 gap-2">
+              <div className="col-start-1 col-end-4 border border-[#E0E7FF] rounded-lg bg-[#FFF]">
+                <div className="w-full h-40 relative">
+                  <div className="w-full h-2/3 bg-gradient-to-r from-[#EEF2FF] to-[#C7D2FE] rounded-t-lg">
+                  </div>
+                  <div className="w-full h-1/3 bg-[#FFF]">
+                  </div>
+                  <div className="absolute bg-[#FFF] top-2/3 left-10 -translate-y-1/2 h-32 w-32 rounded-full p-1 cursor-pointer" onClick={openModal}>
+                    <img src={profilePicPath} alt="logo" height="100%" className="rounded-full object-fill h-30 w-40" />
+                  </div>
+                </div>
+                <ProfileBasicDetails />
               </div>
-            </div>
-            <div className="col-start-2 col-end-5">
-              <div id="resumeUpload" className="scroll-mt-24 scroll-smooth">
+              <div id="resumeUpload" className="scroll-mt-24 scroll-smooth col-start-4 col-end-6">
                 <ResumeUpload />
               </div>
-              <div id="resumeHeadline" className="scroll-mt-24 scroll-smooth">
-                <ResumeHeadline />
-              </div>
-              <div id="careerProfile" className="scroll-mt-24 scroll-smooth">
-                <CareerProfile profileDashboard={profileDashboard} />
-              </div>
-              <div id="keySkills" className="scroll-mt-24 scroll-smooth">
-                <KeySkills profileDashboard={profileDashboard} />
-              </div>
-              <div id="education" className="scroll-mt-24 scroll-smooth">
-                <Education />
-              </div>
-              <div id="profileSummary" className="scroll-mt-24 scroll-smooth">
-                <ProfileSummary />
-              </div>
-              <div id="personalDetails" className="scroll-mt-24 scroll-smooth">
-                <PersonalDetails />
-              </div>
-              <div id="employment" className="scroll-mt-24 scroll-smooth">
-                <Employment />
-              </div>
+            </div>
+            <div id="resumeHeadline" className="scroll-mt-24 scroll-smooth">
+              <ResumeHeadline />
+            </div>
+            <div id="careerProfile" className="scroll-mt-24 scroll-smooth">
+              <CareerProfile profileDashboard={profileDashboard} />
+            </div>
+            <div id="keySkills" className="scroll-mt-24 scroll-smooth">
+              <KeySkills profileDashboard={profileDashboard} />
+            </div>
+            <div id="education" className="scroll-mt-24 scroll-smooth">
+              <Education />
+            </div>
+            <div id="profileSummary" className="scroll-mt-24 scroll-smooth">
+              <ProfileSummary />
+            </div>
+            <div id="personalDetails" className="scroll-mt-24 scroll-smooth">
+              <PersonalDetails />
+            </div>
+            <div id="employment" className="scroll-mt-24 scroll-smooth">
+              <Employment />
             </div>
           </div>
         </div>
+
+
+
       </div >
+      {/* modal for profile picture */}
+      {
+        isOpen &&
+        <div className="col-start-2 col-end-6">
+          <Modal
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            modalBody={
+              <ProfilePictureUploadForm
+                closeDialog={closeDialog}
+              />
+            }
+          />
+        </div>
+      }
     </>
   )
 }
