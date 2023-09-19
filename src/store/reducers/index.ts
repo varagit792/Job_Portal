@@ -14,6 +14,7 @@ import getIndustrySlice from './dropdown/industry';
 import getDepartmentSlice from './dropdown/department';
 import getRoleCategorySlice from './dropdown/roleCategory';
 import getJobRoleSlice from './dropdown/jobRole';
+import getJobTitleSlice from './dropdown/jobTitle';
 import getCurrencySlice from './dropdown/currency';
 import getLocationSlice from './dropdown/location';
 import getEmployeeTypeSlice from './dropdown/employeeType';
@@ -52,6 +53,7 @@ export const reducer = combineReducers({
     getDepartment: getDepartmentSlice,
     getRoleCategory: getRoleCategorySlice,
     getJobRole: getJobRoleSlice,
+    getJobTitle: getJobTitleSlice,
     getCurrency: getCurrencySlice,
     getLocation: getLocationSlice,
     getEmployeeType: getEmployeeTypeSlice,

@@ -1,0 +1,83 @@
+import React, { useEffect, useState } from 'react'
+import { Link } from "react-router-dom";
+import ProfileIndicator from "./ProfileIndicator";
+import PhoneIcon from '../../../assets/svg/Phone.svg';
+import EmailIcon from '../../../assets/svg/Email.svg';
+import LocationIcon from '../../../assets/svg/LocationIcon.svg';
+import defaultPicture from '../../../../src/assets/jpeg/default_picture.jpg';
+import { useAppDispatch, useAppSelector } from '../../..';
+import { getUserData, clearGetUserDataSlice } from "../../../store/reducers/user/getUserDetails";
+
+const ProfileLeftSection = ({ profileDashboard }: any) => {
+  const dispatch = useAppDispatch();
+  const { success, userData } = useAppSelector((state) => state.getUser);
+
+  const [profilePicPath, setProfilePicPath] = useState();
+  useEffect(() => {
+    let profilePictureCompletePath;
+    if (profileDashboard?.profilePicturePath) {
+      profilePictureCompletePath = `${process.env.REACT_APP_PROFILE_PICTURE_FILE_LOCATION}/${profileDashboard?.profilePicturePath}`;
+      setProfilePicPath(profilePictureCompletePath as any)
+    } else {
+      setProfilePicPath(defaultPicture as any)
+    }
+  }, [profileDashboard])
+
+  useEffect(() => {
+    dispatch(getUserData());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (success) {
+      dispatch(clearGetUserDataSlice)
+    }
+  }, [dispatch, success]);
+
+  return (
+    <>
+      <div className="col-start-1 col-end-3">
+        <div className="bg-[#FFF] rounded-lg shadow-sm w-full sticky top-[13%] overflow-hidden">
+          <div className="w-full h-40 relative">
+            <div className="w-full h-2/3 bg-gradient-to-r from-[#EEF2FF] to-[#C7D2FE] rounded-t-lg">
+            </div>
+            <div className="w-full h-1/3 bg-[#FFF]">
+            </div>
+            <div className="absolute bg-[#FFF] top-2/3 left-20 -translate-y-1/2 h-32 w-32 rounded-full p-1">
+              <img src={profilePicPath} alt="profile" className="rounded-full w-full h-full" />
+            </div>
+          </div>
+          <div className="px-5 py-5">
+            <h1 className="text-xl font-bold mb-1">{userData?.name}</h1>
+            <h1 className="mb-1">UI/ UX Designer</h1>
+            <h1>@ Ratna Global Tech</h1>
+            <div className="mt-5 text-sm text-[#64748B]">
+              <div className="flex justify-start items-center mb-1">
+                <img src={EmailIcon} alt="EmailIcon" width="12rem" height="12rem" />
+                <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{userData?.email}</span>
+              </div>
+              {userData?.mobileNumber && <div className="flex justify-start items-center mb-1">
+                <img src={PhoneIcon} alt="PhoneIcon" width="12rem" height="12rem" />
+                <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{userData?.mobileNumber}</span>
+              </div>}
+              <div className="flex justify-start items-center">
+                <img src={LocationIcon} alt="LocationIcon" width="12rem" height="12rem" />
+                <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{profileDashboard?.currentLocation?.title && `${profileDashboard?.currentLocation?.title},`} {profileDashboard?.currentCountry}</span>
+              </div>
+            </div>
+            <hr className="mt-5 mb-5" />
+            <ProfileIndicator />
+            <div className="flex justify-between items-center">
+              <h1 className="text-gray-500 text-sm">Profile Completed</h1>
+              <Link to="/profile" className="border-b border-black text-sm">Add Details</Link>
+            </div>
+            <hr className="mt-5 mb-5" />
+            <p className="mb-5 text-sm">I turn ideas into unique and user-friendly digital experience through UI UX design</p>
+            <button className="bg-[#EEF2FF] text-[#312E81] py-2 px-6 rounded-md">Resume</button>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export default ProfileLeftSection
