@@ -15,6 +15,7 @@ import ProfileBasicDetails from './ProfileBasicDetails/ProfileBasicDetails';
 import Employment from './Employment/Employment';
 import defaultPicture from '../../../../src/assets/jpeg/default_picture.jpg';
 import Edit_icon from '../../../assets/svg/Edit_icon.svg';
+import ProfileIndicator from '../HomePage/ProfileIndicator';
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -72,11 +73,7 @@ const Profile = () => {
         <div className="grid grid-cols-10 gap-10">
           <div className="col-start-1 col-end-4">
             <div className="border border-[#E0E7FF] rounded-lg bg-white px-10 py-10 sticky top-[13%]">
-              <div className="w-full bg-[#C7D2FE] rounded-md mb-5">
-                <div className="bg-blue-700 text-center text-xs font-medium h-2.5 relative rounded-md" style={{ width: "40%" }}>
-                  <span className="bg-[#EEF2FF] rounded-md border border-[#C7D2FE] text-[#312E81] absolute right-0 top-1/2 px-1 py-0.5 -translate-y-1/2">40%</span>
-                </div>
-              </div>
+              <ProfileIndicator />
               <div className="flex justify-between items-center">
                 <h1 className="text-gray-500 text-sm">Profile Completed</h1>
                 <Link to="/profile" className="border-b border-black text-sm">Add Details</Link>
@@ -141,7 +138,7 @@ const Profile = () => {
                   <div className="w-full h-1/3 bg-[#FFF]">
                   </div>
                   <div className="absolute bg-[#FFF] top-2/3 left-10 -translate-y-1/2 h-32 w-32 rounded-full p-1 cursor-pointer" onClick={openModal}>
-                    <img src={profilePicPath} alt="logo" height="100%" className="rounded-full object-fill h-30 w-40" />
+                    <img src={profilePicPath} alt="logo" className="rounded-full object-fill  w-full h-full" />
                   </div>
                 </div>
                 <ProfileBasicDetails />
