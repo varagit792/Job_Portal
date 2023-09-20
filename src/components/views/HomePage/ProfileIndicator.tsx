@@ -4,7 +4,7 @@ import { clearGetProfileIndicator, profileIndicatorGet } from '../../../store/re
 
 const ProfileIndicator = () => {
   const dispatch = useAppDispatch();
-  const { success: profileIndicatorSuccess, profileIndicator } = useAppSelector((state) => state.getProfileIndicator);
+  const { success: profileIndicatorSuccess, profileIndicator } = useAppSelector((state) => state?.getProfileIndicator);
   useEffect(() => {
     if (profileIndicatorSuccess) {
       dispatch(clearGetProfileIndicator());
