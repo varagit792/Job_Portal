@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Link } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import PaginatedItems from '../../commonComponents/ReactPaginate';
 import Profile from '../../../assets/png/profile.png';
 import PhoneIcon from '../../../assets/svg/Phone.svg';
 import EmailIcon from '../../../assets/svg/Email.svg';
@@ -42,6 +44,97 @@ const responsive = {
         slidesToSlide: 1
     }
 };
+
+const recommendationResponsive = {
+    superLargeDesktop: {
+        // the naming can be any, depends on you.
+        breakpoint: { max: 4000, min: 3000 },
+        items: 1,
+        slidesToSlide: 1
+    },
+    desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 1,
+        slidesToSlide: 1
+    },
+    tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 1,
+        slidesToSlide: 1
+    },
+    mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1,
+        slidesToSlide: 1
+    }
+};
+
+const itemsForReactPaginate: any = [
+    {
+        id: 1,
+        job: "Dot net developer",
+        companyName: "Ratna Global Tech",
+        companyLogo: compenyBrand,
+        experience: "6+ yrs exp",
+        salary: "12 LPA",
+        location: "Hyderabad, Delhi, Mumbai"
+    },
+    {
+        id: 2,
+        job: "Dot net developer",
+        companyName: "Ratna Global Tech",
+        companyLogo: compenyBrand,
+        experience: "6+ yrs exp",
+        salary: "12 LPA",
+        location: "Hyderabad, Delhi, Mumbai"
+    },
+    {
+        id: 3,
+        job: "Dot net developer",
+        companyName: "Ratna Global Tech",
+        companyLogo: compenyBrand,
+        experience: "6+ yrs exp",
+        salary: "12 LPA",
+        location: "Hyderabad, Delhi, Mumbai"
+    },
+    {
+        id: 4,
+        job: "Dot net developer",
+        companyName: "Ratna Global Tech",
+        companyLogo: compenyBrand,
+        experience: "6+ yrs exp",
+        salary: "12 LPA",
+        location: "Hyderabad, Delhi, Mumbai"
+    },
+    {
+        id: 4,
+        job: "Dot net developer",
+        companyName: "Ratna Global Tech",
+        companyLogo: compenyBrand,
+        experience: "6+ yrs exp",
+        salary: "12 LPA",
+        location: "Hyderabad, Delhi, Mumbai"
+    },
+    {
+        id: 4,
+        job: "Dot net developer",
+        companyName: "Ratna Global Tech",
+        companyLogo: compenyBrand,
+        experience: "6+ yrs exp",
+        salary: "12 LPA",
+        location: "Hyderabad, Delhi, Mumbai"
+    },
+    {
+        id: 4,
+        job: "Dot net developer",
+        companyName: "Ratna Global Tech",
+        companyLogo: compenyBrand,
+        experience: "6+ yrs exp",
+        salary: "12 LPA",
+        location: "Hyderabad, Delhi, Mumbai"
+    }
+];
+
 const ButtonGroup = ({ next, previous, goToSlide, ...rest }: any) => {
     const { carouselState: { currentSlide } } = rest;
     return (
@@ -55,6 +148,11 @@ const ButtonGroup = ({ next, previous, goToSlide, ...rest }: any) => {
 };
 
 const HomePage = () => {
+    // using for pagination
+    const [itemOffset, setItemOffset] = useState(0);
+    const itemsPerPage = 3;
+    const endOffset = itemOffset + itemsPerPage;
+    const currentItems = itemsForReactPaginate.slice(itemOffset, endOffset);
     return (
         <>
             <div className="h-[10%] w-full"></div>
@@ -161,139 +259,40 @@ const HomePage = () => {
                             <h1 className="text-xl">Job recommendations</h1>
                             <button className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">All Jobs</span><img src={ArrowRight} alt="ArrowRight" /></button>
                         </div>
-                        <Carousel
-                            swipeable={false}
-                            draggable={false}
-                            showDots={false}
-                            responsive={responsive}
-                            ssr={true} // means to render carousel on server-side.
-                            infinite={true}
-                            autoPlay={true}
-                            autoPlaySpeed={4000}
-                            keyBoardControl={true}
-                            customTransition="all .5"
-                            transitionDuration={500}
-                            arrows={false}
-                            renderButtonGroupOutside={true}
-                            customButtonGroup={<ButtonGroup />}
-                        >
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
-                                <div className="flex items-start justify-between mb-3">
-                                    <img src={compenyBrand} alt="compenyBrand" />
-                                    <div>
-                                        <button className="p-2">
-                                            <img src={BookMark} alt="BookMark" />
-                                        </button>
-                                        <button className="p-2">
-                                            <img src={ThreeDots} alt="ThreeDots" />
-                                        </button>
+                        <div>
+                            {currentItems.map((item: any, index: any) => (
+                                <div className="py-5 px-10 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg h-40 mb-5" key={index}>
+                                    <div className="flex items-start justify-between">
+                                        <div className="flex justify-start items-start h-full">
+                                            <img src={item.companyLogo} alt="compenyBrand" />
+                                            <div className="ml-10">
+                                                <h1 className="text-base font-bold">{item.job}</h1>
+                                                <span className="text-[#94A3B8] text-sm">{item.companyName}</span>
+                                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+                                                    <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" />
+                                                    <span className="ml-2">{item.experience}</span>
+                                                </div>
+                                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+                                                    <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">{item.salary}</span>
+                                                </div>
+                                                <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
+                                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">{item.location}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button className="p-2">
+                                                <img src={BookMark} alt="BookMark" />
+                                            </button>
+                                            <button className="p-2">
+                                                <img src={ThreeDots} alt="ThreeDots" />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <h1 className="text-base font-bold">Dot net developer</h1>
-                                <span className="text-[#94A3B8] text-sm">Ratna Global Tech</span>
-                                <hr className="my-5" />
-                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
-                                    <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" /><span className="ml-2">6+ yrs exp.</span>
-                                </div>
-                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
-                                    <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">12 LPA</span>
-                                </div>
-                                <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
-                                </div>
-                                <div className="flex">
-                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">Remote</button>
-                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">Full-time</button>
-                                </div>
-                            </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
-                                <div className="flex items-start justify-between mb-3">
-                                    <img src={compenyBrand} alt="compenyBrand" />
-                                    <div>
-                                        <button className="p-2">
-                                            <img src={BookMark} alt="BookMark" />
-                                        </button>
-                                        <button className="p-2">
-                                            <img src={ThreeDots} alt="ThreeDots" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <h1 className="text-base font-bold">Dot net developer</h1>
-                                <span className="text-[#94A3B8] text-sm">Ratna Global Tech</span>
-                                <hr className="my-5" />
-                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
-                                    <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" /><span className="ml-2">6+ yrs exp.</span>
-                                </div>
-                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
-                                    <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">12 LPA</span>
-                                </div>
-                                <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
-                                </div>
-                                <div className="flex">
-                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">Remote</button>
-                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">Full-time</button>
-                                </div>
-                            </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
-                                <div className="flex items-start justify-between mb-3">
-                                    <img src={compenyBrand} alt="compenyBrand" />
-                                    <div>
-                                        <button className="p-2">
-                                            <img src={BookMark} alt="BookMark" />
-                                        </button>
-                                        <button className="p-2">
-                                            <img src={ThreeDots} alt="ThreeDots" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <h1 className="text-base font-bold">Dot net developer</h1>
-                                <span className="text-[#94A3B8] text-sm">Ratna Global Tech</span>
-                                <hr className="my-5" />
-                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
-                                    <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" /><span className="ml-2">6+ yrs exp.</span>
-                                </div>
-                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
-                                    <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">12 LPA</span>
-                                </div>
-                                <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
-                                </div>
-                                <div className="flex">
-                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">Remote</button>
-                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">Full-time</button>
-                                </div>
-                            </div>
-                            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
-                                <div className="flex items-start justify-between mb-3">
-                                    <img src={compenyBrand} alt="compenyBrand" />
-                                    <div>
-                                        <button className="p-2">
-                                            <img src={BookMark} alt="BookMark" />
-                                        </button>
-                                        <button className="p-2">
-                                            <img src={ThreeDots} alt="ThreeDots" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <h1 className="text-base font-bold">Dot net developer</h1>
-                                <span className="text-[#94A3B8] text-sm">Ratna Global Tech</span>
-                                <hr className="my-5" />
-                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
-                                    <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" /><span className="ml-2">6+ yrs exp.</span>
-                                </div>
-                                <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
-                                    <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">12 LPA</span>
-                                </div>
-                                <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
-                                    <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2">Hyderabad, Delhi, Mumbai</span>
-                                </div>
-                                <div className="flex">
-                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">Remote</button>
-                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">Full-time</button>
-                                </div>
-                            </div>
-                        </Carousel>
+                            ))}
+                            <PaginatedItems itemsPerPage={itemsPerPage} items={itemsForReactPaginate} itemOffset={itemOffset} setItemOffset={setItemOffset} />
+                        </div>
                     </div>
                     <hr className="my-10" />
                     <div>
