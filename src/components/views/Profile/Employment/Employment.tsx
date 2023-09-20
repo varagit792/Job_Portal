@@ -3,7 +3,7 @@ import Modal from '../../../commonComponents/Modal';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
 import { FiEdit2 } from 'react-icons/fi';
-import companyBrand from '../../../../assets/png/compenyBrand.png';
+import companyBrand from '../../../../assets/png/companyBrand.png';
 import EmploymentForm from './EmploymentForm';
 import { clearJobSeekerEmploymentAddSlice } from '../../../../store/reducers/jobSeekerProfile/jobSeekerEmploymentAdd';
 import { getJoiningDateMonthList, getJoiningDateYearList } from '../../../utils/utils';

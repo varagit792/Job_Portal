@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getCompanyList, getCourseList, getCurrencyList, getDepartmentList, getEducationTypeList, getInstituteList, getJoiningDateMonthList, getJoiningDateYearList, getLocationList, getNoticePeriodList, getPassOutYearList, getTotalMonthsExpList, getTotalYearsExpList, getjobTitleList } from '../../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../../..';
-import { jobSeekerEducationAdd } from '../../../../store/reducers/jobSeekerProfile/jobSeekerEducation';
 import { jobSeekerEmploymentAdd } from '../../../../store/reducers/jobSeekerProfile/jobSeekerEmploymentAdd';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
@@ -9,12 +8,6 @@ import { keySkillsGet } from '../../../../store/reducers/dropdown/keySkills';
 import { filterArray } from '../../../utils/filterArray';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-//import { number } from 'yup';
-
-// interface IFormInputs {
-//   keySkills: string;
-
-// }
 
 const currentEmployment = ['Yes', 'No'];
 const employmentType = ['Full Time', 'Internship'];
@@ -46,9 +39,7 @@ interface IFormInputs {
   monthlyStipend: number
 }
 
-export default function ({ closeDialog, educationDetails, selectedEmployment, isEdit }: any) {
-  const [courses, setCourses] = useState([]);
-  const [eductionType, setEducationType] = useState([]);
+export default function ({ closeDialog, selectedEmployment }: any) {
   const [experienceYears, setExperienceYears] = useState<any>([]);
   const [experienceMonths, setExperienceMonths] = useState<any>([]);
   const [joiningDateYear, setJoiningDateYear] = useState<any>([]);
@@ -443,13 +434,6 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
   useEffect(() => {
     setSkillsUsed(keySkills as any)
   }, [keySkills])
-
-  useEffect(() => {
-    (async () => {
-      const courseList = await getCourseList()
-      setCourses(courseList as any)
-    })();
-  }, [])
 
   useEffect(() => {
     (async () => {
