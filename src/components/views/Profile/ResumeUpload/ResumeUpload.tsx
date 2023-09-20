@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, Fragment, useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '../../../..';
 import { useAppDispatch } from '../../../..';
 import { clearUploadState, resumeUpload } from '../../../../store/reducers/jobSeekerProfile/uploadResume';
@@ -9,9 +9,10 @@ import axios from 'axios';
 import { clearGetProfileDashboardSlice, profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import uploadIcon from '../../../../assets/svg/uploadIcon.svg';
-import ThreeDots from '../../../../assets/svg/threeDots.svg';
-import PDFIcon from '../../../../assets/svg/PDFIcon.svg'
-
+import { MdOutlinePictureAsPdf } from 'react-icons/md';
+import { FaRegFileWord } from 'react-icons/fa';
+import { Menu, Transition } from '@headlessui/react';
+import { PiDotsThreeVerticalBold } from 'react-icons/pi'
 const ResumeUpload = () => {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -23,6 +24,8 @@ const ResumeUpload = () => {
   const { success: successProfile, profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
   const { success: successDelete, errorMessage: errorMessageDelete, error: errorDelete, formData: formDataDelete } =
     useAppSelector((state) => state.jobSeekerDeleteResume);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedOption, setSelectedOption] = useState('');
 
   useEffect(() => {
     if (success) {
@@ -44,6 +47,14 @@ const ResumeUpload = () => {
     }
   }, [successDelete, errorDelete, errorMessageDelete, dispatch, formDataDelete]);
 
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeDialog = () => {
+    setIsOpen(false);
+  };
+
   useEffect(() => {
     if (successProfile) {
       dispatch(clearGetProfileDashboardSlice);
@@ -54,6 +65,15 @@ const ResumeUpload = () => {
     setResumeFile(profileDashboard?.resumeFile)
     setResumeCompletePath(`${process.env.REACT_APP_RESUME_FILE_LOCATION}/${profileDashboard?.resumePath}`)
   }, [profileDashboard]);
+
+  const resumeFileSplit = resumeFile?.split('.');
+  let resumeFilePrefix;
+  let resumeFileSuffix;
+  if (resumeFile) {
+    resumeFilePrefix = resumeFileSplit[0];
+    resumeFileSuffix = resumeFileSplit[1];
+  }
+
 
   const parsedDate = parseISO(profileDashboard?.resumeLastUpdated);
   useEffect(() => {
@@ -157,15 +177,15 @@ const ResumeUpload = () => {
         </form>
       </div> */}
       <div className="rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] w-full h-full p-7">
-        <h1 className="mb-3 text-[#64748B]">Resume</h1>
-        {(resumeFile && lastUpdatedTimestamp !== null) && (
-          <span className="mt-2">
-            <span className="font-thin text-sm">Resume last updated - </span>
-            <span className="text-sm">  {formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true })}</span>
-          </span>
-        )}
-        <div className="h-full">
-          <form className="h-1/2">
+        <div className=" h-full">
+          <form className="h-4/6">
+            <h1 className="mb-3 text-[#64748B]">Resume</h1>
+            {(resumeFile && lastUpdatedTimestamp !== null) && (
+              <span className="mt-2">
+                <span className="font-thin text-sm">Resume last updated - </span>
+                <span className="text-sm">  {formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true })}</span>
+              </span>
+            )}
             <div className="border border-dashed border-[#A5B4FC] rounded-xl p-3 flex flex-col justify-center items-center mb-3">
               <span className=" text-gray-400 text-xs">Formats: .PDF and .DOC up to 2MB</span>
               <label className="cursor-pointer text-[#312E81] p-2 font-semibold text-base flex justify-center items-center">
@@ -182,17 +202,71 @@ const ResumeUpload = () => {
             </div>
             <div className="bg-[#FFF] rounded-lg shadow-sm px-4 py-2 flex justify-between items-center w-full">
               <div className="flex justify-start items-center w-11/12">
-                <img src={PDFIcon} alt="PDFIcon" />
-                <h1 className="overflow-hidden inline-block whitespace-nowrap text-ellipsis ml-2">Dibya12338427923890483490</h1>
+                {/* <img src={PDFIcon} alt="PDFIcon" /> */}
+                {(resumeFileSuffix === 'pdf' && <MdOutlinePictureAsPdf className="text-red-400 " size={28} />)}
+                {(resumeFileSuffix === 'doc' || resumeFilePrefix === 'docx') && <FaRegFileWord className="text-red-400 " size={28} />}
+
+                <h1 className="overflow-hidden inline-block whitespace-nowrap text-ellipsis ml-2 text-lg">{resumeFilePrefix}</h1>
               </div>
               <div className="w-1/12 flex justify-between items-center">
                 <span className="border-r-2 border-[#E0E7FF] h-7 ml-1"></span>
-                <img src={ThreeDots} alt="ThreeDots" />
+                {/* <img src={ThreeDots} alt="ThreeDots"  /> */}
+
+                <div>
+                  <Menu as="div" className="relative inline-block text-left">
+                    <div>
+                      <Menu.Button className="inline-flex w-full justify-center items-center text-[#312E81] m-0 p-0.5">
+                       
+                        {/* <ChevronDownIcon
+                                    className="ml-1 mr-1 h-5 w-5"
+                                    aria-hidden="true"
+                                /> */}
+                        <PiDotsThreeVerticalBold />
+                      </Menu.Button>
+                    </div>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div className="px-1 py-1 ">
+                          <Menu.Item>
+                            {({ active }) => (
+                              <button onClick={handleDeleteResume}
+                                className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
+                                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                              >
+                                <RiDeleteBin6Line className="ml-6 text-blue-600 text-lg mr-2 cursor-pointer" />
+                              </button>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <button
+                                onClick={downloadFile}
+                                className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
+                                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                              >
+                                <BiDownload className="ml-6 text-blue-600 text-lg mr-2 cursor-pointer" />
+                              </button>
+                            )}
+                          </Menu.Item>
+                        </div>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                </div>
               </div>
             </div>
           </form>
-          <hr className="bg-[#E0E7FF] w-full my-4" />
-          <div className="h-5/12">
+
+          <hr className="bg-[#E0E7FF] w-full my-4" />+
+          <div className="h-1/4">
             <h1 className="mb-3 text-[#64748B]">About</h1>
             <p className="text-sm">
               I turn ideas into intuitive and user-friendly digital experience through UI UX design.
@@ -205,3 +279,5 @@ const ResumeUpload = () => {
 }
 
 export default ResumeUpload;
+
+
