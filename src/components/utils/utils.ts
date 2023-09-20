@@ -79,3 +79,25 @@ export const getjobTitleList = async () => {
 export const getDepartmentList = async () => {
   return await axios.get(`${process.env.REACT_APP_API_PATH}/department/get`).then((res: any) => res.data.data)
 }
+
+export const calculateWorkedTime = (startYear: any, startMonth: any) => {
+  const months:any = [
+      'Jan', 'Feb', 'Mar', 'Apr',
+      'May', 'June', 'July', 'Aug',
+      'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+  
+    const today = new Date();
+    const startDate = new Date(startYear, months.indexOf(startMonth) - 1); // Note that months are 0-indexed in JavaScript
+
+    let yearDiff = today.getFullYear() - startDate.getFullYear();
+    let monthDiff = today.getMonth() - startDate.getMonth();
+
+    if (monthDiff < 0) {
+        yearDiff--;
+        monthDiff += 12;
+    }
+
+    return { years: yearDiff, months: monthDiff };
+}
+
