@@ -1,6 +1,6 @@
 
-export const filterArray = (objectArray: any, id: number) => {
-  const object = objectArray?.filter((item: any) => item.id === id);
+export const filterArray = (objectArray: any, id?: number, title?:string) => {
+  const object = objectArray?.filter((item: any) => id ? item.id === id : item.title === title);
   return object;
 }
 
