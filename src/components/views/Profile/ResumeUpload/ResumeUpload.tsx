@@ -102,7 +102,7 @@ const ResumeUpload = () => {
     }
   }
 
-  const downloadFile = async (e:any) => {
+  const downloadFile = async (e: any) => {
     e.preventDefault();
     const APL_URL = process.env.REACT_APP_API_PATH;
     try {
@@ -132,6 +132,7 @@ const ResumeUpload = () => {
     dispatch(resumeDelete(data));
   }
 
+  console.log('resume split ', resumeFileSplit)
   return (
     <>
       {/* <div className="w-full h-full rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] p-4">
@@ -181,7 +182,7 @@ const ResumeUpload = () => {
         <div className=" h-full">
           <form>
             <h1 className="mb-3 text-[#64748B]">Resume</h1>
-            {(resumeFile && lastUpdatedTimestamp !== null) && (
+            {errorMessage ? <span className="text-red-600">{errorMessage}</span> : (resumeFile && lastUpdatedTimestamp !== null) && (
               <span className="mt-2">
                 <span className="font-thin text-sm">Resume last updated - </span>
                 <span className="text-sm">  {formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true })}</span>
@@ -193,7 +194,7 @@ const ResumeUpload = () => {
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept=".pdf,.doc,.docx,.rdf"
+                  accept=".pdf,.doc,.docx"
                   className="hidden"
                   onChange={handleFileChange}
                 />
@@ -204,7 +205,7 @@ const ResumeUpload = () => {
             {resumeFile && <div className="bg-[#FFF] rounded-lg shadow-sm px-4 py-2 flex justify-between items-center w-full mt-3">
               <div className="flex justify-start items-center w-11/12">
                 {(resumeFileSuffix === 'pdf' && <MdOutlinePictureAsPdf className="text-red-400 " size={28} />)}
-                {(resumeFileSuffix === 'doc' || resumeFilePrefix === 'docx') && <FaRegFileWord className="text-red-400 " size={28} />}
+                {(resumeFileSuffix === 'doc' || resumeFileSuffix === 'docx') && <FaRegFileWord className="text-blue-400 " size={28} />}
 
                 <h1 className="overflow-hidden inline-block whitespace-nowrap text-ellipsis ml-2 text-lg">{resumeFilePrefix}</h1>
               </div>
@@ -226,7 +227,7 @@ const ResumeUpload = () => {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Items className="absolute  top-8 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <div className="px-1 py-1 ">
                           <Menu.Item>
                             {({ active }) => (

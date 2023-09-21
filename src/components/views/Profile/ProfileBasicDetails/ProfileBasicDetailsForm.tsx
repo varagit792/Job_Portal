@@ -48,46 +48,31 @@ const basicDetailsSchema = yup.object({
   jobSeekerType: yup.string()
     .required('Job seeker type is required.'),
   noticePeriod: yup.string().required('Please select a notice period'),
-  currentLocation: yup.object().shape({
-    value: yup.string().required("Please select current location"),
-    label: yup.string().required("Please select current location"),
-    // })
-  }).required("Please select current location"),
+  currentLocation: yup.object().required("Please select current location"),
+  totalExpYear: yup.object().when(
+    'jobSeekerType', {
+    is: 'Experienced',
+    then: (schema) => schema.required("Please select total experience years"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  totalExpMonth: yup.object().when(
+    'jobSeekerType', {
+    is: 'Experienced',
+    then: (schema) => schema.required("Please select total experience months"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
 
-
-  // totalExpYear: yup.object().shape({
-  //   value: yup.string().required('Please select total experience years'),
-  //   label: yup.string().required('Please select total experience years'),
-  // }).when(
-  //   'jobSeekerType', {
-  //   is: 'Experienced',
-  //   then: (schema) => schema.required("Please select total experience years"),
-  //   otherwise: (schema) => schema.notRequired(),
-  // }
-  // ),
-  totalExpYear: yup.object().when(["jobSeekerType"], (jobSeekerType, schema) => {
-    if (jobSeekerType as any === 'Experienced') {
-      return schema.required("select option");
-    }
-    return schema
+  currentCompany: yup.object().when(
+    'jobSeekerType', {
+    is: 'Experienced',
+    then: (schema) => schema.required("Please select current company"),
+    otherwise: (schema) => schema.notRequired(),
   }),
-  totalExpMonth: yup.object().when(["jobSeekerType"], (jobSeekerType, schema) => {
-    if (jobSeekerType as any === 'Experienced') {
-      return schema.required("select option");
-    }
-    return schema
-  }),
-  currentCompany: yup.object().when(["jobSeekerType"], (jobSeekerType, schema) => {
-    if (jobSeekerType as any === 'Experienced') {
-      return schema.required("select option");
-    }
-    return schema
-  }),
-  currentJobTitle: yup.object().when(["jobSeekerType"], (jobSeekerType, schema) => {
-    if (jobSeekerType as any === 'Experienced') {
-      return schema.required("select option");
-    }
-    return schema
+  currentJobTitle: yup.object().when(
+    'jobSeekerType', {
+    is: 'Experienced',
+    then: (schema) => schema.required("Please select current company"),
+    otherwise: (schema) => schema.notRequired(),
   }),
 }).required();
 
@@ -135,13 +120,13 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
       setValue('name', userData?.name);
     }
     if (profileDashboard) {
-      setValue('currentLocation', profileDashboard?.currentLocation ? { value: profileDashboard?.currentLocation?.id, label: profileDashboard?.currentLocation?.title } : '');
+      setValue('currentLocation', profileDashboard?.currentLocation && { value: profileDashboard?.currentLocation?.id, label: profileDashboard?.currentLocation?.title });
       setValue('currentSalary', profileDashboard?.currentSalary);
       setValue('jobSeekerType', profileDashboard?.jobSeekerType);
-      setValue('totalExpMonth', profileDashboard?.totalExpMonth ? { value: profileDashboard?.totalExpMonth?.id, label: profileDashboard?.totalExpMonth?.title } : '');
-      setValue('totalExpYear', profileDashboard?.totalExpYear ? { value: profileDashboard?.totalExpYear?.id, label: profileDashboard?.totalExpYear?.title } : '');
-      setValue('currentJobTitle', profileDashboard?.currentJobTitle ? { value: profileDashboard?.currentJobTitle?.id, label: profileDashboard?.currentJobTitle?.title } : '');
-      setValue('currentCompany', profileDashboard?.currentCompany ? { value: profileDashboard?.currentCompany?.id, label: profileDashboard?.currentCompany?.title } : '');
+      setValue('totalExpMonth', profileDashboard?.totalExpMonth && { value: profileDashboard?.totalExpMonth?.id, label: profileDashboard?.totalExpMonth?.title } );
+      setValue('totalExpYear', profileDashboard?.totalExpYear && { value: profileDashboard?.totalExpYear?.id, label: profileDashboard?.totalExpYear?.title } );
+      setValue('currentJobTitle', profileDashboard?.currentJobTitle && { value: profileDashboard?.currentJobTitle?.id, label: profileDashboard?.currentJobTitle?.title } );
+      setValue('currentCompany', profileDashboard?.currentCompany && { value: profileDashboard?.currentCompany?.id, label: profileDashboard?.currentCompany?.title });
       setValue('noticePeriod', profileDashboard?.noticePeriod?.title);
     }
   }, [profileDashboard, setValue, userData])
@@ -194,23 +179,25 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
     setValue("noticePeriod", noticePeriodOption);
   };
 
-  console.log('errors', errors);
   const onSubmit = (data: IFormInputs) => {
 
     const monthArray = filterArray(totalExpMonthList, parseInt(data?.totalExpMonth?.value));
     const yearArray = filterArray(totalExpYearList, parseInt(data?.totalExpYear?.value));
     const locationArray = filterArray(locationList, parseInt(data?.currentLocation.value));
-    const noticeArray = noticePeriodList.filter((notice: any) => notice?.title === data.noticePeriod)
+    const noticeArray = noticePeriodList.filter((notice: any) => notice?.title === data.noticePeriod);
+    const companyArray = filterArray(companyList, parseInt(data?.currentCompany?.value));
+    const jobTitleArray = filterArray(jobTitleList, parseInt(data?.currentJobTitle?.value));
+
     data.totalExpMonth = monthArray[0];
     data.totalExpYear = yearArray[0];
     data.currentLocation = locationArray[0];
     data.noticePeriod = noticeArray[0];
-    console.log('data in submit  ', data);
+    data.currentCompany = companyArray[0];
+    data.currentJobTitle = jobTitleArray[0];
+
     dispatch(updateProfileBasicDetails(data as any));
 
   };
-
-  console.log('notice period ', watch('noticePeriod'));
 
   const noticePeriodClass = "border border-gray-400 py-1 mx-3 px-3 my-2 rounded-2xl";
   const noticePeriodClassHighLighted = "border border-gray-400 py-1 mx-3 px-3 my-2 rounded-2xl bg-slate-200"
@@ -325,7 +312,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
                     />
                   )}
                 />
-                {watch('jobSeekerType') === 'Experienced' && errors.totalExpYear && <p className="font-normal text-xs text-red-500 ">Please select Current Company</p>}
+                {watch('jobSeekerType') === 'Experienced' && errors.currentCompany && <p className="font-normal text-xs text-red-500 ">Please select Current Company</p>}
               </div>
             </div>
             <div className="flex flex-col flex-grow">
@@ -346,7 +333,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
                     />
                   )}
                 />
-                {watch('jobSeekerType') === 'Experienced' && errors.totalExpMonth && <p className="font-normal text-xs text-red-500 ">Please select total exp months</p>}
+                {watch('jobSeekerType') === 'Experienced' && errors.currentJobTitle && <p className="font-normal text-xs text-red-500 ">Please select current designation</p>}
               </div>
            </div>
           </div>
