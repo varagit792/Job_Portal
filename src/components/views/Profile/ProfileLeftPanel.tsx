@@ -111,10 +111,6 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
     dispatch(careerProfileDetailsGet());
     dispatch(profileDashboardGet());
     dispatch(careerProfileDetailsGet());
-    dispatch(profileDashboardGet());
-    dispatch(profileDashboardGet());
-    dispatch(profileDashboardGet());
-    dispatch(profileDashboardGet());
     dispatch(keySkillsGet());
     dispatch(educationDetailsGet())
   }, [dispatch])
@@ -164,7 +160,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
 
         <hr className="my-10" />
         <ul className="max-w-md list-inside">
-          <li className="flex items-center  mb-5">
+          <li className="flex items-center  mb-8">
             <Tick tickNumber="1" tickStatus={profileIndicator[0]?.resume?.status} />
             <a href="#resumeUpload" className="text-sm  w-full flex justify-between">
               <span className="font-semibold">Resume</span></a>
@@ -176,7 +172,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               }
             </a>
           </li>
-          {/* <li className="flex items-center  mb-5">
+          {/* <li className="flex items-center  mb-8">
             {profileIndicator[0]?.profilePicture?.status ? <Tick fill="currentColor" /> : <Tick />}
             <a href="#resumeUpload" className="text-sm  w-full flex justify-between">
               <span className="font-semibold">Profile Picture</span></a>
@@ -188,7 +184,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               }
             </a>
           </li> */}
-          <li className="flex items-center  mb-5">
+          <li className="flex items-center  mb-8">
             <Tick tickNumber="2" tickStatus={profileIndicator[0]?.resumeHeadLine?.status} />
             <a href="#resumeHeadline" className="text-sm w-full flex justify-between">
               <span className="font-semibold">Resume headline</span></a>
@@ -200,7 +196,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               }
             </a>
           </li>
-          <li className="flex items-center  mb-5">
+          <li className="flex items-center  mb-8">
             <Tick tickNumber="3" tickStatus={profileIndicator[0]?.careerProfile?.status} />
             <a href="#careerProfile" className="text-sm  w-full flex justify-between">
               <span className="font-semibold">Career profile</span></a>
@@ -212,7 +208,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               }
             </a>
           </li>
-          <li className="flex items-center  mb-5">
+          <li className="flex items-center  mb-8">
             <Tick tickNumber="4" tickStatus={profileIndicator[0]?.keySkill?.status} />
             <a href="#keySkills" className="text-sm  w-full flex justify-between">
               <span className="font-semibold">Key skills</span>
@@ -223,7 +219,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               }
             </a>
           </li>
-          <li className="flex items-center  mb-5">
+          <li className="flex items-center  mb-8">
             <Tick tickNumber="5" tickStatus={profileIndicator[0]?.education?.status} />
             <a href="#education" className="text-sm w-full flex justify-between">
               <span className="font-semibold">Education</span></a>
@@ -235,7 +231,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               }
             </a>
           </li>
-          <li className="flex items-center  mb-5">
+          <li className="flex items-center  mb-8">
             <Tick tickNumber="6" tickStatus={profileIndicator[0]?.itSkills?.status} />
             <a href="#education" className="text-sm  w-full flex justify-between">
               <span className="font-semibold">IT skills</span></a>
@@ -247,7 +243,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               }
             </a>
           </li>
-          <li className="flex items-center  mb-5">
+          <li className="flex items-center  mb-8">
             <Tick tickNumber="7" tickStatus={profileIndicator[0]?.projects?.status} />
             <a href="#education" className="text-sm  w-full flex justify-between">
               <span className="font-semibold">Projects</span></a>
@@ -259,7 +255,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               }
             </a>
           </li>
-          <li className="flex items-center  mb-5">
+          <li className="flex items-center  mb-8">
             <Tick tickNumber="8" tickStatus={profileIndicator[0]?.profileSummery?.status} />
             <a href="#profileSummary" className="text-sm  w-full flex justify-between">
               <span className="font-semibold">Profile summary</span></a>
@@ -271,7 +267,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               }
             </a>
           </li>
-          <li className="flex items-center mb-5">
+          <li className="flex items-center mb-8">
             <Tick tickNumber="9" tickStatus={profileIndicator[0]?.accomplishments?.status} />
             <a href="#education" className="text-sm w-full flex justify-between">
               <span className="font-semibold">Accomplishments</span></a>
@@ -283,7 +279,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               }
             </a>
           </li>
-          <li className="flex items-center mb-5">
+          <li className="flex items-center mb-8">
             <Tick tickNumber="10" tickStatus={profileIndicator[0]?.personalDetails?.status} />
             <a href="#personalDetails" className="text-sm w-full flex justify-between">
               <span className="font-semibold">Personal details</span></a>
