@@ -58,7 +58,7 @@ export default function Employment() {
   }, [])
 
   return (
-    <div className="w-full rounded-2xl bg-white p-4 mt-5" >
+    <div className="w-full rounded-2xl bg-white p-4 mt-5 border border-[#E0E7FF]" >
       <div className="flex items-center justify-between mb-4 font-bold">
         <h1>Employment</h1>
         <h1 className="text-blue-600 font-medium cursor-pointer" onClick={openModal}>Add employment</h1>
