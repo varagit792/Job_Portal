@@ -102,8 +102,8 @@ const ResumeUpload = () => {
     }
   }
 
-  const downloadFile = async () => {
-
+  const downloadFile = async (e:any) => {
+    e.preventDefault();
     const APL_URL = process.env.REACT_APP_API_PATH;
     try {
       const response = await axios.get(resumeCompletePath, {
@@ -123,7 +123,8 @@ const ResumeUpload = () => {
     }
   };
 
-  const handleDeleteResume = () => {
+  const handleDeleteResume = (e: any) => {
+    e.preventDefault();
     const data = {
       resumeFile: formData.resumeFile,
       resumePath: formData.resumePath
@@ -178,7 +179,7 @@ const ResumeUpload = () => {
       </div> */}
       <div className="rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] w-full h-full p-7">
         <div className=" h-full">
-          <form className="h-4/6">
+          <form>
             <h1 className="mb-3 text-[#64748B]">Resume</h1>
             {(resumeFile && lastUpdatedTimestamp !== null) && (
               <span className="mt-2">
@@ -186,7 +187,7 @@ const ResumeUpload = () => {
                 <span className="text-sm">  {formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true })}</span>
               </span>
             )}
-            <div className="border border-dashed border-[#A5B4FC] rounded-xl p-3 flex flex-col justify-center items-center mb-3">
+            <div className="border border-dashed border-[#A5B4FC] rounded-xl p-3 flex flex-col justify-center items-center">
               <span className=" text-gray-400 text-xs">Formats: .PDF and .DOC up to 2MB</span>
               <label className="cursor-pointer text-[#312E81] p-2 font-semibold text-base flex justify-center items-center">
                 <input
@@ -200,9 +201,8 @@ const ResumeUpload = () => {
                 <img src={uploadIcon} alt="uploadIcon" className="ml-2" />
               </label>
             </div>
-            <div className="bg-[#FFF] rounded-lg shadow-sm px-4 py-2 flex justify-between items-center w-full">
+            {resumeFile && <div className="bg-[#FFF] rounded-lg shadow-sm px-4 py-2 flex justify-between items-center w-full mt-3">
               <div className="flex justify-start items-center w-11/12">
-                {/* <img src={PDFIcon} alt="PDFIcon" /> */}
                 {(resumeFileSuffix === 'pdf' && <MdOutlinePictureAsPdf className="text-red-400 " size={28} />)}
                 {(resumeFileSuffix === 'doc' || resumeFilePrefix === 'docx') && <FaRegFileWord className="text-red-400 " size={28} />}
 
@@ -210,17 +210,10 @@ const ResumeUpload = () => {
               </div>
               <div className="w-1/12 flex justify-between items-center">
                 <span className="border-r-2 border-[#E0E7FF] h-7 ml-1"></span>
-                {/* <img src={ThreeDots} alt="ThreeDots"  /> */}
-
                 <div>
                   <Menu as="div" className="relative inline-block text-left">
                     <div>
                       <Menu.Button className="inline-flex w-full justify-center items-center text-[#312E81] m-0 p-0.5">
-                       
-                        {/* <ChevronDownIcon
-                                    className="ml-1 mr-1 h-5 w-5"
-                                    aria-hidden="true"
-                                /> */}
                         <PiDotsThreeVerticalBold />
                       </Menu.Button>
                     </div>
@@ -238,10 +231,11 @@ const ResumeUpload = () => {
                           <Menu.Item>
                             {({ active }) => (
                               <button onClick={handleDeleteResume}
-                                className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
+                                className={`${active ? 'bg-[#EEF2FF] text-black' : 'text-gray-900'
                                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                               >
                                 <RiDeleteBin6Line className="ml-6 text-blue-600 text-lg mr-2 cursor-pointer" />
+                                <span className="ml-2">Delete</span>
                               </button>
                             )}
                           </Menu.Item>
@@ -249,10 +243,11 @@ const ResumeUpload = () => {
                             {({ active }) => (
                               <button
                                 onClick={downloadFile}
-                                className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
+                                className={`${active ? 'bg-[#EEF2FF] text-black' : 'text-gray-900'
                                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                               >
                                 <BiDownload className="ml-6 text-blue-600 text-lg mr-2 cursor-pointer" />
+                                <span className="ml-2">Download</span>
                               </button>
                             )}
                           </Menu.Item>
@@ -262,12 +257,12 @@ const ResumeUpload = () => {
                   </Menu>
                 </div>
               </div>
-            </div>
+            </div>}
           </form>
 
-          <hr className="bg-[#E0E7FF] w-full my-4" />+
-          <div className="h-1/4">
-            <h1 className="mb-3 text-[#64748B]">About</h1>
+          <hr className="bg-[#E0E7FF] w-full my-4" />
+          <div>
+            <h1 className="mb-3 text-[#64748B] leading-none">About</h1>
             <p className="text-sm">
               I turn ideas into intuitive and user-friendly digital experience through UI UX design.
             </p>
