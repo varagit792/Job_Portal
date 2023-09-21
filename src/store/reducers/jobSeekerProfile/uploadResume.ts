@@ -72,7 +72,7 @@ const jobSeekerUploadSlice = createSlice({
       state.errorMessage = '';
       state.success = false;
     });
-    builder.addCase(resumeUpload.fulfilled, (state,action:any) => {
+    builder.addCase(resumeUpload.fulfilled, (state, action: any) => {
       state.loading = false;
       state.error = false;
       state.success = true;
@@ -93,10 +93,11 @@ const jobSeekerUploadSlice = createSlice({
       state.loading = false;
       state.error = false;
       state.success = false;
+      state.errorMessage = ""
       return state;
     },
   }
 });
 
 export default jobSeekerUploadSlice.reducer;
-export const { clearUploadState }=  jobSeekerUploadSlice.actions ;
+export const { clearUploadState } = jobSeekerUploadSlice.actions;

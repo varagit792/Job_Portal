@@ -4,7 +4,9 @@ import Cookies from 'js-cookie';
 
 
 interface ProfileDashboard {
-    resumeLastUpdated:any;
+    currentJobTitle: any;
+    currentCompany: any;
+    resumeLastUpdated: any;
     profileLastUpdated: any;
     noticePeriod: any;
     jobSeekerType: string;
@@ -20,7 +22,7 @@ interface ProfileDashboard {
     resumeHeadline: string,
     personalDetails: any,
     educations: any,
-    employments:any
+    employments: any
 }
 
 interface registerUserState {

@@ -15,6 +15,7 @@ import { profileDashboardGet } from "../../../../store/reducers/jobSeekerProfile
 import PhoneIcon from '../../../../assets/svg/Phone.svg';
 import EmailIcon from '../../../../assets/svg/Email.svg';
 import LocationIcon from '../../../../assets/svg/LocationIcon.svg';
+import { clearUploadState } from "../../../../store/reducers/jobSeekerProfile/uploadResume"
 
 
 const ProfileBasicDetails = () => {
@@ -31,6 +32,7 @@ const ProfileBasicDetails = () => {
   useEffect(() => {
     if (success) {
       dispatch(clearGetUserDataSlice)
+      dispatch(clearUploadState)
     }
   }, [dispatch, success]);
 
@@ -104,10 +106,11 @@ const ProfileBasicDetails = () => {
           <h1 className="text-lg font-bold mb-1">{userData?.name}</h1>
           <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer" onClick={openModal}> <FiEdit2 /> </span>
         </div>
-        <div className="flex justify-start items-center text-[#475569] text-base">
-          <h1 className="mr-2">UI/ UX Designer</h1>
-          <h1>@ Ratna Global Tech</h1>
-        </div>
+        {(profileDashboard?.jobSeekerType === 'Experienced') ? (profileDashboard?.currentCompany ? <div className="flex justify-start items-center text-[#475569] text-base">
+          <h1 className="mr-2">{profileDashboard?.currentJobTitle?.title}</h1>
+          <h1>@ {profileDashboard?.currentCompany?.title}</h1>
+        </div> : <div className="mr-4 text-blue-600 font-md cursor-pointer font-semibold" onClick={openModal}>
+          Add PhoneNumber </div>) : <h1 className="mr-2">Fresher</h1>}
         <hr className="my-5 bg-[#E0E7FF]" />
         <div className="text-sm text-[#64748B]">
           <div className="flex justify-start items-center mb-3">
@@ -117,7 +120,7 @@ const ProfileBasicDetails = () => {
           <div className="flex justify-start items-center">
             {userData.mobileNumber ? <div className="flex justify-start items-center mr-2">
               <img src={PhoneIcon} alt="PhoneIcon" width="12rem" height="12rem" />
-              <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{userData.mobileNumber }</span>
+              <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{userData.mobileNumber}</span>
             </div> : <div className="mr-4 text-blue-600 font-md cursor-pointer font-semibold" onClick={openModal}>
               Add PhoneNumber </div>
             }

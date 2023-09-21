@@ -43,7 +43,8 @@ const ProfilePictureUploadForm: FC<Parameters> = ({ closeDialog }) => {
     uploadFile = 'Change photo';
   }
 
-  const handleDeletePicture = () => {
+  const handleDeletePicture = (event: any) => {
+    event.preventDefault();
     const data = {
       profilePictureFile: '',
       profilePicturePath: ''
