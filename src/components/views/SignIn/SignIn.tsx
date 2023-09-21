@@ -66,15 +66,16 @@ const SignIn = () => {
   return (
     <>
       <div className="h-[10%] w-full"></div>
-      <div className="bg-zinc-100">
-        <div className=" py-6 px-32 w-full ">
-          <div className="">
-          <div className="grid grid-cols-3 gap-4 bg-gradient-to-r">
-            <div className='h-full col-start-1 col-end-3 bg-white shadow rounded-xl'>
+      {/* <div className="bg-zinc-100"> */}
+      <div className="w-full h-[90%] relative">
+      <img src={job_img} className='object-cover h-full w-full blur-sm' />
+          {/* <div className="">
+          <div className="bg-gradient-to-r"> */}
+            {/* <div className='h-full col-start-1 col-end-3 bg-white shadow rounded-xl'>
               <img src={job_img} className='rounded-lg object-cover h-full w-full' />
-            </div>
-            <div className="h-full">
-              <div className="col-start-2 col-end-4 bg-white shadow rounded-xl">
+            </div> */}
+            {/* <div className="h-full"> */}
+              <div className="col-start-2 col-end-4 bg-white shadow rounded-xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <div className="p-10 grid grid-cols-4">
                   <div className="text-4xl font-extrabold col-start-1 col-end-5 text-center">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-[#818CF8]">
@@ -124,11 +125,11 @@ const SignIn = () => {
                   </div>
                 </div>
               </div>
-            </div >
-            </div>
-            </div>
+            {/* </div > */}
+            {/* </div>
+            </div> */}
         </div >
-      </div >
+      {/* </div > */}
     </>
   )
 }

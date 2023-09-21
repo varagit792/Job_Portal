@@ -32,7 +32,7 @@ const ProfileSummary = () => {
     };
 
     return (
-        <div className="w-full rounded-2xl bg-white p-4 mt-5" >
+        <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]" >
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center font-bold">
                     <h1>Profile summary</h1>

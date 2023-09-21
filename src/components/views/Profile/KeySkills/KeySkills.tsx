@@ -46,7 +46,7 @@ const KeySkills = ({ profileDashboard }: any) => {
   }, [profileDashboard])
 
   return (
-    <div className="w-full rounded-2xl bg-white p-4 mt-5">
+    <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]">
       {isAddDelete.state && <p className={`font-normal text-xs text-green-500`}>{isAddDelete.message} </p>}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center justify-between mb-4 font-bold">

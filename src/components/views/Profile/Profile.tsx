@@ -70,13 +70,13 @@ const Profile = () => {
     <>
       <div className="h-[10%] w-full"></div>
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
-        <div className="grid grid-cols-10 gap-10">
+        <div className="grid grid-cols-10 gap-4">
           <div className="col-start-1 col-end-4">
             <ProfileLeftPanel profileDashboard={profileDashboard} />
           </div>
           <div className="col-start-4 col-end-11">
             {/* card */}
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-5 gap-4">
               <div className="col-start-1 col-end-4 border border-[#E0E7FF] rounded-lg bg-[#FFF]">
                 <div className="w-full h-40 relative">
                   <div className="w-full h-2/3 bg-gradient-to-r from-[#EEF2FF] to-[#C7D2FE] rounded-t-lg">

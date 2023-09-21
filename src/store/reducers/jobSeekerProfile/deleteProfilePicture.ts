@@ -46,7 +46,7 @@ const initialState: UploadState = {
 export const deleteProfilePicture = createAsyncThunk(
   'upload/deleteProfilePicture', async (data:any) => {
     try {
-      console.log('token', Cookies.get('token'));
+    
       const response = await axios.put(`${process.env.REACT_APP_API_PATH}/jobSeekerProfile/profilePictureDelete`,
         data,
         {
