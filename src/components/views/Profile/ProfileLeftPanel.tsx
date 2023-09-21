@@ -22,7 +22,7 @@ import KeySkillsForm from './KeySkills/KeySkillsForm';
 import { keySkillsGet } from '../../../store/reducers/dropdown/keySkills';
 import { clearUpdateCareerProfileUpdateSlice } from '../../../store/reducers/jobSeekerProfile/careerProfileUpdate';
 import { clearKeySkillsSlice } from '../../../store/reducers/jobSeekerProfile/keySkills';
-import ResumeUploadForm from './ResumeUpload/ResumeUploadForm';
+import ResumeUploadLeftPanel from './ResumeUpload/ResumeUploadLeftPanel';
 
 const ProfileLeftPanel = ({ profileDashboard }: any) => {
   const [isResumeHeadLineOpen, setIsResumeHeadLineOpen] = useState(false);
@@ -373,12 +373,10 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
           closeDialog={closeKeySkillsDialog}
         />}
       />
-
-
       <Modal
         isOpen={isResumeOpen}
         setIsOpen={setIsResumeOpen}
-        modalBody={<ResumeUploadForm />}
+        modalBody={<ResumeUploadLeftPanel />}
       />
 
     </>
