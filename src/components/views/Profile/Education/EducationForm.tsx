@@ -4,6 +4,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { jobSeekerEducationAdd } from '../../../../store/reducers/jobSeekerProfile/jobSeekerEducation';
 import Select from 'react-select';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 interface IFormInputs {
   id: number,
   courseType: string,
@@ -29,6 +31,30 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
   const id = profileDashboard?.id;
   const dispatch = useAppDispatch();
 
+  const EducationDetailsSchema = yup.object({
+    //currentEmployment: yup.string().required('Current Employment is required'),
+    courseType: yup.string().required('Course Type is required'),
+    education: yup.object().required('Education is required'),
+    institute: yup.object().required('Institute is required'),
+    //board: yup.object().required('Board is required'),
+    board: yup.object().when("education", {
+      is: (education: any) => {        
+        return (education?.label === '10th' || education?.label === '12th') && true
+      },
+      then: (schema) => schema.required("Please select board"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    //specialization: yup.object().required('Specialization is required'),
+    specialization: yup.object().when("education", {
+      is: (education: any) => {        
+        return (education?.label !== '10th' && education?.label !== '12th') && true
+      },
+      then: (schema) => schema.required("Please select board"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    passingYear: yup.object().required('Passing Year is required'),
+    percentage: yup.number().required('Percentage is required')
+  }).required();
   //react hook form controls
   const {
     control,
@@ -39,37 +65,31 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
     getValues
   } = useForm<IFormInputs | any>({
     defaultValues: {
-      courseType: selectedEducation?.courseType ? selectedEducation?.courseType : '',
+      courseType: selectedEducation?.courseType && selectedEducation?.courseType,
       education: selectedEducation?.education
-        ? {
+        && {
           value: (institute?.filter((item: any) => item?.title === selectedEducation?.education) as any)?.[0]?.id, label: selectedEducation?.education
-        }
-        : '',
+        },
       institute: selectedEducation?.institute
-        ? {
+        && {
           value: (institute?.filter((item: any) => item?.title === selectedEducation?.institute) as any)?.[0]?.id, label: selectedEducation?.institute
-        } 
-        : '',
+        },
         board: selectedEducation?.board
-        ? {
+        && {
           value: (board?.filter((item: any) => item?.title === selectedEducation?.board) as any)?.[0]?.id, label: selectedEducation?.board
-        } 
-        : '',
+        },
       specialization: selectedEducation?.specialization
-        ? {
-          value: (institute?.filter((item: any) => item?.title === selectedEducation?.specialization) as any)?.[0]?.id, label: selectedEducation?.specialization
-        }
-        : '',
+        && {
+        value: (institute?.filter((item: any) => item?.title === selectedEducation?.specialization) as any)?.[0]?.id, label: selectedEducation?.specialization
+      },
       passingYear: selectedEducation?.passingYear
-        ? {
+        && {
           value: (institute?.filter((item: any) => item?.title === selectedEducation?.passingYear) as any)?.[0]?.id, label: selectedEducation?.passingYear
-        }
-        : '',
-      percentage: selectedEducation?.percentage ? selectedEducation?.percentage :'',
+        },
+      percentage: selectedEducation?.percentage ? selectedEducation?.percentage :null,
     },
-    //resolver: yupResolver(basicDetailsSchema)
+    resolver: yupResolver(EducationDetailsSchema as any)
   });
-
 
   useEffect(() => {
     (async () => {
@@ -136,7 +156,7 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
     
     dispatch(jobSeekerEducationAdd(educationData as any));
   };
-
+  console.log('errors--->',errors);
   return (
     <div>
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
@@ -157,7 +177,8 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
 
                     />
                   )}
-                />
+            />
+            {errors.education && <p className="font-normal text-xs text-red-500">{errors.education.message as string}</p>}
           </div>
         </div>
 
@@ -178,7 +199,8 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
 
                     />
                   )}
-                />
+              />
+              {errors.board && <p className="font-normal text-xs text-red-500">{errors.board.message as string}</p>}
           </div>
         </div>
         }
@@ -198,7 +220,8 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
                       defaultValue={watch('institute')}
                     />
                   )}
-                />
+            />
+            {errors.institute && <p className="font-normal text-xs text-red-500">{errors.institute.message as string}</p>}
           </div>
         </div>
 
@@ -218,16 +241,17 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
                       defaultValue={watch('specialization')}
                     />
                   )}
-                />
+              />
+              {errors.specialization && <p className="font-normal text-xs text-red-500">{errors.specialization.message as string}</p>}
             </div>
           </div>
         }
         <div className="col-span-full mb-4">
           <label htmlFor="courseType" className="block text-sm font-medium leading-6 text-gray-900">Course Type</label>
-          <div className="mt-2 flex justify-between items-center">
+          <div className="mt-2 flex justify-between items-center">            
             {
             options.map((option) => (
-              <div key={option}>
+                <div key={option}>
                 <label className="mr-3">
                   {option}
                   <Controller
@@ -246,12 +270,12 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
                       />
                     )}
                   />
-                </label>
-                {errors.jobSeekerType && <p className="font-normal text-xs text-red-500">{errors.jobSeekerType.message as string}</p>}
+                </label>                
               </div>
             ))
-          }
+            }            
           </div>
+          {errors.courseType && <p className="font-normal text-xs text-red-500">{errors.courseType.message as string}</p> }
         </div>
 
         <div className="col-span-full mb-4">
@@ -269,7 +293,8 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
                       defaultValue={watch('passingYear')}
                     />
                   )}
-                />
+            />
+            {errors.passingYear && <p className="font-normal text-xs text-red-500">{errors.passingYear.message as string}</p>}
           </div>
         </div>
 
@@ -288,7 +313,8 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
                 readOnly={false}
               />
             )}
-          />
+            />
+            {errors.percentage && <p className="font-normal text-xs text-red-500">{errors.percentage.message as string}</p>}
           </div>
         </div>
         <div className="mt-5 flex justify-end items-center">
