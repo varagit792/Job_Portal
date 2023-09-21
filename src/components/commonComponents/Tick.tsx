@@ -1,11 +1,16 @@
 import React from 'react'
+import TickIcons from '../../assets/svg/tick_icons.svg';
 
-const Tick = ({ fill }: any) => {
+const Tick = ({ tickNumber, tickStatus }: any) => {
   return (
     <>
-      <svg className="w-4 h-4 mr-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true" fill={fill} viewBox="0 0 20 20">
-        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-      </svg>
+      {tickStatus && <span className="w-6 h-6 mr-2 shrink-0 grow-0 rounded-full bg-[#4F46E5] flex items-center justify-center">
+        <img src={TickIcons} alt="TickIcons" className='w-3 h-3' />
+      </span>}
+
+      {!tickStatus && <span className="w-6 h-6 mr-2 shrink-0 grow-0 rounded-full border-2 border-indigo-100 flex items-center justify-center">
+        <span className=''>{tickNumber}</span>
+      </span>}
     </>
   )
 }
