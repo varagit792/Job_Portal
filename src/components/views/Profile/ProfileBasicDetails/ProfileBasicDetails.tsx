@@ -115,14 +115,18 @@ const ProfileBasicDetails = () => {
             <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{userData?.email}</span>
           </div>
           <div className="flex justify-start items-center">
-            <div className="flex justify-start items-center mr-2">
+            {userData.mobileNumber ? <div className="flex justify-start items-center mr-2">
               <img src={PhoneIcon} alt="PhoneIcon" width="12rem" height="12rem" />
-              <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{userData.mobileNumber}</span>
-            </div>
-            <div className="flex justify-start items-center">
+              <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{userData.mobileNumber }</span>
+            </div> : <div className="mr-4 text-blue-600 font-md cursor-pointer font-semibold" onClick={openModal}>
+              Add PhoneNumber </div>
+            }
+            {profileDashboard?.currentLocation ? <div className="flex justify-start items-center">
               <img src={LocationIcon} alt="LocationIcon" width="12rem" height="12rem" />
               <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{profileDashboard?.currentLocation?.title && `${profileDashboard?.currentLocation?.title},`} {profileDashboard?.currentCountry}</span>
-            </div>
+            </div> :
+              <div className="mr-4 text-blue-600 font-md cursor-pointer font-semibold" onClick={openModal}> Add Location </div>
+            }
           </div>
         </div>
       </div>
