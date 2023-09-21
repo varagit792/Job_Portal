@@ -31,8 +31,8 @@ const HomePage = () => {
                 <ProfileLeftSection profileDashboard={profileDashboard} />
                 <div className="col-start-3 col-end-8">
                     <ProfileBanner />
-                    <MostDemandingCategory />
                     <JobRecommendations />
+                    <MostDemandingCategory />
                     <hr className="my-10" />
                     <TopCompaniesHiring />
                     <hr className="my-10" />

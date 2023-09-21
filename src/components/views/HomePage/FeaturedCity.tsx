@@ -17,7 +17,6 @@ const FeaturedCity = () => {
       dispatch(clearGetCitySlice());
     }
   }, [dispatch, success]);
-  console.log(city);
 
   return (
     <div>

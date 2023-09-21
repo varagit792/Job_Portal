@@ -4,8 +4,20 @@ import Cookies from 'js-cookie';
 
 
 interface ProfileIndicatorData {
-  id: number,
-  profileIndicator: number
+  calculatedProfileIndicator: number,
+  resume: { status: boolean, value: number },
+  resumeHeadLine: { status: boolean, value: number },
+  profilePicture: { status: boolean, value: number },
+  careerProfile: { status: boolean, value: number },
+  keySkill: { status: boolean, value: number },
+  education: { status: boolean, value: number },
+  itSkills: { status: boolean, value: number },
+  projects: { status: boolean, value: number },
+  profileSummery: { status: boolean, value: number },
+  accomplishments: { status: boolean, value: number },
+  personalDetails: { status: boolean, value: number },
+  employment: { status: boolean, value: number },
+  language: { status: boolean, value: number }
 }
 
 interface registerUserState {

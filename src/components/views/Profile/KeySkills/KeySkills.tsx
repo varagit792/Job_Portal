@@ -4,9 +4,9 @@ import Modal from '../../../commonComponents/Modal';
 import KeySkillsForm from './KeySkillsForm';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { clearGetKeySkillsSlice, keySkillsGet } from '../../../../store/reducers/dropdown/keySkills';
+import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 
 const KeySkills = ({ profileDashboard }: any) => {
-  const modalTitle = 'Key skills';
   const [isOpen, setIsOpen] = useState(false);
   const [keySkill, setKeySkill] = useState([]);
   const [databaseSkillSet, setDatabaseSkillSet] = useState([]);
@@ -15,7 +15,7 @@ const KeySkills = ({ profileDashboard }: any) => {
 
   const dispatch = useAppDispatch();
   const { success: keySkillsSuccess, keySkills } = useAppSelector((state) => state.getKeySkills);
-
+  const { success: keySkillsUpdateSuccess } = useAppSelector((state) => state.keySkills);
   useEffect(() => {
     dispatch(keySkillsGet());
   }, [dispatch]);
@@ -23,6 +23,11 @@ const KeySkills = ({ profileDashboard }: any) => {
   useEffect(() => {
     if (keySkillsSuccess)
       dispatch(clearGetKeySkillsSlice());
+    if (keySkillsUpdateSuccess) {
+
+      dispatch(clearGetProfileIndicator());
+      dispatch(profileIndicatorGet());
+    }
   }, [dispatch, keySkillsSuccess]);
 
   const openModal = () => {
@@ -39,17 +44,6 @@ const KeySkills = ({ profileDashboard }: any) => {
     }
 
   }, [profileDashboard])
-
-  const modalBody = <KeySkillsForm
-    keySkill={keySkills}
-    profileDashboard={profileDashboard}
-    setDatabaseSkillSet={setDatabaseSkillSet}
-    keySkillFetch={keySkillFetch}
-    setIsAddDeleted={setIsAddDeleted}
-    isAddDelete={isAddDelete}
-    setKeySkillFetch={setKeySkillFetch}
-    closeDialog={closeDialog}
-  />;
 
   return (
     <div className="w-full rounded-2xl bg-white p-4 mt-5">
@@ -80,7 +74,16 @@ const KeySkills = ({ profileDashboard }: any) => {
       <Modal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        modalBody={modalBody}
+        modalBody={<KeySkillsForm
+          keySkill={keySkills}
+          profileDashboard={profileDashboard}
+          setDatabaseSkillSet={setDatabaseSkillSet}
+          keySkillFetch={keySkillFetch}
+          setIsAddDeleted={setIsAddDeleted}
+          isAddDelete={isAddDelete}
+          setKeySkillFetch={setKeySkillFetch}
+          closeDialog={closeDialog}
+        />}
       />
     </div>
   )
