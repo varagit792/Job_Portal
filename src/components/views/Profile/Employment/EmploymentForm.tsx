@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getCompanyList, getCourseList, getCurrencyList, getDepartmentList, getEducationTypeList, getInstituteList, getJoiningDateMonthList, getJoiningDateYearList, getLocationList, getNoticePeriodList, getPassOutYearList, getTotalMonthsExpList, getTotalYearsExpList, getjobTitleList } from '../../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../../..';
-import { jobSeekerEducationAdd } from '../../../../store/reducers/jobSeekerProfile/jobSeekerEducation';
 import { jobSeekerEmploymentAdd } from '../../../../store/reducers/jobSeekerProfile/jobSeekerEmploymentAdd';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
@@ -9,12 +8,6 @@ import { keySkillsGet } from '../../../../store/reducers/dropdown/keySkills';
 import { filterArray } from '../../../utils/filterArray';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-//import { number } from 'yup';
-
-// interface IFormInputs {
-//   keySkills: string;
-
-// }
 
 const currentEmployment = ['Yes', 'No'];
 const employmentType = ['Full Time', 'Internship'];
@@ -40,14 +33,13 @@ interface IFormInputs {
   workedTillMonth: any
   location: any
   department: any
+  role:any
   workedFromYear: any
   workedFromMonth: any
   monthlyStipend: number
 }
 
-export default function ({ closeDialog, educationDetails, selectedEmployment, isEdit }: any) {
-  const [courses, setCourses] = useState([]);
-  const [eductionType, setEducationType] = useState([]);
+export default function ({ closeDialog, selectedEmployment }: any) {
   const [experienceYears, setExperienceYears] = useState<any>([]);
   const [experienceMonths, setExperienceMonths] = useState<any>([]);
   const [joiningDateYear, setJoiningDateYear] = useState<any>([]);
@@ -77,7 +69,16 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
       },
       then: () => yup.string().when("employmentType", {
         is: 'Full Time',
-        then: (schema) => schema.required("Please enter Job Profile"),
+        then: (schema) => schema.test(
+          'len', 'Minimum 200 characters are required',
+          (data:any) => {
+              if (data?.length < 200) {
+                  return false
+              } else {
+                  return true
+              }
+          }
+      ).required("Please enter Job Profile"),
         otherwise: (schema) => schema.notRequired(),
       }),
       otherwise: (schema) => schema.notRequired(),
@@ -138,6 +139,18 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
       then: () => yup.object().when("employmentType", {
         is: 'Internship',
         then: (schema) => schema.required("Please select department"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    role: yup.object().when("currentEmployment", {
+      //is: 'Yes' || 'No',
+      is: (currentEmployment: any) => {
+        return (currentEmployment === 'Yes' || currentEmployment === 'No') && true
+      },
+      then: () => yup.object().when("employmentType", {
+        is: 'Internship',
+        then: (schema) => schema.required("Please select role"),
         otherwise: (schema) => schema.notRequired(),
       }),
       otherwise: (schema) => schema.notRequired(),
@@ -295,96 +308,93 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
   } = useForm<IFormInputs>({
     defaultValues: {
       id: profileDashboard?.id && profileDashboard?.id,
-      currentEmployment: selectedEmployment?.isCurrentEmployment && selectedEmployment?.isCurrentEmployment === true ? 'Yes' : (selectedEmployment?.isCurrentEmployment === false ? 'No' : ''),
-      employmentType: selectedEmployment?.employmentType ? selectedEmployment?.employmentType : '',
+      currentEmployment: selectedEmployment?.isCurrentEmployment && selectedEmployment?.isCurrentEmployment === true ? 'Yes' : (selectedEmployment?.isCurrentEmployment === false ? 'No' : 'Yes'),
+      employmentType: selectedEmployment?.employmentType ? selectedEmployment?.employmentType : 'Full Time',
       totalExpYears: selectedEmployment?.totalExpYears
-        ? { value: selectedEmployment?.totalExpYears?.id, label: selectedEmployment?.totalExpYears?.title }
-        : {},
+        && { value: selectedEmployment?.totalExpYears?.id, label: selectedEmployment?.totalExpYears?.title },
       totalExpMonths: selectedEmployment?.totalExpMonths
-        ? { value: selectedEmployment?.totalExpMonths?.id, label: selectedEmployment?.totalExpMonths?.title }
-        : {},
+        && { value: selectedEmployment?.totalExpMonths?.id, label: selectedEmployment?.totalExpMonths?.title },
       currentCompanyName: selectedEmployment?.companyName
-        ? { value: currentCompany?.filter(({ id, title }: any) => title === selectedEmployment?.companyName && id), label: selectedEmployment?.companyName }
-        : {},
+        && { value: currentCompany?.filter(({ id, title }: any) => title === selectedEmployment?.companyName && id), label: selectedEmployment?.companyName },
       currentDesignation: selectedEmployment?.designation
         //? selectedEmployment?.designation : '',
-        ? { value: designation?.filter(({ id, title }: any) => title === selectedEmployment?.designation && id), label: selectedEmployment?.designation }
-        : {},
+        && { value: designation?.filter(({ id, title }: any) => title === selectedEmployment?.designation && id), label: selectedEmployment?.designation },
       currentSalType: selectedEmployment?.currencyType
         //? selectedEmployment?.currencyType : '',
-        ? { value: selectedEmployment?.currencyType?.id, label: selectedEmployment?.currencyType?.title }
-        : '',
+        && { value: selectedEmployment?.currencyType?.id, label: selectedEmployment?.currencyType?.title },
       currentSalary: selectedEmployment?.currentSalary ? selectedEmployment?.currentSalary : null,
       skillsUsed: selectedEmployment?.jobSeekerProfileEmploymentSkills
         //? selectedEmployment?.jobSeekerProfileEmploymentSkills : '',
-        ? { value: selectedEmployment?.jobSeekerProfileEmploymentSkills?.[0]?.keySkills?.id, label: selectedEmployment?.jobSeekerProfileEmploymentSkills?.[0]?.keySkills?.title }
-        : '',
-      jobProfile: selectedEmployment?.jobProfile ? selectedEmployment?.jobProfile : '',
+        && { value: selectedEmployment?.jobSeekerProfileEmploymentSkills?.[0]?.keySkills?.id, label: selectedEmployment?.jobSeekerProfileEmploymentSkills?.[0]?.keySkills?.title },
+      jobProfile: selectedEmployment?.jobProfile && selectedEmployment?.jobProfile,
       noticePeriod: selectedEmployment?.noticePeriod
         //? selectedEmployment?.noticePeriod : '',
-        ? { value: selectedEmployment?.noticePeriod?.id, label: selectedEmployment?.noticePeriod?.title }
-        : {},
+        && { value: selectedEmployment?.noticePeriod?.id, label: selectedEmployment?.noticePeriod?.title },
       previousCompanyName: selectedEmployment?.companyName
         //? selectedEmployment?.companyName : '',    
-        ? { value: currentCompany?.filter(({ id, title }: any) => title === selectedEmployment?.companyName && id), label: selectedEmployment?.companyName }
-        : '',
+        && { value: currentCompany?.filter(({ id, title }: any) => title === selectedEmployment?.companyName && id), label: selectedEmployment?.companyName },
       previousDesignation: selectedEmployment?.designation
         //? selectedEmployment?.designation : '',
-        ? { value: designation?.filter(({ id, title }: any) => title === selectedEmployment?.designation && id), label: selectedEmployment?.designation }
-        : {},
+        && { value: designation?.filter(({ id, title }: any) => title === selectedEmployment?.designation && id), label: selectedEmployment?.designation },
       joiningDateYear: selectedEmployment?.joiningDateYear
         //? selectedEmployment?.joiningDateYear : null,
-        ? { value: selectedEmployment?.joiningDateYear?.id, label: selectedEmployment?.joiningDateYear?.title }
-        : null,
+        && { value: selectedEmployment?.joiningDateYear?.id, label: selectedEmployment?.joiningDateYear?.title },
       joiningDateMonth: selectedEmployment?.joiningDateMonth
         //? selectedEmployment?.joiningDateMonth : null,
-        ? { value: selectedEmployment?.joiningDateMonth?.id, label: selectedEmployment?.joiningDateMonth?.title }
-        : null,
+        && { value: selectedEmployment?.joiningDateMonth?.id, label: selectedEmployment?.joiningDateMonth?.title },
       workedFromMonth: selectedEmployment?.workedFromMonth
         //? selectedEmployment?.joiningDateMonth
-        ? {
+        && {
           value: filterArray(joiningDateYear, selectedEmployment?.workedFromMonth)?.[0]?.id
           //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
           , label: filterArray(joiningDateYear, selectedEmployment?.workedFromMonth)?.[0]?.title
           //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
-        }
-        : null,
+        },
       workedTillYear: selectedEmployment?.workedTillYear
         //? selectedEmployment?.workedTillYear : '',
-        ? {
+        && {
           value: filterArray(joiningDateYear, selectedEmployment?.workedTillYear)?.[0]?.id
           //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
           , label: filterArray(joiningDateYear, selectedEmployment?.workedTillYear)?.[0]?.title
           //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
-        }
-        : '',
+        },
       workedTillMonth: selectedEmployment?.workedTillMonth
-        ? {
+        && {
           value: filterArray(joiningDateYear, selectedEmployment?.workedTillMonth)?.[0]?.id
           //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
           , label: filterArray(joiningDateYear, selectedEmployment?.workedTillMonth)?.[0]?.title
           //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
-        }
-        : '',
+        },
       location: selectedEmployment?.location
         //? selectedEmployment?.locationId : '',     
-        ? { value: selectedEmployment?.location?.id, label: selectedEmployment?.location?.title }
-        : null,
+        && { value: selectedEmployment?.location?.id, label: selectedEmployment?.location?.title },
       department: selectedEmployment?.department
         //? selectedEmployment?.departmentId : '',
-        ? { value: selectedEmployment?.department?.id, label: selectedEmployment?.department?.title }
-        : null,
-      monthlyStipend: selectedEmployment?.monthlyStipend ? selectedEmployment?.monthlyStipend : null,
+        && { value: selectedEmployment?.department?.id, label: selectedEmployment?.department?.title },
+        // role: selectedEmployment?.role
+        // //? selectedEmployment?.departmentId : '',
+        // //&& { value: selectedEmployment?.role?.id, label: selectedEmployment?.role?.title },
+        // && {
+        //   value: filterArray(designation, selectedEmployment?.role)?.[0]?.id
+        //   //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
+        //   , label: filterArray(designation, selectedEmployment?.role)?.[0]?.title
+        //   //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
+        // },
+      monthlyStipend: selectedEmployment?.monthlyStipend && selectedEmployment?.monthlyStipend,
     },
     resolver: yupResolver(EmploymentDetailsSchema as any)
   });
-
+  
   useEffect(() => {
     const workedFromYear = filterArray(joiningDateYear, selectedEmployment?.workedFromYear)
     const workedFromMonth = filterArray(joiningDateMonth, selectedEmployment?.workedFromMonth)
     const workedTillYear = filterArray(joiningDateYear, selectedEmployment?.workedTillYear)
     const workedTillMonth = filterArray(joiningDateMonth, selectedEmployment?.workedTillMonth)
+    const role = filterArray(designation, undefined, selectedEmployment?.role)
 
+    console.log("roleee--->", role);
+    
+    
     setValue('workedFromYear', selectedEmployment?.workedFromYear &&
     {
       value: workedFromYear?.[0]?.id,
@@ -409,7 +419,13 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
       label: workedTillMonth?.[0]?.title
     }
     );
-  }, [selectedEmployment, setValue, joiningDateYear])
+    setValue('role', selectedEmployment?.role &&
+    {
+      value: role?.[0]?.id,
+      label: role?.[0]?.title
+    }
+    );
+  }, [selectedEmployment, setValue, joiningDateYear, designation])
 
   useEffect(() => {
     dispatch(keySkillsGet());
@@ -418,13 +434,6 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
   useEffect(() => {
     setSkillsUsed(keySkills as any)
   }, [keySkills])
-
-  useEffect(() => {
-    (async () => {
-      const courseList = await getCourseList()
-      setCourses(courseList as any)
-    })();
-  }, [])
 
   useEffect(() => {
     (async () => {
@@ -508,6 +517,8 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
     })();
   }, [])
 
+console.log("errors->", errors);
+
   // OnSubmit button
   const onSubmit = (data: IFormInputs) => {
     // const months = [
@@ -539,6 +550,7 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
       workedTillMonth: data.workedTillMonth ? (data.workedTillMonth?.value as any) : null,
       location: data.location?.value,
       department: data.department?.value,
+      role: data.role?.label,
       workedFromYear: data.workedFromYear ? (data.workedFromYear?.value as any) : null,
       workedFromMonth: data.workedFromMonth ? (data.workedFromMonth?.value as any) : null,
       monthlyStipend: data.monthlyStipend,
@@ -739,6 +751,28 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
                 )}
               />
               {errors.department && <p className="font-normal text-xs text-red-500">{errors.department.message as string}</p>}
+            </div>
+          </div>
+        }
+
+{(watch('currentEmployment') === "Yes" || watch('currentEmployment') === "No") && (watch('employmentType') === "Internship") &&
+          <div className="col-span-full mb-4">
+            <label htmlFor="role" className="block text-sm font-medium leading-6 text-gray-900">Role</label>
+            <div className="mt-2">
+              <Controller
+                control={control}
+                name="role"
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    isClearable
+                    placeholder="Tell us about your role"
+                    options={designation?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                    defaultValue={watch("role")}
+                  />
+                )}
+              />
+              {errors.role && <p className="font-normal text-xs text-red-500">{errors.role.message as string}</p>}
             </div>
           </div>
         }
@@ -1028,6 +1062,9 @@ export default function ({ closeDialog, educationDetails, selectedEmployment, is
                 )}
               />
               {errors.jobProfile && <p className="font-normal text-xs text-red-500">{errors.jobProfile.message as string}</p>}
+              <div className="text-xs font-light text-gray-600 text-right">
+                        {watch('jobProfile').length ? 1000 - watch('jobProfile').length : 1000} character(s) left
+                    </div>
             </div>
           </div>
         }
