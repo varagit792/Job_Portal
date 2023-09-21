@@ -4,6 +4,7 @@ import { useAppDispatch } from '../../../..';
 import { profilePictureUpload, clearPictureUploadState } from '../../../../store/reducers/jobSeekerProfile/uploadProfilePicture';
 import { profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
 import { deleteProfilePicture, clearDeleteProfilePictureState } from '../../../../store/reducers/jobSeekerProfile/deleteProfilePicture';
+import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 
 type Parameters = {
   closeDialog: () => void;
@@ -21,6 +22,8 @@ const ProfilePictureUploadForm: FC<Parameters> = ({ closeDialog }) => {
     if (success) {
       dispatch(profileDashboardGet());
       dispatch(clearPictureUploadState());
+      dispatch(clearGetProfileIndicator());
+      dispatch(profileIndicatorGet());
     }
     if (error) {
       dispatch(clearPictureUploadState)

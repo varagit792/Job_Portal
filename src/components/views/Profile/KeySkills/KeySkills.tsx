@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../..';
 import { clearGetKeySkillsSlice, keySkillsGet } from '../../../../store/reducers/dropdown/keySkills';
 import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 
+
 const KeySkills = ({ profileDashboard }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const [keySkill, setKeySkill] = useState([]);
@@ -24,7 +25,6 @@ const KeySkills = ({ profileDashboard }: any) => {
     if (keySkillsSuccess)
       dispatch(clearGetKeySkillsSlice());
     if (keySkillsUpdateSuccess) {
-
       dispatch(clearGetProfileIndicator());
       dispatch(profileIndicatorGet());
     }

@@ -22,10 +22,12 @@ import KeySkillsForm from './KeySkills/KeySkillsForm';
 import { keySkillsGet } from '../../../store/reducers/dropdown/keySkills';
 import { clearUpdateCareerProfileUpdateSlice } from '../../../store/reducers/jobSeekerProfile/careerProfileUpdate';
 import { clearKeySkillsSlice } from '../../../store/reducers/jobSeekerProfile/keySkills';
+import ResumeUploadForm from './ResumeUpload/ResumeUploadForm';
 
 const ProfileLeftPanel = ({ profileDashboard }: any) => {
   const [isResumeHeadLineOpen, setIsResumeHeadLineOpen] = useState(false);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [isProfilePictureOpen, setIsProfilePictureOpen] = useState(false);
   const [isKeySkillsOpen, setIsKeySkillsOpen] = useState(false);
   const [isPersonalDetailsOpen, setIsPersonalDetailsOpen] = useState(false);
   const [isProfileSummeryOpen, setIsProfileSummeryOpen] = useState(false);
@@ -123,10 +125,11 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
 
   }, [profileDashboard])
 
-
-
   const openResumeModal = () => setIsResumeOpen(true);
   const closeResumeDialog = () => setIsResumeOpen(false);
+
+  const openProfilePictureModal = () => setIsProfilePictureOpen(true);
+  const closeProfilePictureDialog = () => setIsProfilePictureOpen(false);
 
   const openResumeHeadLineModal = () => setIsResumeHeadLineOpen(true);
   const closeResumeHeadLineDialog = () => setIsResumeHeadLineOpen(false);
@@ -166,9 +169,9 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               <span className="font-semibold">Resume</span></a>
             <a href="#resumeUpload" className="text-sm justify-between ">
               {!profileIndicator[0]?.resume?.status ?
-                <u className="text-[#475569]" >Add</u>
+                <u className="text-[#475569]" onClick={openResumeModal}>Upload</u>
                 :
-                <u className="text-[#475569]" >Edit</u>
+                <u className="text-[#475569]" onClick={openResumeModal}>Update</u>
               }
             </a>
           </li>
@@ -306,11 +309,11 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
         }
       />
       <Modal
-        isOpen={isResumeOpen}
-        setIsOpen={setIsResumeOpen}
+        isOpen={isProfilePictureOpen}
+        setIsOpen={setIsProfilePictureOpen}
         modalBody={
           <ProfilePictureUploadForm
-            closeDialog={closeResumeDialog}
+            closeDialog={closeProfilePictureDialog}
           />
         }
       />
@@ -333,7 +336,6 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
           />
         }
       />
-
       <Modal
         isOpen={isProfileSummeryOpen}
         setIsOpen={setIsProfileSummeryOpen}
@@ -345,7 +347,6 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
             closeDialog={closeProfileSummeryDialog} />
         }
       />
-
       <Modal
         isOpen={isPersonalDetailsOpen}
         setIsOpen={setIsPersonalDetailsOpen}
@@ -371,6 +372,13 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
           setKeySkillFetch={setKeySkillFetch}
           closeDialog={closeKeySkillsDialog}
         />}
+      />
+
+
+      <Modal
+        isOpen={isResumeOpen}
+        setIsOpen={setIsResumeOpen}
+        modalBody={<ResumeUploadForm />}
       />
 
     </>
