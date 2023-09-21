@@ -44,6 +44,8 @@ const ResumeUpload = () => {
     if (successDelete) {
       dispatch(profileDashboardGet());
       dispatch(clearresumeDeleteState);
+      dispatch(clearGetProfileIndicator());
+      dispatch(profileIndicatorGet());
     }
     if (errorDelete) {
       dispatch(clearresumeDeleteState)
