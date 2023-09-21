@@ -9,12 +9,12 @@ const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 3000 },
-    items: 3,
+    items: 5,
     slidesToSlide: 4
   },
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 2.5,
+    items: 4,
     slidesToSlide: 2
   },
   tablet: {
@@ -64,6 +64,10 @@ const JobRecommendations = () => {
         renderButtonGroupOutside={true}
         customButtonGroup={<ButtonGroup />}
       >
+        <JobListItem />
+        <JobListItem />
+        <JobListItem />
+        <JobListItem />
         <JobListItem />
         <JobListItem />
         <JobListItem />

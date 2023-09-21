@@ -3,6 +3,7 @@ import Modal from '../../../commonComponents/Modal';
 import ResumeHeadlineForm from './ResumeHeadlineForm';
 import { useAppSelector, useAppDispatch } from '../../../../';
 import { profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
+import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 import { FiEdit2 } from "react-icons/fi";
 import { clearUpdateResumeHeadlineSlice } from '../../../../store/reducers/jobSeekerProfile/profileResumeHeadline';
 
@@ -18,6 +19,8 @@ const ResumeHeadline = () => {
       setIsOpen(false);
       dispatch(clearUpdateResumeHeadlineSlice());
       dispatch(profileDashboardGet());
+      dispatch(clearGetProfileIndicator());
+      dispatch(profileIndicatorGet());
     }
   }, [success, dispatch]);
 

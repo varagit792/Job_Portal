@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../..';
 import { clearUpdateCareerProfileUpdateSlice } from '../../../../store/reducers/jobSeekerProfile/careerProfileUpdate';
 import { profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
 import { clearGetCareerProfileDetails, careerProfileDetailsGet } from '../../../../store/reducers/jobSeekerProfile/getCareerProfile';
+import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 
 const CareerProfile = ({ profileDashboard }: any) => {
   const dispatch = useAppDispatch();
@@ -19,11 +20,15 @@ const CareerProfile = ({ profileDashboard }: any) => {
       setIsOpen(false);
       dispatch(clearUpdateCareerProfileUpdateSlice());
       dispatch(profileDashboardGet());
+      dispatch(clearGetProfileIndicator());
+      dispatch(profileIndicatorGet());
     }
     if (successCareerProfileUpdate) {
       setIsOpen(false);
       dispatch(clearUpdateCareerProfileUpdateSlice());
       dispatch(careerProfileDetailsGet());
+      dispatch(clearGetProfileIndicator());
+      dispatch(profileIndicatorGet());
     }
     if (careerProfileSuccess)
       dispatch(clearGetCareerProfileDetails());
@@ -155,7 +160,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
       <Modal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        modalBody={<CareerProfileForm formSummary={formSummary} id={profileDashboard?.id} profileDashboard={careerProfileDetails} closeDialog={closeDialog} />}
+        modalBody={<CareerProfileForm profileDashboard={careerProfileDetails} closeDialog={closeDialog} />}
       />
     </div>
 

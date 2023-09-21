@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom";
-import ProfileIndicator from "./ProfileIndicator";
+import ProfileIndicator from "../../commonComponents/ProfileIndicator";
 import PhoneIcon from '../../../assets/svg/Phone.svg';
 import EmailIcon from '../../../assets/svg/Email.svg';
 import LocationIcon from '../../../assets/svg/LocationIcon.svg';
@@ -72,7 +72,6 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
             </div>
             <hr className="mt-5 mb-5" />
             <p className="mb-5 text-sm">I turn ideas into unique and user-friendly digital experience through UI UX design</p>
-            <button className="bg-[#EEF2FF] text-[#312E81] py-2 px-6 rounded-md">Resume</button>
           </div>
         </div>
       </div>

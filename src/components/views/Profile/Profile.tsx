@@ -15,7 +15,8 @@ import ProfileBasicDetails from './ProfileBasicDetails/ProfileBasicDetails';
 import Employment from './Employment/Employment';
 import defaultPicture from '../../../../src/assets/jpeg/default_picture.jpg';
 import Edit_icon from '../../../assets/svg/Edit_icon.svg';
-import ProfileIndicator from '../HomePage/ProfileIndicator';
+import ProfileIndicator from '../../commonComponents/ProfileIndicator';
+import ProfileLeftPanel from './ProfileLeftPanel';
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -69,64 +70,9 @@ const Profile = () => {
     <>
       <div className="h-[10%] w-full"></div>
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
-
         <div className="grid grid-cols-10 gap-10">
           <div className="col-start-1 col-end-4">
-            <div className="border border-[#E0E7FF] rounded-lg bg-white px-10 py-10 sticky top-[13%]">
-              <ProfileIndicator />
-              <div className="flex justify-between items-center">
-                <h1 className="text-gray-500 text-sm">Profile Completed</h1>
-                <Link to="/profile" className="border-b border-black text-sm">Add Details</Link>
-              </div>
-
-              <hr className="my-10" />
-
-              <a href="#resumeUpload" className="text-sm mb-10 w-full flex justify-between">
-                <span className="font-semibold">Resume</span>
-                <u className="text-[#475569]">Edit</u>
-              </a>
-              <a href="#resumeHeadline" className="text-sm mb-10 w-full flex justify-between">
-                <span className="font-semibold">Resume headline</span>
-                <u className="text-[#475569]">Edit</u>
-              </a>
-              <a href="#careerProfile" className="text-sm mb-10 w-full flex justify-between">
-                <span className="font-semibold">Career profile</span>
-                <u className="text-[#475569]">Add</u>
-              </a>
-              <a href="#keySkills" className="text-sm mb-10 w-full flex justify-between">
-                <span className="font-semibold">Key skills</span>
-                <u className="text-[#475569]">Add</u>
-              </a>
-              <a href="#education" className="text-sm mb-10 w-full flex justify-between">
-                <span className="font-semibold">Education</span>
-                <u className="text-[#475569]">Add</u>
-              </a>
-              <a href="#education" className="text-sm mb-10 w-full flex justify-between">
-                <span className="font-semibold">IT skills</span>
-                <u className="text-[#475569]">Add</u>
-              </a>
-              <a href="#education" className="text-sm mb-10 w-full flex justify-between">
-                <span className="font-semibold">Projects</span>
-                <u className="text-[#475569]">Add</u>
-              </a>
-
-              <a href="#profileSummary" className="text-sm mb-10 w-full flex justify-between">
-                <span className="font-semibold">Profile summary</span>
-                {!profileDashboard?.profileSummary ?
-                  <u className="text-[#475569]">Add</u>
-                  :
-                  <u className="text-[#475569]">Edit</u>
-                }
-              </a>
-              <a href="#education" className="text-sm mb-10 w-full flex justify-between">
-                <span className="font-semibold">Accomplishments</span>
-                <u className="text-[#475569]">Add</u>
-              </a>
-              <a href="#personalDetails" className="text-sm w-full flex justify-between">
-                <span className="font-semibold">Personal details</span>
-                <u className="text-[#475569]">Add</u>
-              </a>
-            </div>
+            <ProfileLeftPanel profileDashboard={profileDashboard} />
           </div>
           <div className="col-start-4 col-end-11">
             {/* card */}

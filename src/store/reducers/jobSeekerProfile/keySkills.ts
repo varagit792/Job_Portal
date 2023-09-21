@@ -65,6 +65,14 @@ const keySkillsSlice = createSlice({
       state.errorMessage = action.error.message;
     });
   },
-  reducers: {}
+  reducers: {
+    clearKeySkillsSlice: (state) => {
+      state.loading = false;
+      state.error = false;
+      state.success = false;
+      return state;
+    },
+  }
 });
 export default keySkillsSlice.reducer;
+export const { clearKeySkillsSlice } = keySkillsSlice.actions;

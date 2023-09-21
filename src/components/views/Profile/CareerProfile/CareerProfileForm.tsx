@@ -60,7 +60,7 @@ const CareerProfileSchema = yup.object().shape({
   expectedSalary: yup.string().label("Please enter expected salary").required(),
 }).required();
 
-const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: any) => {
+const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
 
   const dispatch = useAppDispatch();
   const { success: industrySuccess, industry } = useAppSelector((state) => state.getIndustry);
@@ -160,7 +160,7 @@ const CareerProfileForm = ({ formSummary, id, profileDashboard, closeDialog }: a
         <h1 className="text-lg font-medium text-gray-900">Career profile</h1>
       </div>
       <span className="text-sm text-gray-500 mb-3">
-        {formSummary}
+        This information will help the recruiters  know about your current job profile and also your desired job criteria. This will also help us personalize your job recommendations.
       </span>
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Current industry</div>
