@@ -22,7 +22,8 @@ interface ProfileDashboard {
     resumeHeadline: string,
     personalDetails: any,
     educations: any,
-    employments: any
+    employments: any,
+    about: string,
 }
 
 interface registerUserState {
