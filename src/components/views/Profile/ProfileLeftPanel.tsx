@@ -20,7 +20,7 @@ import { clearGetProfileDashboardSlice, profileDashboardGet } from '../../../sto
 import { clearDeletePersonalDetailsLanguages } from '../../../store/reducers/jobSeekerProfile/deletePersonalDetailsLanguages';
 import { clearUpdateResumeHeadlineSlice } from '../../../store/reducers/jobSeekerProfile/profileResumeHeadline';
 import KeySkillsForm from './KeySkills/KeySkillsForm';
-import { keySkillsGet } from '../../../store/reducers/dropdown/keySkills';
+import { clearGetKeySkillsSlice, keySkillsGet } from '../../../store/reducers/dropdown/keySkills';
 import { clearUpdateCareerProfileUpdateSlice } from '../../../store/reducers/jobSeekerProfile/careerProfileUpdate';
 import { clearKeySkillsSlice } from '../../../store/reducers/jobSeekerProfile/keySkills';
 import { parseISO } from 'date-fns';
@@ -103,11 +103,10 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
     }
     if (keySkillsUpdateSuccess) {
       setIsKeySkillsOpen(false);
-      dispatch(clearKeySkillsSlice());
+      dispatch(clearGetKeySkillsSlice())
       dispatch(clearGetProfileIndicator());
       dispatch(profileIndicatorGet());
     }
-
 
   }, [dispatch, profileIndicatorSuccess, careerProfileSuccess, educationUpdateSuccess, profileSummerySuccess, personalDetails, languagesDeletedSuccess, resumeHeadlineSuccess, careerProfileUpdateSuccess, successCareerProfileUpdate, keySkillsUpdateSuccess]);
 
