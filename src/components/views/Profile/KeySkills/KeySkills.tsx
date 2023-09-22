@@ -5,6 +5,7 @@ import KeySkillsForm from './KeySkillsForm';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { clearGetKeySkillsSlice, keySkillsGet } from '../../../../store/reducers/dropdown/keySkills';
 import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
+import { keySkillsUpdate } from '../../../../store/reducers/jobSeekerProfile/keySkills';
 
 
 const KeySkills = ({ profileDashboard }: any) => {
@@ -22,9 +23,8 @@ const KeySkills = ({ profileDashboard }: any) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (keySkillsSuccess)
-      dispatch(clearGetKeySkillsSlice());
     if (keySkillsUpdateSuccess) {
+      dispatch(clearGetKeySkillsSlice());
       dispatch(clearGetProfileIndicator());
       dispatch(profileIndicatorGet());
     }

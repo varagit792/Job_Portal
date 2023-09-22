@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import ProfileIndicator from '../../commonComponents/ProfileIndicator'
 import Tick from '../../commonComponents/Tick'
 import { useAppDispatch, useAppSelector } from '../../..';
 import { clearGetProfileIndicator, profileIndicatorGet } from '../../../store/reducers/jobSeekerProfile/profileIndicator';
+import { clearUploadState, resumeUpload } from '../../../store/reducers/jobSeekerProfile/uploadResume';
 import Modal from '../../commonComponents/Modal';
 import ResumeHeadlineForm from './ResumeHeadline/ResumeHeadlineForm';
 import ProfilePictureUploadForm from './ProfilePictureUpload/ProfilePictureUploadForm';
@@ -15,14 +16,15 @@ import { clearJobSeekerEducationAddSlice } from '../../../store/reducers/jobSeek
 import ProfileSummaryForm from './ProfileSummary/ProfileSummaryForm';
 import PersonalDetailsForm from './PersonalDetails/PersonalDetailsForm';
 import { clearPersonalDetailsSlice } from '../../../store/reducers/jobSeekerProfile/personalDetails';
-import { profileDashboardGet } from '../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
+import { clearGetProfileDashboardSlice, profileDashboardGet } from '../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
 import { clearDeletePersonalDetailsLanguages } from '../../../store/reducers/jobSeekerProfile/deletePersonalDetailsLanguages';
 import { clearUpdateResumeHeadlineSlice } from '../../../store/reducers/jobSeekerProfile/profileResumeHeadline';
 import KeySkillsForm from './KeySkills/KeySkillsForm';
 import { keySkillsGet } from '../../../store/reducers/dropdown/keySkills';
 import { clearUpdateCareerProfileUpdateSlice } from '../../../store/reducers/jobSeekerProfile/careerProfileUpdate';
 import { clearKeySkillsSlice } from '../../../store/reducers/jobSeekerProfile/keySkills';
-import ResumeUploadLeftPanel from './ResumeUpload/ResumeUploadLeftPanel';
+import { parseISO } from 'date-fns';
+
 
 const ProfileLeftPanel = ({ profileDashboard }: any) => {
   const [isResumeHeadLineOpen, setIsResumeHeadLineOpen] = useState(false);
@@ -43,6 +45,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
   const resumeHeadlineSummery = "It is the first thing recruiters notice in your profile. Write concisely what makes you unique and right person for the job you are looking for.";
 
   const dispatch = useAppDispatch();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { success: profileIndicatorSuccess, profileIndicator } = useAppSelector((state) => state?.getProfileIndicator);
   const { success: educationSuccess, educationDetails } = useAppSelector((state) => state.educationDetails);
   const { success: educationUpdateSuccess } = useAppSelector((state) => state.education);
@@ -109,11 +112,11 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
   }, [dispatch, profileIndicatorSuccess, careerProfileSuccess, educationUpdateSuccess, profileSummerySuccess, personalDetails, languagesDeletedSuccess, resumeHeadlineSuccess, careerProfileUpdateSuccess, successCareerProfileUpdate, keySkillsUpdateSuccess]);
 
   useEffect(() => {
-    dispatch(profileIndicatorGet());
     dispatch(careerProfileDetailsGet());
     dispatch(profileDashboardGet());
     dispatch(careerProfileDetailsGet());
     dispatch(keySkillsGet());
+
     dispatch(educationDetailsGet())
   }, [dispatch])
 
@@ -152,6 +155,75 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
   };
   const closeEducationDialog = () => setIsEducationOpen(false);
 
+  //Upload file section
+
+  const { success, errorMessage, error, formData } = useAppSelector((state) => state.jobSeekerResumeUpload);
+  const [resumeFile, setResumeFile] = useState<string>('');
+  const [resumeCompletePath, setResumeCompletePath] = useState<string>('');
+  const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<Date | null>(null);
+  const { success: successProfile } = useAppSelector((state) => state.getProfileDashboard);
+  const { success: successDelete, errorMessage: errorMessageDelete, error: errorDelete, formData: formDataDelete } =
+    useAppSelector((state) => state.jobSeekerDeleteResume);
+
+  useEffect(() => {
+    if (success) {
+      dispatch(profileDashboardGet());
+      dispatch(clearUploadState);
+      dispatch(clearGetProfileIndicator());
+      dispatch(profileIndicatorGet());
+    }
+    if (error) {
+      dispatch(clearUploadState)
+    }
+  }, [success, error, errorMessage, dispatch, formData]);
+
+  useEffect(() => {
+    if (successProfile) {
+      dispatch(clearGetProfileDashboardSlice);
+    }
+  }, [successProfile]);
+
+  useEffect(() => {
+    setResumeFile(profileDashboard?.resumeFile)
+    setResumeCompletePath(`${process.env.REACT_APP_RESUME_FILE_LOCATION}/${profileDashboard?.resumePath}`)
+  }, [profileDashboard]);
+
+  const resumeFileSplit = resumeFile?.split('.');
+  let resumeFilePrefix;
+  let resumeFileSuffix;
+  if (resumeFile) {
+    resumeFilePrefix = resumeFileSplit[0];
+    resumeFileSuffix = resumeFileSplit[1];
+  }
+
+  const parsedDate = parseISO(profileDashboard?.resumeLastUpdated);
+  useEffect(() => {
+    if (!isNaN(parsedDate.getDate())) {
+      setLastUpdatedTimestamp(parsedDate);
+    }
+  }, [profileDashboard])
+
+  const handleFileChange = async (event: ChangeEvent) => {
+    event.preventDefault();
+    const selectedFile = fileInputRef.current && fileInputRef.current.files && fileInputRef.current.files[0];
+    if (selectedFile) {
+      const formData = new FormData();
+
+      formData.append('file', selectedFile);
+
+      try {
+        dispatch(resumeUpload(formData))
+
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        };
+
+      } catch (error) {
+        console.log('error', error);
+      }
+    }
+  }
+
   return (
     <>
       <div className="border border-[#E0E7FF] rounded-lg bg-white px-10 py-10 sticky top-[13%]">
@@ -167,26 +239,19 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
             <Tick tickNumber="1" tickStatus={profileIndicator[0]?.resume?.status} />
             <a href="#resumeUpload" className="text-sm  w-full flex justify-between">
               <span className="font-semibold">Resume</span></a>
-            <a href="#resumeUpload" className="text-sm justify-between ">
-              {!profileIndicator[0]?.resume?.status ?
-                <u className="text-[#475569]" onClick={openResumeModal}>Upload</u>
-                :
-                <u className="text-[#475569]" onClick={openResumeModal}>Update</u>
-              }
-            </a>
+            <form className='cursor-pointer'>
+              <label className="cursor-pointer text-base flex justify-center items-center">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+                {!profileIndicator[0]?.resume?.status ? <u className="text-[#475569]" >Upload</u> : <u className="text-[#475569]" >Update</u>
+                }</label>
+            </form>
           </li>
-          {/* <li className="flex items-center  mb-8">
-            {profileIndicator[0]?.profilePicture?.status ? <Tick fill="currentColor" /> : <Tick />}
-            <a href="#resumeUpload" className="text-sm  w-full flex justify-between">
-              <span className="font-semibold">Profile Picture</span></a>
-            <a href="#resumeUpload" className="text-sm justify-between ">
-              {!profileIndicator[0]?.profilePicture?.status ?
-                <u className="text-[#475569]" onClick={openResumeModal}>Add</u>
-                :
-                <u className="text-[#475569]" onClick={openResumeModal}>Edit</u>
-              }
-            </a>
-          </li> */}
           <li className="flex items-center  mb-8">
             <Tick tickNumber="2" tickStatus={profileIndicator[0]?.resumeHeadLine?.status} />
             <a href="#resumeHeadline" className="text-sm w-full flex justify-between">
@@ -372,11 +437,6 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
           setKeySkillFetch={setKeySkillFetch}
           closeDialog={closeKeySkillsDialog}
         />}
-      />
-      <Modal
-        isOpen={isResumeOpen}
-        setIsOpen={setIsResumeOpen}
-        modalBody={<ResumeUploadLeftPanel />}
       />
 
     </>
