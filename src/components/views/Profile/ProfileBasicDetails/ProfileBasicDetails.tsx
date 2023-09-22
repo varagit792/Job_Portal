@@ -110,7 +110,7 @@ const ProfileBasicDetails = () => {
           <h1 className="mr-2">{profileDashboard?.currentJobTitle?.title}</h1>
           <h1>@ {profileDashboard?.currentCompany?.title}</h1>
         </div> : <div className="mr-4 text-blue-600 font-md cursor-pointer font-semibold" onClick={openModal}>
-          Add PhoneNumber </div>) : <h1 className="mr-2">Fresher</h1>}
+          Add Company Details </div>) : <h1 className="mr-2">Fresher</h1>}
         <hr className="my-5 bg-[#E0E7FF]" />
         <div className="text-sm text-[#64748B]">
           <div className="flex justify-start items-center mb-3">
