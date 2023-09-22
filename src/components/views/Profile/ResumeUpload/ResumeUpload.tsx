@@ -7,6 +7,7 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { resumeDelete, clearresumeDeleteState } from '../../../../store/reducers/jobSeekerProfile/deleteResume';
 import axios from 'axios';
 import { clearGetProfileDashboardSlice, profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
+import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import uploadIcon from '../../../../assets/svg/uploadIcon.svg';
 import { MdOutlinePictureAsPdf } from 'react-icons/md';
@@ -33,6 +34,8 @@ const ResumeUpload = () => {
     if (success) {
       dispatch(profileDashboardGet());
       dispatch(clearUploadState);
+      dispatch(clearGetProfileIndicator());
+      dispatch(profileIndicatorGet());
     }
     if (error) {
       dispatch(clearUploadState)
@@ -43,6 +46,8 @@ const ResumeUpload = () => {
     if (successDelete) {
       dispatch(profileDashboardGet());
       dispatch(clearresumeDeleteState);
+      dispatch(clearGetProfileIndicator());
+      dispatch(profileIndicatorGet());
     }
     if (errorDelete) {
       dispatch(clearresumeDeleteState)
@@ -137,49 +142,6 @@ const ResumeUpload = () => {
   console.log('resume split ', resumeFileSplit)
   return (
     <>
-      {/* <div className="w-full h-full rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] p-4">
-        <h1 className="mb-2 font-bold">Resume</h1>
-        <p className="text-sm text-gray-500">
-          Resume is the most important document recruiters look for. Recruiters generally do not look at profiles without resumes.
-        </p>
-        {(resumeFile && lastUpdatedTimestamp !== null) && (<span><span className="font-thin text-sm">Resume last updated - </span><span className="text-sm">  {formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true }
-        )}</span></span>)}
-        <div className="mb-4">
-          {(resumeFile && (
-            <div>
-              <br />
-              <div className="flex justify-between">
-                <p className="text-gray-600 font-semibold">{resumeFile}</p>
-                <div className="flex flex-row">
-                  <div className="text-blue-600 text-lg cursor-pointer">
-                    <div onClick={downloadFile}>
-                      <BiDownload />
-                    </div>
-                  </div>
-                  <div className="ml-6 text-blue-600 text-lg mr-2 cursor-pointer" onClick={handleDeleteResume}> <RiDeleteBin6Line /></div>
-                </div>
-              </div>
-
-            </div>
-          ))}
-        </div>
-
-        <form >
-          <div className="p-10 border border-dashed border-gray-500 rounded-2xl flex flex-col justify-center items-center">
-            <label className="cursor-pointer px-3 py-1 mb-1 rounded-3xl border-2 border-blue-400">
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".pdf,.doc,.docx,.rdf"
-                className="hidden"
-                onChange={handleFileChange}
-              />
-              {resumeFile ? "Update Resume" : "Upload Resume"}
-            </label>
-            <span className=" text-gray-400">Supported Formats: doc, docx, rtf, pdf, upto 2 MB</span>
-          </div>
-        </form>
-      </div> */}
       <div className="rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] w-full h-full p-7">
         <div className=" h-full">
           <form>

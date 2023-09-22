@@ -3,6 +3,7 @@ import Modal from '../../../commonComponents/Modal';
 import ProfileSummaryForm from './ProfileSummaryForm';
 import { useAppSelector, useAppDispatch } from '../../../../';
 import { clearUpdateProfileDashboardSlice } from '../../../../store/reducers/jobSeekerProfile/profileDashboardUpdate';
+import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 import { profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
 import { FiEdit2 } from "react-icons/fi";
 
@@ -18,6 +19,8 @@ const ProfileSummary = () => {
             setIsOpen(false);
             dispatch(clearUpdateProfileDashboardSlice());
             dispatch(profileDashboardGet());
+            dispatch(clearGetProfileIndicator());
+            dispatch(profileIndicatorGet());
         }
     }, [success, dispatch]);
 

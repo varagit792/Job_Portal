@@ -4,6 +4,7 @@ import EducationForm from './EducationForm';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
 import { clearJobSeekerEducationAddSlice } from '../../../../store/reducers/jobSeekerProfile/jobSeekerEducation';
+import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 import { educationDetailsGet } from '../../../../store/reducers/jobSeekerProfile/getEducationDetails';
 import { FiEdit2 } from 'react-icons/fi';
 
@@ -22,7 +23,9 @@ export default function Education() {
       setIsOpen(false);
       dispatch(clearJobSeekerEducationAddSlice());
       dispatch(profileDashboardGet());
-      dispatch(educationDetailsGet())
+      dispatch(educationDetailsGet());
+      dispatch(clearGetProfileIndicator());
+      dispatch(profileIndicatorGet());
     }
   }, [success, dispatch]);
 

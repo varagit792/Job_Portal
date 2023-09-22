@@ -33,7 +33,7 @@ interface IFormInputs {
   workedTillMonth: any
   location: any
   department: any
-  role:any
+  role: any
   workedFromYear: any
   workedFromMonth: any
   monthlyStipend: number
@@ -71,14 +71,14 @@ export default function ({ closeDialog, selectedEmployment }: any) {
         is: 'Full Time',
         then: (schema) => schema.test(
           'len', 'Minimum 200 characters are required',
-          (data:any) => {
-              if (data?.length < 200) {
-                  return false
-              } else {
-                  return true
-              }
+          (data: any) => {
+            if (data?.length < 200) {
+              return false
+            } else {
+              return true
+            }
           }
-      ).required("Please enter Job Profile"),
+        ).required("Please enter Job Profile"),
         otherwise: (schema) => schema.notRequired(),
       }),
       otherwise: (schema) => schema.notRequired(),
@@ -345,46 +345,46 @@ export default function ({ closeDialog, selectedEmployment }: any) {
       workedFromMonth: selectedEmployment?.workedFromMonth
         //? selectedEmployment?.joiningDateMonth
         && {
-          value: filterArray(joiningDateYear, selectedEmployment?.workedFromMonth)?.[0]?.id
-          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
-          , label: filterArray(joiningDateYear, selectedEmployment?.workedFromMonth)?.[0]?.title
-          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
-        },
+        value: filterArray(joiningDateYear, selectedEmployment?.workedFromMonth)?.[0]?.id
+        //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
+        , label: filterArray(joiningDateYear, selectedEmployment?.workedFromMonth)?.[0]?.title
+        //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
+      },
       workedTillYear: selectedEmployment?.workedTillYear
         //? selectedEmployment?.workedTillYear : '',
         && {
-          value: filterArray(joiningDateYear, selectedEmployment?.workedTillYear)?.[0]?.id
-          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
-          , label: filterArray(joiningDateYear, selectedEmployment?.workedTillYear)?.[0]?.title
-          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
-        },
+        value: filterArray(joiningDateYear, selectedEmployment?.workedTillYear)?.[0]?.id
+        //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
+        , label: filterArray(joiningDateYear, selectedEmployment?.workedTillYear)?.[0]?.title
+        //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
+      },
       workedTillMonth: selectedEmployment?.workedTillMonth
         && {
-          value: filterArray(joiningDateYear, selectedEmployment?.workedTillMonth)?.[0]?.id
-          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
-          , label: filterArray(joiningDateYear, selectedEmployment?.workedTillMonth)?.[0]?.title
-          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
-        },
+        value: filterArray(joiningDateYear, selectedEmployment?.workedTillMonth)?.[0]?.id
+        //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
+        , label: filterArray(joiningDateYear, selectedEmployment?.workedTillMonth)?.[0]?.title
+        //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
+      },
       location: selectedEmployment?.location
         //? selectedEmployment?.locationId : '',     
         && { value: selectedEmployment?.location?.id, label: selectedEmployment?.location?.title },
       department: selectedEmployment?.department
         //? selectedEmployment?.departmentId : '',
         && { value: selectedEmployment?.department?.id, label: selectedEmployment?.department?.title },
-        // role: selectedEmployment?.role
-        // //? selectedEmployment?.departmentId : '',
-        // //&& { value: selectedEmployment?.role?.id, label: selectedEmployment?.role?.title },
-        // && {
-        //   value: filterArray(designation, selectedEmployment?.role)?.[0]?.id
-        //   //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
-        //   , label: filterArray(designation, selectedEmployment?.role)?.[0]?.title
-        //   //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
-        // },
+      // role: selectedEmployment?.role
+      // //? selectedEmployment?.departmentId : '',
+      // //&& { value: selectedEmployment?.role?.id, label: selectedEmployment?.role?.title },
+      // && {
+      //   value: filterArray(designation, selectedEmployment?.role)?.[0]?.id
+      //   //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
+      //   , label: filterArray(designation, selectedEmployment?.role)?.[0]?.title
+      //   //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
+      // },
       monthlyStipend: selectedEmployment?.monthlyStipend && selectedEmployment?.monthlyStipend,
     },
     resolver: yupResolver(EmploymentDetailsSchema as any)
   });
-  
+
   useEffect(() => {
     const workedFromYear = filterArray(joiningDateYear, selectedEmployment?.workedFromYear)
     const workedFromMonth = filterArray(joiningDateMonth, selectedEmployment?.workedFromMonth)
@@ -514,7 +514,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
     })();
   }, [])
 
-console.log("errors->", errors);
+  console.log("errors->", errors);
 
   // OnSubmit button
   const onSubmit = (data: IFormInputs) => {
@@ -752,7 +752,7 @@ console.log("errors->", errors);
           </div>
         }
 
-{(watch('currentEmployment') === "Yes" || watch('currentEmployment') === "No") && (watch('employmentType') === "Internship") &&
+        {(watch('currentEmployment') === "Yes" || watch('currentEmployment') === "No") && (watch('employmentType') === "Internship") &&
           <div className="col-span-full mb-4">
             <label htmlFor="role" className="block text-sm font-medium leading-6 text-gray-900">Role</label>
             <div className="mt-2">
