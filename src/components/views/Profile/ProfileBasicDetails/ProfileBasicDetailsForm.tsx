@@ -292,9 +292,9 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
               </div>
           </div>
           
-          <div className="flex flex-row gap-5">
-            <div className="flex flex-col flex-grow">
-              <div className="flex-grow">
+          <div className="grid grid-cols-2 gap-5">
+            <div className="flex flex-col">
+              <div>
                 <h1 className="font-medium mb-2 mt-4">Current Company</h1>
              </div>
               <div className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-lg">
@@ -338,7 +338,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
            </div>
           </div>
           <div>           
-              <h1 className="font-medium mb-2 mt-4">Current salary</h1>
+              <h1 className="font-medium mb-2 mt-4">Current salary (Annual Package)</h1>
               <div className="flex flex-row">
                 <span className="border border-gray-300 rounded-xl py-2 px-4 text-gray-300">
                   <LiaRupeeSignSolid />
