@@ -13,7 +13,9 @@ import uploadIcon from '../../../../assets/svg/uploadIcon.svg';
 import { MdOutlinePictureAsPdf } from 'react-icons/md';
 import { FaRegFileWord } from 'react-icons/fa';
 import { Menu, Transition } from '@headlessui/react';
-import { PiDotsThreeVerticalBold } from 'react-icons/pi'
+import { PiDotsThreeVerticalBold } from 'react-icons/pi';
+import About from '../About/About';
+
 const ResumeUpload = () => {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -224,14 +226,9 @@ const ResumeUpload = () => {
           </form>
 
           <hr className="bg-[#E0E7FF] w-full my-4" />
-          <div>
-            <h1 className="mb-3 text-[#64748B] leading-none">About</h1>
-            <p className="text-sm">
-              I turn ideas into intuitive and user-friendly digital experience through UI UX design.
-            </p>
-          </div>
-        </div >
-      </div >
+          <About />
+        </div>
+      </div>
     </>
   )
 }

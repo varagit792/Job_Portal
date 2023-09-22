@@ -70,8 +70,12 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
               <h1 className="text-gray-500 text-sm">Profile Completed</h1>
               <Link to="/profile" className="border-b border-black text-sm">Add Details</Link>
             </div>
-            <hr className="mt-5 mb-5" />
-            <p className="mb-5 text-sm">I turn ideas into unique and user-friendly digital experience through UI UX design</p>
+            {profileDashboard?.about &&
+              <>
+                <hr className="mt-5 mb-5" />
+                <p className="mb-5 text-sm">{profileDashboard?.about}</p>
+              </>
+            }
           </div>
         </div>
       </div>
