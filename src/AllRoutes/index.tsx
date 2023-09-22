@@ -14,7 +14,7 @@ const AllRoutes = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/registration" element={<SignUp />} />
             <Route path="/login" element={<SignIn />} />
-            <Route path="/logout" element={<SignOut />} />
+            {/* <Route path="/logout" element={<SignOut />} /> */}
             <Route path="/" element={<ProtectedRoute />}>
                 <Route path="/homePage" element={<HomePage />} />
                 <Route path="/profile" element={<Profile />} />

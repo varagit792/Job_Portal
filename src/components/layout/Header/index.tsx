@@ -1,22 +1,48 @@
 import { Fragment, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BiSearch } from 'react-icons/bi';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Cookies from 'js-cookie';
 import { getFirstLetterOfName } from '../../utils/filterArray';
+import { useAppSelector } from '../../..';
+import { clearLogOutSlice, logOutUser } from '../../../store/reducers/logout';
+import { useDispatch } from 'react-redux';
 
 const Header = () => {
+    const [auth, setAuth] = useState(false)
+    const [name, setName] = useState('');
 
-    let userName: string;
-    (localStorage.getItem('Name')) ? userName = localStorage.getItem('Name') || '' : userName = Cookies.get('name') || '';
+    const { success: loginSuccess, login } = useAppSelector((state) => state.login);
+    const { success: registerSuccess, user } = useAppSelector((state) => state.register);
+    const { success:logOutSuccess } = useAppSelector((state) => state.logOut);
 
-    let loginStatus = false;
-    if (Cookies.get('token') !== undefined)
-        loginStatus = true;
+    //let userName: string;
+    const userName = Cookies.get('name');
+    const token = Cookies.get('token');
 
-    const [auth, setAuth] = useState(loginStatus)
-    const [name, setName] = useState(getFirstLetterOfName(userName));
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (logOutSuccess) {
+            dispatch(clearLogOutSlice())
+            Cookies.remove("name");
+            Cookies.remove("token");
+            setName('')
+            setAuth(false)
+            navigate('/')
+        }
+    }, [logOutSuccess])
+
+    useEffect(() => {
+        setName(userName as any)
+        setAuth(token as any)
+    }, [loginSuccess, registerSuccess])
+    
+    const logout = () => {
+        dispatch(logOutUser() as any);
+    }
 
     return (
         <nav className="h-[10%] w-full bg-[#fff] font-sans border-b border-[#E0E1E6] px-32 flex items-center justify-between box-border fixed top-0 z-50">
@@ -101,7 +127,7 @@ const Header = () => {
                                 <div>
 
                                     <Menu.Button className="inline-flex w-full justify-center items-center text-[#312E81] m-0 p-0.5">
-                                        <div className="w-9 h-9 bg-green-600 text-lg text-white rounded-full pt-1">{name}</div>
+                                        <div className="w-9 h-9 bg-green-600 text-lg text-white rounded-full pt-1">{getFirstLetterOfName(name)}</div>
                                     </Menu.Button>
                                 </div>
                                 <Transition
@@ -117,12 +143,13 @@ const Header = () => {
                                         <div className="px-1 py-1 ">
                                             <Menu.Item>
                                                 {({ active }) => (
-                                                    <Link to="/logout" ><button
+                                                    <button
+                                                        onClick={()=>logout()}
                                                         className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
                                                             } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                                     >
                                                         Logout
-                                                    </button></Link>
+                                                    </button>
                                                 )}
                                             </Menu.Item>
 

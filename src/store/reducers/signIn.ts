@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 interface User {
   password: string,
@@ -24,15 +25,17 @@ const initialState: signInUserState = {
 export const signInUser = createAsyncThunk(
   "signIn", async (data: User) => {
     try {
-      axios.defaults.withCredentials = true;
+      //axios.defaults.withCredentials = true;
       const response = await axios.post(`${process.env.REACT_APP_API_PATH}/auth/login`,
         {
           password: data.password,
           email: data.email,
         }
       );
-      if (response.status >= 200 && response.status < 300) {
-        localStorage.setItem('Name', response.data.data.name);
+      if (response.status >= 200 && response.status < 300) {        
+        Cookies.set("token", response.data.token)
+        Cookies.set("name", response.data.data.name)
+        //localStorage.setItem('Name', response.data.data.name);
         return response.data;
       }
     } catch (error) {

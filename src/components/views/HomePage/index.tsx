@@ -32,6 +32,7 @@ const HomePage = () => {
                 <div className="col-start-3 col-end-8">
                     <ProfileBanner />
                     <JobRecommendations />
+                    <hr className="my-10" />
                     <MostDemandingCategory />
                     <hr className="my-10" />
                     <TopCompaniesHiring />
