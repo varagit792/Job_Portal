@@ -144,14 +144,18 @@ const ResumeUpload = () => {
       <div className="rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] w-full h-full p-7">
         <div className=" h-full">
           <form>
-            <h1 className="mb-3 text-[#64748B]">Resume</h1>
-            {errorMessage ? <span className="text-red-600">{errorMessage}</span> : (resumeFile && lastUpdatedTimestamp !== null) && (
-              <span className="mt-2">
-                <span className="font-thin text-sm">Resume last updated - </span>
-                <span className="text-sm">  {formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true })}</span>
-              </span>
-            )}
-            <div className="border border-dashed border-[#A5B4FC] rounded-xl p-3 flex flex-col justify-center items-center">
+            <h1 className="mb-3 text-[#64748B] leading-none">Resume</h1>
+            {
+              errorMessage
+                ? <span className="text-red-600">{errorMessage}</span>
+                : (resumeFile && lastUpdatedTimestamp !== null) && (
+                  <span>
+                    <span className="font-thin text-sm leading-none">Resume last updated - {formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true })}
+                    </span>
+                  </span>
+                )
+            }
+            <div className="border border-dashed border-[#A5B4FC] rounded-xl p-3 flex flex-col justify-center items-center mt-1">
               <span className=" text-gray-400 text-xs">Formats: .PDF and .DOC up to 2MB</span>
               <label className="cursor-pointer text-[#312E81] p-2 font-semibold text-base flex justify-center items-center">
                 <input
@@ -170,7 +174,7 @@ const ResumeUpload = () => {
                 {(resumeFileSuffix === 'pdf' && <MdOutlinePictureAsPdf className="text-red-400 " size={28} />)}
                 {(resumeFileSuffix === 'doc' || resumeFileSuffix === 'docx') && <FaRegFileWord className="text-blue-400 " size={28} />}
 
-                <h1 className="overflow-hidden inline-block whitespace-nowrap text-ellipsis ml-2 text-lg">{resumeFilePrefix}</h1>
+                <h1 className="overflow-hidden inline-block whitespace-nowrap text-ellipsis ml-2 text-sm font-semibold">{resumeFilePrefix}</h1>
               </div>
               <div className="w-1/12 flex justify-between items-center">
                 <span className="border-r-2 border-[#E0E7FF] h-7 ml-1"></span>

@@ -7,25 +7,28 @@ import Cookies from 'js-cookie';
 const SignOut = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { success, logoutUser } = useAppSelector((state) => state.logOut);
+  const { success:logoutSuccess } = useAppSelector((state) => state.logOut);
 
   useEffect(() => {
     dispatch(logOutUser());
   }, [dispatch]);
 
   useEffect(() => {
-    if (success)
+    if (logoutSuccess) {
       dispatch(clearLogOutSlice());
-  }, [dispatch, success]);
+      Cookies.remove("name");
+      Cookies.remove("token");
+    }      
+  }, [dispatch, logoutSuccess]);
 
 
-  if (logoutUser) {
-    Cookies.remove('token');
-    localStorage.removeItem("token");
-    localStorage.removeItem("Name");
-    navigate('/login');
-    window.location.reload();
-  }
+  useEffect(() => {
+    if (logoutSuccess) {
+      Cookies.remove('token');
+      Cookies.remove('name');
+      navigate('/login');
+    }
+  },[logoutSuccess])
 
   return (<>
   </>)
