@@ -158,7 +158,7 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
                     <h6 className="font-semibold">Gender</h6>
                     <div className="flex flex-wrap">
                         {genderList?.map((item: any) => (
-                            <button type="button" className={watch('gender') === item?.title ? "border border-gray-700 bg-gray-300 px-3 py-1.5 rounded-3xl mr-2 mt-2 cursor-pointer" : "border border-gray-500 px-3 py-1.5 rounded-3xl mr-2 mt-2 cursor-pointer"} onClick={() => setValue('gender', item?.title)}>{item?.title}</button>
+                            <button type="button" className={watch('gender') === item?.title ? "border border-gray-700 bg-gray-300 px-3 py-1.5 rounded-3xl mr-2 mt-2 cursor-pointer text-sm m-0 p-0" : "border border-gray-500 px-3 py-1.5 rounded-3xl mr-2 mt-2 cursor-pointer text-sm m-0 p-0"} onClick={() => setValue('gender', item?.title)}>{item?.title}</button>
                         ))}
                     </div>
                     {errors.gender && <p className="font-normal text-xs text-red-500 mt-1">{errors.gender.message as string}</p>}

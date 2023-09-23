@@ -61,7 +61,6 @@ const updateProfileBasicDetailsSlice = createSlice({
             });
         builder.addCase(
             updateProfileBasicDetails.fulfilled, (state, action: PayloadAction<any>) => {
-                console.log('basic details ', action.payload);
                 state.loading = false;
                 state.success = true;
                 state.error = false;

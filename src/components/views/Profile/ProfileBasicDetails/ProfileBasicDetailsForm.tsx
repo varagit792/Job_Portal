@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useAppDispatch } from '../../../..';
-import { getLocationList, getNoticePeriodList, getTotalMonthsExpList, getTotalYearsExpList } from '../../../utils/utils';
+import { getCompanyList, getLocationList, getNoticePeriodList, getTotalMonthsExpList, getTotalYearsExpList, getjobTitleList } from '../../../utils/utils';
 import { LiaRupeeSignSolid } from 'react-icons/lia';
 import { Controller, useForm } from 'react-hook-form';
 import { filterArray } from '../../../utils/filterArray';
@@ -17,6 +17,8 @@ type Parameters = {
 
 interface IFormInputs {
   totalExpMonth: { value: string; label: string; },
+  currentJobTitle: { value: string; label: string; },
+  currentCompany: { value: string; label: string; },
   totalExpYear: { value: string; label: string; },
   name: string,
   jobSeekerType: string,
@@ -46,36 +48,32 @@ const basicDetailsSchema = yup.object({
   jobSeekerType: yup.string()
     .required('Job seeker type is required.'),
   noticePeriod: yup.string().required('Please select a notice period'),
-  currentLocation: yup.object().shape({
-    value: yup.string().required("Please select current location"),
-    label: yup.string().required("Please select current location"),
-    // })
-  }).required("Please select current location"),
-
-
-  // totalExpYear: yup.object().shape({
-  //   value: yup.string().required('Please select total experience years'),
-  //   label: yup.string().required('Please select total experience years'),
-  // }).when(
-  //   'jobSeekerType', {
-  //   is: 'Experienced',
-  //   then: (schema) => schema.required("Please select total experience years"),
-  //   otherwise: (schema) => schema.notRequired(),
-  // }
-  // ),
-  totalExpYear: yup.object().when(["jobSeekerType"], (jobSeekerType, schema) => {
-    if (jobSeekerType as any === 'Experienced') {
-      return schema.required("select option");
-    }
-    return schema
+  currentLocation: yup.object().required("Please select current location"),
+  totalExpYear: yup.object().when(
+    'jobSeekerType', {
+    is: 'Experienced',
+    then: (schema) => schema.required("Please select total experience years"),
+    otherwise: (schema) => schema.notRequired(),
   }),
-  totalExpMonth: yup.object().when(["jobSeekerType"], (jobSeekerType, schema) => {
-    if (jobSeekerType as any === 'Experienced') {
-      return schema.required("select option");
-    }
-    return schema
+  totalExpMonth: yup.object().when(
+    'jobSeekerType', {
+    is: 'Experienced',
+    then: (schema) => schema.required("Please select total experience months"),
+    otherwise: (schema) => schema.notRequired(),
   }),
 
+  currentCompany: yup.object().when(
+    'jobSeekerType', {
+    is: 'Experienced',
+    then: (schema) => schema.required("Please select current company"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  currentJobTitle: yup.object().when(
+    'jobSeekerType', {
+    is: 'Experienced',
+    then: (schema) => schema.required("Please select current company"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
 }).required();
 
 
@@ -100,6 +98,8 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
   const [totalExpYearList, setTotalExpYearList] = useState<any>([]);
   const [locationList, setLocationList] = useState<any>([]);
   const [noticePeriodList, setNoticePeriodList] = useState<any>([]);
+  const [companyList, setCompanyList] = useState<any>([]);
+  const [jobTitleList, setJobTitleList] = useState<any>([]);
 
   //react hook form controls
   const {
@@ -110,30 +110,25 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
     handleSubmit,
     getValues
   } = useForm<IFormInputs | any>({
-    defaultValues: {
-      jobSeekerType: '',
-      totalExpYear: { value: '', label: '' },
-      totalExpMonth: { value: '', label: '' },
-      currentLocation: { value: '', label: '' },
-      currentSalary: '',
-      noticePeriod: '',
-      name: '',
-      email: '',
-      mobileNumber: ''
-    },
     resolver: yupResolver(basicDetailsSchema)
   });
 
   useEffect(() => {
-    setValue('currentLocation', { value: profileDashboard?.currentLocation?.id, label: profileDashboard?.currentLocation?.title });
-    setValue('currentSalary', profileDashboard?.currentSalary);
-    setValue('jobSeekerType', profileDashboard?.jobSeekerType);
-    setValue('email', userData?.email);
-    setValue('mobileNumber', userData?.mobileNumber);
-    setValue('name', userData?.name);
-    setValue('totalExpMonth', { value: profileDashboard?.totalExpMonth?.id, label: profileDashboard?.totalExpMonth?.title });
-    setValue('totalExpYear', { value: profileDashboard?.totalExpYear?.id, label: profileDashboard?.totalExpYear?.title });
-    setValue('noticePeriod', profileDashboard?.noticePeriod?.title);
+    if (userData) {
+      setValue('email', userData?.email);
+      setValue('mobileNumber', userData?.mobileNumber);
+      setValue('name', userData?.name);
+    }
+    if (profileDashboard) {
+      setValue('currentLocation', profileDashboard?.currentLocation && { value: profileDashboard?.currentLocation?.id, label: profileDashboard?.currentLocation?.title });
+      setValue('currentSalary', profileDashboard?.currentSalary);
+      setValue('jobSeekerType', profileDashboard?.jobSeekerType);
+      setValue('totalExpMonth', profileDashboard?.totalExpMonth && { value: profileDashboard?.totalExpMonth?.id, label: profileDashboard?.totalExpMonth?.title } );
+      setValue('totalExpYear', profileDashboard?.totalExpYear && { value: profileDashboard?.totalExpYear?.id, label: profileDashboard?.totalExpYear?.title } );
+      setValue('currentJobTitle', profileDashboard?.currentJobTitle && { value: profileDashboard?.currentJobTitle?.id, label: profileDashboard?.currentJobTitle?.title } );
+      setValue('currentCompany', profileDashboard?.currentCompany && { value: profileDashboard?.currentCompany?.id, label: profileDashboard?.currentCompany?.title });
+      setValue('noticePeriod', profileDashboard?.noticePeriod?.title);
+    }
   }, [profileDashboard, setValue, userData])
 
   useEffect(() => {
@@ -164,29 +159,45 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
     })();
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const company = await getCompanyList();
+      setCompanyList(company);
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const jobTitle = await getjobTitleList();
+      setJobTitleList(jobTitle);
+    })();
+  }, []);
+
   const options = ['Fresher', 'Experienced'];
 
   const handleButtonClick = (noticePeriodOption: any) => {
     setValue("noticePeriod", noticePeriodOption);
   };
 
-  console.log('errors', errors);
   const onSubmit = (data: IFormInputs) => {
 
     const monthArray = filterArray(totalExpMonthList, parseInt(data?.totalExpMonth?.value));
     const yearArray = filterArray(totalExpYearList, parseInt(data?.totalExpYear?.value));
     const locationArray = filterArray(locationList, parseInt(data?.currentLocation.value));
-    const noticeArray = noticePeriodList.filter((notice: any) => notice?.title === data.noticePeriod)
+    const noticeArray = noticePeriodList.filter((notice: any) => notice?.title === data.noticePeriod);
+    const companyArray = filterArray(companyList, parseInt(data?.currentCompany?.value));
+    const jobTitleArray = filterArray(jobTitleList, parseInt(data?.currentJobTitle?.value));
+
     data.totalExpMonth = monthArray[0];
     data.totalExpYear = yearArray[0];
     data.currentLocation = locationArray[0];
     data.noticePeriod = noticeArray[0];
-    console.log('data in submit  ', data);
+    data.currentCompany = companyArray[0];
+    data.currentJobTitle = jobTitleArray[0];
+
     dispatch(updateProfileBasicDetails(data as any));
 
   };
-
-  console.log('notice period ', watch('noticePeriod'));
 
   const noticePeriodClass = "border border-gray-400 py-1 mx-3 px-3 my-2 rounded-2xl";
   const noticePeriodClassHighLighted = "border border-gray-400 py-1 mx-3 px-3 my-2 rounded-2xl bg-slate-200"
@@ -279,9 +290,55 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
                 />
                 {watch('jobSeekerType') === 'Experienced' && errors.totalExpMonth && <p className="font-normal text-xs text-red-500 ">Please select total exp months</p>}
               </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-5">
+            <div className="flex flex-col">
+              <div>
+                <h1 className="font-medium mb-2 mt-4">Current Company</h1>
+             </div>
+              <div className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-lg">
+                <Controller
+                  control={control}
+                  name="currentCompany"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      placeholder=""
+                      options={companyList?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={watch('currentCompany')}
+
+                    />
+                  )}
+                />
+                {watch('jobSeekerType') === 'Experienced' && errors.currentCompany && <p className="font-normal text-xs text-red-500 ">Please select Current Company</p>}
+              </div>
             </div>
-            <div>
-              <h1 className="font-medium mb-2 mt-4">Current salary</h1>
+            <div className="flex flex-col flex-grow">
+              <div className="flex-grow">
+                <h1 className="font-medium mb-2 mt-4">Current Designation</h1>
+              </div>
+              <div className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-lg flex-grow">
+                <Controller
+                  control={control}
+                  name="currentJobTitle"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      isClearable
+                      placeholder=""
+                      options={jobTitleList?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                      defaultValue={getValues("currentJobTitle")}
+                    />
+                  )}
+                />
+                {watch('jobSeekerType') === 'Experienced' && errors.currentJobTitle && <p className="font-normal text-xs text-red-500 ">Please select current designation</p>}
+              </div>
+           </div>
+          </div>
+          <div>           
+              <h1 className="font-medium mb-2 mt-4">Current salary (Annual Package)</h1>
               <div className="flex flex-row">
                 <span className="border border-gray-300 rounded-xl py-2 px-4 text-gray-300">
                   <LiaRupeeSignSolid />
@@ -321,7 +378,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
                 />
               )}
             />
-            {errors.currentLocation && ((errors.currentLocation as any)?.label?.message ? (<p className="font-normal text-xs text-red-500 ">{(errors.currentLocation as any)?.label?.message} </p>) : <p className="font-normal text-xs text-red-500 ">{(errors.currentLocation as any)?.message} </p>)}
+            {errors.currentLocation && (<p className="font-normal text-xs text-red-500 ">Please select current location </p>)}
           </div>
 
         </div>

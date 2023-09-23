@@ -48,8 +48,14 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
           </div>
           <div className="px-5 py-5">
             <h1 className="text-xl font-bold mb-1">{userData?.name}</h1>
-            <h1 className="mb-1">UI/ UX Designer</h1>
-            <h1>@ Ratna Global Tech</h1>
+            {(profileDashboard?.jobSeekerType === 'Experienced') &&
+              <div>
+                <h1 className="mb-1 overflow-hidden whitespace-nowrap text-ellipsis ">{profileDashboard?.currentJobTitle?.title}
+                </h1>
+                <h1 className="overflow-hidden whitespace-nowrap text-ellipsis">@ {profileDashboard?.currentCompany?.title}
+                </h1>
+              </div>
+            }
             <div className="mt-5 text-sm text-[#64748B]">
               <div className="flex justify-start items-center mb-1">
                 <img src={EmailIcon} alt="EmailIcon" width="12rem" height="12rem" />
@@ -59,10 +65,10 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
                 <img src={PhoneIcon} alt="PhoneIcon" width="12rem" height="12rem" />
                 <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{userData?.mobileNumber}</span>
               </div>}
-              <div className="flex justify-start items-center">
+              {profileDashboard?.currentLocation?.title && <div className="flex justify-start items-center">
                 <img src={LocationIcon} alt="LocationIcon" width="12rem" height="12rem" />
                 <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{profileDashboard?.currentLocation?.title && `${profileDashboard?.currentLocation?.title},`} {profileDashboard?.currentCountry}</span>
-              </div>
+              </div>}
             </div>
             <hr className="mt-5 mb-5" />
             <ProfileIndicator />
@@ -70,8 +76,12 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
               <h1 className="text-gray-500 text-sm">Profile Completed</h1>
               <Link to="/profile" className="border-b border-black text-sm">Add Details</Link>
             </div>
-            <hr className="mt-5 mb-5" />
-            <p className="mb-5 text-sm">I turn ideas into unique and user-friendly digital experience through UI UX design</p>
+            {profileDashboard?.about &&
+              <>
+                <hr className="mt-5 mb-5" />
+                <p className="mb-5 text-sm">{profileDashboard?.about}</p>
+              </>
+            }
           </div>
         </div>
       </div>

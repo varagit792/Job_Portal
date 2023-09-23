@@ -6,6 +6,7 @@ import { FiEdit2 } from 'react-icons/fi';
 import companyBrand from '../../../../assets/png/companyBrand.png';
 import EmploymentForm from './EmploymentForm';
 import { clearJobSeekerEmploymentAddSlice } from '../../../../store/reducers/jobSeekerProfile/jobSeekerEmploymentAdd';
+import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 import { getJoiningDateMonthList, getJoiningDateYearList } from '../../../utils/utils';
 import { filterArray } from '../../../utils/filterArray';
 
@@ -26,6 +27,8 @@ export default function Employment() {
       setIsOpen(false);
       dispatch(clearJobSeekerEmploymentAddSlice());
       dispatch(profileDashboardGet());
+      dispatch(clearGetProfileIndicator());
+      dispatch(profileIndicatorGet());
     }
   }, [success, dispatch]);
 
@@ -58,7 +61,7 @@ export default function Employment() {
   }, [])
 
   return (
-    <div className="w-full rounded-2xl bg-white p-4 mt-5" >
+    <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]" >
       <div className="flex items-center justify-between mb-4 font-bold">
         <h1>Employment</h1>
         <h1 className="text-blue-600 font-medium cursor-pointer" onClick={openModal}>Add employment</h1>

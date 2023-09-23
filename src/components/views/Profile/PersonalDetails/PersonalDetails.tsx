@@ -4,6 +4,7 @@ import PersonalDetailsForm from './PersonalDetailsForm';
 import { useAppSelector, useAppDispatch } from '../../../../';
 import { profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
 import { clearPersonalDetailsSlice } from '../../../../store/reducers/jobSeekerProfile/personalDetails';
+import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 import { clearDeletePersonalDetailsLanguages } from '../../../../store/reducers/jobSeekerProfile/deletePersonalDetailsLanguages';
 import { FiEdit2 } from "react-icons/fi";
 import { AiOutlineCheckCircle } from "react-icons/ai";
@@ -21,11 +22,15 @@ const PersonalDetails = () => {
             setIsOpen(false);
             dispatch(clearPersonalDetailsSlice());
             dispatch(profileDashboardGet());
+            dispatch(clearGetProfileIndicator());
+            dispatch(profileIndicatorGet());
         }
         if (languagesDeletedSuccess) {
             setIsOpen(false);
             dispatch(profileDashboardGet());
             dispatch(clearDeletePersonalDetailsLanguages());
+            dispatch(clearGetProfileIndicator());
+            dispatch(profileIndicatorGet());
         }
     }, [success, dispatch, languagesDeletedSuccess]);
 
@@ -36,7 +41,7 @@ const PersonalDetails = () => {
         setIsOpen(false);
     };
     return (
-        <div className="w-full rounded-2xl bg-white p-4 mt-5" >
+        <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]" >
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center font-bold">
                     <h1>Personal details</h1>

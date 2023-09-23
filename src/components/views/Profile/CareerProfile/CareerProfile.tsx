@@ -20,8 +20,6 @@ const CareerProfile = ({ profileDashboard }: any) => {
       setIsOpen(false);
       dispatch(clearUpdateCareerProfileUpdateSlice());
       dispatch(profileDashboardGet());
-      dispatch(clearGetProfileIndicator());
-      dispatch(profileIndicatorGet());
     }
     if (successCareerProfileUpdate) {
       setIsOpen(false);
@@ -29,9 +27,11 @@ const CareerProfile = ({ profileDashboard }: any) => {
       dispatch(careerProfileDetailsGet());
       dispatch(clearGetProfileIndicator());
       dispatch(profileIndicatorGet());
+
     }
-    if (careerProfileSuccess)
+    if (careerProfileSuccess) {
       dispatch(clearGetCareerProfileDetails());
+    }
   }, [success, dispatch, successCareerProfileUpdate, careerProfileSuccess]);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
   };
 
   return (
-    <div className="w-full rounded-2xl bg-white p-4 mt-5">
+    <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center justify-between mb-4 font-bold">
           <h1>Career profile</h1>
@@ -160,7 +160,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
       <Modal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        modalBody={<CareerProfileForm profileDashboard={careerProfileDetails} closeDialog={closeDialog} />}
+        modalBody={<CareerProfileForm id={profileDashboard?.id} profileDashboard={careerProfileDetails} closeDialog={closeDialog} />}
       />
     </div>
 

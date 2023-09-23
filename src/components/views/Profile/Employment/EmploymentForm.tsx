@@ -33,7 +33,7 @@ interface IFormInputs {
   workedTillMonth: any
   location: any
   department: any
-  role:any
+  role: any
   workedFromYear: any
   workedFromMonth: any
   monthlyStipend: number
@@ -71,14 +71,14 @@ export default function ({ closeDialog, selectedEmployment }: any) {
         is: 'Full Time',
         then: (schema) => schema.test(
           'len', 'Minimum 200 characters are required',
-          (data:any) => {
-              if (data?.length < 200) {
-                  return false
-              } else {
-                  return true
-              }
+          (data: any) => {
+            if (data?.length < 200) {
+              return false
+            } else {
+              return true
+            }
           }
-      ).required("Please enter Job Profile"),
+        ).required("Please enter Job Profile"),
         otherwise: (schema) => schema.notRequired(),
       }),
       otherwise: (schema) => schema.notRequired(),
@@ -345,55 +345,52 @@ export default function ({ closeDialog, selectedEmployment }: any) {
       workedFromMonth: selectedEmployment?.workedFromMonth
         //? selectedEmployment?.joiningDateMonth
         && {
-          value: filterArray(joiningDateYear, selectedEmployment?.workedFromMonth)?.[0]?.id
-          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
-          , label: filterArray(joiningDateYear, selectedEmployment?.workedFromMonth)?.[0]?.title
-          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
-        },
+        value: filterArray(joiningDateYear, selectedEmployment?.workedFromMonth)?.[0]?.id
+        //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
+        , label: filterArray(joiningDateYear, selectedEmployment?.workedFromMonth)?.[0]?.title
+        //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
+      },
       workedTillYear: selectedEmployment?.workedTillYear
         //? selectedEmployment?.workedTillYear : '',
         && {
-          value: filterArray(joiningDateYear, selectedEmployment?.workedTillYear)?.[0]?.id
-          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
-          , label: filterArray(joiningDateYear, selectedEmployment?.workedTillYear)?.[0]?.title
-          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
-        },
+        value: filterArray(joiningDateYear, selectedEmployment?.workedTillYear)?.[0]?.id
+        //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
+        , label: filterArray(joiningDateYear, selectedEmployment?.workedTillYear)?.[0]?.title
+        //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
+      },
       workedTillMonth: selectedEmployment?.workedTillMonth
         && {
-          value: filterArray(joiningDateYear, selectedEmployment?.workedTillMonth)?.[0]?.id
-          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
-          , label: filterArray(joiningDateYear, selectedEmployment?.workedTillMonth)?.[0]?.title
-          //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
-        },
+        value: filterArray(joiningDateYear, selectedEmployment?.workedTillMonth)?.[0]?.id
+        //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
+        , label: filterArray(joiningDateYear, selectedEmployment?.workedTillMonth)?.[0]?.title
+        //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
+      },
       location: selectedEmployment?.location
         //? selectedEmployment?.locationId : '',     
         && { value: selectedEmployment?.location?.id, label: selectedEmployment?.location?.title },
       department: selectedEmployment?.department
         //? selectedEmployment?.departmentId : '',
         && { value: selectedEmployment?.department?.id, label: selectedEmployment?.department?.title },
-        // role: selectedEmployment?.role
-        // //? selectedEmployment?.departmentId : '',
-        // //&& { value: selectedEmployment?.role?.id, label: selectedEmployment?.role?.title },
-        // && {
-        //   value: filterArray(designation, selectedEmployment?.role)?.[0]?.id
-        //   //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
-        //   , label: filterArray(designation, selectedEmployment?.role)?.[0]?.title
-        //   //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
-        // },
+      // role: selectedEmployment?.role
+      // //? selectedEmployment?.departmentId : '',
+      // //&& { value: selectedEmployment?.role?.id, label: selectedEmployment?.role?.title },
+      // && {
+      //   value: filterArray(designation, selectedEmployment?.role)?.[0]?.id
+      //   //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.id
+      //   , label: filterArray(designation, selectedEmployment?.role)?.[0]?.title
+      //   //joiningDateYear?.filter(({ id }: any) => id === selectedEmployment?.workedTillYear)?.[0]?.title
+      // },
       monthlyStipend: selectedEmployment?.monthlyStipend && selectedEmployment?.monthlyStipend,
     },
     resolver: yupResolver(EmploymentDetailsSchema as any)
   });
-  
+
   useEffect(() => {
     const workedFromYear = filterArray(joiningDateYear, selectedEmployment?.workedFromYear)
     const workedFromMonth = filterArray(joiningDateMonth, selectedEmployment?.workedFromMonth)
     const workedTillYear = filterArray(joiningDateYear, selectedEmployment?.workedTillYear)
     const workedTillMonth = filterArray(joiningDateMonth, selectedEmployment?.workedTillMonth)
-    const role = filterArray(designation, undefined, selectedEmployment?.role)
-
-    console.log("roleee--->", role);
-    
+    const role = filterArray(designation, undefined, selectedEmployment?.role)   
     
     setValue('workedFromYear', selectedEmployment?.workedFromYear &&
     {
@@ -466,7 +463,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
   useEffect(() => {
     (async () => {
       const experienceYearsList = await getTotalYearsExpList()
-      if (Object.keys(experienceYearsList).length) {
+      if (Object.keys(experienceYearsList)?.length) {
         setExperienceYears(experienceYearsList as any)
       }
     })();
@@ -475,7 +472,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
   useEffect(() => {
     (async () => {
       const experienceMonthsList = await getTotalMonthsExpList()
-      if (Object.keys(experienceMonthsList).length) {
+      if (Object.keys(experienceMonthsList)?.length) {
         setExperienceMonths(experienceMonthsList as any)
       }
     })();
@@ -484,7 +481,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
   useEffect(() => {
     (async () => {
       const joiningDateYearList = await getJoiningDateYearList()
-      if (Object.keys(joiningDateYearList).length) {
+      if (Object.keys(joiningDateYearList)?.length) {
         setJoiningDateYear(joiningDateYearList as any)
       }
     })();
@@ -493,7 +490,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
   useEffect(() => {
     (async () => {
       const joiningDateMonthList = await getJoiningDateMonthList()
-      if (Object.keys(joiningDateMonthList).length) {
+      if (Object.keys(joiningDateMonthList)?.length) {
         setJoiningDateMonth(joiningDateMonthList as any)
       }
     })();
@@ -502,7 +499,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
   useEffect(() => {
     (async () => {
       const currencyList = await getCurrencyList()
-      if (Object.keys(currencyList).length) {
+      if (Object.keys(currencyList)?.length) {
         setCurrency(currencyList as any)
       }
     })();
@@ -511,13 +508,13 @@ export default function ({ closeDialog, selectedEmployment }: any) {
   useEffect(() => {
     (async () => {
       const noticePeriodList = await getNoticePeriodList()
-      if (Object.keys(noticePeriodList).length) {
+      if (Object.keys(noticePeriodList)?.length) {
         setNoticePeriod(noticePeriodList as any)
       }
     })();
   }, [])
 
-console.log("errors->", errors);
+  console.log("errors->", errors);
 
   // OnSubmit button
   const onSubmit = (data: IFormInputs) => {
@@ -755,7 +752,7 @@ console.log("errors->", errors);
           </div>
         }
 
-{(watch('currentEmployment') === "Yes" || watch('currentEmployment') === "No") && (watch('employmentType') === "Internship") &&
+        {(watch('currentEmployment') === "Yes" || watch('currentEmployment') === "No") && (watch('employmentType') === "Internship") &&
           <div className="col-span-full mb-4">
             <label htmlFor="role" className="block text-sm font-medium leading-6 text-gray-900">Role</label>
             <div className="mt-2">
@@ -1063,7 +1060,7 @@ console.log("errors->", errors);
               />
               {errors.jobProfile && <p className="font-normal text-xs text-red-500">{errors.jobProfile.message as string}</p>}
               <div className="text-xs font-light text-gray-600 text-right">
-                        {watch('jobProfile').length ? 1000 - watch('jobProfile').length : 1000} character(s) left
+                        {watch('jobProfile')?.length ? 1000 - watch('jobProfile')?.length : 1000} character(s) left
                     </div>
             </div>
           </div>

@@ -8,6 +8,7 @@ import ResumeUpload from './ResumeUpload/ResumeUpload';
 import PersonalDetails from './PersonalDetails/PersonalDetails';
 import { useAppDispatch, useAppSelector } from '../../../';
 import { profileDashboardGet, clearGetProfileDashboardSlice } from '../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
+import { clearGetKeySkillsSlice, keySkillsGet } from '../../../store/reducers/dropdown/keySkills';
 import CareerProfile from './CareerProfile/CareerProfile';
 import Modal from '../../commonComponents/Modal';
 import ProfilePictureUploadForm from './ProfilePictureUpload/ProfilePictureUploadForm';
@@ -17,6 +18,7 @@ import defaultPicture from '../../../../src/assets/jpeg/default_picture.jpg';
 import Edit_icon from '../../../assets/svg/Edit_icon.svg';
 import ProfileIndicator from '../../commonComponents/ProfileIndicator';
 import ProfileLeftPanel from './ProfileLeftPanel';
+import { clearKeySkillsSlice } from '../../../store/reducers/jobSeekerProfile/keySkills';
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +27,7 @@ const Profile = () => {
   const { success, profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
   const { success: profilePictureUploadSuccess } = useAppSelector((state) => state.jobSeekerUploadProfilePicture);
   const { success: profilePictureDeleteSuccess } = useAppSelector((state) => state.jobSeekerDeleteProfilePicture)
+  const { success: keySkillsUpdateSuccess } = useAppSelector((state) => state.keySkills);
 
   useEffect(() => {
     dispatch(profileDashboardGet());
@@ -34,7 +37,12 @@ const Profile = () => {
     if (success) {
       dispatch(clearGetProfileDashboardSlice());
     }
-  }, [dispatch, success]);
+    if (keySkillsUpdateSuccess) {
+      dispatch(clearKeySkillsSlice());
+      dispatch(profileDashboardGet());
+
+    }
+  }, [dispatch, success, keySkillsUpdateSuccess]);
 
   useEffect(() => {
     if (profilePictureUploadSuccess) {
@@ -70,13 +78,13 @@ const Profile = () => {
     <>
       <div className="h-[10%] w-full"></div>
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
-        <div className="grid grid-cols-10 gap-10">
+        <div className="grid grid-cols-10 gap-4">
           <div className="col-start-1 col-end-4">
             <ProfileLeftPanel profileDashboard={profileDashboard} />
           </div>
           <div className="col-start-4 col-end-11">
             {/* card */}
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-5 gap-4">
               <div className="col-start-1 col-end-4 border border-[#E0E7FF] rounded-lg bg-[#FFF]">
                 <div className="w-full h-40 relative">
                   <div className="w-full h-2/3 bg-gradient-to-r from-[#EEF2FF] to-[#C7D2FE] rounded-t-lg">

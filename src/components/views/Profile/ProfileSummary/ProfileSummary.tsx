@@ -3,6 +3,7 @@ import Modal from '../../../commonComponents/Modal';
 import ProfileSummaryForm from './ProfileSummaryForm';
 import { useAppSelector, useAppDispatch } from '../../../../';
 import { clearUpdateProfileDashboardSlice } from '../../../../store/reducers/jobSeekerProfile/profileDashboardUpdate';
+import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 import { profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
 import { FiEdit2 } from "react-icons/fi";
 
@@ -18,6 +19,8 @@ const ProfileSummary = () => {
             setIsOpen(false);
             dispatch(clearUpdateProfileDashboardSlice());
             dispatch(profileDashboardGet());
+            dispatch(clearGetProfileIndicator());
+            dispatch(profileIndicatorGet());
         }
     }, [success, dispatch]);
 
@@ -29,7 +32,7 @@ const ProfileSummary = () => {
     };
 
     return (
-        <div className="w-full rounded-2xl bg-white p-4 mt-5" >
+        <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]" >
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center font-bold">
                     <h1>Profile summary</h1>
