@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 interface User {
     name: string,
@@ -42,6 +43,8 @@ export const registerUser = createAsyncThunk(
             );
 
             if (response.status >= 200 && response.status < 300) {
+                Cookies.set("name", response.data.data.name);
+                Cookies.set("token", response.data.token);
                 return response.data;
             }
         } catch (error) {

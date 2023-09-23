@@ -5,20 +5,46 @@ import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Cookies from 'js-cookie';
 import { getFirstLetterOfName } from '../../utils/filterArray';
+import { useAppSelector } from '../../..';
+import { clearLogOutSlice, logOutUser } from '../../../store/reducers/logout';
+import { useDispatch } from 'react-redux';
 import PopoverHover from '../../commonComponents/PopoverHover';
 import JobCategory from './JobCategory';
 
 const Header = () => {
+    const [auth, setAuth] = useState(false)
+    const [name, setName] = useState('');
+
+    const { success: loginSuccess, login } = useAppSelector((state) => state.login);
+    const { success: registerSuccess, user } = useAppSelector((state) => state.register);
+    const { success: logOutSuccess } = useAppSelector((state) => state.logOut);
+
+    //let userName: string;
+    const userName = Cookies.get('name');
+    const token = Cookies.get('token');
+
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    let userName: string;
-    (localStorage.getItem('Name')) ? userName = localStorage.getItem('Name') || '' : userName = Cookies.get('name') || '';
 
-    let loginStatus = false;
-    if (Cookies.get('token') !== undefined)
-        loginStatus = true;
+    useEffect(() => {
+        if (logOutSuccess) {
+            dispatch(clearLogOutSlice())
+            Cookies.remove("name");
+            Cookies.remove("token");
+            setName('')
+            setAuth(false)
+            navigate('/')
+        }
+    }, [logOutSuccess])
 
-    const [auth, setAuth] = useState(loginStatus)
-    const [name, setName] = useState(getFirstLetterOfName(userName));
+    useEffect(() => {
+        setName(userName as any)
+        setAuth(token as any)
+    }, [loginSuccess, registerSuccess])
+
+    const logout = () => {
+        dispatch(logOutUser() as any);
+    }
 
     const handlePopover = () => {
         // navigate("/home");
@@ -109,7 +135,7 @@ const Header = () => {
                                 <div>
 
                                     <Menu.Button className="inline-flex w-full justify-center items-center text-[#312E81] m-0 p-0.5">
-                                        <div className="w-9 h-9 bg-green-600 text-lg text-white rounded-full pt-1">{name}</div>
+                                        <div className="w-9 h-9 bg-green-600 text-lg text-white rounded-full pt-1">{getFirstLetterOfName(name)}</div>
                                     </Menu.Button>
                                 </div>
                                 <Transition
@@ -125,12 +151,13 @@ const Header = () => {
                                         <div className="px-1 py-1 ">
                                             <Menu.Item>
                                                 {({ active }) => (
-                                                    <Link to="/logout" ><button
+                                                    <button
+                                                        onClick={() => logout()}
                                                         className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
                                                             } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                                     >
                                                         Logout
-                                                    </button></Link>
+                                                    </button>
                                                 )}
                                             </Menu.Item>
 
