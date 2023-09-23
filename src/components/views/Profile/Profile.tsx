@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
 import Education from './Education/Education';
 import ResumeHeadline from './ResumeHeadline/ResumeHeadline';
 import KeySkills from './KeySkills/KeySkills';
@@ -8,15 +7,12 @@ import ResumeUpload from './ResumeUpload/ResumeUpload';
 import PersonalDetails from './PersonalDetails/PersonalDetails';
 import { useAppDispatch, useAppSelector } from '../../../';
 import { profileDashboardGet, clearGetProfileDashboardSlice } from '../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
-import { clearGetKeySkillsSlice, keySkillsGet } from '../../../store/reducers/dropdown/keySkills';
 import CareerProfile from './CareerProfile/CareerProfile';
 import Modal from '../../commonComponents/Modal';
 import ProfilePictureUploadForm from './ProfilePictureUpload/ProfilePictureUploadForm';
 import ProfileBasicDetails from './ProfileBasicDetails/ProfileBasicDetails';
 import Employment from './Employment/Employment';
 import defaultPicture from '../../../../src/assets/jpeg/default_picture.jpg';
-import Edit_icon from '../../../assets/svg/Edit_icon.svg';
-import ProfileIndicator from '../../commonComponents/ProfileIndicator';
 import ProfileLeftPanel from './ProfileLeftPanel';
 import { clearKeySkillsSlice } from '../../../store/reducers/jobSeekerProfile/keySkills';
 
@@ -124,9 +120,6 @@ const Profile = () => {
             </div>
           </div>
         </div>
-
-
-
       </div >
       {/* modal for profile picture */}
       {

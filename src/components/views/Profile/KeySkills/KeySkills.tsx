@@ -41,6 +41,8 @@ const KeySkills = ({ profileDashboard }: any) => {
     if (profileDashboard?.keySkills) {
       setKeySkillFetch(profileDashboard?.keySkills && profileDashboard?.keySkills?.split(","));
       setDatabaseSkillSet(profileDashboard?.keySkills && profileDashboard?.keySkills?.split(","));
+    } else {
+      setDatabaseSkillSet([]);
     }
 
   }, [profileDashboard])

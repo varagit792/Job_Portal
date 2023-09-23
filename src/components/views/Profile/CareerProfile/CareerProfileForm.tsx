@@ -82,13 +82,13 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
   } = useForm<IFormInputs>({
     resolver: yupResolver(CareerProfileSchema),
     defaultValues: {
-      industry: { value: '', label: '' },
-      department: { value: '', label: '' },
-      roleCategory: { value: '', label: '' },
-      jobRole: { value: '', label: '' },
-      preferredWorkLocation: { value: '', label: '' },
-      currency: { value: '', label: '' },
-      expectedSalary: '',
+      industry: profileDashboard[0]?.industry && { value: profileDashboard[0]?.industry?.id, label: profileDashboard[0]?.industry?.title },
+      department: profileDashboard[0]?.department && { value: profileDashboard[0]?.department?.id, label: profileDashboard[0]?.department?.title },
+      roleCategory: profileDashboard[0]?.roleCategory && { value: profileDashboard[0]?.roleCategory?.id, label: profileDashboard[0]?.roleCategory?.title },
+      jobRole: profileDashboard[0]?.jobRole && { value: profileDashboard[0]?.jobRole?.id, label: profileDashboard[0]?.jobRole?.title },
+      preferredWorkLocation: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location && { value: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.id, label: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.title },
+      currency: profileDashboard[0]?.currency && { value: profileDashboard[0]?.currency?.id, label: profileDashboard[0]?.currency?.title },
+      expectedSalary: profileDashboard[0]?.expectedSalary && profileDashboard[0]?.expectedSalary,
       jobType: [],
       employeeType: [],
       preferredShift: []
@@ -97,16 +97,16 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
 
   useEffect(() => {
     if (profileDashboard) {
-      setValue('industry', { label: profileDashboard[0]?.industry?.title, value: profileDashboard[0]?.industry?.id });
-      setValue('department', { label: profileDashboard[0]?.department?.title, value: profileDashboard[0]?.department?.id });
-      setValue('roleCategory', { label: profileDashboard[0]?.roleCategory?.title, value: profileDashboard[0]?.roleCategory?.id });
-      setValue('jobRole', { label: profileDashboard[0]?.jobRole?.title, value: profileDashboard[0]?.jobRole?.id });
-      setValue('expectedSalary', profileDashboard[0]?.expectedSalary);
-      setValue('currency', { label: profileDashboard[0]?.currency?.title, value: profileDashboard[0]?.currency?.id });
-      setValue('employeeType', profileDashboard[0]?.careerProfileEmployeeType);
-      setValue('preferredWorkLocation', { label: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.title, value: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.id });
-      setValue('jobType', profileDashboard[0]?.careerProfileJobType);
-      setValue('preferredShift', profileDashboard[0]?.careerProfilePreferredShift);
+      setValue('industry', profileDashboard[0]?.industry && { label: profileDashboard[0]?.industry?.title, value: profileDashboard[0]?.industry?.id });
+      setValue('department', profileDashboard[0]?.department && { label: profileDashboard[0]?.department?.title, value: profileDashboard[0]?.department?.id });
+      setValue('roleCategory', profileDashboard[0]?.roleCategory && { label: profileDashboard[0]?.roleCategory?.title, value: profileDashboard[0]?.roleCategory?.id });
+      setValue('jobRole', profileDashboard[0]?.jobRole && { label: profileDashboard[0]?.jobRole?.title, value: profileDashboard[0]?.jobRole?.id });
+      setValue('expectedSalary', profileDashboard[0]?.expectedSalary && profileDashboard[0]?.expectedSalary);
+      setValue('currency', profileDashboard[0]?.currency && { label: profileDashboard[0]?.currency?.title, value: profileDashboard[0]?.currency?.id });
+      setValue('employeeType', profileDashboard[0]?.careerProfileEmployeeType && profileDashboard[0]?.careerProfileEmployeeType);
+      setValue('preferredWorkLocation', profileDashboard[0]?.careerProfilePreferredLocations[0]?.location && { label: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.title, value: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.id });
+      setValue('jobType', profileDashboard[0]?.careerProfileJobType && profileDashboard[0]?.careerProfileJobType);
+      setValue('preferredShift', profileDashboard[0]?.careerProfilePreferredShift && profileDashboard[0]?.careerProfilePreferredShift);
     }
   }, [setValue, profileDashboard]);
 
@@ -270,17 +270,16 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
               default={watch("currency")}
               placeholder={"Select currency"}
             />
-
             {errors?.currency && <p className="font-normal text-xs text-red-500 absolute">{errors?.currency?.label?.message}</p>}
           </div>
           <div className='float-left '>
-            <input defaultValue={profileDashboard[0]?.expectedSalary} className=' block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none'  {...register("expectedSalary")} />
+            <input defaultValue={profileDashboard[0]?.expectedSalary}
+              placeholder={"Salary"}
+              className=' block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none'
+              {...register("expectedSalary")} />
             {errors?.expectedSalary && <p className="font-normal text-xs text-red-500 absolute">{errors?.expectedSalary?.message}</p>}
           </div>
         </div>
-        {/* <div>
-          {errors.profileSummary && <p className="font-normal text-xs text-red-500 absolute">{errors.profileSummary.message}</p>}
-        </div> */}
         <div className="mt-5 flex justify-end items-center">
           <div>
             <button
