@@ -15,7 +15,7 @@ export interface registerUserState {
     error: boolean;
     success: boolean;
     user: Array<User>;
-    errorMessage: string | undefined;
+    errorMessage: any;
 
 }
 const initialState: registerUserState = {
@@ -42,13 +42,15 @@ export const registerUser = createAsyncThunk(
                 }
             );
 
+            console.log('token ', response.headers,response.data)
+
             if (response.status >= 200 && response.status < 300) {
                 Cookies.set("name", response.data.data.name);
                 Cookies.set("token", response.data.token);
                 return response.data;
             }
-        } catch (error) {
-            throw error;
+        } catch (error: any) {
+            throw error?.response?.data?.message;
         }
     });
 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { registerUser, clearRegisterSlice } from '../../../store/reducers/register';
@@ -16,12 +16,20 @@ interface IFormInputs {
     email: string;
     password: string;
     mobileNumber: string;
+    workStatus: boolean;
 }
 
 const SignUpSchema = yup
     .object({
         name: yup.string().label("Full Name").required(),
-        email: yup.string().email().required(),
+        email: yup.string().email().required().test(
+            "Validate Email",
+            (value) => {
+                const re =
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                return re.test(String(value).toLowerCase())
+            },
+        ),
         password: yup.string()
             .required('Password is required')
             .min(8, 'Password must be at least 8 characters long')
@@ -32,16 +40,20 @@ const SignUpSchema = yup
         mobileNumber: yup.string()
             .required('Mobile number is required')
             .matches(/^[0-9]{10}$/, 'Mobile number must be a valid 10-digit number'),
+        workStatus: yup.boolean().label("Work Status").required()
     })
     .required();
 
 const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { success } = useAppSelector((state) => state.register);
+    const { success, errorMessage } = useAppSelector((state) => state.register);
+
     const {
         register,
         handleSubmit,
+        control,
+        watch,
         formState: { errors }
     } = useForm<IFormInputs>({
         resolver: yupResolver(SignUpSchema)
@@ -56,13 +68,16 @@ const SignUp = () => {
 
     const onSubmit = (data: IFormInputs) => {
         dispatch(registerUser({
-            name: data.name,
-            password: data.password,
-            email: data.email,
-            mobileNumber: data.mobileNumber,
+            name: data?.name,
+            password: data?.password,
+            email: data?.email,
+            mobileNumber: data?.mobileNumber,
             userType: "jobSeeker",
-            workStatus: false,
+            workStatus: data?.workStatus,
         }));
+        if (errorMessage) {
+            alert(`Error occured ${errorMessage}`);
+        }
     };
 
     const googleAuth = () => {
@@ -132,40 +147,63 @@ const SignUp = () => {
                                                 <span className="absolute top-3 left-1">+91</span>
                                             </div>
                                             {errors.mobileNumber && <p className="font-normal text-xs text-red-500">{errors.mobileNumber.message}</p>}
-                                            {!errors.email && <span className="font-normal text-xs text-gray-500">Recruiters will call on this number</span>}
+                                            {!errors.mobileNumber && <span className="font-normal text-xs text-gray-500">Recruiters will call on this number</span>}
                                         </div>
                                         <div className="mb-4">
                                             <span className="block text-sm font-semibold mb-2">
                                                 Work status
                                             </span>
                                             <div className="grid grid-cols-2 gap-10">
-                                                <button className="border-2 border-gray-300 flex justify-center items-center px-3 py-3 rounded-2xl hover:bg-gray-300">
-                                                    <span>
-                                                        <span className="text-left m-0 block">I'm experienced</span>
-                                                        <span className="break-words text-left m-0 block">I have work experience (excluding internships)</span>
-                                                    </span>
-                                                    <img
-                                                        src={briefcase}
-                                                        alt="briefcase"
-                                                        width="50px"
-                                                        height="50px"
-                                                    />
-                                                </button>
-                                                <button className="border-2 border-gray-300 flex justify-center items-center px-3 py-3 rounded-2xl hover:bg-gray-300">
-                                                    <span>
-                                                        <span className="text-left m-0 block">I'm a fresher</span>
-                                                        <span className="break-words text-left m-0 block">I am a student/ Haven't worked after graduation</span>
-                                                    </span>
-                                                    <img
-                                                        src={schoolbag}
-                                                        alt="schoolbag"
-                                                        width="50px"
-                                                        height="50px"
-                                                    />
-                                                </button>
+                                                <Controller
+                                                    name="workStatus"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <button
+                                                            type="button"
+                                                            className={watch("workStatus") ? "border-2 border-gray-300 bg-gray-300 flex justify-center items-center px-3 py-3 rounded-2xl" : "border-2 border-gray-300 flex justify-center items-center px-3 py-3 rounded-2xl hover:bg-gray-300"}
+                                                            onClick={() => field.onChange(true)}
+                                                        >
+                                                            <span>
+                                                                <span className="text-left m-0 block">I'm experienced</span>
+                                                                <span className="break-words text-left m-0 block">I have work experience (excluding internships)</span>
+                                                            </span>
+                                                            <img
+                                                                src={briefcase}
+                                                                alt="briefcase"
+                                                                width="50px"
+                                                                height="50px"
+                                                            />
+                                                        </button>
+                                                    )}
+                                                    rules={{ required: true }}
+                                                />
+                                                <Controller
+                                                    name="workStatus"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <button
+                                                            type="button"
+                                                            className={watch("workStatus") === undefined || watch("workStatus") === true ? "border-2 border-gray-300 flex justify-center items-center px-3 py-3 rounded-2xl hover:bg-gray-300" : "border-2 border-gray-300 flex justify-center items-center px-3 py-3 rounded-2xl bg-gray-300"}
+                                                            onClick={() => field.onChange(false)}
+                                                        >
+                                                            <span>
+                                                                <span className="text-left m-0 block">I'm a fresher</span>
+                                                                <span className="break-words text-left m-0 block">I am a student/ Haven't worked after graduation</span>
+                                                            </span>
+                                                            <img
+                                                                src={schoolbag}
+                                                                alt="schoolbag"
+                                                                width="50px"
+                                                                height="50px"
+                                                            />
+                                                        </button>
+                                                    )}
+                                                    rules={{ required: true }}
+                                                />
                                             </div>
+                                            {errors.workStatus && <p className="font-normal text-xs text-red-500">{errors.workStatus?.message}</p>}
                                         </div>
-                                        <button className={Object.keys(errors).length !== 0 ? "bg-indigo-200 text-white font-bold px-3 py-2 rounded-3xl" : "bg-indigo-600 text-white font-bold px-3 py-2 rounded-3xl"} type="submit">Register now</button>
+                                        <button className="bg-indigo-600 text-white font-bold px-3 py-2 rounded-3xl" type="submit">Register now</button>
                                     </form>
                                 </div>
                                 <div>

@@ -97,16 +97,16 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
 
   useEffect(() => {
     if (profileDashboard) {
-      setValue('industry', profileDashboard[0]?.industry && { label: profileDashboard[0]?.industry?.title, value: profileDashboard[0]?.industry?.id });
-      setValue('department', profileDashboard[0]?.department && { label: profileDashboard[0]?.department?.title, value: profileDashboard[0]?.department?.id });
-      setValue('roleCategory', profileDashboard[0]?.roleCategory && { label: profileDashboard[0]?.roleCategory?.title, value: profileDashboard[0]?.roleCategory?.id });
-      setValue('jobRole', profileDashboard[0]?.jobRole && { label: profileDashboard[0]?.jobRole?.title, value: profileDashboard[0]?.jobRole?.id });
-      setValue('expectedSalary', profileDashboard[0]?.expectedSalary && profileDashboard[0]?.expectedSalary);
-      setValue('currency', profileDashboard[0]?.currency && { label: profileDashboard[0]?.currency?.title, value: profileDashboard[0]?.currency?.id });
-      setValue('employeeType', profileDashboard[0]?.careerProfileEmployeeType && profileDashboard[0]?.careerProfileEmployeeType);
-      setValue('preferredWorkLocation', profileDashboard[0]?.careerProfilePreferredLocations[0]?.location && { label: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.title, value: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.id });
-      setValue('jobType', profileDashboard[0]?.careerProfileJobType && profileDashboard[0]?.careerProfileJobType);
-      setValue('preferredShift', profileDashboard[0]?.careerProfilePreferredShift && profileDashboard[0]?.careerProfilePreferredShift);
+      profileDashboard[0]?.industry && setValue('industry', { label: profileDashboard[0]?.industry?.title, value: profileDashboard[0]?.industry?.id });
+      profileDashboard[0]?.department && setValue('department', { label: profileDashboard[0]?.department?.title, value: profileDashboard[0]?.department?.id });
+      profileDashboard[0]?.roleCategory && setValue('roleCategory', { label: profileDashboard[0]?.roleCategory?.title, value: profileDashboard[0]?.roleCategory?.id });
+      profileDashboard[0]?.jobRole && setValue('jobRole', { label: profileDashboard[0]?.jobRole?.title, value: profileDashboard[0]?.jobRole?.id });
+      profileDashboard[0]?.expectedSalary && setValue('expectedSalary', profileDashboard[0]?.expectedSalary);
+      profileDashboard[0]?.currency && setValue('currency', { label: profileDashboard[0]?.currency?.title, value: profileDashboard[0]?.currency?.id });
+      profileDashboard[0]?.careerProfileEmployeeType && setValue('employeeType', profileDashboard[0]?.careerProfileEmployeeType);
+      profileDashboard[0]?.careerProfilePreferredLocations[0]?.location && setValue('preferredWorkLocation', { label: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.title, value: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.id });
+      profileDashboard[0]?.careerProfileJobType && setValue('jobType', profileDashboard[0]?.careerProfileJobType);
+      profileDashboard[0]?.careerProfilePreferredShift && setValue('preferredShift', profileDashboard[0]?.careerProfilePreferredShift);
     }
   }, [setValue, profileDashboard]);
 
