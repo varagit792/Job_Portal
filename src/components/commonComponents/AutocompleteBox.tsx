@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import Select from 'react-select'
 
-const AutocompleteBox = ({ control, defaultValue, handleChange, fieldName, dropdownData = [], placeholder = "Please select..." }: any) => {
+const AutocompleteBox = ({ control, defaultValue, handleChange, fieldName, dropdownData = [], placeholder = "Please select...", isClearable = false }: any) => {
 
   return (
     <>
@@ -13,7 +13,7 @@ const AutocompleteBox = ({ control, defaultValue, handleChange, fieldName, dropd
           <Select
             // defaultValue={options[0]}
             {...field}
-            isClearable // enable isClearable to demonstrate extra error handling
+            isClearable={isClearable} // enable isClearable to demonstrate extra error handling
             isSearchable={true}
             className="text-sm"
             classNamePrefix="dropdown"

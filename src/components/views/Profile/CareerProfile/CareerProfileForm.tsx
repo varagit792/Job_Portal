@@ -93,6 +93,18 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
     //   employeeType: [],
     //   preferredShift: []
     // }
+    defaultValues: {
+      industry: profileDashboard?.industry && { value: profileDashboard?.industry?.id && profileDashboard?.industry?.id, label: profileDashboard?.industry?.title && profileDashboard?.industry?.title },
+      department: profileDashboard?.department && { value: profileDashboard?.department?.id, label: profileDashboard?.department?.title },
+      roleCategory: profileDashboard?.roleCategory && { value: profileDashboard?.roleCategory?.id, label: profileDashboard?.roleCategory?.title },
+      jobRole: profileDashboard?.jobRole && { value: profileDashboard?.jobRole?.id, label: profileDashboard?.jobRole?.title },
+      preferredWorkLocation: profileDashboard?.careerProfilePreferredLocations && { value: profileDashboard?.careerProfilePreferredLocations[0]?.location?.id, label: profileDashboard?.careerProfilePreferredLocations[0]?.location?.title },
+      currency: profileDashboard?.currency && { value: profileDashboard?.currency?.id, label: profileDashboard?.currency?.title },
+      expectedSalary: profileDashboard?.expectedSalary && profileDashboard?.expectedSalary,
+      jobType: [],
+      employeeType: [],
+      preferredShift: []
+    }
   });
 
   useEffect(() => {
@@ -104,7 +116,7 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
       profileDashboard?.expectedSalary && setValue('expectedSalary', profileDashboard?.expectedSalary);
       profileDashboard?.currency && setValue('currency', { label: profileDashboard?.currency?.title, value: profileDashboard?.currency?.id });
       profileDashboard?.careerProfileEmployeeType && setValue('employeeType', profileDashboard?.careerProfileEmployeeType);
-      profileDashboard?.careerProfilePreferredLocations[0]?.location && setValue('preferredWorkLocation', { label: profileDashboard?.careerProfilePreferredLocations[0]?.location?.title, value: profileDashboard?.careerProfilePreferredLocations[0]?.location?.id });
+      profileDashboard?.careerProfilePreferredLocations && setValue('preferredWorkLocation', { label: profileDashboard?.careerProfilePreferredLocations[0]?.location?.title, value: profileDashboard?.careerProfilePreferredLocations[0]?.location?.id });
       profileDashboard?.careerProfileJobType && setValue('jobType', profileDashboard?.careerProfileJobType);
       profileDashboard?.careerProfilePreferredShift && setValue('preferredShift', profileDashboard?.careerProfilePreferredShift);
     }
@@ -163,124 +175,150 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
         This information will help the recruiters  know about your current job profile and also your desired job criteria. This will also help us personalize your job recommendations.
       </span>
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Current industry</div>
-        <div>
-          <AutocompleteBox
-            control={control}
-            fieldName={"industry"}
-            dropdownData={industry?.map(({ id, title }: any) => ({ value: id, label: title }))}
-            default={watch("industry")}
-            placeholder={"Select industry"}
-          />
-          {errors?.industry && <p className="font-normal text-xs text-red-500 absolute">{errors?.industry?.label?.message}</p>}
-        </div>
-        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Department</div>
-        <div>
-          <AutocompleteBox
-            control={control}
-            fieldName={"department"}
-            dropdownData={department.map(({ id, title }: any) => ({ value: id, label: title }))}
-            default={watch("department")}
-            placeholder={"Select department"}
-          />
-          {errors?.department && <p className="font-normal text-xs text-red-500 absolute">{errors?.department?.label?.message}</p>}
-        </div>
-        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Role category</div>
-        <div>
-          <AutocompleteBox
-            control={control}
-            fieldName={"roleCategory"}
-            dropdownData={roleCategory?.map(({ id, title }: any) => ({ value: id, label: title }))}
-            default={watch("roleCategory")}
-            placeholder={"Select role category"}
-          />
-          {errors?.roleCategory && <p className="font-normal text-xs text-red-500 absolute">{errors?.roleCategory?.label?.message}</p>}
-        </div>
-        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Job role</div>
-        <div>
-          <AutocompleteBox
-            control={control}
-            fieldName={"jobRole"}
-            dropdownData={jobRole?.map(({ id, title }: any) => ({ value: id, label: title }))}
-            default={watch("jobRole")}
-            placeholder={"Select job role"}
-          />
-          {errors?.jobRole && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobRole?.label?.message}</p>}
-        </div>
-        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Desired job type</div>
-        <div className='grid grid-cols-3 gap-4'>
-          {jobType?.map((item, key) => <div key={item.id}>
-            <SingleCheckbox
-              register={register}
-              fieldName="jobType"
-              dbFieldName="jobType"
-              singleData={item}
-              checkData={profileDashboard?.careerProfileJobType}
-            />
-          </div>)}
-          <div className='grid grid-cols-3 gap-4'></div>
-
-        </div>
-        {errors?.jobType && <div className="font-normal text-xs text-red-500 ">{errors?.jobType?.message}</div>}
-        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Desired employment type</div>
-        <div className='grid grid-cols-3 gap-4'>
-          {employeeType?.map((item, key) => <div key={item.id}>
-            <SingleCheckbox
-              register={register}
-              fieldName="employeeType"
-              dbFieldName="employeeType"
-              singleData={item}
-              checkData={profileDashboard?.careerProfileEmployeeType}
-            />
-          </div>)}
-        </div>
-        {errors?.employeeType && <div className="font-normal text-xs text-red-500 ">{errors?.employeeType?.message}</div>}
-        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Preferred shift</div>
-        <div className='grid grid-cols-3 gap-4'>
-          {preferredShift?.map((item, key) => <div key={item.id}>
-            <SingleCheckbox
-              register={register}
-              fieldName="preferredShift"
-              dbFieldName="preferredShift"
-              singleData={item}
-              checkData={profileDashboard?.careerProfilePreferredShift}
-            />
-          </div>
-          )}
-        </div>
-        {errors?.preferredShift && <div className="font-normal text-xs text-red-500 ">{errors?.preferredShift?.message}</div>}
-        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Preferred work location</div>
-        <div>
-
-          <AutocompleteBox
-            control={control}
-            fieldName={"preferredWorkLocation"}
-            dropdownData={location?.map(({ id, title }: any) => ({ value: id, label: title }))}
-            placeholder={"Select location"}
-          />
-          {errors?.preferredWorkLocation && <p className="font-normal text-xs text-red-500 absolute">{errors?.preferredWorkLocation?.label?.message}</p>}
-        </div>
-        <div className="block text-sm font-medium leading-6 text-gray-900 pt-7">Expected salary</div>
-        <div className='w-full'>
-          <div className='float-left mr-3'>
+        <div className="mb-4">
+          <div className="block text-sm font-medium leading-6 text-gray-900 ">Current industry</div>
+          <div className="mt-1">
             <AutocompleteBox
               control={control}
-              fieldName={"currency"}
-              dropdownData={currency?.map(({ id, title }: any) => ({ value: id, label: title }))}
-              default={watch("currency")}
-              placeholder={"Select currency"}
+              isClearable={true}
+              fieldName={"industry"}
+              dropdownData={industry?.map(({ id, title }: any) => ({ value: id, label: title }))}
+              default={watch("industry")}
+              placeholder={"Select industry"}
             />
-
-            {errors?.currency && <p className="font-normal text-xs text-red-500 absolute">{errors?.currency?.label?.message}</p>}
-          </div>
-          <div className='float-left '>
-            <input defaultValue={profileDashboard?.expectedSalary} className=' block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none'  {...register("expectedSalary")} />
-            {errors?.expectedSalary && <p className="font-normal text-xs text-red-500 absolute">{errors?.expectedSalary?.message}</p>}
+            {errors?.industry && <p className="font-normal text-xs text-red-500 absolute">{errors?.industry?.label?.message}</p>}
           </div>
         </div>
-        {/* <div>
-          {errors.profileSummary && <p className="font-normal text-xs text-red-500 absolute">{errors.profileSummary.message}</p>}
-        </div> */}
+        <div className="mb-4">
+          <div className="block text-sm font-medium leading-6 text-gray-900 ">Department</div>
+          <div className="mt-1">
+            <AutocompleteBox
+              control={control}
+              isClearable={true}
+              fieldName={"department"}
+              dropdownData={department.map(({ id, title }: any) => ({ value: id, label: title }))}
+              default={watch("department")}
+              placeholder={"Select department"}
+            />
+            {errors?.department && <p className="font-normal text-xs text-red-500 absolute">{errors?.department?.label?.message}</p>}
+          </div>
+        </div>
+        <div className="mb-4">
+          <div className="block text-sm font-medium leading-6 text-gray-900 ">Role category</div>
+          <div className="mt-1">
+            <AutocompleteBox
+              control={control}
+              isClearable={true}
+              fieldName={"roleCategory"}
+              dropdownData={roleCategory?.map(({ id, title }: any) => ({ value: id, label: title }))}
+              default={watch("roleCategory")}
+              placeholder={"Select role category"}
+            />
+            {errors?.roleCategory && <p className="font-normal text-xs text-red-500 absolute">{errors?.roleCategory?.label?.message}</p>}
+          </div>
+        </div>
+        <div className="mb-4">
+          <div className="block text-sm font-medium leading-6 text-gray-900 ">Job role</div>
+          <div className="mt-1">
+            <AutocompleteBox
+              control={control}
+              isClearable={true}
+              fieldName={"jobRole"}
+              dropdownData={jobRole?.map(({ id, title }: any) => ({ value: id, label: title }))}
+              default={watch("jobRole")}
+              placeholder={"Select job role"}
+            />
+            {errors?.jobRole && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobRole?.label?.message}</p>}
+          </div>
+        </div>
+        <div className="mb-4">
+          <div className="block text-sm font-medium leading-6 text-gray-900 ">Desired job type</div>
+          <div className='grid grid-cols-3 gap-4 mt-1'>
+            {jobType?.map((item, key) => <div key={item.id}>
+              <SingleCheckbox
+                register={register}
+                fieldName="jobType"
+                dbFieldName="jobType"
+                singleData={item}
+                checkData={profileDashboard?.careerProfileJobType}
+              />
+            </div>)}
+            <div className='grid grid-cols-3 gap-4'></div>
+
+          </div>
+          {errors?.jobType && <div className="font-normal text-xs text-red-500 ">{errors?.jobType?.message}</div>}
+        </div>
+        <div className="mb-4">
+          <div className="block text-sm font-medium leading-6 text-gray-900 ">Desired employment type</div>
+          <div className='grid grid-cols-3 gap-4 mt-1'>
+            {employeeType?.map((item, key) => <div key={item.id}>
+              <SingleCheckbox
+                register={register}
+                fieldName="employeeType"
+                dbFieldName="employeeType"
+                singleData={item}
+                checkData={profileDashboard?.careerProfileEmployeeType}
+              />
+            </div>)}
+          </div>
+          {errors?.employeeType && <div className="font-normal text-xs text-red-500 ">{errors?.employeeType?.message}</div>}
+        </div>
+        <div className="mb-4">
+          <div className="block text-sm font-medium leading-6 text-gray-900 ">Preferred shift</div>
+          <div className='grid grid-cols-3 gap-4 mt-1'>
+            {preferredShift?.map((item, key) => <div key={item.id}>
+              <SingleCheckbox
+                register={register}
+                fieldName="preferredShift"
+                dbFieldName="preferredShift"
+                singleData={item}
+                checkData={profileDashboard?.careerProfilePreferredShift}
+              />
+            </div>
+            )}
+          </div>
+          {errors?.preferredShift && <div className="font-normal text-xs text-red-500 ">{errors?.preferredShift?.message}</div>}
+        </div>
+        <div className="mb-4">
+          <div className="block text-sm font-medium leading-6 text-gray-900 ">Preferred work location</div>
+          <div className="mt-1">
+
+            <AutocompleteBox
+              control={control}
+              isClearable={true}
+              fieldName={"preferredWorkLocation"}
+              dropdownData={location?.map(({ id, title }: any) => ({ value: id, label: title }))}
+              placeholder={"Select location"}
+            />
+            {errors?.preferredWorkLocation && <p className="font-normal text-xs text-red-500 absolute">{errors?.preferredWorkLocation?.label?.message}</p>}
+          </div>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="expectedSalary" className="block text-sm font-medium leading-6 text-gray-900">Expected salary</label>
+          <div className="grid grid-cols-8 gap-4 mt-1">
+            <div className="mt-1 col-span-1">
+              <AutocompleteBox
+                control={control}
+                fieldName={"currency"}
+                dropdownData={currency?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                default={watch("currency")}
+                placeholder={""}
+              />
+              {errors?.currency && <p className="font-normal text-xs text-red-500 absolute">{errors?.currency?.label?.message}</p>}
+            </div>
+            <div className="mt-1 col-span-7">
+
+              <input defaultValue={profileDashboard?.expectedSalary}
+                className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5 mt-1'
+                placeholder={"Salary"}
+                {...register("expectedSalary")} />
+              {errors?.expectedSalary && <p className="font-normal text-xs text-red-500">{errors?.expectedSalary?.message}</p>}
+            </div>
+          </div>
+        </div>
+
+
+
         <div className="mt-5 flex justify-end items-center">
           <div>
             <button
