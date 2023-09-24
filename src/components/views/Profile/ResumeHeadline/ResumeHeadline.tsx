@@ -36,21 +36,17 @@ const ResumeHeadline = () => {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center justify-between mb-4 font-bold">
           <h1>Resume headline</h1>
-          {
-            profileDashboard?.resumeHeadline
-            &&
-            <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
-              <FiEdit2 onClick={openModal} />
-            </span>
-          }
         </div>
         {
           !profileDashboard?.resumeHeadline
-          &&
-          <h1 className="text-blue-600 font-medium cursor-pointer"
-            onClick={openModal}>
-            Add resume headline
-          </h1>
+            ?
+            <h1 className="text-blue-600 font-medium cursor-pointer"
+              onClick={openModal}>
+              Add resume headline
+            </h1> :
+            <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
+              <FiEdit2 onClick={openModal} />
+            </span>
         }
       </div>
       <span className="text-sm text-gray-500">

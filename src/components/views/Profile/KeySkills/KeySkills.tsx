@@ -51,19 +51,17 @@ const KeySkills = ({ profileDashboard }: any) => {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center justify-between mb-4 font-bold">
           <h1>Key skills</h1>
-          {
-            databaseSkillSet?.length > 0 &&
-            <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
-              <FiEdit2 onClick={openModal} />
-            </span>
-          }
         </div>
         {
           databaseSkillSet?.length === 0 ?
             <h1 className="text-blue-600 font-medium cursor-pointer"
               onClick={openModal}>
               Add key skill
-            </h1> : ''
+            </h1>
+            :
+            <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
+              <FiEdit2 onClick={openModal} />
+            </span>
         }
       </div>
       <div className="flex flex-wrap">
