@@ -19,10 +19,6 @@ const ProfilePictureUploadForm: FC<Parameters> = ({ closeDialog }) => {
   const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard)
 
   useEffect(() => {
-    dispatch(clearPictureUploadState())
-  }, [dispatch]);
-
-  useEffect(() => {
     if (success) {
       dispatch(profileDashboardGet());
       dispatch(clearPictureUploadState());
