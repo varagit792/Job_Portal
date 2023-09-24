@@ -42,6 +42,8 @@ export const registerUser = createAsyncThunk(
                 }
             );
 
+            console.log('token ', response.headers,response.data)
+
             if (response.status >= 200 && response.status < 300) {
                 Cookies.set("name", response.data.data.name);
                 Cookies.set("token", response.data.token);

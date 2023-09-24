@@ -19,6 +19,10 @@ const ProfilePictureUploadForm: FC<Parameters> = ({ closeDialog }) => {
   const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard)
 
   useEffect(() => {
+    dispatch(clearPictureUploadState())
+  }, [dispatch]);
+
+  useEffect(() => {
     if (success) {
       dispatch(profileDashboardGet());
       dispatch(clearPictureUploadState());
@@ -81,6 +85,7 @@ const ProfilePictureUploadForm: FC<Parameters> = ({ closeDialog }) => {
       <div className="flex flex-col justify-center items-center" >
         <h1 className="font-medium text-lg">Profile photo upload</h1>
         <h2 className="font-medium text-sm">Profile with photo has 40% higher chances of getting noticed by recruiters.</h2>
+        {errorMessage && <span className="text-red-600 mt-3">{errorMessage}</span>}
       </div>
       <form >
         <div className="p-10 rounded-2xl flex flex-col justify-center items-center">
