@@ -45,19 +45,19 @@ const PersonalDetails = () => {
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center font-bold">
                     <h1>Personal details</h1>
-                    {profileDashboard?.personalDetails &&
-                        <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer" onClick={openModal}>
-                            <FiEdit2 />
-                        </span>
-                    }
                 </div>
                 {
                     !profileDashboard?.personalDetails
-                    &&
-                    <h1 className="text-blue-600 font-medium cursor-pointer"
-                        onClick={openModal}>
-                        Add Personal Details
-                    </h1>
+                        ?
+                        <h1 className="text-blue-600 font-medium cursor-pointer"
+                            onClick={openModal}
+                        >
+                            Add Personal Details
+                        </h1>
+                        :
+                        <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer" onClick={openModal}>
+                            <FiEdit2 />
+                        </span>
                 }
             </div>
             <div className="grid grid-cols-2">

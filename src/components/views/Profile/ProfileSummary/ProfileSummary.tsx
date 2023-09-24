@@ -36,21 +36,18 @@ const ProfileSummary = () => {
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center font-bold">
                     <h1>Profile summary</h1>
-                    {
-                        profileDashboard?.profileSummary
-                        &&
-                        <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
-                            <FiEdit2 onClick={openModal} />
-                        </span>
-                    }
                 </div>
                 {
                     !profileDashboard?.profileSummary
-                    &&
-                    <h1 className="text-blue-600 font-medium cursor-pointer"
-                        onClick={openModal}>
-                        Add profile summary
-                    </h1>
+                        ?
+                        <h1 className="text-blue-600 font-medium cursor-pointer"
+                            onClick={openModal}>
+                            Add profile summary
+                        </h1>
+                        :
+                        <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
+                            <FiEdit2 onClick={openModal} />
+                        </span>
                 }
             </div>
             <span className="text-sm text-gray-500">
