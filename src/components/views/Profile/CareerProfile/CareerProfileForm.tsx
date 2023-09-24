@@ -97,16 +97,16 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
 
   useEffect(() => {
     if (profileDashboard) {
-      profileDashboard[0]?.industry && setValue('industry', { label: profileDashboard[0]?.industry?.title, value: profileDashboard[0]?.industry?.id });
-      profileDashboard[0]?.department && setValue('department', { label: profileDashboard[0]?.department?.title, value: profileDashboard[0]?.department?.id });
-      profileDashboard[0]?.roleCategory && setValue('roleCategory', { label: profileDashboard[0]?.roleCategory?.title, value: profileDashboard[0]?.roleCategory?.id });
-      profileDashboard[0]?.jobRole && setValue('jobRole', { label: profileDashboard[0]?.jobRole?.title, value: profileDashboard[0]?.jobRole?.id });
-      profileDashboard[0]?.expectedSalary && setValue('expectedSalary', profileDashboard[0]?.expectedSalary);
-      profileDashboard[0]?.currency && setValue('currency', { label: profileDashboard[0]?.currency?.title, value: profileDashboard[0]?.currency?.id });
-      profileDashboard[0]?.careerProfileEmployeeType && setValue('employeeType', profileDashboard[0]?.careerProfileEmployeeType);
-      profileDashboard[0]?.careerProfilePreferredLocations[0]?.location && setValue('preferredWorkLocation', { label: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.title, value: profileDashboard[0]?.careerProfilePreferredLocations[0]?.location?.id });
-      profileDashboard[0]?.careerProfileJobType && setValue('jobType', profileDashboard[0]?.careerProfileJobType);
-      profileDashboard[0]?.careerProfilePreferredShift && setValue('preferredShift', profileDashboard[0]?.careerProfilePreferredShift);
+      profileDashboard?.industry && setValue('industry', { label: profileDashboard?.industry?.title, value: profileDashboard?.industry?.id });
+      profileDashboard?.department && setValue('department', { label: profileDashboard?.department?.title, value: profileDashboard?.department?.id });
+      profileDashboard?.roleCategory && setValue('roleCategory', { label: profileDashboard?.roleCategory?.title, value: profileDashboard?.roleCategory?.id });
+      profileDashboard?.jobRole && setValue('jobRole', { label: profileDashboard?.jobRole?.title, value: profileDashboard?.jobRole?.id });
+      profileDashboard?.expectedSalary && setValue('expectedSalary', profileDashboard?.expectedSalary);
+      profileDashboard?.currency && setValue('currency', { label: profileDashboard?.currency?.title, value: profileDashboard?.currency?.id });
+      profileDashboard?.careerProfileEmployeeType && setValue('employeeType', profileDashboard?.careerProfileEmployeeType);
+      profileDashboard?.careerProfilePreferredLocations[0]?.location && setValue('preferredWorkLocation', { label: profileDashboard?.careerProfilePreferredLocations[0]?.location?.title, value: profileDashboard?.careerProfilePreferredLocations[0]?.location?.id });
+      profileDashboard?.careerProfileJobType && setValue('jobType', profileDashboard?.careerProfileJobType);
+      profileDashboard?.careerProfilePreferredShift && setValue('preferredShift', profileDashboard?.careerProfilePreferredShift);
     }
   }, [setValue, profileDashboard]);
 
@@ -215,7 +215,7 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
               fieldName="jobType"
               dbFieldName="jobType"
               singleData={item}
-              checkData={profileDashboard[0]?.careerProfileJobType}
+              checkData={profileDashboard?.careerProfileJobType}
             />
           </div>)}
           <div className='grid grid-cols-3 gap-4'></div>
@@ -230,7 +230,7 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
               fieldName="employeeType"
               dbFieldName="employeeType"
               singleData={item}
-              checkData={profileDashboard[0]?.careerProfileEmployeeType}
+              checkData={profileDashboard?.careerProfileEmployeeType}
             />
           </div>)}
         </div>
@@ -243,7 +243,7 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
               fieldName="preferredShift"
               dbFieldName="preferredShift"
               singleData={item}
-              checkData={profileDashboard[0]?.careerProfilePreferredShift}
+              checkData={profileDashboard?.careerProfilePreferredShift}
             />
           </div>
           )}
@@ -274,7 +274,7 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
             {errors?.currency && <p className="font-normal text-xs text-red-500 absolute">{errors?.currency?.label?.message}</p>}
           </div>
           <div className='float-left '>
-            <input defaultValue={profileDashboard[0]?.expectedSalary} className=' block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none'  {...register("expectedSalary")} />
+            <input defaultValue={profileDashboard?.expectedSalary} className=' block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none'  {...register("expectedSalary")} />
             {errors?.expectedSalary && <p className="font-normal text-xs text-red-500 absolute">{errors?.expectedSalary?.message}</p>}
           </div>
         </div>

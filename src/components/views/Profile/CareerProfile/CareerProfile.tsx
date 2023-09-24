@@ -27,6 +27,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
       dispatch(careerProfileDetailsGet());
       dispatch(clearGetProfileIndicator());
       dispatch(profileIndicatorGet());
+      dispatch(profileDashboardGet());
 
     }
     if (careerProfileSuccess) {
@@ -44,35 +45,31 @@ const CareerProfile = ({ profileDashboard }: any) => {
   const closeDialog = () => {
     setIsOpen(false);
   };
-
+  
   return (
     <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center justify-between mb-4 font-bold">
-          <h1>Career profile</h1>
-          {
-            careerProfileDetails?.length > 0 &&
-            <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
-              <FiEdit2 onClick={openModal} />
-            </span>
-          }
+          <h1>Career profile</h1>          
         </div>
         {
-          careerProfileDetails?.length === 0 ?
+          !profileDashboard?.careerProfile ?
             <h1 className="text-blue-600 font-medium cursor-pointer"
               onClick={openModal}>
               Add career profile
-            </h1> : ''
+            </h1> : <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
+              <FiEdit2 onClick={openModal} />
+            </span>
         }
       </div>
       <div className="grid grid-cols-2 gap-4">
 
         <div>
           <div className="text-gray-500">Current industry</div>
-          {careerProfileDetails[0]?.industry?.title &&
-            <div className="text-sm font-bold text-gray-500">{careerProfileDetails[0]?.industry?.title}</div>
+          {profileDashboard?.careerProfile?.industry?.title &&
+            <div className="text-sm font-bold text-gray-500">{profileDashboard?.careerProfile?.industry?.title}</div>
           }
-          {!careerProfileDetails[0]?.industry?.title &&
+          {!profileDashboard?.careerProfile?.industry?.title &&
             <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add expected salary</button>
           }
         </div>
@@ -80,10 +77,10 @@ const CareerProfile = ({ profileDashboard }: any) => {
 
         <div>
           <div className="text-gray-500">Department</div>
-          {careerProfileDetails[0]?.department?.title &&
-            <div className="text-sm font-bold text-gray-500">{careerProfileDetails[0]?.department?.title}</div>
+          {profileDashboard?.careerProfile?.department?.title &&
+            <div className="text-sm font-bold text-gray-500">{profileDashboard?.careerProfile?.department?.title}</div>
           }
-          {!careerProfileDetails[0]?.department?.title &&
+          {!profileDashboard?.careerProfile?.department?.title &&
             <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add department</button>
           }
         </div>
@@ -91,10 +88,10 @@ const CareerProfile = ({ profileDashboard }: any) => {
 
         <div>
           <div className="text-gray-500">Role category</div>
-          {careerProfileDetails[0]?.roleCategory?.title &&
-            <div className="font-bold text-gray-500">{careerProfileDetails[0]?.roleCategory?.title}</div>
+          {profileDashboard?.careerProfile?.roleCategory?.title &&
+            <div className="font-bold text-gray-500">{profileDashboard?.careerProfile?.roleCategory?.title}</div>
           }
-          {!careerProfileDetails[0]?.roleCategory?.title &&
+          {!profileDashboard?.careerProfile?.roleCategory?.title &&
             <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add role category</button>
 
           }
@@ -103,10 +100,10 @@ const CareerProfile = ({ profileDashboard }: any) => {
 
         <div>
           <div className="text-gray-500">Job role</div>
-          {careerProfileDetails[0]?.jobRole?.title &&
-            <div className="font-bold text-gray-500">{careerProfileDetails[0]?.jobRole?.title}</div>
+          {profileDashboard?.careerProfile?.jobRole?.title &&
+            <div className="font-bold text-gray-500">{profileDashboard?.careerProfile?.jobRole?.title}</div>
           }
-          {!careerProfileDetails[0]?.jobRole?.title &&
+          {!profileDashboard?.careerProfile?.jobRole?.title &&
             <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add job role</button>
 
           }
@@ -115,8 +112,8 @@ const CareerProfile = ({ profileDashboard }: any) => {
         <div>
           <div className="text-gray-500">Desired job type</div>
           <div className="text-sm">
-            {careerProfileDetails[0]?.careerProfileJobType.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.jobType?.title},</div>)}
-            {!careerProfileDetails[0]?.careerProfileJobType &&
+            {profileDashboard?.careerProfile?.careerProfileJobType.map((item:any, key:any) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.jobType?.title},</div>)}
+            {!profileDashboard?.careerProfile?.careerProfileJobType &&
               <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add desired job type</button>
             }
           </div>
@@ -124,16 +121,16 @@ const CareerProfile = ({ profileDashboard }: any) => {
         <div>
           <div className="text-gray-500">Desired employment type</div>
           <div className="text-sm">
-            {careerProfileDetails[0]?.careerProfileEmployeeType.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.employeeType?.title},</div>)}
-            {!careerProfileDetails[0]?.careerProfileEmployeeType &&
+            {profileDashboard?.careerProfile?.careerProfileEmployeeType.map((item:any, key:any) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.employeeType?.title},</div>)}
+            {!profileDashboard?.careerProfile?.careerProfileEmployeeType &&
               <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add employment type</button>
             }
           </div>
         </div>
         <div><div className="text-gray-500">Preferred shift</div>
           <div className="text-sm">
-            {careerProfileDetails[0]?.careerProfilePreferredShift.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.preferredShift?.title},</div>)}
-            {!careerProfileDetails[0]?.careerProfilePreferredShift &&
+            {profileDashboard?.careerProfile?.careerProfilePreferredShift.map((item:any, key:any) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.preferredShift?.title},</div>)}
+            {!profileDashboard?.careerProfile?.careerProfilePreferredShift &&
               <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add preferred shift</button>
             }
           </div>
@@ -141,17 +138,17 @@ const CareerProfile = ({ profileDashboard }: any) => {
         <div >
           <div className="text-gray-500">Preferred work location</div>
           <div className="text-sm">
-            {careerProfileDetails[0]?.careerProfilePreferredLocations.map((item, key) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.location?.title},</div>)}
-            {!careerProfileDetails[0]?.careerProfilePreferredLocations &&
+            {profileDashboard?.careerProfile?.careerProfilePreferredLocations.map((item:any, key:any) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.location?.title},</div>)}
+            {!profileDashboard?.careerProfile?.careerProfilePreferredLocations &&
               <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add Preferred work location</button>
             }
           </div>
         </div>
-        {careerProfileDetails[0]?.expectedSalary &&
+        {profileDashboard?.careerProfile?.expectedSalary &&
           <div>
             <div className="text-gray-500">Expected salary</div>
-            <div className="text-sm font-bold text-gray-500">{careerProfileDetails[0]?.currency?.title}{careerProfileDetails[0]?.expectedSalary}</div>
-            {!careerProfileDetails[0]?.expectedSalary &&
+            <div className="text-sm font-bold text-gray-500">{profileDashboard?.careerProfile?.currency?.title}{profileDashboard?.careerProfile?.expectedSalary}</div>
+            {!profileDashboard?.careerProfile?.expectedSalary &&
               <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add expected salary</button>
             }
           </div>
@@ -160,7 +157,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
       <Modal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        modalBody={<CareerProfileForm id={profileDashboard?.id} profileDashboard={careerProfileDetails} closeDialog={closeDialog} />}
+        modalBody={<CareerProfileForm id={profileDashboard?.id} profileDashboard={profileDashboard?.careerProfile} closeDialog={closeDialog} />}
       />
     </div>
 
