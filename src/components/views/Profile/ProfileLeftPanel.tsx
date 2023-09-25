@@ -222,6 +222,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
       }
     }
   }
+  console.log("careerProfileDetails", careerProfileDetails);
 
   return (
     <>
@@ -384,7 +385,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
       <Modal
         isOpen={isCareerProfileOpen}
         setIsOpen={setIsCareerProfileOpen}
-        modalBody={<CareerProfileForm id={profileDashboard?.id} profileDashboard={careerProfileDetails} closeDialog={closeCareerProfileDialog} />}
+        modalBody={<CareerProfileForm id={profileDashboard?.id} profileDashboard={profileDashboard?.careerProfile} closeDialog={closeCareerProfileDialog} />}
       />
 
       <Modal
