@@ -7,66 +7,58 @@ import { AiFillFacebook, AiFillLinkedin, AiFillTwitterCircle, AiFillStar } from 
 
 
 const JobDescription = () => {
-  
+
   return (
     <Fragment>
       <div className="h-[10%] w-full"></div>
       <div className="grid grid-cols-12 gap-10 px-40 bg-[#F8FAFC] py-12">
         <div className="col-start-1 col-end-8  p-5">
           <div className="border border-gray-200 rounded-xl p-5 ">
+            <div className="flex flex-row">
+              <div className="flex flex-col">
+                <div className="mb-1">
+                  <h1 className="font-semibold">Service Desk Engineer 1</h1>
+                </div >
+                <div className="flex flex-row gap-2 mb-3">
+                  <div>Allied Digital</div>
+                  <AiFillStar color='yellow' />
 
-            <div className="flex flex-col">
-              <div className="flex justify-between ">
-                <div className="flex flex-col">
-                  <div className="mb-1">
-                    <h1 className="font-semibold">Service Desk Engineer 1</h1>
-                  </div >
-                  <div className="flex flex-row gap-2 mb-3">
-                    <div>Allied Digital</div>
-                    <AiFillStar color='yellow'/>
-                   
-                    <div className="flex flex-row">
-                      <button> 304 Reviews</button>
-                    </div>
-                  </div>
                   <div className="flex flex-row">
-                    <div className="ml-2 flex items-center">
-                      <span >
-                        <BsBriefcase />
-                      </span>
-                      <span className="ml-1">
-                        1 - 3 years
-                      </span>
-                    </div>
-                    <div className="border border-l-0 border-gray-400 ml-4">
-
-                    </div>
-                    <div className="ml-2 items-center flex">
-                      <span> <LiaRupeeSignSolid /></span>
-                      <span className="ml-1 ">
-                        2.25-3 Lacs P.A.
-                      </span>
-                    </div>
-                    
+                    <button> 304 Reviews</button>
                   </div>
-                </div>             
-                  <div className="flex justify-end  items-end rounded-xl border border-gray-200 p-5">
-                    <img src={companyImage} alt="Company lo" height="30rem" width="30rem" className="flex justify-end  items-end" />
-                  </div>
-                <div>
-
                 </div>
-
+                <div className="flex flex-row">
+                  <div className="ml-2 flex items-center">
+                    <span >
+                      <BsBriefcase />
+                    </span>
+                    <span className="ml-1">
+                      1 - 3 years
+                    </span>
+                  </div>
+                  <div className="border border-l-0 border-gray-400 ml-4">
+                  </div>
+                  <div className="ml-2 items-center flex">
+                    <span> <LiaRupeeSignSolid /></span>
+                    <span className="ml-1 ">
+                      2.25-3 Lacs P.A.
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-col mt-1">
+                  <span>
+                    <IoLocationOutline />
+                  </span>
+                  <span className="ml-1  w-96">
+                    Kolkata, Mumbai, New Delhi, Hyderabad/Secunderabad, Pune, Chennai, Bangalore/Bengaluru
+                  </span>
+                </div>
               </div>
-              <div className="flex flex-row mt-1">
+              <div className="flex flex-col ">
                 <div>
-                  <IoLocationOutline />
-                </div>
-                <div className="ml-1  w-96">
-                  Kolkata, Mumbai, New Delhi, Hyderabad/Secunderabad, Pune, Chennai, Bangalore/Bengaluru
+                  <img src={companyImage} alt="Company lo" height="30rem" width="30rem" className="flex  items-end justify-end rounded-xl border border-gray-200 p-5 text-end w-full" />
                 </div>
                 <button className="ml-8 text-blue-600 font-semibold hover:underline">
-
                   Send me jobs like this
                 </button>
               </div>
@@ -98,17 +90,14 @@ const JobDescription = () => {
                 </div>
               </div>
               <div className="flex flex-row ml-4">
-
                 <button className="border border-blue-600 rounded-xl py-1 px-3">
                   Register to apply
                 </button>
                 <button className="border border-blue-600 rounded-xl py-1 px-3 ml-3">
                   Login to apply
                 </button>
-
               </div>
             </div>
-            
           </div>
           <div className="border border-gray-200 rounded-xl p-5 mt-4">
             <h1 className="mt-1 font-semibold">
@@ -129,7 +118,6 @@ const JobDescription = () => {
               <div>
                 Software Development - Other
               </div>
-
             </div>
             <div className="flex flex-row mt-3">
               <div className="font-semibold mr-1">
@@ -138,7 +126,6 @@ const JobDescription = () => {
               <div>
                 Management Consulting
               </div>
-
             </div>
             <div className="flex flex-row mt-3">
               <div className="font-semibold mr-1">
@@ -163,7 +150,7 @@ const JobDescription = () => {
                 Role Category:
               </div>
               <div>
-                Software Development  
+                Software Development
               </div>
 
             </div>
@@ -172,7 +159,7 @@ const JobDescription = () => {
             </h1>
             <div className="flex flex-row mt-3">
               <div className="font-semibold mr-1">
-               UG:
+                UG:
               </div>
               <div>
                 Any Graduate
@@ -194,10 +181,10 @@ const JobDescription = () => {
                 React js
               </button>
               <button className="border border-gray-500 rounded-xl py-1 px-3 ">
-                HTML 
+                HTML
               </button>
               <button className="border border-gray-500 rounded-xl py-1 px-3 ">
-               CSS
+                CSS
               </button>
               <button className="border border-gray-500 rounded-xl py-1 px-3 ">
                 Redux
@@ -250,17 +237,15 @@ const JobDescription = () => {
               Beware of imposters!
             </h1>
             <span className="text-xs">
-
               Naukri.com does not promise a job or an interview in exchange of money. Fraudsters may ask you to pay in the pretext of registration fee, Refundable Fee…
             </span> <span className="text-blue-500">Read more</span>
-           
+
             <h1 className="mt-1 font-semibold">
               Company Info
             </h1>
             <div className=" flex flex-row">
               <h1 className="font-medium mr-1">Address:</h1>
-              <div >Unit No 405 406,4th floor,MULTISTORIED BLDG,SEEPZ SEZ, ANDHERI EAST,MUMBAI , MUMBAI, Maharashtra, India</div>
-
+              <div className="text-gray-500 text-xs">Unit No 405 406,4th floor,MULTISTORIED BLDG,SEEPZ SEZ, ANDHERI EAST,MUMBAI , MUMBAI, Maharashtra, India</div>
             </div>
           </div>
           <h1 className="mt-5 font-semibold">
