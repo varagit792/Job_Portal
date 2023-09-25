@@ -9,6 +9,7 @@ import Profile from '../components/views/Profile/Profile';
 import SignIn from '../components/views/SignIn/SignIn';
 import SignOut from '../components/views/SignIn/SignOut';
 import AllJobs from '../components/views/Jobs/AllJobs';
+import JobDescription from '../components/views/Jobs/JobDescription';
 
 const AllRoutes = () => {
     return (
@@ -18,6 +19,7 @@ const AllRoutes = () => {
                 <Route path="/registration" element={<SignUp />} />
                 <Route path="/login" element={<SignIn />} />
                 <Route path="/allJobs" element={<AllJobs />} />
+                <Route path="/allJobs/jobDescription" element={<JobDescription />} />
             </Route>
             {/* <Route path="/logout" element={<SignOut />} /> */}
             <Route path="/" element={<ProtectedRoute />}>
