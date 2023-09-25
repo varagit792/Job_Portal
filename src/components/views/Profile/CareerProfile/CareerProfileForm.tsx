@@ -289,7 +289,7 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
         <div className="mb-4">
           <label htmlFor="expectedSalary" className="block text-sm font-medium leading-6 text-gray-900">Expected salary</label>
           <div className="grid grid-cols-8 gap-4 mt-1">
-            <div className="mt-1 col-span-1">
+            <div className="col-span-1">
               <AutocompleteBox
                 control={control}
                 fieldName={"currency"}
@@ -299,10 +299,10 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
               />
               {errors?.currency && <p className="font-normal text-xs text-red-500 absolute">{errors?.currency?.label?.message}</p>}
             </div>
-            <div className="mt-1 col-span-7">
+            <div className="col-span-7">
 
               <input defaultValue={profileDashboard?.expectedSalary}
-                className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5 mt-1'
+                className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                 placeholder={"Salary"}
                 {...register("expectedSalary")} />
               {errors?.expectedSalary && <p className="font-normal text-xs text-red-500">{errors?.expectedSalary?.message}</p>}
