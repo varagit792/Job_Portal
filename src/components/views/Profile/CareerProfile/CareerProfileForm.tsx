@@ -94,13 +94,6 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
     //   preferredShift: []
     // }
     defaultValues: {
-      industry: profileDashboard?.industry && { value: profileDashboard?.industry?.id && profileDashboard?.industry?.id, label: profileDashboard?.industry?.title && profileDashboard?.industry?.title },
-      department: profileDashboard?.department && { value: profileDashboard?.department?.id, label: profileDashboard?.department?.title },
-      roleCategory: profileDashboard?.roleCategory && { value: profileDashboard?.roleCategory?.id, label: profileDashboard?.roleCategory?.title },
-      jobRole: profileDashboard?.jobRole && { value: profileDashboard?.jobRole?.id, label: profileDashboard?.jobRole?.title },
-      preferredWorkLocation: profileDashboard?.careerProfilePreferredLocations && { value: profileDashboard?.careerProfilePreferredLocations[0]?.location?.id, label: profileDashboard?.careerProfilePreferredLocations[0]?.location?.title },
-      currency: profileDashboard?.currency && { value: profileDashboard?.currency?.id, label: profileDashboard?.currency?.title },
-      expectedSalary: profileDashboard?.expectedSalary && profileDashboard?.expectedSalary,
       jobType: [],
       employeeType: [],
       preferredShift: []
