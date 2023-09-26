@@ -298,8 +298,8 @@ export default function ({ closeDialog, selectedEmployment }: any) {
     }),
   }).required();
 
-  const test:any = [];
-  selectedEmployment?.jobSeekerProfileEmploymentSkills?.filter((item:any) => item && test.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }))
+  const selectedSkillsUsed:any = [];
+  selectedEmployment?.jobSeekerProfileEmploymentSkills?.filter((item:any) => item && selectedSkillsUsed.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }))
   const {
     control,
     setValue,
@@ -327,7 +327,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
       currentSalary: selectedEmployment?.currentSalary ? selectedEmployment?.currentSalary : null,
       skillsUsed: selectedEmployment?.jobSeekerProfileEmploymentSkills
         //? selectedEmployment?.jobSeekerProfileEmploymentSkills : '',
-        && test,
+        && selectedSkillsUsed,
       jobProfile: selectedEmployment?.jobProfile && selectedEmployment?.jobProfile,
       noticePeriod: selectedEmployment?.noticePeriod
         //? selectedEmployment?.noticePeriod : '',
@@ -524,8 +524,8 @@ export default function ({ closeDialog, selectedEmployment }: any) {
     //   'Sep', 'Oct', 'Nov', 'Dec'
     // ];
 
-    let test: any = [];   
-    data?.skillsUsed?.filter((item:any) => item && test.push(item?.value))
+    let selectedSkillsUsed: any = [];   
+    data?.skillsUsed?.filter((item:any) => item && selectedSkillsUsed.push(item?.value))
     
     const empData: any = {
       //...(data?.id && { id: data?.id }),
@@ -541,7 +541,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
       joiningDateMonth: data.joiningDateMonth ? (data.joiningDateMonth?.value as any) : null,
       currencyType: data.currentSalType?.value,
       currentSalary: data.currentSalary,
-      jobSeekerProfileEmploymentSkills: test,
+      jobSeekerProfileEmploymentSkills: selectedSkillsUsed,
       jobProfile: data.jobProfile,
       noticePeriod: data.noticePeriod?.value,
       //previousCompanyName: data.companyName,    
