@@ -83,9 +83,9 @@ export default function ({ closeDialog, selectedEmployment }: any) {
       }),
       otherwise: (schema) => schema.notRequired(),
     }),
-    skillsUsed: yup.object().when("currentEmployment", {
+    skillsUsed: yup.array().when("currentEmployment", {
       is: 'Yes',
-      then: () => yup.object().when("employmentType", {
+      then: () => yup.array().when("employmentType", {
         is: 'Full Time',
         then: (schema) => schema.required("Please select skills used"),
         otherwise: (schema) => schema.notRequired(),
@@ -298,6 +298,8 @@ export default function ({ closeDialog, selectedEmployment }: any) {
     }),
   }).required();
 
+  const test:any = [];
+  selectedEmployment?.jobSeekerProfileEmploymentSkills?.filter((item:any) => item && test.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }))
   const {
     control,
     setValue,
@@ -325,7 +327,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
       currentSalary: selectedEmployment?.currentSalary ? selectedEmployment?.currentSalary : null,
       skillsUsed: selectedEmployment?.jobSeekerProfileEmploymentSkills
         //? selectedEmployment?.jobSeekerProfileEmploymentSkills : '',
-        && { value: selectedEmployment?.jobSeekerProfileEmploymentSkills?.[0]?.keySkills?.id, label: selectedEmployment?.jobSeekerProfileEmploymentSkills?.[0]?.keySkills?.title },
+        && test,
       jobProfile: selectedEmployment?.jobProfile && selectedEmployment?.jobProfile,
       noticePeriod: selectedEmployment?.noticePeriod
         //? selectedEmployment?.noticePeriod : '',
@@ -514,8 +516,6 @@ export default function ({ closeDialog, selectedEmployment }: any) {
     })();
   }, [])
 
-  console.log("errors->", errors);
-
   // OnSubmit button
   const onSubmit = (data: IFormInputs) => {
     // const months = [
@@ -524,6 +524,9 @@ export default function ({ closeDialog, selectedEmployment }: any) {
     //   'Sep', 'Oct', 'Nov', 'Dec'
     // ];
 
+    let test: any = [];   
+    data?.skillsUsed?.filter((item:any) => item && test.push(item?.value))
+    
     const empData: any = {
       //...(data?.id && { id: data?.id }),
       id: selectedEmployment?.id ? selectedEmployment?.id : null,
@@ -538,7 +541,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
       joiningDateMonth: data.joiningDateMonth ? (data.joiningDateMonth?.value as any) : null,
       currencyType: data.currentSalType?.value,
       currentSalary: data.currentSalary,
-      jobSeekerProfileEmploymentSkills: [data?.skillsUsed?.value],
+      jobSeekerProfileEmploymentSkills: test,
       jobProfile: data.jobProfile,
       noticePeriod: data.noticePeriod?.value,
       //previousCompanyName: data.companyName,    
@@ -555,7 +558,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
 
     dispatch(jobSeekerEmploymentAdd(empData as any));
   };
-
+  
   return (
     <div>
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
@@ -1030,6 +1033,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
                 render={({ field }) => (
                   <Select
                     {...field}
+                    isMulti
                     isClearable
                     placeholder="Tell us about your skills"
                     options={skillsUsed?.map(({ id, title }: any) => ({ value: id, label: title }))}
