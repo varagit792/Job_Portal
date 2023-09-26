@@ -6,6 +6,7 @@ import { IoLocationOutline } from 'react-icons/io5';
 import { AiFillFacebook, AiFillLinkedin, AiFillTwitterCircle, AiFillStar } from 'react-icons/ai';
 import ambitionBox from '../../../assets/svg/ambitionBox.svg';
 import ShortJobCard from '../../commonComponents/ShortJobCard';
+import premium from '../../../assets/jpeg/premium.jpg'
 
 
 
@@ -246,8 +247,8 @@ const JobDescription = () => {
               Jobportal.com does not promise a job or an interview in exchange of money. Fraudsters may ask you to pay in the pretext of registration fee, Refundable Fee…
             </span> <span className="text-blue-500">Read more</span>
 
-           
-           
+
+
           </div>
           {/* <h1 className="mt-5 font-semibold">
             Similar jobs
@@ -262,7 +263,7 @@ const JobDescription = () => {
             <div>
               <ShortJobCard />
               <hr className="mt-4 mb-4" />
-                <ShortJobCard />
+              <ShortJobCard />
               <hr className="mt-4 mb-4" />
               <ShortJobCard />
               <hr className="mt-4 mb-4" />
@@ -286,13 +287,13 @@ const JobDescription = () => {
                     <span className="ml-1 text-xs text-gray-500">28 Jun 2023
                     </span>
                   </div>
-               </div>
+                </div>
               </button>
               <div className="flex flex-row gap-2 mt-2">
-                <AiFillStar  color='yellow'/>
                 <AiFillStar color='yellow' />
                 <AiFillStar color='yellow' />
-                <AiFillStar color='yellow'  />
+                <AiFillStar color='yellow' />
+                <AiFillStar color='yellow' />
                 <AiFillStar color='gray' />
               </div>
             </div>
@@ -304,7 +305,26 @@ const JobDescription = () => {
               <span className="font-bold text-xs">AmbitionBox</span>
             </div>
           </div>
-          
+          <div className="border border-gray-200 rounded-xl p-5 mt-4">
+
+            <div className="flex flex-row justify-between mb-4">
+              <div className="">Services you might be
+                interested in</div>
+              <button className="text-blue-600 font-semibold text-sm hover:underline">Know more</button>
+
+            </div>
+
+            <button className="text-sm text-gray-600">Resume Display</button>
+            <button className=" font-bold text-sm">Increase your profile visibility to recruiters upto 3 times</button>
+            <button className=" text-sm ">
+              Get a Featured Profile, Stand out and get noticed in recruiter eyes.
+            </button>
+            <hr className=" mt-3" />
+            <div className="flex flex-row justify-between items-center">
+              <img src={premium} alt="premium" height="72rem" width="72rem" />
+              <button className="text-xs text-gray-400">* May include paid services</button>
+            </div>
+          </div>
         </div>
       </div >
     </Fragment>
