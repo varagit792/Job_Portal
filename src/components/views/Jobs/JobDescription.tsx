@@ -4,6 +4,9 @@ import { BsBriefcase } from 'react-icons/bs';
 import { LiaRupeeSignSolid } from 'react-icons/lia';
 import { IoLocationOutline } from 'react-icons/io5';
 import { AiFillFacebook, AiFillLinkedin, AiFillTwitterCircle, AiFillStar } from 'react-icons/ai';
+import ShortJobCard from '../../commonComponents/ShortJobCard';
+import JobListItem from '../../commonComponents/JobListItem';
+
 
 
 const JobDescription = () => {
@@ -11,17 +14,20 @@ const JobDescription = () => {
   return (
     <Fragment>
       <div className="h-[10%] w-full"></div>
-      <div className="grid grid-cols-12 gap-10 px-40 bg-[#F8FAFC] py-12">
+      <div className="grid grid-cols-12 gap-10 px-24 bg-[#F8FAFC] py-10">
         <div className="col-start-1 col-end-8  p-5">
           <div className="border border-gray-200 rounded-xl p-5 ">
-            <div className="flex flex-row">
+            <div className="flex flex-row justify-between">
               <div className="flex flex-col">
                 <div className="mb-1">
-                  <h1 className="font-semibold">Service Desk Engineer 1</h1>
+                  <h1 className="font-semibold">React JS Developer</h1>
                 </div >
                 <div className="flex flex-row gap-2 mb-3">
                   <div>Allied Digital</div>
-                  <AiFillStar color='yellow' />
+                  <div className="flex items-center">
+                    <span> <AiFillStar color='yellow' /></span>
+                    <span className="ml-1">3.4</span>
+                  </div>
 
                   <div className="flex flex-row">
                     <button> 304 Reviews</button>
@@ -56,7 +62,7 @@ const JobDescription = () => {
               </div>
               <div className="flex flex-col ">
                 <div>
-                  <img src={companyImage} alt="Company lo" height="30rem" width="30rem" className="flex  items-end justify-end rounded-xl border border-gray-200 p-5 text-end w-full" />
+                  <img src={companyImage} alt="Company logo" className="flex  items-end justify-end rounded-xl border border-gray-200 p-5 text-end w-full" />
                 </div>
                 <button className="ml-8 text-blue-600 font-semibold hover:underline">
                   Send me jobs like this
@@ -226,9 +232,9 @@ const JobDescription = () => {
             <h1 className="mt-1 font-semibold">
               Company Info
             </h1>
-            <div className=" flex flex-row">
+            <div className=" flex flex-row mt-1">
               <h1 className="font-medium mr-1">Address:</h1>
-              <div >Unit No 405 406,4th floor,MULTISTORIED BLDG,SEEPZ SEZ, ANDHERI EAST,MUMBAI , MUMBAI, Maharashtra, India</div>
+              <div className="text-xs text-gray-400 ml-1">Unit No 405 406,4th floor,MULTISTORIED BLDG,SEEPZ SEZ, ANDHERI EAST,MUMBAI , MUMBAI, Maharashtra, India</div>
 
             </div>
           </div>
@@ -237,22 +243,63 @@ const JobDescription = () => {
               Beware of imposters!
             </h1>
             <span className="text-xs">
-              Naukri.com does not promise a job or an interview in exchange of money. Fraudsters may ask you to pay in the pretext of registration fee, Refundable Fee…
+              Jobportal.com does not promise a job or an interview in exchange of money. Fraudsters may ask you to pay in the pretext of registration fee, Refundable Fee…
             </span> <span className="text-blue-500">Read more</span>
 
-            <h1 className="mt-1 font-semibold">
-              Company Info
+           
+           
+          </div>
+          {/* <h1 className="mt-5 font-semibold">
+            Similar jobs
+          </h1> */}
+          {/* <JobListItem/> */}
+        </div>
+        <div className="col-start-8 col-end-13 p-5">
+          <div className="border border-gray-200 rounded-xl p-5" >
+            <h1 className=" font-semibold">
+              Jobs you might be interested in
             </h1>
-            <div className=" flex flex-row">
-              <h1 className="font-medium mr-1">Address:</h1>
-              <div className="text-gray-500 text-xs">Unit No 405 406,4th floor,MULTISTORIED BLDG,SEEPZ SEZ, ANDHERI EAST,MUMBAI , MUMBAI, Maharashtra, India</div>
+            <div>
+              <ShortJobCard />
+              <hr className="mt-4 mb-4" />
+                <ShortJobCard />
+              <hr className="mt-4 mb-4" />
+              <ShortJobCard />
+              <hr className="mt-4 mb-4" />
+              <span className="flex items-center justify-center text-center mt-4">
+                <button className="border-2 border-blue-600 rounded-xl text-blue-600 font-medium px-3 py-1">View All</button>
+              </span>
             </div>
           </div>
-          <h1 className="mt-5 font-semibold">
-            Similar jobs
-          </h1>
+          <div className="border border-gray-200 rounded-xl p-5 mt-4">
+            <div className="flex justify-between">
+              <span className="font-semibold">Reviews</span>
+              <button className="text-blue-600 hover:underline font-medium text-sm">Read all 719 reviews</button>
+            </div>
+            <div>
+              <button className="">
+                <div className="flex flex-col items-start">
+                  <span className="mt-4 font-medium text-sm"> Senior Staff Engineer in Chennai, Tamil Nadu
+                  </span>
+                  <div className="flex flex-row items-end">
+                    <div className="border-r-2 border-gray-300 pr-3 font-medium text-xs">Anonymous</div>
+                    <span className="ml-1 text-xs text-gray-500">28 Jun 2023
+                    </span>
+                  </div>
+               </div>
+              </button>
+              <div className="flex flex-row gap-2 mt-2">
+                <AiFillStar  color='yellow'/>
+                <AiFillStar color='yellow' />
+                <AiFillStar color='yellow' />
+                <AiFillStar color='yellow'  />
+                <AiFillStar color='gray' />
+              </div>
+            </div>
+            <h1 className="font-semibold mt-2">Likes</h1>
+            <span className=" font-normal text-sm mt-4">Its a remarkable workplace, offering a fantastic work culture</span>
+          </div>
         </div>
-        <div className="col-start-8 col-end-12  p-5 h-2/4">Job Description</div>
       </div >
     </Fragment>
   )
