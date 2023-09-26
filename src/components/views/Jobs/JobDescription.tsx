@@ -4,8 +4,8 @@ import { BsBriefcase } from 'react-icons/bs';
 import { LiaRupeeSignSolid } from 'react-icons/lia';
 import { IoLocationOutline } from 'react-icons/io5';
 import { AiFillFacebook, AiFillLinkedin, AiFillTwitterCircle, AiFillStar } from 'react-icons/ai';
+import ambitionBox from '../../../assets/svg/ambitionBox.svg';
 import ShortJobCard from '../../commonComponents/ShortJobCard';
-import JobListItem from '../../commonComponents/JobListItem';
 
 
 
@@ -297,8 +297,14 @@ const JobDescription = () => {
               </div>
             </div>
             <h1 className="font-semibold mt-2">Likes</h1>
-            <span className=" font-normal text-sm mt-4">Its a remarkable workplace, offering a fantastic work culture</span>
+            <span className=" font-normal text-sm mt-4 mb-4">Its a remarkable workplace, offering a fantastic work culture,growth opportunities, and an exceptional leadership team. Highly recommended!"</span>
+            <div className="flex flex-row mt-3">
+              <span className="mr-3 text-xs ">Powered by </span>
+              <img src={ambitionBox} alt="AmbitionBox" height="15rem" width="15rem" />
+              <span className="font-bold text-xs">AmbitionBox</span>
+            </div>
           </div>
+          
         </div>
       </div >
     </Fragment>
