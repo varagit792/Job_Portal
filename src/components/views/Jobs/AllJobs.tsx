@@ -16,6 +16,7 @@ import DominousIcon from '../../../assets/svg/DominousIcon.svg';
 import GoproIcon from '../../../assets/svg/GoproIcon.svg';
 import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
 import { BiSearch } from 'react-icons/bi';
+import { useNavigate } from 'react-router';
 
 
 const itemsForReactPaginate: any = [
@@ -189,6 +190,8 @@ const AllJobs = () => {
     const currentItems = itemsForReactPaginate.slice(itemOffset, endOffset);
     // using for pagination end
     const [range, setRange] = useState(0);
+
+    const navigate = useNavigate();
 
     const handleRangeChange = (event: React.FormEvent<HTMLInputElement> | any) => {
         // event.stopPropagation();
@@ -658,7 +661,7 @@ const AllJobs = () => {
                 <div className="col-start-4 col-end-11">
                     <div>
                         {currentItems.map((item: any, index: any) => (
-                            <div className="py-5 px-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mb-5" key={index}>
+                            <div className="py-5 px-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mb-5 cursor-pointer" onClick={ ()=> navigate("/allJobs/jobDescription")} key={index}>
                                 <div className="flex items-start justify-between">
                                     <div className="flex justify-start items-start h-full">
                                         <img src={item?.companyLogo} alt="compenyBrand" />
