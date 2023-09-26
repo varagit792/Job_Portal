@@ -33,7 +33,7 @@ const PopoverHover = ({ title, body, handlePopover }: any) => {
             <Popover className="relative w-full h-full">
                 {({ open }) => {
                     return (
-                        <div onMouseLeave={onMouseLeave.bind(null, open)} className="w-full h-full">
+                        <div onMouseLeave={onMouseLeave.bind(null, open)} className="h-full">
                             <Popover.Button
                                 onClick={(event) => {
                                     if (open) {
@@ -57,7 +57,7 @@ const PopoverHover = ({ title, body, handlePopover }: any) => {
                                 leaveFrom="opacity-100 translate-y-0"
                                 leaveTo="opacity-0 translate-y-1"
                             >
-                                <Popover.Panel className="absolute top-full left-0 z-10">
+                                <Popover.Panel className="absolute top-full -left-36 z-10 w-auto">
                                     <div
                                         className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 w-full"
                                         onMouseEnter={onMouseEnter.bind(null, open)}

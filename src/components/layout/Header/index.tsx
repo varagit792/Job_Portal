@@ -47,7 +47,7 @@ const Header = () => {
     }
 
     const handlePopover = () => {
-        // navigate("/home");
+        navigate("/allJobs");
     }
 
     return (

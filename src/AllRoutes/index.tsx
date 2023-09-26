@@ -18,9 +18,9 @@ const AllRoutes = () => {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/registration" element={<SignUp />} />
                 <Route path="/login" element={<SignIn />} />
-                <Route path="/allJobs" element={<AllJobs />} />
-                <Route path="/allJobs/jobDescription" element={<JobDescription />} />
             </Route>
+            <Route path="/allJobs" element={<AllJobs />} />
+            <Route path="/allJobs/jobDescription" element={<JobDescription />} />
             {/* <Route path="/logout" element={<SignOut />} /> */}
             <Route path="/" element={<ProtectedRoute />}>
                 <Route path="/homePage" element={<HomePage />} />
