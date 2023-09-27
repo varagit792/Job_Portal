@@ -79,7 +79,7 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
         setValue('day', dayList?.find((item: any) => item?.label === defaultPersonalDetails?.birthDate?.split("-")?.[0]));
         setValue('month', monthList?.find((item: any) => item?.label === defaultPersonalDetails?.birthDate?.split("-")?.[1]));
         setValue('year', yearList?.find((item: any) => item?.label === defaultPersonalDetails?.birthDate?.split("-")?.[2]));
-        setValue('language', defaultPersonalDetails?.language?.map((item: any) => {
+        setValue('language', defaultPersonalDetails?.language?.length !== undefined ? defaultPersonalDetails?.language?.map((item: any) => {
             return {
                 languageId: item?.languageId,
                 language: item?.language,
@@ -88,7 +88,7 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
                 write: item?.write,
                 speak: item?.speak
             }
-        }));
+        }) : []);
     }, [setValue, defaultPersonalDetails, dayList, monthList, yearList]);
 
     useEffect(() => {
