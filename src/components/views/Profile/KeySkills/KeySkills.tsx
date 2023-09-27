@@ -49,14 +49,14 @@ const KeySkills = ({ profileDashboard }: any) => {
     <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]">
       {isAddDelete.state && <p className={`font-normal text-xs text-green-500`}>{isAddDelete.message} </p>}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center justify-between mb-4 font-bold">
+        <div className="flex items-center justify-between font-bold">
           <h1>Key skills</h1>
         </div>
         {
           databaseSkillSet?.length === 0 ?
             <h1 className="text-blue-600 font-medium cursor-pointer"
               onClick={openModal}>
-              Add key skill
+              Add
             </h1>
             :
             <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
@@ -64,11 +64,13 @@ const KeySkills = ({ profileDashboard }: any) => {
             </span>
         }
       </div>
-      <div className="flex flex-wrap">
+      {Object.keys(databaseSkillSet)?.length ? <div className="flex flex-wrap">
         {databaseSkillSet && databaseSkillSet?.map((item, key) =>
           <span key={key} className="text-xs border border-gray-300 rounded-3xl py-1 px-2 text-center m-1.5">{item}</span>
         )}
       </div>
+        : <span className="text-sm text-gray-500">Mention your key skill details.</span>
+      }
       <Modal
         isOpen={isOpen}
         setIsOpen={setIsOpen}

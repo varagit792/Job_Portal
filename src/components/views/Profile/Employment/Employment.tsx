@@ -59,15 +59,15 @@ export default function Employment() {
       }
     })();
   }, [])
-
+  
   return (
     <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]" >
       <div className="flex items-center justify-between mb-4 font-bold">
         <h1>Employment</h1>
-        <h1 className="text-blue-600 font-medium cursor-pointer" onClick={openModal}>Add employment</h1>
+        <h1 className="text-blue-600 font-medium cursor-pointer" onClick={openModal}>Add</h1>
       </div>
       {
-        Object.keys(profileDashboard).length
+        (Object.keys(profileDashboard)?.length && Object.keys(profileDashboard?.employments)?.length)
           ? profileDashboard?.employments?.map((item: any, index: any) => (
             <>
               <div className="pb-2 pt-2">
