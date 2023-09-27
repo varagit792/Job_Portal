@@ -223,8 +223,8 @@ const AllJobs = () => {
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-12">
                                             <div className="relative mb-3">
-                                                <span id="inputRangeSelector" className="bg-neutral-500 w-10 text-xs h-10 rounded-full text-white absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-neutral-500 after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center" style={{ left: `${range * 5}%` }}>{range}</span>
-                                                <input className="w-full h-1 rounded-lg cursor-pointer"
+                                                <span id="inputRangeSelector" className="bg-[#C7D2FE] w-10 text-xs h-10 rounded-full text-[#312E81] absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-[#C7D2FE] after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center" style={{ left: `${range * 5}%` }}>{range}</span>
+                                                <input className="w-full h-1 rounded-lg cursor-pointer overflow-hidden appearance-none bg-[#C7D2FE]"
                                                     type="range"
                                                     min="0"
                                                     max="20"
@@ -377,8 +377,8 @@ const AllJobs = () => {
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-12">
                                             <div className="relative mb-3">
-                                                <span id="inputRangeSelector" className="bg-neutral-500 w-10 text-xs h-10 rounded-full text-white absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-neutral-500 after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center" style={{ left: `${salary * 2}%` }}>{salary}</span>
-                                                <input className="w-full h-1 rounded-lg cursor-pointer"
+                                                <span id="inputRangeSelector" className="bg-[#C7D2FE] w-10 text-xs h-10 rounded-full text-[#312E81] absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-[#C7D2FE] after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center" style={{ left: `${salary * 2}%` }}>{salary}</span>
+                                                <input className="w-full h-1 rounded-lg cursor-pointer overflow-hidden appearance-none bg-[#C7D2FE]"
                                                     type="range"
                                                     min="0"
                                                     max="50"
