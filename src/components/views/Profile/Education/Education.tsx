@@ -47,7 +47,7 @@ export default function Education() {
     <div className="w-full rounded-2xl bg-white border border-[#E0E7FF] p-4 mt-4" >
       <div className="flex items-center justify-between mb-4 font-bold">
         <h1>Education</h1>
-        <h1 className="text-blue-600 font-medium cursor-pointer" onClick={openModal}>Add education</h1>
+        <h1 className="text-blue-600 font-medium cursor-pointer" onClick={openModal}>Add</h1>
       </div>
       <div>
         {

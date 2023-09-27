@@ -24,6 +24,8 @@ import { clearGetKeySkillsSlice, keySkillsGet } from '../../../store/reducers/dr
 import { clearUpdateCareerProfileUpdateSlice } from '../../../store/reducers/jobSeekerProfile/careerProfileUpdate';
 import { clearKeySkillsSlice } from '../../../store/reducers/jobSeekerProfile/keySkills';
 import { parseISO } from 'date-fns';
+import EmploymentForm from './Employment/EmploymentForm';
+import { clearJobSeekerEmploymentAddSlice } from '../../../store/reducers/jobSeekerProfile/jobSeekerEmploymentAdd';
 
 
 const ProfileLeftPanel = ({ profileDashboard }: any) => {
@@ -35,9 +37,11 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
   const [isProfileSummeryOpen, setIsProfileSummeryOpen] = useState(false);
   const [isCareerProfileOpen, setIsCareerProfileOpen] = useState(false);
   const [isEducationOpen, setIsEducationOpen] = useState(false);
+  const [isEmploymentOpen, setIsEmploymentOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [keySkillFetch, setKeySkillFetch] = useState([]);
   const [selectedEducation, setSelectedEducation] = useState();
+  const [selectedEmployment, setSelectedEmployment] = useState();
   const [databaseSkillSet, setDatabaseSkillSet] = useState([]);
   const [isAddDelete, setIsAddDeleted] = useState({ state: '', message: '', color: '' });
 
@@ -49,6 +53,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
   const { success: profileIndicatorSuccess, profileIndicator } = useAppSelector((state) => state?.getProfileIndicator);
   const { success: educationSuccess, educationDetails } = useAppSelector((state) => state.educationDetails);
   const { success: educationUpdateSuccess } = useAppSelector((state) => state.education);
+  const { success: employmentSuccess, employmentData } = useAppSelector((state) => state.employment);
   const { success: profileSummerySuccess } = useAppSelector((state) => state.updateProfileDashboard);
   const { success: personalDetails } = useAppSelector((state) => state.personalDetails);
   const { success: languagesDeletedSuccess } = useAppSelector((state) => state.deletePersonalDetailsLanguages);
@@ -64,51 +69,57 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
       setIsCareerProfileOpen(false);
       dispatch(clearUpdateCareerProfileUpdateSlice());
       dispatch(clearGetProfileIndicator());
-      dispatch(profileIndicatorGet());
+    dispatch(profileIndicatorGet());
 
     }
     if (educationUpdateSuccess) {
       setIsEducationOpen(false);
       dispatch(clearJobSeekerEducationAddSlice());
-      dispatch(clearGetProfileIndicator());
-      dispatch(profileIndicatorGet());
+      
     }
 
     if (profileSummerySuccess) {
       setIsProfileSummeryOpen(false);
       dispatch(clearGetProfileIndicator());
-      dispatch(profileIndicatorGet());
+    dispatch(profileIndicatorGet());
     }
 
     if (personalDetails) {
       setIsPersonalDetailsOpen(false);
       dispatch(clearPersonalDetailsSlice());
       dispatch(clearGetProfileIndicator());
-      dispatch(profileIndicatorGet());
+    dispatch(profileIndicatorGet());
 
     }
     if (languagesDeletedSuccess) {
       setIsPersonalDetailsOpen(false);
       dispatch(clearDeletePersonalDetailsLanguages());
       dispatch(clearGetProfileIndicator());
-      dispatch(profileIndicatorGet());
+    dispatch(profileIndicatorGet());
     }
 
     if (resumeHeadlineSuccess) {
       setIsResumeHeadLineOpen(false);
       dispatch(clearUpdateResumeHeadlineSlice());
       dispatch(clearGetProfileIndicator());
-      dispatch(profileIndicatorGet());
+    dispatch(profileIndicatorGet());
 
     }
     if (keySkillsUpdateSuccess) {
       setIsKeySkillsOpen(false);
       dispatch(clearGetKeySkillsSlice())
       dispatch(clearGetProfileIndicator());
-      dispatch(profileIndicatorGet());
+    dispatch(profileIndicatorGet());
     }
 
-  }, [dispatch, profileIndicatorSuccess, careerProfileSuccess, educationUpdateSuccess, profileSummerySuccess, personalDetails, languagesDeletedSuccess, resumeHeadlineSuccess, careerProfileUpdateSuccess, successCareerProfileUpdate, keySkillsUpdateSuccess]);
+    if (employmentSuccess) {
+      setIsEmploymentOpen(false);
+      dispatch(clearJobSeekerEmploymentAddSlice())
+      dispatch(clearGetProfileIndicator());
+    dispatch(profileIndicatorGet());
+    }
+
+  }, [dispatch, profileIndicatorSuccess, careerProfileSuccess, educationUpdateSuccess, profileSummerySuccess, personalDetails, languagesDeletedSuccess, resumeHeadlineSuccess, careerProfileUpdateSuccess, successCareerProfileUpdate, keySkillsUpdateSuccess, employmentSuccess]);
 
   useEffect(() => {
     dispatch(careerProfileDetailsGet());
@@ -148,11 +159,17 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
   const openPersonalDetailsModal = () => setIsPersonalDetailsOpen(true);
   const closePersonalDetailsDialog = () => setIsPersonalDetailsOpen(false);
 
-  const openEducationModal = () => {
+  const openEducationModal = (openType:any) => {
     setSelectedEducation({} as any)
-    setIsEducationOpen(true)
+    openType === "Add" && setIsEducationOpen(true)
+  };
+
+  const openEmploymentModal = (openType:any) => {
+    setSelectedEmployment({} as any)
+    openType === "Add" && setIsEmploymentOpen(true)
   };
   const closeEducationDialog = () => setIsEducationOpen(false);
+  const closeEmploymentDialog = () => setIsEmploymentOpen(false);
 
   //Upload file section
 
@@ -293,13 +310,13 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               <span className="font-semibold">Education</span></a>
             <a href="#education" className="text-sm justify-between">
               {!profileIndicator[0]?.education?.status ?
-                <u className="text-[#475569]" onClick={openEducationModal}>Add</u>
+                <u className="text-[#475569]" onClick={()=>openEducationModal("Add")}>Add</u>
                 :
-                <u className="text-[#475569]" onClick={openEducationModal}>Edit</u>
+                <u className="text-[#475569]" onClick={() => openEducationModal("Edit")}>Edit</u>
               }
             </a>
           </li>
-          <li className="flex items-center  mb-8">
+          {/* <li className="flex items-center  mb-8">
             <Tick tickNumber="6" tickStatus={profileIndicator[0]?.itSkills?.status} />
             <a href="#education" className="text-sm  w-full flex justify-between">
               <span className="font-semibold">IT skills</span></a>
@@ -322,9 +339,9 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
                 <u className="text-[#475569]">Edit</u>
               }
             </a>
-          </li>
+          </li> */}
           <li className="flex items-center  mb-8">
-            <Tick tickNumber="8" tickStatus={profileIndicator[0]?.profileSummery?.status} />
+            <Tick tickNumber="6" tickStatus={profileIndicator[0]?.profileSummery?.status} />
             <a href="#profileSummary" className="text-sm  w-full flex justify-between">
               <span className="font-semibold">Profile summary</span></a>
             <a href="#profileSummary" className="text-sm justify-between">
@@ -334,21 +351,9 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
                 <u className="text-[#475569]" onClick={openProfileSummeryModal}>Edit</u>
               }
             </a>
-          </li>
+          </li>          
           <li className="flex items-center mb-8">
-            <Tick tickNumber="9" tickStatus={profileIndicator[0]?.accomplishments?.status} />
-            <a href="#education" className="text-sm w-full flex justify-between">
-              <span className="font-semibold">Accomplishments</span></a>
-            <a href="#education" className="text-sm justify-between">
-              {!profileIndicator[0]?.accomplishments?.status ?
-                <u className="text-[#475569]">Add</u>
-                :
-                <u className="text-[#475569]">Edit</u>
-              }
-            </a>
-          </li>
-          <li className="flex items-center mb-8">
-            <Tick tickNumber="10" tickStatus={profileIndicator[0]?.personalDetails?.status} />
+            <Tick tickNumber="7" tickStatus={profileIndicator[0]?.personalDetails?.status} />
             <a href="#personalDetails" className="text-sm w-full flex justify-between">
               <span className="font-semibold">Personal details</span></a>
             <a href="#personalDetails" className="text-sm justify-between">
@@ -356,6 +361,18 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
                 <u className="text-[#475569]" onClick={openPersonalDetailsModal}>Add</u>
                 :
                 <u className="text-[#475569]" onClick={openPersonalDetailsModal}>Edit</u>
+              }
+            </a>
+          </li>
+          <li className="flex items-center mb-8">
+            <Tick tickNumber="8" tickStatus={profileIndicator[0]?.employment?.status} />
+            <a href="#employment" className="text-sm w-full flex justify-between">
+              <span className="font-semibold">Employment</span></a>
+            <a href="#employment" className="text-sm justify-between">
+              {!profileIndicator[0]?.employment?.status ?
+                <u className="text-[#475569]" onClick={()=>openEmploymentModal("Add")}>Add</u>
+                :
+                <u className="text-[#475569]" onClick={() => openEmploymentModal("Edit")}>Edit</u>
               }
             </a>
           </li>
@@ -437,6 +454,19 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
           setKeySkillFetch={setKeySkillFetch}
           closeDialog={closeKeySkillsDialog}
         />}
+      />
+      <Modal
+        isOpen={isEmploymentOpen}
+        setIsOpen={setIsEmploymentOpen}
+        modalTitle={"Add Employment"}
+        modalBody={
+          <EmploymentForm
+            closeDialog={closeEmploymentDialog}
+            //educationDetails={educationDetails}
+            selectedEmployment={selectedEmployment}
+            isEdit={isEdit}
+          />
+        }
       />
 
     </>

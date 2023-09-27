@@ -56,7 +56,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
           !profileDashboard?.careerProfile ?
             <h1 className="text-blue-600 font-medium cursor-pointer"
               onClick={openModal}>
-              Add career profile
+              Add
             </h1> : <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
               <FiEdit2 onClick={openModal} />
             </span>
