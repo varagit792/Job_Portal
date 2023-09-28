@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Disclosure } from '@headlessui/react';
-import PaginatedItems from '../../commonComponents/ReactPaginate';
+import { useNavigate } from 'react-router';
+import { useAppDispatch, useAppSelector } from '../../../';
+import { getAllJobs, clearGetAllJobsSlice } from '../../../store/reducers/jobs/GetAllJobs';
+import JobCard from './JobCard';
 import compenyBrand from '../../../assets/png/companyBrand.png';
-import ThreeDots from '../../../assets/svg/threeDots.svg';
-import BookMark from '../../../assets/svg/bookMark.svg';
-import MoneyIcon from '../../../assets/svg/MoneyIcon.svg';
-import ExperienceIcon from '../../../assets/svg/ExperienceIcon.svg';
-import LocationIcon from '../../../assets/svg/LocationIcon.svg';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import BMWIcon from '../../../assets/svg/BMWIcon.svg';
 import PandaIcon from '../../../assets/svg/PandaIcon.svg';
@@ -16,183 +14,47 @@ import DominousIcon from '../../../assets/svg/DominousIcon.svg';
 import GoproIcon from '../../../assets/svg/GoproIcon.svg';
 import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
 import { BiSearch } from 'react-icons/bi';
-import { useNavigate } from 'react-router';
-
-
-const itemsForReactPaginate: any = [
-    {
-        id: 1,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 2,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 3,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 4,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 5,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 6,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 7,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 8,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 9,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 10,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 10,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 10,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 10,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 10,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 10,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    },
-    {
-        id: 10,
-        job: "Dot net developer",
-        companyName: "Ratna Global Tech",
-        companyLogo: compenyBrand,
-        experience: "6+ yrs exp",
-        salary: "12 LPA",
-        location: "Hyderabad, Delhi, Mumbai",
-        descpition: "Involve in the complete life cycle stages including Design, Development, Security, publishing, scalability, monitoring, Analysis and monetization ..etc for robust, secure, scalable, Integration solutions to drive business"
-    }
-];
 
 const AllJobs = () => {
-    // using for pagination start
-    const [itemOffset, setItemOffset] = useState(0);
-    const itemsPerPage = 10;
-    const endOffset = itemOffset + itemsPerPage;
-    const currentItems = itemsForReactPaginate.slice(itemOffset, endOffset);
-    // using for pagination end
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const { success, allJobs } = useAppSelector((state) => state.getAllJobs);
+    const [jobCard, setJobCard] = useState<any>([]);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(true);
     const [range, setRange] = useState(0);
     const [salary, setSalary] = useState(0);
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        window.addEventListener("scroll", handelInfiniteScroll);
+        return () => window.removeEventListener("scroll", handelInfiniteScroll);
+    }, []);
+
+    useEffect(() => {
+        dispatch(getAllJobs(page));
+    }, [dispatch, page]);
+
+    useEffect(() => {
+        if (success) {
+            setJobCard((prev: any) => [...prev, ...allJobs]);
+            setLoading(false);
+            dispatch(clearGetAllJobsSlice());
+        }
+    }, [success])
+
+    const handelInfiniteScroll = async () => {
+        try {
+            if (
+                window.innerHeight + document.documentElement.scrollTop + 1 >=
+                document.documentElement.scrollHeight
+            ) {
+                setLoading(true);
+                setPage((prev) => prev + 1);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleRangeChange = (event: React.FormEvent<HTMLInputElement> | any) => {
         setRange(event.target.value);
@@ -201,6 +63,10 @@ const AllJobs = () => {
     const handleSalaryChange = (event: React.FormEvent<HTMLInputElement> | any) => {
         setSalary(event.target.value);
     };
+
+    const onClickJobCard = () => {
+        navigate("/allJobs/jobDescription");
+    }
 
     return (
         <>
@@ -664,55 +530,7 @@ const AllJobs = () => {
                     </div>
                 </div>
                 <div className="col-start-4 col-end-11">
-                    <div>
-                        {currentItems.map((item: any, index: any) => (
-                            <div className="py-5 px-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mb-5 cursor-pointer" onClick={() => navigate("/allJobs/jobDescription")} key={index}>
-                                <div className="flex items-start justify-between">
-                                    <div className="flex justify-start items-start h-full">
-                                        <img src={item?.companyLogo} alt="compenyBrand" />
-                                        <div className="ml-5">
-                                            <h1 className="text-lg font-bold">{item.job}</h1>
-                                            <span className="text-[#94A3B8] text-sm">{item?.companyName}</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <button className="px-1">
-                                            <img src={BookMark} alt="BookMark" className=" h-4 w-4" />
-                                        </button>
-                                        <button className="px-2">
-                                            <img src={ThreeDots} alt="ThreeDots" className=" h-4 w-4" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <hr className="my-5 bg-[#E0E7FF]" />
-                                <div className="flex justify-start items-center mb-5">
-                                    <div className=" flex justify-start items-center text-[#64748B] text-sm">
-                                        <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" />
-                                        <span className="ml-2 leading-none">{item.experience}</span>
-                                    </div>
-                                    <div className=" flex justify-start items-center ml-5 text-[#64748B] text-sm">
-                                        <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2 leading-none">{item.salary}</span>
-                                    </div>
-                                    <div className=" flex justify-start items-center ml-5 text-[#64748B] text-sm">
-                                        <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2 leading-none">{item.location}</span>
-                                    </div>
-                                </div>
-                                <div className="mb-5">
-                                    <ul className="list-disc text-[#94A3B8] text-sm pl-5">
-                                        <li>
-                                            <span className="line-clamp-3 list-inside">{item?.descpition}</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="flex items-center justify-start">
-                                    <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-1.5 rounded-lg mr-5 text-sm">Remote</button>
-                                    <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-1.5 rounded-lg mr-5 text-sm">Full-time</button>
-                                    <span className="text-[#94A3B8] text-sm">Posted 4 hrs ago</span>
-                                </div>
-                            </div>
-                        ))}
-                        <PaginatedItems itemsPerPage={itemsPerPage} items={itemsForReactPaginate} itemOffset={itemOffset} setItemOffset={setItemOffset} />
-                    </div>
+                    <JobCard onClickJobCard={onClickJobCard} jobCard={jobCard} loading={loading} />
                 </div>
                 <div className="col-start-11 col-end-13">
                     <div className="bg-[#F1F5F9] rounded-xl w-full p-5 sticky top-[13%]">
