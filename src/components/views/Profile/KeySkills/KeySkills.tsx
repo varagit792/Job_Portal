@@ -6,13 +6,14 @@ import { useAppDispatch, useAppSelector } from '../../../..';
 import { clearGetKeySkillsSlice, keySkillsGet } from '../../../../store/reducers/dropdown/keySkills';
 import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 import { clearKeySkillsSlice, keySkillsUpdate } from '../../../../store/reducers/jobSeekerProfile/keySkills';
+import { object } from 'prop-types';
 
 
 const KeySkills = ({ profileDashboard }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const [keySkill, setKeySkill] = useState([]);
-  const [databaseSkillSet, setDatabaseSkillSet] = useState([]);
-  const [keySkillFetch, setKeySkillFetch] = useState([]);
+  const [databaseSkillSet, setDatabaseSkillSet] = useState([{ id: null, profileKeySkills: { id: '', title: '' } }]);
+  const [keySkillFetch, setKeySkillFetch] = useState([{ id: null, profileKeySkills: { id: '', title: '' } }]);
   const [isAddDelete, setIsAddDeleted] = useState({ state: '', message: '', color: '' });
 
   const dispatch = useAppDispatch();
@@ -28,7 +29,7 @@ const KeySkills = ({ profileDashboard }: any) => {
       dispatch(clearGetProfileIndicator());
       dispatch(profileIndicatorGet());
     }
-  }, [dispatch, keySkillsSuccess]);
+  }, [dispatch, keySkillsSuccess, keySkillsUpdateSuccess]);
 
   const openModal = () => {
     setIsOpen(true);
@@ -39,8 +40,8 @@ const KeySkills = ({ profileDashboard }: any) => {
 
   useEffect(() => {
     if (profileDashboard?.keySkills) {
-      setKeySkillFetch(profileDashboard?.keySkills && profileDashboard?.keySkills?.split(","));
-      setDatabaseSkillSet(profileDashboard?.keySkills && profileDashboard?.keySkills?.split(","));
+      setKeySkillFetch(profileDashboard?.keySkills);
+      setDatabaseSkillSet(profileDashboard?.keySkills);
     }
 
   }, [profileDashboard])
@@ -66,7 +67,7 @@ const KeySkills = ({ profileDashboard }: any) => {
       </div>
       <div className="flex flex-wrap">
         {databaseSkillSet && databaseSkillSet?.map((item, key) =>
-          <span key={key} className="text-xs border border-gray-300 rounded-3xl py-1 px-2 text-center m-1.5">{item}</span>
+          <span key={key} className="text-xs border border-gray-300 rounded-3xl py-1 px-2 text-center m-1.5">{item.profileKeySkills?.title}</span>
         )}
       </div>
       <Modal

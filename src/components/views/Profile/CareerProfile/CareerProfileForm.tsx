@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import Select from 'react-select'
 import * as yup from "yup";
 import { useAppDispatch, useAppSelector } from '../../../../';
 import { clearGetIndustrySlice, industryGet } from '../../../../store/reducers/dropdown/industry';
@@ -24,7 +25,7 @@ interface IFormInputs {
   jobRole: { value: string; label: string; }
   employeeType: string[]
   preferredShift: string[]
-  preferredWorkLocation: { value: string; label: string; }
+  preferredWorkLocation: string[]
   currency: { value: string; label: string; }
   expectedSalary: string
 }
@@ -34,30 +35,51 @@ const CareerProfileSchema = yup.object().shape({
     value: yup.string().required("Please select industry"),
     label: yup.string().required("Please select industry"),
   }).nullable().required("Please select industry"),
+
   roleCategory: yup.object().shape({
     value: yup.string().required("Please select role category"),
     label: yup.string().required("Please select role category"),
   }),
+
   department: yup.object().shape({
     value: yup.string().required("Please select department"),
     label: yup.string().required("Please select department"),
   }),
-  jobType: yup.array().min(1).of(yup.string().required()).required("Please check Job type"),
+
+  jobType: yup.array()
+    .min(1, "Pick at least one job type")
+    .of(yup.string().required())
+    .required("Please check Job type"),
+
   jobRole: yup.object().shape({
     value: yup.string().required("Please select job role"),
     label: yup.string().required("Please select job role"),
   }),
-  employeeType: yup.array().min(1).of(yup.string().required()).required("Please check employee type"),
-  preferredShift: yup.array().min(1).of(yup.string().required()).required("Please check preferred shift"),
-  preferredWorkLocation: yup.object().shape({
-    value: yup.string().required("Please select role category"),
-    label: yup.string().required("Please select role category"),
-  }),
+
+  employeeType: yup.array()
+    .min(1, "Pick at least one employee type")
+    .of(yup.string().required())
+    .required("Please check employee type"),
+
+  preferredShift: yup.array()
+    .min(1, "Pick at least one preferred shift")
+    .of(yup.string().required())
+    .required("Please check preferred shift"),
+
+  preferredWorkLocation: yup.array()
+    .min(2, 'Pick at least two location')
+    .max(10, 'Pick at most ten location').required("Please select preferred work location")
+  ,
+  //.of(yup.string().required())
+  //.required("Please select preferred work location"),
+
   currency: yup.object().shape({
     value: yup.string().required("Select currency"),
     label: yup.string().required("Select currency"),
   }),
+
   expectedSalary: yup.string().label("Please enter expected salary").required(),
+
 }).required();
 
 const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
@@ -72,6 +94,10 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
   const { success: employeeTypeSuccess, employeeType } = useAppSelector((state) => state.getEmployeeType);
   const { success: jobTypeSuccess, jobType } = useAppSelector((state) => state.getJobType);
   const { success: preferredShiftSuccess, preferredShift } = useAppSelector((state) => state.getPreferredShift);
+  const [defaultPreferredLocation, setDefaultPreferredLocation] = useState([]);
+
+  const selectedPreferredWorkLocation: any = [];
+  profileDashboard?.careerProfilePreferredLocations?.filter((item: any) => item && selectedPreferredWorkLocation.push({ value: item?.location?.id, label: item?.location?.title }));
   const {
     register,
     handleSubmit,
@@ -81,19 +107,8 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
     formState: { errors }
   } = useForm<IFormInputs>({
     resolver: yupResolver(CareerProfileSchema),
-    // defaultValues: {
-    //   industry: { value: '', label: '' },
-    //   department: { value: '', label: '' },
-    //   roleCategory: { value: '', label: '' },
-    //   jobRole: { value: '', label: '' },
-    //   preferredWorkLocation: { value: '', label: '' },
-    //   currency: { value: '', label: '' },
-    //   expectedSalary: '',
-    //   jobType: [],
-    //   employeeType: [],
-    //   preferredShift: []
-    // }
     defaultValues: {
+      preferredWorkLocation: profileDashboard?.careerProfilePreferredLocations && [selectedPreferredWorkLocation],
       jobType: [],
       employeeType: [],
       preferredShift: []
@@ -104,12 +119,13 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
     if (profileDashboard) {
       profileDashboard?.industry && setValue('industry', { label: profileDashboard?.industry?.title, value: profileDashboard?.industry?.id });
       profileDashboard?.department && setValue('department', { label: profileDashboard?.department?.title, value: profileDashboard?.department?.id });
+      profileDashboard?.careerProfilePreferredLocations && setValue('preferredWorkLocation', selectedPreferredWorkLocation);
       profileDashboard?.roleCategory && setValue('roleCategory', { label: profileDashboard?.roleCategory?.title, value: profileDashboard?.roleCategory?.id });
       profileDashboard?.jobRole && setValue('jobRole', { label: profileDashboard?.jobRole?.title, value: profileDashboard?.jobRole?.id });
       profileDashboard?.expectedSalary && setValue('expectedSalary', profileDashboard?.expectedSalary);
       profileDashboard?.currency && setValue('currency', { label: profileDashboard?.currency?.title, value: profileDashboard?.currency?.id });
       profileDashboard?.careerProfileEmployeeType && setValue('employeeType', profileDashboard?.careerProfileEmployeeType);
-      profileDashboard?.careerProfilePreferredLocations && setValue('preferredWorkLocation', { label: profileDashboard?.careerProfilePreferredLocations[0]?.location?.title, value: profileDashboard?.careerProfilePreferredLocations[0]?.location?.id });
+
       profileDashboard?.careerProfileJobType && setValue('jobType', profileDashboard?.careerProfileJobType);
       profileDashboard?.careerProfilePreferredShift && setValue('preferredShift', profileDashboard?.careerProfilePreferredShift);
     }
@@ -153,7 +169,7 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
   const onSubmit = (data: IFormInputs) => {
     const jobType = data.jobType.map(jobType => ({ jobType }));
     const employeeType = data.employeeType.map(employeeType => ({ employeeType }));
-    const preferredLocations = [data.preferredWorkLocation].map(location => ({ location: location.value }));
+    const preferredLocations = data.preferredWorkLocation.map((location: any) => ({ location: location?.value }));
     const preferredShift = data.preferredShift.map(preferredShift => ({ preferredShift }));
 
     dispatch(careerProfileUpdate({ industry: data.industry.value, department: data.department.value, roleCategory: data.roleCategory.value, jobRole: data.jobRole.value, careerProfileJobType: jobType, careerProfileEmployeeType: employeeType, careerProfilePreferredLocations: preferredLocations, careerProfilePreferredShift: preferredShift, currency: data.currency.value, expectedSalary: data.expectedSalary, jobSeekerProfile: id }));
@@ -276,14 +292,29 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
           <div className="block text-sm font-medium leading-6 text-gray-900 ">Preferred work location</div>
           <div className="mt-1">
 
-            <AutocompleteBox
+            {/* <AutocompleteBox
               control={control}
               isClearable={true}
               fieldName={"preferredWorkLocation"}
               dropdownData={location?.map(({ id, title }: any) => ({ value: id, label: title }))}
               placeholder={"Select location"}
+            /> */}
+
+            <Controller
+              control={control}
+              name="preferredWorkLocation"
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  isMulti
+                  isClearable
+                  placeholder="Select preferred work location"
+                  options={location?.map(({ id, title }) => ({ value: id, label: title } as any))}
+                  defaultValue={watch("preferredWorkLocation")}
+                />
+              )}
             />
-            {errors?.preferredWorkLocation && <p className="font-normal text-xs text-red-500 absolute">{errors?.preferredWorkLocation?.label?.message}</p>}
+            {errors?.preferredWorkLocation && <p className="font-normal text-xs text-red-500 absolute">{errors?.preferredWorkLocation?.message}</p>}
           </div>
         </div>
         <div className="mb-4">

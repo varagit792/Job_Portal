@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 interface Headline {
-  keySkills: string,
+  keySkills: string[],
   jobSeekerId: string
 }
 export interface keySkillsState {

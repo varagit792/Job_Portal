@@ -8,7 +8,6 @@ import Modal from '../../commonComponents/Modal';
 import ResumeHeadlineForm from './ResumeHeadline/ResumeHeadlineForm';
 import ProfilePictureUploadForm from './ProfilePictureUpload/ProfilePictureUploadForm';
 import CareerProfileForm from './CareerProfile/CareerProfileForm';
-import { clearGetRoleCategorySlice } from '../../../store/reducers/dropdown/roleCategory';
 import { careerProfileDetailsGet } from '../../../store/reducers/jobSeekerProfile/getCareerProfile';
 import EducationForm from './Education/EducationForm';
 import { educationDetailsGet } from '../../../store/reducers/jobSeekerProfile/getEducationDetails';
@@ -36,9 +35,9 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
   const [isCareerProfileOpen, setIsCareerProfileOpen] = useState(false);
   const [isEducationOpen, setIsEducationOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [keySkillFetch, setKeySkillFetch] = useState([]);
+  const [keySkillFetch, setKeySkillFetch] = useState([{ id: null, profileKeySkills: { id: '', title: '' } }]);
   const [selectedEducation, setSelectedEducation] = useState();
-  const [databaseSkillSet, setDatabaseSkillSet] = useState([]);
+  const [databaseSkillSet, setDatabaseSkillSet] = useState([{ id: null, profileKeySkills: { id: '', title: '' } }]);
   const [isAddDelete, setIsAddDeleted] = useState({ state: '', message: '', color: '' });
 
   const testSummary = "Your Profile Summary should mention the highlights of your career and education, what your professional interests are, and what kind of a career you are looking for. Write a meaningful summary of more than 50 characters.";
@@ -108,7 +107,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
       dispatch(profileIndicatorGet());
     }
 
-  }, [dispatch, profileIndicatorSuccess, careerProfileSuccess, educationUpdateSuccess, profileSummerySuccess, personalDetails, languagesDeletedSuccess, resumeHeadlineSuccess, careerProfileUpdateSuccess, successCareerProfileUpdate, keySkillsUpdateSuccess]);
+  }, [dispatch, profileIndicatorSuccess, keySkillsSuccess, careerProfileSuccess, educationUpdateSuccess, profileSummerySuccess, personalDetails, languagesDeletedSuccess, resumeHeadlineSuccess, careerProfileUpdateSuccess, successCareerProfileUpdate, keySkillsUpdateSuccess]);
 
   useEffect(() => {
     dispatch(careerProfileDetailsGet());
@@ -121,8 +120,8 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
 
   useEffect(() => {
     if (profileDashboard?.keySkills) {
-      setKeySkillFetch(profileDashboard?.keySkills && profileDashboard?.keySkills?.split(","));
-      setDatabaseSkillSet(profileDashboard?.keySkills && profileDashboard?.keySkills?.split(","));
+      setKeySkillFetch(profileDashboard?.keySkills);
+      setDatabaseSkillSet(profileDashboard?.keySkills);
     }
 
   }, [profileDashboard])
@@ -222,7 +221,6 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
       }
     }
   }
-  console.log("careerProfileDetails", careerProfileDetails);
 
   return (
     <>
