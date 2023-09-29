@@ -7,12 +7,19 @@ import LocationIcon from '../../../assets/svg/LocationIcon.svg';
 import defaultPicture from '../../../../src/assets/jpeg/default_picture.jpg';
 import { useAppDispatch, useAppSelector } from '../../..';
 import { getUserData, clearGetUserDataSlice } from "../../../store/reducers/user/getUserDetails";
+import {  AiOutlineInfoCircle } from 'react-icons/ai'
+import { BiChevronRight } from 'react-icons/bi';
+import  PopoverHover  from '../../commonComponents/PopoverHover';
+import ProfilePerformanceText from './ProfilePerformanceText';
 
 const ProfileLeftSection = ({ profileDashboard }: any) => {
   const dispatch = useAppDispatch();
   const { success, userData } = useAppSelector((state) => state.getUser);
 
   const [profilePicPath, setProfilePicPath] = useState();
+
+  const profileIndicatorDescription = 'Profile performance is an indicator how your profile is doing among recruiters. Search appearances are total no. of times your profile appeared in recruiter searches. Recruiter actions are updates when the recruiter takes any action on your application or profile.'
+
   useEffect(() => {
     let profilePictureCompletePath;
     if (profileDashboard?.profilePicturePath) {
@@ -36,7 +43,7 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
   return (
     <>
       <div className="col-start-1 col-end-3">
-        <div className="bg-[#FFF] rounded-lg shadow-sm w-full sticky top-[13%] overflow-hidden">
+        <div className="bg-[#FFF] rounded-lg shadow-sm w-full sticky top-[13%] ">
           <div className="w-full h-40 relative">
             <div className="w-full h-2/3 bg-gradient-to-r from-[#EEF2FF] to-[#C7D2FE] rounded-t-lg">
             </div>
@@ -83,7 +90,39 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
               </>
             }
           </div>
+          <div className="p-2">
+          <div className=" rounded-lg shadow-sm w-full overflow-visible py-2 px-4 border border-blue-200 bg-[#EEF2FF] bg-gradient-to-r from-[#EEF2FF] to-[#929397] rounded-t-lg">
+            <div className="flex flex-row  items-center gap-2">
+              <h1 className="font-bold text-sm mt-0 mb-1">Profile performance</h1>
+              <span className="h-full overflow-visible">
+                <PopoverHover
+                  title={<AiOutlineInfoCircle />}
+                  body={<ProfilePerformanceText />}
+                />
+             </span>
+            </div>
+            <div className="flex flex-row gap-4 justify-between ">
+              <div className="flex flex-col items-start text-start">
+                <span className="w-16 text-start">Search appearances</span>
+                <div className="flex flex-row items-center justify-center">
+                  <button className="text-blue-600 font-semibold mt-1">345</button>
+                  <button><BiChevronRight /></button>
+                </div>
+              </div>
+              <span className="border-l border-gray-400"></span>
+              <div className="flex flex-col">
+                <span className="w-16">Recruiter actions</span>
+                <div className="flex flex-row items-center justify-center">
+                  <button className="text-blue-600 font-semibold mt-1">25</button>
+                  <button className="items-center"><BiChevronRight /></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+          
         </div>
+
       </div>
     </>
   )

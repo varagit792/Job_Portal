@@ -70,9 +70,9 @@ export default function ({ closeDialog, selectedEmployment }: any) {
       then: () => yup.string().when("employmentType", {
         is: 'Full Time',
         then: (schema) => schema.test(
-          'len', 'Minimum 200 characters are required',
+          'len', 'Minimum 150 characters are required',
           (data: any) => {
-            if (data?.length < 200) {
+            if (data?.length < 150) {
               return false
             } else {
               return true
@@ -297,7 +297,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
       otherwise: (schema) => schema.notRequired(),
     }),
   }).required();
-
+  
   const selectedSkillsUsed:any = [];
   selectedEmployment?.jobSeekerProfileEmploymentSkills?.filter((item:any) => item && selectedSkillsUsed.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }))
   const {
@@ -516,6 +516,8 @@ export default function ({ closeDialog, selectedEmployment }: any) {
     })();
   }, [])
 
+  console.log("errors-->", errors);
+  
   // OnSubmit button
   const onSubmit = (data: IFormInputs) => {
     // const months = [

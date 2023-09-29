@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -6,10 +6,14 @@ import { registerUser, clearRegisterSlice } from '../../../store/reducers/regist
 import { useAppDispatch } from '../../../';
 import { useAppSelector } from '../../../';
 import { googleAuthSignUp } from '../../../store/reducers/googleAuth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import briefcase from '../../../assets/svg/briefcase.svg';
 import schoolbag from '../../../assets/svg/schoolbag.svg';
+import img from '../../../assets/png/signup_logo.png';
+import backBtn from '../../../assets/svg/backButton.svg';
+import experienced from '../../../assets/svg/experienced.svg';
+import fresher from '../../../assets/svg/fresher.svg';
 
 interface IFormInputs {
     name: string;
@@ -17,6 +21,7 @@ interface IFormInputs {
     password: string;
     mobileNumber: string;
     workStatus: boolean;
+    role: string;
 }
 
 const SignUpSchema = yup
@@ -40,20 +45,24 @@ const SignUpSchema = yup
         mobileNumber: yup.string()
             .required('Mobile number is required')
             .matches(/^[0-9]{10}$/, 'Mobile number must be a valid 10-digit number'),
-        workStatus: yup.boolean().label("Work Status").required()
+        workStatus: yup.boolean().label("Work Status").required(),
+        role: yup.string().label("Experience Type").required(),
     })
     .required();
 
 const SignUp = () => {
+    const [isWithEmail, setIsWithEmail] = useState(false);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { success, errorMessage } = useAppSelector((state) => state.register);
 
     const {
         register,
+        setValue,
         handleSubmit,
         control,
         watch,
+        getValues,
         formState: { errors }
     } = useForm<IFormInputs>({
         resolver: yupResolver(SignUpSchema)
@@ -66,14 +75,14 @@ const SignUp = () => {
         }
     }, [success, navigate, dispatch])
 
-    const onSubmit = (data: IFormInputs) => {
+    const onSubmit = (data: IFormInputs) => {        
         dispatch(registerUser({
             name: data?.name,
             password: data?.password,
             email: data?.email,
             mobileNumber: data?.mobileNumber,
-            userType: "jobSeeker",
-            workStatus: data?.workStatus,
+            workStatus: data?.workStatus && data?.workStatus,
+            userType: data?.role && data?.role
         }));
         if (errorMessage) {
             alert(`Error occured ${errorMessage}`);
@@ -86,16 +95,26 @@ const SignUp = () => {
 
     return (
         <>
-            <div className="h-[10%] w-full"></div>
-            <div className="bg-zinc-100 font-sans">
-                <div className="px-40 py-14 flex justify-center">
-                    <div className="h-full w-10/12">
-                        <div className="col-start-2 col-end-4">
-                            <div className="bg-white rounded-xl shadow p-10 grid grid-cols-4">
-                                <h1 className="font-semibold text-xl mb-5 col-start-1 col-end-5"> Find a job & grow your career</h1>
-                                <div className="col-start-1 col-end-4">
-                                    <form onSubmit={handleSubmit(onSubmit)}>
-                                        <div className="mb-4">
+            <div className="w-full h-screen grid grid-cols-12">
+                <div className="h-full overflow-hidden col-start-1 col-end-8">
+                    <img src={img} height="100%" width="100%" alt="signup logo" className="" />
+                </div>
+                <div className=" bg-[#F8FAFC] h-full py-10 px-20 grid grid-cols-1 gap-3 col-start-8 col-end-13">
+                    {isWithEmail ? <>
+                        <div className=" flex justify-center items-center relative">
+                            <button className="absolute left-0 top-1/2 -translate-y-1/2 font-bold text-base text-[#0F172A] flex items-center justify-start cursor-pointer" onClick={() => setIsWithEmail(false)}>
+                                <img src={backBtn} alt="backButton" className="mr-4" />
+                                <span className=" leading-none">
+                                    Back
+                                </span>
+                            </button>
+                            <h1 className="font-bold text-2xl text-[#0F172A]">Sign up</h1>
+                        </div>
+                        <div>
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <div className="grid grid-cols-1 gap-5">
+                                    <div className="grid grid-cols-1 gap-5">
+                                        <div>
                                             <label className="block text-sm font-semibold mb-2">
                                                 Full name
                                             </label>
@@ -105,11 +124,11 @@ const SignUp = () => {
                                                 {...register("name")}
                                                 required
                                             />
-                                            {errors.name && <p className="font-normal text-xs text-red-500">{errors.name.message}</p>}
+                                            {errors?.name && <p className="font-normal text-xs text-red-500">{errors?.name?.message}</p>}
                                         </div>
-                                        <div className="mb-4">
+                                        <div>
                                             <label className="block text-sm font-semibold mb-2">
-                                                Email ID
+                                                Email
                                             </label>
                                             <input className="shadow-sm appearance-none border rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                                 type="email"
@@ -117,39 +136,85 @@ const SignUp = () => {
                                                 {...register("email")}
                                                 required
                                             />
-                                            {errors.email && <p className="font-normal text-xs text-red-500">{errors.email.message}</p>}
-                                            {!errors.email && <span className="font-normal text-xs text-gray-500">We'll send you relevant jobs in your mail</span>}
+                                            {errors?.email && <p className="font-normal text-xs text-red-500">{errors?.email?.message}</p>}
+                                            {!errors?.email && <span className="font-normal text-xs text-gray-500">We'll send you relevant jobs in your mail</span>}
                                         </div>
-                                        <div className="mb-4">
-                                            <label className="block text-sm font-semibold mb-2">
-                                                Password
-                                            </label>
-                                            <input className="shadow-sm appearance-none border rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                type="password"
-                                                placeholder="Create a password for your account"
-                                                {...register("password")}
-                                                required
-                                            />
-                                            {errors.password && <p className="font-normal text-xs text-red-500">{errors.password.message}</p>}
-                                            {!errors.password && <span className="font-normal text-xs text-gray-500">Minimum 6 characters required</span>}
-                                        </div>
-                                        <div className="mb-4">
-                                            <label className="block text-sm font-semibold mb-2">
-                                                Mobile number
-                                            </label>
-                                            <div className="relative">
-                                                <input className="shadow-sm appearance-none border rounded-xl w-full py-3 pl-10 pr-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                    type="number"
-                                                    placeholder="Mobile Number"
-                                                    {...register("mobileNumber")}
+                                        <div className="grid grid-cols-2 gap-5">
+                                            <div className="">
+                                                <label className="block text-sm font-semibold mb-2">
+                                                    Password
+                                                </label>
+                                                <input className="shadow-sm appearance-none border rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                    type="password"
+                                                    placeholder="Create a password for your account"
+                                                    {...register("password")}
                                                     required
                                                 />
-                                                <span className="absolute top-3 left-1">+91</span>
+                                                {errors?.password && <p className="font-normal text-xs text-red-500">{errors?.password?.message}</p>}
+                                                {!errors?.password && <span className="font-normal text-xs text-gray-500">Minimum 6 characters required</span>}
                                             </div>
-                                            {errors.mobileNumber && <p className="font-normal text-xs text-red-500">{errors.mobileNumber.message}</p>}
-                                            {!errors.mobileNumber && <span className="font-normal text-xs text-gray-500">Recruiters will call on this number</span>}
+                                            <div className="">
+                                                <label className="block text-sm font-semibold mb-2">
+                                                    Mobile number
+                                                </label>
+                                                <div className="relative">
+                                                    <input className="shadow-sm appearance-none border rounded-xl w-full py-3 pl-10 pr-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                        type="number"
+                                                        placeholder="Mobile Number"
+                                                        {...register("mobileNumber")}
+                                                        required
+                                                    />
+                                                    <span className="absolute top-3 left-1">+91</span>
+                                                </div>
+                                                {errors?.mobileNumber && <p className="font-normal text-xs text-red-500">{errors?.mobileNumber?.message}</p>}
+                                                {!errors?.mobileNumber && <span className="font-normal text-xs text-gray-500">Recruiters will call on this number</span>}
+                                            </div>
                                         </div>
-                                        <div className="mb-4">
+                                        <div className="text-sm font-semibold flex flex-col gap-2 justify-center">
+                                        <div className=" w-2/3 flex justify-between items-center">
+                                                <label className="mr-3">
+                                                    Employer
+                                                    <Controller
+                                                        name="role"
+                                                        control={control}
+                                                        defaultValue=""
+                                                        render={({ field }) => (
+                                                            <input
+                                                                type="radio"
+                                                                className="ml-5"
+                                                                {...field}
+                                                                checked={getValues("role") === "employer"}
+                                                                onChange={() => {
+                                                                    setValue("role", "employer");
+                                                                }}
+                                                            />
+                                                        )}
+                                                    />
+                                                </label>
+                                                <label className="mr-3">
+                                                    Job Seeker
+                                                    <Controller
+                                                        name="role"
+                                                        control={control}
+                                                        defaultValue=""
+                                                        render={({ field }) => (
+                                                            <input
+                                                                type="radio"
+                                                                className="ml-5"
+                                                                {...field}
+                                                                checked={getValues("role") === "jobSeeker"}
+                                                                onChange={() => {
+                                                                    setValue("role", "jobSeeker");
+                                                                }}
+                                                            />
+                                                        )}
+                                                    />
+                                                </label>
+                                            </div>
+                                        </div>
+                                        {
+                                            watch("role") === "jobSeeker" &&
+                                            <div>
                                             <span className="block text-sm font-semibold mb-2">
                                                 Work status
                                             </span>
@@ -160,18 +225,18 @@ const SignUp = () => {
                                                     render={({ field }) => (
                                                         <button
                                                             type="button"
-                                                            className={watch("workStatus") ? "border-2 border-gray-300 bg-gray-300 flex justify-center items-center px-3 py-3 rounded-2xl" : "border-2 border-gray-300 flex justify-center items-center px-3 py-3 rounded-2xl hover:bg-gray-300"}
+                                                            className={watch("workStatus") ? "border-2 border-gray-300 bg-gray-300 flex flex-col justify-center items-start p-5 rounded-lg" : "border-2 border-gray-300 flex flex-col justify-center items-start p-5 rounded-lg hover:bg-gray-300"}
                                                             onClick={() => field.onChange(true)}
                                                         >
                                                             <span>
-                                                                <span className="text-left m-0 block">I'm experienced</span>
-                                                                <span className="break-words text-left m-0 block">I have work experience (excluding internships)</span>
+                                                                <span className="text-left m-0 block mb-4   ">Experienced</span>
                                                             </span>
                                                             <img
-                                                                src={briefcase}
-                                                                alt="briefcase"
-                                                                width="50px"
-                                                                height="50px"
+                                                                src={experienced}
+                                                                alt="experienced"
+                                                                //width="25.2px"
+                                                                //height="28px"
+                                                                className=" h-7 w-[25.2]"
                                                             />
                                                         </button>
                                                     )}
@@ -183,52 +248,84 @@ const SignUp = () => {
                                                     render={({ field }) => (
                                                         <button
                                                             type="button"
-                                                            className={watch("workStatus") === undefined || watch("workStatus") === true ? "border-2 border-gray-300 flex justify-center items-center px-3 py-3 rounded-2xl hover:bg-gray-300" : "border-2 border-gray-300 flex justify-center items-center px-3 py-3 rounded-2xl bg-gray-300"}
+                                                            className={watch("workStatus") === undefined || watch("workStatus") === true ? "border-2 border-gray-300 flex flex-col justify-center items-start p-5 rounded-lg hover:bg-gray-300" : "border-2 border-gray-300 flex flex-col justify-center items-start p-5 rounded-lg bg-gray-300"}
                                                             onClick={() => field.onChange(false)}
                                                         >
                                                             <span>
-                                                                <span className="text-left m-0 block">I'm a fresher</span>
-                                                                <span className="break-words text-left m-0 block">I am a student/ Haven't worked after graduation</span>
+                                                                <span className="text-left m-0 block mb-4">Fresher</span>
                                                             </span>
                                                             <img
-                                                                src={schoolbag}
-                                                                alt="schoolbag"
-                                                                width="50px"
-                                                                height="50px"
+                                                                src={fresher}
+                                                                alt="fresher"
+                                                                //width="50px"
+                                                                //height="50px"
+                                                                className=" h-7 w-[25.2]"
                                                             />
                                                         </button>
                                                     )}
                                                     rules={{ required: true }}
                                                 />
                                             </div>
-                                            {errors.workStatus && <p className="font-normal text-xs text-red-500">{errors.workStatus?.message}</p>}
+                                            {errors?.workStatus && <p className="font-normal text-xs text-red-500">{errors?.workStatus?.message}</p>}
+                                        </div> 
+                                        }                                       
+                                    </div>
+                                    <div>
+                                        <button className="bg-indigo-600 text-white font-bold px-3 py-2 rounded-lg w-full" type="submit">Register now</button>
+                                        <div className="flex justify-center items-center text-sm">
+                                            <span className=" text-[#94A3B8] mr-1">
+                                                Already have an account?
+                                            </span>
+                                            <Link to='/login' className=" underline"> Login</Link>
                                         </div>
-                                        <button className="bg-indigo-600 text-white font-bold px-3 py-2 rounded-3xl" type="submit">Register now</button>
-                                    </form>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </>
+                        :
+                        <div className="flex flex-col">
+                            <div className=" flex justify-center items-center relative mb-20">
+                                <Link to="/" className="absolute left-0 top-1/2 -translate-y-1/2 font-bold text-base text-[#0F172A] flex items-center justify-start cursor-pointer">
+                                    <img src={backBtn} alt="backButton" className="mr-4" />
+                                    <span className=" leading-none">
+                                        Home
+                                    </span>
+                                </Link>
+                                <h1 className="font-bold text-2xl text-[#0F172A]">Sign up</h1>
+                            </div>
+                            <div className=" grid grid-cols-1 gap-5">
+                                <div>
+                                    <button className=" bg-white flex justify-center items-center drop-shadow-lg rounded-lg w-full h-14"
+                                        onClick={googleAuth}
+                                    >
+                                        <FcGoogle size={20} />
+                                        <span className="ml-1">Sign up with Google</span>
+                                    </button>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <hr className=" w-2/5" />
+                                    <span className=" py-3">OR</span>
+                                    <hr className=" w-2/5" />
                                 </div>
                                 <div>
-                                    <div className="grid grid-cols-4 h-1/3">
-                                        <div className="flex justify-center items-center flex-col">
-                                            <div className="h-20 border border-gray-300"></div>
-                                            <p className="font-light text-gray-400">Or</p>
-                                            <div className="h-20 border border-gray-300"></div>
-                                        </div>
-                                        <div className="col-start-2 col-end-5 flex justify-center items-start flex-col">
-                                            <p className="text-sm font-bold mb-1">Continue with</p>
-                                            <button className="flex justify-center items-center border-2 border-blue-300 rounded-3xl px-2 py-1"
-                                                onClick={googleAuth}
-                                            >
-                                                <FcGoogle size={20} />
-                                                <span className="ml-1">Google</span>
-                                            </button>
-                                        </div>
+                                    <button className=" bg-[#4F46E5] flex justify-center items-center drop-shadow-lg rounded-lg w-full h-14"
+                                        onClick={() => setIsWithEmail(true)}
+                                    >
+                                        <span className="ml-1 text-white">Continue with email</span>
+                                    </button>
+                                    <div className="flex justify-center items-center text-sm">
+                                        <span className=" text-[#94A3B8] mr-1">
+                                            Already have an account?
+                                        </span>
+                                        <Link to='/login' className=" underline"> Login</Link>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div >
-                </div >
-            </div >
+                    }
+                </div>
+            </div>
         </>
     )
 }

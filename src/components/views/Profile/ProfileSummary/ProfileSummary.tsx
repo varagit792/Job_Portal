@@ -42,7 +42,7 @@ const ProfileSummary = () => {
                         ?
                         <h1 className="text-blue-600 font-medium cursor-pointer"
                             onClick={openModal}>
-                            Add profile summary
+                            Add
                         </h1>
                         :
                         <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer">
