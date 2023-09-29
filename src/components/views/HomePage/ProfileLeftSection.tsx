@@ -7,26 +7,16 @@ import LocationIcon from '../../../assets/svg/LocationIcon.svg';
 import defaultPicture from '../../../../src/assets/jpeg/default_picture.jpg';
 import { useAppDispatch, useAppSelector } from '../../..';
 import { getUserData, clearGetUserDataSlice } from "../../../store/reducers/user/getUserDetails";
-import { AiOutlineHome, AiOutlineInfoCircle } from 'react-icons/ai'
-import Modal from '../../commonComponents/Modal';
+import {  AiOutlineInfoCircle } from 'react-icons/ai'
 import { BiChevronRight } from 'react-icons/bi';
-import { BsBriefcase } from 'react-icons/bs';
-import { HiOutlineBuildingOffice2 } from 'react-icons/hi2'
+import  PopoverHover  from '../../commonComponents/PopoverHover';
+import ProfilePerformanceText from './ProfilePerformanceText';
 
 const ProfileLeftSection = ({ profileDashboard }: any) => {
   const dispatch = useAppDispatch();
   const { success, userData } = useAppSelector((state) => state.getUser);
 
   const [profilePicPath, setProfilePicPath] = useState();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const openModal = () => {
-    setIsOpen(true);
-  };
-
-  const closeDialog = () => {
-    setIsOpen(false);
-  }
 
   const profileIndicatorDescription = 'Profile performance is an indicator how your profile is doing among recruiters. Search appearances are total no. of times your profile appeared in recruiter searches. Recruiter actions are updates when the recruiter takes any action on your application or profile.'
 
@@ -53,7 +43,7 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
   return (
     <>
       <div className="col-start-1 col-end-3">
-        <div className="bg-[#FFF] rounded-lg shadow-sm w-full sticky top-[13%] overflow-hidden">
+        <div className="bg-[#FFF] rounded-lg shadow-sm w-full sticky top-[13%] ">
           <div className="w-full h-40 relative">
             <div className="w-full h-2/3 bg-gradient-to-r from-[#EEF2FF] to-[#C7D2FE] rounded-t-lg">
             </div>
@@ -100,15 +90,15 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
               </>
             }
           </div>
-          <div className=" rounded-lg shadow-sm w-full overflow-hidden  py-2 px-4 border border-blue-200 bg-blue-100">
+          <div className=" rounded-lg shadow-sm w-full overflow-visible py-2 px-4 border border-blue-200 bg-blue-100 ">
             <div className="flex flex-row  items-center gap-2">
               <h1 className="font-bold text-sm mt-0 mb-1">Profile performance</h1>
-              <span><AiOutlineInfoCircle onMouseOver={openModal} /></span>
-              {isOpen && <Modal
-                isOpen={isOpen}
-                modalBody={profileIndicatorDescription}
-                setIsOpen={setIsOpen}
-              />}
+              <span className="h-full overflow-visible">
+                <PopoverHover
+                  title={<AiOutlineInfoCircle />}
+                  body={<ProfilePerformanceText />}
+                />
+             </span>
             </div>
             <div className="flex flex-row gap-4 justify-between ">
               <div className="flex flex-col items-start text-start">
@@ -128,21 +118,7 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
               </div>
             </div>
           </div>
-          <div className="flex flex-row gap-6 items-center mt-2 px-6">
-            <span><AiOutlineHome size="24" />
-            </span >
-            <span className="font-medium text-sm"> My home</span>
-          </div>
-          <div className="flex flex-row gap-6 items-center mt-2 px-6">
-            <span><BsBriefcase size="24" />
-            </span >
-            <span className="font-medium"> Jobs</span>
-          </div>
-          <div className="flex flex-row gap-6 items-center mt-2 px-6">
-            <span><HiOutlineBuildingOffice2 size="24" />
-            </span >
-            <span className="font-medium text-sm"> Companies</span>
-          </div>
+          
         </div>
 
       </div>
