@@ -21,6 +21,7 @@ interface IFormInputs {
     password: string;
     mobileNumber: string;
     workStatus: boolean;
+    role: string;
 }
 
 const SignUpSchema = yup
@@ -44,7 +45,8 @@ const SignUpSchema = yup
         mobileNumber: yup.string()
             .required('Mobile number is required')
             .matches(/^[0-9]{10}$/, 'Mobile number must be a valid 10-digit number'),
-        workStatus: yup.boolean().label("Work Status").required()
+        workStatus: yup.boolean().label("Work Status").required(),
+        role: yup.string().label("Experience Type").required(),
     })
     .required();
 
@@ -56,9 +58,11 @@ const SignUp = () => {
 
     const {
         register,
+        setValue,
         handleSubmit,
         control,
         watch,
+        getValues,
         formState: { errors }
     } = useForm<IFormInputs>({
         resolver: yupResolver(SignUpSchema)
@@ -71,14 +75,14 @@ const SignUp = () => {
         }
     }, [success, navigate, dispatch])
 
-    const onSubmit = (data: IFormInputs) => {
+    const onSubmit = (data: IFormInputs) => {        
         dispatch(registerUser({
             name: data?.name,
             password: data?.password,
             email: data?.email,
             mobileNumber: data?.mobileNumber,
-            userType: "jobSeeker",
-            workStatus: data?.workStatus,
+            workStatus: data?.workStatus && data?.workStatus,
+            userType: data?.role && data?.role
         }));
         if (errorMessage) {
             alert(`Error occured ${errorMessage}`);
@@ -95,17 +99,17 @@ const SignUp = () => {
                 <div className="h-full overflow-hidden col-start-1 col-end-8">
                     <img src={img} height="100%" width="100%" alt="signup logo" className="" />
                 </div>
-                <div className=" bg-[#F8FAFC] h-full py-10 px-20 grid grid-cols-1 gap-5 col-start-8 col-end-13">
+                <div className=" bg-[#F8FAFC] h-full py-10 px-20 grid grid-cols-1 gap-3 col-start-8 col-end-13">
                     {isWithEmail ? <>
                         <div className=" flex justify-center items-center relative">
-                        <button className="absolute left-0 top-1/2 -translate-y-1/2 font-bold text-base text-[#0F172A] flex items-center justify-start cursor-pointer" onClick={() => setIsWithEmail(false)}>
-                            <img src={backBtn} alt="backButton" className="mr-4" />
-                            <span className=" leading-none">
-                                Back
-                            </span>
-                        </button>
-                        <h1 className="font-bold text-2xl text-[#0F172A]">Sign up</h1>
-                    </div>
+                            <button className="absolute left-0 top-1/2 -translate-y-1/2 font-bold text-base text-[#0F172A] flex items-center justify-start cursor-pointer" onClick={() => setIsWithEmail(false)}>
+                                <img src={backBtn} alt="backButton" className="mr-4" />
+                                <span className=" leading-none">
+                                    Back
+                                </span>
+                            </button>
+                            <h1 className="font-bold text-2xl text-[#0F172A]">Sign up</h1>
+                        </div>
                         <div>
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className="grid grid-cols-1 gap-5">
@@ -166,7 +170,51 @@ const SignUp = () => {
                                                 {!errors?.mobileNumber && <span className="font-normal text-xs text-gray-500">Recruiters will call on this number</span>}
                                             </div>
                                         </div>
-                                        <div>
+                                        <div className="text-sm font-semibold flex flex-col gap-2 justify-center">
+                                        <div className=" w-2/3 flex justify-between items-center">
+                                                <label className="mr-3">
+                                                    Employer
+                                                    <Controller
+                                                        name="role"
+                                                        control={control}
+                                                        defaultValue=""
+                                                        render={({ field }) => (
+                                                            <input
+                                                                type="radio"
+                                                                className="ml-5"
+                                                                {...field}
+                                                                checked={getValues("role") === "employer"}
+                                                                onChange={() => {
+                                                                    setValue("role", "employer");
+                                                                }}
+                                                            />
+                                                        )}
+                                                    />
+                                                </label>
+                                                <label className="mr-3">
+                                                    Job Seeker
+                                                    <Controller
+                                                        name="role"
+                                                        control={control}
+                                                        defaultValue=""
+                                                        render={({ field }) => (
+                                                            <input
+                                                                type="radio"
+                                                                className="ml-5"
+                                                                {...field}
+                                                                checked={getValues("role") === "jobSeeker"}
+                                                                onChange={() => {
+                                                                    setValue("role", "jobSeeker");
+                                                                }}
+                                                            />
+                                                        )}
+                                                    />
+                                                </label>
+                                            </div>
+                                        </div>
+                                        {
+                                            watch("role") === "jobSeeker" &&
+                                            <div>
                                             <span className="block text-sm font-semibold mb-2">
                                                 Work status
                                             </span>
@@ -219,7 +267,8 @@ const SignUp = () => {
                                                 />
                                             </div>
                                             {errors?.workStatus && <p className="font-normal text-xs text-red-500">{errors?.workStatus?.message}</p>}
-                                        </div>
+                                        </div> 
+                                        }                                       
                                     </div>
                                     <div>
                                         <button className="bg-indigo-600 text-white font-bold px-3 py-2 rounded-lg w-full" type="submit">Register now</button>
@@ -237,40 +286,40 @@ const SignUp = () => {
                         :
                         <div className="flex flex-col">
                             <div className=" flex justify-center items-center relative mb-20">
-                        <Link to="/" className="absolute left-0 top-1/2 -translate-y-1/2 font-bold text-base text-[#0F172A] flex items-center justify-start cursor-pointer">
-                            <img src={backBtn} alt="backButton" className="mr-4" />
-                            <span className=" leading-none">
-                                Home
-                            </span>
-                        </Link>
-                        <h1 className="font-bold text-2xl text-[#0F172A]">Sign up</h1>
-                    </div>
+                                <Link to="/" className="absolute left-0 top-1/2 -translate-y-1/2 font-bold text-base text-[#0F172A] flex items-center justify-start cursor-pointer">
+                                    <img src={backBtn} alt="backButton" className="mr-4" />
+                                    <span className=" leading-none">
+                                        Home
+                                    </span>
+                                </Link>
+                                <h1 className="font-bold text-2xl text-[#0F172A]">Sign up</h1>
+                            </div>
                             <div className=" grid grid-cols-1 gap-5">
                                 <div>
-                                <button className=" bg-white flex justify-center items-center drop-shadow-lg rounded-lg w-full h-14"
-                                    onClick={googleAuth}
-                                >
-                                    <FcGoogle size={20} />
-                                    <span className="ml-1">Sign up with Google</span>
-                                </button>
+                                    <button className=" bg-white flex justify-center items-center drop-shadow-lg rounded-lg w-full h-14"
+                                        onClick={googleAuth}
+                                    >
+                                        <FcGoogle size={20} />
+                                        <span className="ml-1">Sign up with Google</span>
+                                    </button>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                <hr className=" w-2/5"/>
-                                <span className=" py-3">OR</span>
-                                <hr className=" w-2/5"/>
+                                    <hr className=" w-2/5" />
+                                    <span className=" py-3">OR</span>
+                                    <hr className=" w-2/5" />
                                 </div>
                                 <div>
-                                <button className=" bg-[#4F46E5] flex justify-center items-center drop-shadow-lg rounded-lg w-full h-14"
-                                    onClick={() => setIsWithEmail(true)}
-                                >                                    
-                                    <span className="ml-1 text-white">Continue with email</span>
+                                    <button className=" bg-[#4F46E5] flex justify-center items-center drop-shadow-lg rounded-lg w-full h-14"
+                                        onClick={() => setIsWithEmail(true)}
+                                    >
+                                        <span className="ml-1 text-white">Continue with email</span>
                                     </button>
                                     <div className="flex justify-center items-center text-sm">
-                                            <span className=" text-[#94A3B8] mr-1">
-                                                Already have an account?
-                                            </span>
-                                            <Link to='/login' className=" underline"> Login</Link>
-                                        </div>
+                                        <span className=" text-[#94A3B8] mr-1">
+                                            Already have an account?
+                                        </span>
+                                        <Link to='/login' className=" underline"> Login</Link>
+                                    </div>
                                 </div>
                             </div>
                         </div>
