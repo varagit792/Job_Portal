@@ -36,7 +36,9 @@ const AllJobs = () => {
 
     useEffect(() => {
         if (success) {
-            setJobCard((prev: any) => [...prev, ...allJobs]);
+            if (allJobs.length !== 0) {
+                setJobCard((prev: any) => [...prev, ...allJobs]);
+            }
             setLoading(false);
             dispatch(clearGetAllJobsSlice());
         }
