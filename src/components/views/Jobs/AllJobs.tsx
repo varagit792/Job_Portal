@@ -83,7 +83,7 @@ const AllJobs = () => {
                                 {({ open }) => (
                                     <>
                                         <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-bold">Experience</label>
+                                            <label className="text-[#475569] font-semibold">Experience</label>
                                             <ChevronUpIcon
                                                 className={`${open ? 'rotate-180 transform' : ''
                                                     } h-5 w-5 text-gray-600`}
@@ -115,7 +115,7 @@ const AllJobs = () => {
                                 {({ open }) => (
                                     <>
                                         <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-bold">Department</label>
+                                            <label className="text-[#475569] font-semibold">Department</label>
                                             <ChevronUpIcon
                                                 className={`${open ? 'rotate-180 transform' : ''
                                                     } h-5 w-5 text-gray-600`}
@@ -154,7 +154,7 @@ const AllJobs = () => {
                                 {({ open }) => (
                                     <>
                                         <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-bold">Location</label>
+                                            <label className="text-[#475569] font-semibold">Location</label>
                                             <ChevronUpIcon
                                                 className={`${open ? 'rotate-180 transform' : ''
                                                     } h-5 w-5 text-gray-600`}
@@ -203,7 +203,7 @@ const AllJobs = () => {
                                 {({ open }) => (
                                     <>
                                         <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-bold">Work Mode</label>
+                                            <label className="text-[#475569] font-semibold">Work Mode</label>
                                             <ChevronUpIcon
                                                 className={`${open ? 'rotate-180 transform' : ''
                                                     } h-5 w-5 text-gray-600`}
@@ -237,7 +237,7 @@ const AllJobs = () => {
                                 {({ open }) => (
                                     <>
                                         <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-bold">Salary</label>
+                                            <label className="text-[#475569] font-semibold">Salary</label>
                                             <ChevronUpIcon
                                                 className={`${open ? 'rotate-180 transform' : ''
                                                     } h-5 w-5 text-gray-600`}
@@ -269,7 +269,7 @@ const AllJobs = () => {
                                 {({ open }) => (
                                     <>
                                         <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-bold">Company Type</label>
+                                            <label className="text-[#475569] font-semibold">Company Type</label>
                                             <ChevronUpIcon
                                                 className={`${open ? 'rotate-180 transform' : ''
                                                     } h-5 w-5 text-gray-600`}
@@ -307,7 +307,7 @@ const AllJobs = () => {
                                 {({ open }) => (
                                     <>
                                         <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-bold">Role Category</label>
+                                            <label className="text-[#475569] font-semibold">Role Category</label>
                                             <ChevronUpIcon
                                                 className={`${open ? 'rotate-180 transform' : ''
                                                     } h-5 w-5 text-gray-600`}
@@ -345,7 +345,7 @@ const AllJobs = () => {
                                 {({ open }) => (
                                     <>
                                         <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-bold">Education</label>
+                                            <label className="text-[#475569] font-semibold">Education</label>
                                             <ChevronUpIcon
                                                 className={`${open ? 'rotate-180 transform' : ''
                                                     } h-5 w-5 text-gray-600`}
@@ -383,7 +383,7 @@ const AllJobs = () => {
                                 {({ open }) => (
                                     <>
                                         <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-bold">Posted By</label>
+                                            <label className="text-[#475569] font-semibold">Posted By</label>
                                             <ChevronUpIcon
                                                 className={`${open ? 'rotate-180 transform' : ''
                                                     } h-5 w-5 text-gray-600`}
@@ -421,7 +421,7 @@ const AllJobs = () => {
                                 {({ open }) => (
                                     <>
                                         <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-bold">Industry</label>
+                                            <label className="text-[#475569] font-semibold">Industry</label>
                                             <ChevronUpIcon
                                                 className={`${open ? 'rotate-180 transform' : ''
                                                     } h-5 w-5 text-gray-600`}
@@ -459,7 +459,7 @@ const AllJobs = () => {
                                 {({ open }) => (
                                     <>
                                         <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-bold">Top Companies</label>
+                                            <label className="text-[#475569] font-semibold">Top Companies</label>
                                             <ChevronUpIcon
                                                 className={`${open ? 'rotate-180 transform' : ''
                                                     } h-5 w-5 text-gray-600`}
@@ -497,7 +497,7 @@ const AllJobs = () => {
                                 {({ open }) => (
                                     <>
                                         <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-bold">Posting Date</label>
+                                            <label className="text-[#475569] font-semibold">Posting Date</label>
                                             <ChevronUpIcon
                                                 className={`${open ? 'rotate-180 transform' : ''
                                                     } h-5 w-5 text-gray-600`}
