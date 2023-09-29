@@ -289,7 +289,7 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
           {errors?.preferredShift && <div className="font-normal text-xs text-red-500 ">{errors?.preferredShift?.message}</div>}
         </div>
         <div className="mb-4">
-          <div className="block text-sm font-medium leading-6 text-gray-900 ">Preferred work location</div>
+          <div className="block text-sm font-medium leading-6 text-gray-900 ">Preferred work location (Max 10)</div>
           <div className="mt-1">
 
             {/* <AutocompleteBox
