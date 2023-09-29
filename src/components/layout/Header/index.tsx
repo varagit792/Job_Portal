@@ -75,11 +75,11 @@ const Header = () => {
                         id="search"
                         placeholder="Search something.." />
                 </div>
-                <div>
+                {/* <div>
                     <Menu as="div" className="relative inline-block text-left">
                         <div>
                             <Menu.Button className="inline-flex w-full justify-center items-center text-[#312E81] m-0 p-0.5">
-                                Employer
+                                Employee
                                 <ChevronDownIcon
                                     className="ml-1 mr-1 h-5 w-5"
                                     aria-hidden="true"
@@ -103,7 +103,7 @@ const Header = () => {
                                                 className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
                                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                             >
-                                                Edit
+                                                Employer
                                             </button>
                                         )}
                                     </Menu.Item>
@@ -113,7 +113,7 @@ const Header = () => {
                                                 className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
                                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                             >
-                                                Duplicate
+                                                Admin
                                             </button>
                                         )}
                                     </Menu.Item>
@@ -121,7 +121,7 @@ const Header = () => {
                             </Menu.Items>
                         </Transition>
                     </Menu>
-                </div>
+                </div> */}
                 <div className="border border-gray-200 h-8"></div>
                 {auth && <div className='float-left'>
                     <img className='float-right' src='./ellipse32.svg' alt="image" />
@@ -168,7 +168,8 @@ const Header = () => {
 
 
                         </> : <>
-                            <Link to="/login" className=" py-2 px-3 mx-3">Log In</Link>
+                            <Link to="/login" className="rounded-lg py-2 px-3">Employer LogIn</Link>
+                            <Link to="/login" className="rounded-lg py-2 px-3 mx-3">Employee Login</Link>
                             <Link to="/registration" className="rounded-lg bg-[#EEF2FF] py-2 px-3">Sign Up</Link>
                         </>
                     }

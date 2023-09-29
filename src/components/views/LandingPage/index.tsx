@@ -21,6 +21,7 @@ import LocationIcon from '../../../assets/svg/LocationIcon.svg';
 import { FiChevronLeft } from 'react-icons/fi';
 import { BiChevronRight } from 'react-icons/bi';
 import StarIcon from '../../../assets/svg/starIcon.svg';
+import { Link } from "react-router-dom";
 
 
 const responsive = {
@@ -73,7 +74,7 @@ const LandingPage = () => {
                     </div>
                     <div className="flex space-x-6 items-center z-10">
                         <button className="bg-[#4F46E5] rounded-md py-2 text-white w-44 flex items-center justify-center"><span className="mr-3">Explore</span><img src={SearchIcon} alt="SearchIcon" /></button>
-                        <button className="bg-[#EEF2FF] rounded-md py-2 w-44 flex items-center justify-center"><span className="mr-3">Create profile</span><img src={CreateProfile} alt="CreateProfile" /></button>
+                        <button className="bg-[#EEF2FF] rounded-md py-2 w-44 flex items-center justify-center"><span className="mr-3"><Link to="/registration" className="rounded-lg bg-[#EEF2FF] py-2 px-3">Create profile</Link></span><img src={CreateProfile} alt="CreateProfile" /></button>
                     </div>
                 </div>
                 <div className="relative">
