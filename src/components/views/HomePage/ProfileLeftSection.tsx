@@ -90,7 +90,8 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
               </>
             }
           </div>
-          <div className=" rounded-lg shadow-sm w-full overflow-visible py-2 px-4 border border-blue-200 bg-blue-100 ">
+          <div className="p-2">
+          <div className=" rounded-lg shadow-sm w-full overflow-visible py-2 px-4 border border-blue-200 bg-[#EEF2FF] bg-gradient-to-r from-[#EEF2FF] to-[#929397] rounded-t-lg">
             <div className="flex flex-row  items-center gap-2">
               <h1 className="font-bold text-sm mt-0 mb-1">Profile performance</h1>
               <span className="h-full overflow-visible">
@@ -104,7 +105,7 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
               <div className="flex flex-col items-start text-start">
                 <span className="w-16 text-start">Search appearances</span>
                 <div className="flex flex-row items-center justify-center">
-                  <button className="text-blue-900 font-semibold mt-1">345</button>
+                  <button className="text-blue-600 font-semibold mt-1">345</button>
                   <button><BiChevronRight /></button>
                 </div>
               </div>
@@ -112,11 +113,12 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
               <div className="flex flex-col">
                 <span className="w-16">Recruiter actions</span>
                 <div className="flex flex-row items-center justify-center">
-                  <button className="text-blue-900 font-semibold mt-1">25</button>
+                  <button className="text-blue-600 font-semibold mt-1">25</button>
                   <button className="items-center"><BiChevronRight /></button>
                 </div>
               </div>
             </div>
+          </div>
           </div>
           
         </div>
