@@ -42,10 +42,12 @@ const JobCard = ({ onClickJobCard, jobCard, loading }: any) => {
                     </div>
                     <hr className="my-5 bg-[#E0E7FF]" />
                     <div className="flex justify-start items-center mb-5">
-                        <div className=" flex justify-start items-center text-[#64748B] text-sm">
-                            <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" />
-                            <span className="ml-2 leading-none">{item?.totalExpYearEnd?.title}</span>
-                        </div>
+                        {(item?.totalExpYearStart?.title && item?.totalExpYearEnd?.title) &&
+                            < div className=" flex justify-start items-center text-[#64748B] text-sm">
+                                <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" />
+                                <span className="ml-2 leading-none">{item?.totalExpYearStart?.title}-{item?.totalExpYearEnd?.title}</span>
+                            </div>
+                        }
                         {item?.payScaleUpperRange && <div className=" flex justify-start items-center ml-5 text-[#64748B] text-sm">
                             <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2 leading-none">{item?.payScaleUpperRange}</span>
                         </div>}
