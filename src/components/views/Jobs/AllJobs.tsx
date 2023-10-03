@@ -67,8 +67,8 @@ const AllJobs = () => {
         setSalary(event.target.value);
     };
 
-    const onClickJobCard = () => {
-        navigate("/allJobs/jobDescription");
+	const onClickJobCard = (jobId: any) => {
+		window.open(`/allJobs/jobDescription/${jobId}`, '_blank');
     }
 
     return (
