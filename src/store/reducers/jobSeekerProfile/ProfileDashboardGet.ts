@@ -9,6 +9,7 @@ interface ProfileDashboard {
     resumeLastUpdated: any;
     profileLastUpdated: any;
     noticePeriod: any;
+    keySkills: { id: number, profileKeySkills: { title: string, id: number } };
     jobSeekerType: string;
     resumeFile: string;
     resumePath: string;

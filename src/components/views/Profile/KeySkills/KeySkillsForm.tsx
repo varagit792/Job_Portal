@@ -1,27 +1,25 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
 import { useAppDispatch } from '../../../../';
 import { useAppSelector } from '../../../../';
-import { keySkillsUpdate } from '../../../../store/reducers/jobSeekerProfile/keySkills';
+import { clearKeySkillsSlice, keySkillsUpdate } from '../../../../store/reducers/jobSeekerProfile/keySkills';
+import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 import { GrFormClose } from 'react-icons/gr';
 import Select from 'react-select'
-import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
 
 interface IFormInputs {
   jobSeekerId: string
-  keySkills: {
-    value: string;
-    label: string
-  };
+  keySkills: number[];
 
 }
 
 const KeySkillsForm = ({ keySkill, profileDashboard, setDatabaseSkillSet, keySkillFetch, setKeySkillFetch, isAddDelete, setIsAddDeleted, closeDialog }: any) => {
   const dispatch = useAppDispatch();
   const [query, setQuery] = useState("");
+  const [arrayId, setArrayId] = useState([] as any);
   const { success } = useAppSelector((state) => state.keySkills);
+  const { success: keySkillsUpdateSuccess } = useAppSelector((state) => state.keySkills);
+  const { success: keySkillsSuccess, keySkills } = useAppSelector((state) => state.getKeySkills);
   const {
     register,
     control,
@@ -32,19 +30,13 @@ const KeySkillsForm = ({ keySkill, profileDashboard, setDatabaseSkillSet, keySki
 
   // OnSubmit button
   const onSubmit = async (data: IFormInputs) => {
-    if (!isInArray(data?.keySkills?.label, keySkillFetch)) {
-
-      dispatch(keySkillsUpdate({
-        jobSeekerId: profileDashboard?.id,
-        keySkills: keySkillFetch.toString(),
-      })).then(() => {
-        setDatabaseSkillSet(keySkillFetch);
-        setIsAddDeleted({ state: "2", message: "Key skill added successfully", color: "green" });
-        closeDialog(false);
-      });
-    } else {
-      setIsAddDeleted({ state: "1", message: "Already added!!", color: "red" });
-    }
+    dispatch(keySkillsUpdate({
+      keySkills: arrayId,
+      jobSeekerId: profileDashboard?.id
+    })).then(() => {
+      setDatabaseSkillSet(keySkillFetch);
+      closeDialog(false);
+    });
   };
 
   // Check the item in array
@@ -53,41 +45,42 @@ const KeySkillsForm = ({ keySkill, profileDashboard, setDatabaseSkillSet, keySki
   }
 
   // Delete and Add the item
-  const handleAddDelete = (action: string, item: string) => {
+  const handleAddDelete = (action: string, itemId: string, itemLabel: string) => {
     if (action === 'Delete') {
       var filteredData = keySkillFetch?.filter(function (filterItem: any) {
-        return filterItem !== item
+        return filterItem?.profileKeySkills?.id !== itemId
       })
 
       setKeySkillFetch(filteredData);
     }
     if (action === 'Add') {
-      if (!isInArray(item, keySkillFetch)) {
-
-        filteredData = [...keySkillFetch, item];
+      if (!isInArray(itemId, arrayId)) {
+        filteredData = [...keySkillFetch, { id: '', profileKeySkills: { id: itemId, title: itemLabel, status: true } }];
         setKeySkillFetch(filteredData);
-      } else {
-        setIsAddDeleted({ state: "1", message: "Already added!!", color: "red" });
       }
     }
   }
 
   const handleChange = (data: any) => {
+    console.log("data==", data);
 
-    if (!isInArray(data?.label, keySkillFetch)) {
-      if (data?.label !== '')
-        setKeySkillFetch([...keySkillFetch, data?.label]);
-    } else {
-      setIsAddDeleted({ state: "1", message: "Already added!!", color: "red" });
-    }
+    setKeySkillFetch([...keySkillFetch, { id: '', profileKeySkills: { id: data?.value, title: data?.label, status: true } }]);
   }
+  var arrayPost = new Array();
+  useEffect(() => {
+    keySkillFetch && keySkillFetch?.map((item: any, key: number) => {
+      item?.profileKeySkills?.id && arrayPost.push(item?.profileKeySkills?.id);
+    });
+    setArrayId(arrayPost);
+  }, [keySkillFetch])
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsAddDeleted({ state: '', message: '', color: '' })
-    }, 5000);
-
-  }, [])
+    if (keySkillsUpdateSuccess) {
+      dispatch(clearKeySkillsSlice());
+      dispatch(clearGetProfileIndicator());
+      dispatch(profileIndicatorGet());
+    }
+  }, [dispatch, keySkillsSuccess, keySkillsUpdateSuccess]);
 
   return (
     <div className="h-full">
@@ -102,7 +95,7 @@ const KeySkillsForm = ({ keySkill, profileDashboard, setDatabaseSkillSet, keySki
         {isAddDelete.state && <p className={`font-normal text-xs text-${isAddDelete.color}-500`}> {isAddDelete.message}</p>}
         <div className="flex flex-wrap">
           {keySkillFetch && keySkillFetch?.map((item: any, key: number) =>
-            <div key={key} className="text-xs border border-gray-300 rounded-3xl py-1 px-2 text-center m-1.5 ">{item}<GrFormClose className='h-4 w-4 float-right ml-2 cursor-pointer' onClick={() => handleAddDelete('Delete', item)} /></div>
+            <div key={key} className="text-xs border border-gray-300 rounded-3xl py-1 px-2 text-center m-1.5 ">{item?.profileKeySkills?.title}<GrFormClose className='h-4 w-4 float-right ml-2 cursor-pointer' onClick={() => handleAddDelete('Delete', item?.profileKeySkills?.id, item?.profileKeySkills?.label)} /></div>
           )}
         </div>
         <div className="col-start-1 col-end-4">
@@ -123,7 +116,7 @@ const KeySkillsForm = ({ keySkill, profileDashboard, setDatabaseSkillSet, keySki
                   .replace(/\s+/g, "")
                   .includes(query.toLowerCase().replace(/\s+/g, ""))
                 ).slice(0, 5)?.map((item: any, key: number) =>
-                  <div key={key} className="text-xs border border-gray-300 rounded-3xl py-1 px-2 text-center m-1.5 cursor-pointer" onClick={() => handleAddDelete('Add', item.title)} >{item.title}</div>
+                  <div key={key} className="text-xs border border-gray-300 rounded-3xl py-1 px-2 text-center m-1.5 cursor-pointer" onClick={() => handleAddDelete('Add', item?.id, item?.title)} >{item.title}</div>
                 )}
               </div>
             </div>

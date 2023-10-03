@@ -8,7 +8,6 @@ import Modal from '../../commonComponents/Modal';
 import ResumeHeadlineForm from './ResumeHeadline/ResumeHeadlineForm';
 import ProfilePictureUploadForm from './ProfilePictureUpload/ProfilePictureUploadForm';
 import CareerProfileForm from './CareerProfile/CareerProfileForm';
-import { clearGetRoleCategorySlice } from '../../../store/reducers/dropdown/roleCategory';
 import { careerProfileDetailsGet } from '../../../store/reducers/jobSeekerProfile/getCareerProfile';
 import EducationForm from './Education/EducationForm';
 import { educationDetailsGet } from '../../../store/reducers/jobSeekerProfile/getEducationDetails';
@@ -39,10 +38,10 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
   const [isEducationOpen, setIsEducationOpen] = useState(false);
   const [isEmploymentOpen, setIsEmploymentOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [keySkillFetch, setKeySkillFetch] = useState([]);
+  const [keySkillFetch, setKeySkillFetch] = useState([{ id: null, profileKeySkills: { id: '', title: '' } }]);
   const [selectedEducation, setSelectedEducation] = useState();
+  const [databaseSkillSet, setDatabaseSkillSet] = useState([{ id: null, profileKeySkills: { id: '', title: '' } }]);
   const [selectedEmployment, setSelectedEmployment] = useState();
-  const [databaseSkillSet, setDatabaseSkillSet] = useState([]);
   const [isAddDelete, setIsAddDeleted] = useState({ state: '', message: '', color: '' });
 
   const testSummary = "Your Profile Summary should mention the highlights of your career and education, what your professional interests are, and what kind of a career you are looking for. Write a meaningful summary of more than 50 characters.";
@@ -69,47 +68,47 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
       setIsCareerProfileOpen(false);
       dispatch(clearUpdateCareerProfileUpdateSlice());
       dispatch(clearGetProfileIndicator());
-    dispatch(profileIndicatorGet());
+      dispatch(profileIndicatorGet());
 
     }
     if (educationUpdateSuccess) {
       setIsEducationOpen(false);
       dispatch(clearJobSeekerEducationAddSlice());
-      
+
     }
 
     if (profileSummerySuccess) {
       setIsProfileSummeryOpen(false);
       dispatch(clearGetProfileIndicator());
-    dispatch(profileIndicatorGet());
+      dispatch(profileIndicatorGet());
     }
 
     if (personalDetails) {
       setIsPersonalDetailsOpen(false);
       dispatch(clearPersonalDetailsSlice());
       dispatch(clearGetProfileIndicator());
-    dispatch(profileIndicatorGet());
+      dispatch(profileIndicatorGet());
 
     }
     if (languagesDeletedSuccess) {
       setIsPersonalDetailsOpen(false);
       dispatch(clearDeletePersonalDetailsLanguages());
       dispatch(clearGetProfileIndicator());
-    dispatch(profileIndicatorGet());
+      dispatch(profileIndicatorGet());
     }
 
     if (resumeHeadlineSuccess) {
       setIsResumeHeadLineOpen(false);
       dispatch(clearUpdateResumeHeadlineSlice());
       dispatch(clearGetProfileIndicator());
-    dispatch(profileIndicatorGet());
+      dispatch(profileIndicatorGet());
 
     }
     if (keySkillsUpdateSuccess) {
       setIsKeySkillsOpen(false);
       dispatch(clearGetKeySkillsSlice())
       dispatch(clearGetProfileIndicator());
-    dispatch(profileIndicatorGet());
+      dispatch(profileIndicatorGet());
     }
 
     if (employmentSuccess) {
@@ -132,8 +131,8 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
 
   useEffect(() => {
     if (profileDashboard?.keySkills) {
-      setKeySkillFetch(profileDashboard?.keySkills && profileDashboard?.keySkills?.split(","));
-      setDatabaseSkillSet(profileDashboard?.keySkills && profileDashboard?.keySkills?.split(","));
+      setKeySkillFetch(profileDashboard?.keySkills);
+      setDatabaseSkillSet(profileDashboard?.keySkills);
     }
 
   }, [profileDashboard])
@@ -159,12 +158,12 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
   const openPersonalDetailsModal = () => setIsPersonalDetailsOpen(true);
   const closePersonalDetailsDialog = () => setIsPersonalDetailsOpen(false);
 
-  const openEducationModal = (openType:any) => {
+  const openEducationModal = (openType: any) => {
     setSelectedEducation({} as any)
     openType === "Add" && setIsEducationOpen(true)
   };
 
-  const openEmploymentModal = (openType:any) => {
+  const openEmploymentModal = (openType: any) => {
     setSelectedEmployment({} as any)
     openType === "Add" && setIsEmploymentOpen(true)
   };
@@ -239,7 +238,6 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
       }
     }
   }
-  console.log("careerProfileDetails", careerProfileDetails);
 
   return (
     <>
@@ -310,7 +308,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               <span className="font-semibold">Education</span></a>
             <a href="#education" className="text-sm justify-between">
               {!profileIndicator[0]?.education?.status ?
-                <u className="text-[#475569]" onClick={()=>openEducationModal("Add")}>Add</u>
+                <u className="text-[#475569]" onClick={() => openEducationModal("Add")}>Add</u>
                 :
                 <u className="text-[#475569]" onClick={() => openEducationModal("Edit")}>Edit</u>
               }
@@ -351,7 +349,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
                 <u className="text-[#475569]" onClick={openProfileSummeryModal}>Edit</u>
               }
             </a>
-          </li>          
+          </li>
           <li className="flex items-center mb-8">
             <Tick tickNumber="7" tickStatus={profileIndicator[0]?.personalDetails?.status} />
             <a href="#personalDetails" className="text-sm w-full flex justify-between">
@@ -370,7 +368,7 @@ const ProfileLeftPanel = ({ profileDashboard }: any) => {
               <span className="font-semibold">Employment</span></a>
             <a href="#employment" className="text-sm justify-between">
               {!profileIndicator[0]?.employment?.status ?
-                <u className="text-[#475569]" onClick={()=>openEmploymentModal("Add")}>Add</u>
+                <u className="text-[#475569]" onClick={() => openEmploymentModal("Add")}>Add</u>
                 :
                 <u className="text-[#475569]" onClick={() => openEmploymentModal("Edit")}>Edit</u>
               }
