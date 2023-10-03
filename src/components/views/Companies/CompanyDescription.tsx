@@ -9,16 +9,19 @@ import ShortJobCard from '../../commonComponents/ShortJobCard';
 import premium from '../../../assets/jpeg/premium.jpg'
 import { useAppDispatch, useAppSelector } from '../../..';
 import { getJobDetail } from '../../../store/reducers/jobs/GetJobDetails';
-import { formatDistance, formatDistanceToNow, parseISO } from 'date-fns';
+import { formatDistanceToNow, parseISO } from 'date-fns';
+import { useParams } from 'react-router-dom';
 
 const CompanyDescription = () => {
   const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<Date | null>(null);
+
+  const { id } = useParams();
 
   const dispatch = useAppDispatch();
   const { success, jobDetail } = useAppSelector((state) => state.getJobDetail)
 
   useEffect(() => {
-    dispatch(getJobDetail(1));
+    dispatch(getJobDetail(id));
   }, [dispatch]);
 
   useEffect(() => {

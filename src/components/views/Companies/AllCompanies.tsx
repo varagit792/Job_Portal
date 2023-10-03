@@ -68,8 +68,8 @@ const AllCompanies = () => {
         setSalary(event.target.value);
     };
 
-    const onClickCompanyCard = () => {
-        navigate("/allCompanies/companyDescription");
+    const onClickCompanyCard = (companyId: any) => {
+		window.open(`/allCompanies/companyDescription/${companyId}`, '_blank');
     }
 
     return (
