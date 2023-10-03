@@ -20,7 +20,7 @@ const AllRoutes = () => {
                 <Route path="/login" element={<SignIn />} />
             </Route>
             <Route path="/allJobs" element={<AllJobs />} />
-            <Route path="/allJobs/jobDescription" element={<JobDescription />} />
+            <Route path="/allJobs/jobDescription/:id"  element={<JobDescription />}  />
             {/* <Route path="/logout" element={<SignOut />} /> */}
             <Route path="/" element={<ProtectedRoute />}>
                 <Route path="/homePage" element={<HomePage />} />

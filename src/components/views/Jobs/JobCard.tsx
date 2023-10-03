@@ -22,7 +22,7 @@ const JobCard = ({ onClickJobCard, jobCard, loading }: any) => {
     return (
         <>
             {jobCard?.map((item: any, index: number) => (
-                <div className="py-5 px-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mb-5 cursor-pointer" onClick={onClickJobCard} key={item.id}>
+                <div className="py-5 px-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mb-5 cursor-pointer" onClick={()=>onClickJobCard(item.id)} key={item.id}>
                     <div className="flex items-start justify-between">
                         <div className="flex justify-start items-start h-full">
                             <img src={compenyBrand} alt="compenyBrand" />
