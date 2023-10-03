@@ -120,7 +120,7 @@ const initialState:GetJobState = {
 }
 
 export const getJobDetail = createAsyncThunk(
-    "getJobDetail", async (data: number) => {
+    "getJobDetail", async (data: any) => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_PATH}/jobs/get/${data}`);
             if (response.status >= 200 && response.status < 300) {

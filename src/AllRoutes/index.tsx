@@ -23,8 +23,8 @@ const AllRoutes = () => {
             </Route>
             <Route path="/allJobs" element={<AllJobs />} />
             <Route path="/allCompanies" element={<AllCompanies />} />
-            <Route path="/allJobs/jobDescription" element={<JobDescription />} />
-            <Route path="/allCompanies/companyDescription" element={<CompanyDescription />} />
+            <Route path="/allJobs/jobDescription/:id" element={<JobDescription />} />
+            <Route path="/allCompanies/companyDescription/:id" element={<CompanyDescription />} />
             {/* <Route path="/logout" element={<SignOut />} /> */}
             <Route path="/" element={<ProtectedRoute />}>
                 <Route path="/homePage" element={<HomePage />} />
