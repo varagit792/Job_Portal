@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import companyImage from '../../../assets/jpeg/company.jpeg';
 import { BsBriefcase } from 'react-icons/bs';
 import { LiaRupeeSignSolid } from 'react-icons/lia';
@@ -7,10 +7,36 @@ import { AiFillFacebook, AiFillLinkedin, AiFillTwitterCircle, AiFillStar } from 
 import ambitionBox from '../../../assets/svg/ambitionBox.svg';
 import ShortJobCard from '../../commonComponents/ShortJobCard';
 import premium from '../../../assets/jpeg/premium.jpg'
-
-
+import { useAppDispatch, useAppSelector } from '../../..';
+import { getJobDetail } from '../../../store/reducers/jobs/GetJobDetails';
+import { formatDistance, formatDistanceToNow, parseISO } from 'date-fns';
 
 const JobDescription = () => {
+  const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<Date | null>(null);
+
+  const dispatch = useAppDispatch();
+  const { success, jobDetail } = useAppSelector((state) => state.getJobDetail)
+
+  useEffect(() => {
+    dispatch(getJobDetail(1));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (success) {
+    }
+  }, [success, dispatch]);
+
+  const totalStars = 5;
+  // const ratedStars = Math.floor(jobDetail.re)
+
+  const parsedDate = parseISO(jobDetail?.createdAt)
+  useEffect(() => {
+    if (!isNaN(parsedDate.getDate())) {
+      setLastUpdatedTimestamp(parsedDate);
+    }
+  }, [jobDetail])
+
+  console.log('job detail ', jobDetail, lastUpdatedTimestamp);
 
   return (
     <Fragment>
@@ -21,15 +47,14 @@ const JobDescription = () => {
             <div className="flex flex-row justify-between">
               <div className="flex flex-col">
                 <div className="mb-1">
-                  <h1 className="font-semibold">React JS Developer</h1>
+                  <h1 className="font-semibold">{jobDetail.title}</h1>
                 </div >
                 <div className="flex flex-row gap-2 mb-3">
-                  <div>Allied Digital</div>
+                  <div>{jobDetail?.company?.title}</div>
                   <div className="flex items-center">
                     <span> <AiFillStar color='yellow' /></span>
                     <span className="ml-1">3.4</span>
                   </div>
-
                   <div className="flex flex-row">
                     <button> 304 Reviews</button>
                   </div>
@@ -40,16 +65,24 @@ const JobDescription = () => {
                       <BsBriefcase />
                     </span>
                     <span className="ml-1">
-                      1 - 3 years
+                      {/* 1 - 3 years */}
+                      {jobDetail?.totalExpYearStart?.title[0]} -
                     </span>
+                    <span className="ml-1">{jobDetail?.totalExpYearEnd?.title[0]}</span>
                   </div>
                   <div className="border border-l-0 border-gray-400 ml-4">
                   </div>
                   <div className="ml-2 items-center flex">
                     <span> <LiaRupeeSignSolid /></span>
                     <span className="ml-1 ">
-                      2.25-3 Lacs P.A.
+                      {jobDetail?.payScaleLowerRange}
+                      {/* 2.25-3 Lacs P.A. */}
                     </span>
+
+                    {jobDetail?.payScaleUpperRange &&
+                      <span className="ml-1"> - {jobDetail?.payScaleUpperRange}
+                      </span>}
+                    <span className="ml-1">{jobDetail?.numberSystem?.title}</span>
                   </div>
                 </div>
                 <div className="flex flex-col mt-1">
@@ -73,20 +106,23 @@ const JobDescription = () => {
             <hr className=" mt-4" />
             <div className="flex flex-row mt-3">
               <div className="flex flex-row">
-                <div>
+                <span>
                   Posted:
-                </div>
-                <div className="ml-1">
-                  4 days ago
-                </div>
+                </span>
+                <span className="ml-1">
+                  {/* 4 days ago */}
+                  {lastUpdatedTimestamp !==null && formatDistanceToNow(lastUpdatedTimestamp,{addSuffix:true})}
+
+                </span>
                 <div className="border border-right border-gray-100 ml-1">
                 </div>
                 <div className="ml-1">
                   Openings:
                 </div>
-                <div className="ml-1">
-                  2
-                </div>
+                <span className="ml-1">
+                  {/* 2 */}
+                  {jobDetail?.jobsOpening}
+                </span>
                 <div className="border border-right border-gray-100 ml-1">
                 </div>
                 <div className="ml-1">
@@ -119,58 +155,63 @@ const JobDescription = () => {
               <li>Proven ability to quickly understand functional requirements and technical concepts.</li>
             </ul>
             <div className="flex flex-row mt-3">
-              <div className="font-semibold mr-1">
+              <span className="font-semibold mr-1">
                 Role:
-              </div>
-              <div>
-                Software Development - Other
-              </div>
+              </span>
+              <span>
+                {/* Software Development - Other */}
+                {jobDetail?.jobsRole?.title}
+              </span>
             </div>
             <div className="flex flex-row mt-3">
-              <div className="font-semibold mr-1">
+              <span className="font-semibold mr-1">
                 Industry Type:
-              </div>
-              <div>
-                Management Consulting
-              </div>
+              </span>
+              <span>
+                {/* Management Consulting */}
+                {jobDetail?.industryType?.title}
+              </span>
             </div>
             <div className="flex flex-row mt-3">
-              <div className="font-semibold mr-1">
+              <span className="font-semibold mr-1">
                 Department:
-              </div>
-              <div>
-                Engineering - Software & QA
-              </div>
-
+              </span>
+              <span>
+                {/* Engineering - Software & QA */}
+                {jobDetail?.department?.title}
+              </span>
             </div>
             <div className="flex flex-row mt-3">
-              <div className="font-semibold mr-1">
+              <span className="font-semibold mr-1">
                 Employment Type:
-              </div>
-              <div>
-                Full Time, Permanent
-              </div>
+              </span>
+              <span>
+                {/* Full Time, Permanent */}
+                {jobDetail?.employeeType?.title}
+              </span>
 
             </div>
             <div className="flex flex-row mt-3">
-              <div className="font-semibold mr-1">
+              <span className="font-semibold mr-1">
                 Role Category:
-              </div>
-              <div>
-                Software Development
-              </div>
+              </span>
+              <span>
+                {/* Software Development */}
+                {jobDetail?.roleCategory?.title}
+              </span>
 
             </div>
             <h1 className="mt-1 font-semibold">
               Education
             </h1>
             <div className="flex flex-row mt-3">
-              <div className="font-semibold mr-1">
+              <span className="font-semibold mr-1">
                 UG:
-              </div>
-              <div>
-                Any Graduate
-              </div>
+              </span>
+              <span>
+                {/* Any Graduate */}
+                      {jobDetail?.education?.title}
+              </span>
             </div>
             <div className="flex flex-row mt-3">
               <div className="font-semibold mr-1">
@@ -187,7 +228,12 @@ const JobDescription = () => {
               <button className="border border-gray-500 rounded-xl py-1 px-3">
                 React js
               </button>
-              <button className="border border-gray-500 rounded-xl py-1 px-3 ">
+              {jobDetail?.jobsKeySkills?.map((job) =>
+                <button className="border border-gray-500 rounded-xl py-1 px-3 ">
+                 {job.keySkills.title}
+                </button>
+              )}
+              {/* <button className="border border-gray-500 rounded-xl py-1 px-3 ">
                 HTML
               </button>
               <button className="border border-gray-500 rounded-xl py-1 px-3 ">
@@ -204,7 +250,7 @@ const JobDescription = () => {
               </button>
               <button className="border border-gray-500 rounded-xl py-1 px-3 ">
                 github
-              </button>
+              </button> */}
             </div>
             <hr className="mt-5 mb-5" />
             <div className="flex flex-row gap-x-3">
