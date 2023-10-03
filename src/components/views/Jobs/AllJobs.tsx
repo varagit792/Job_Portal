@@ -18,28 +18,30 @@ import { BiSearch } from 'react-icons/bi';
 const AllJobs = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { success, allJobs } = useAppSelector((state) => state.getAllJobs);
+    const { success, allJobs, loading } = useAppSelector((state) => state.getAllJobs);
     const [jobCard, setJobCard] = useState<any>([]);
     const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(true);
+    const [toggleDispach, setToggleDispach] = useState(true);
     const [range, setRange] = useState(0);
     const [salary, setSalary] = useState(0);
-
     useEffect(() => {
         window.addEventListener("scroll", handelInfiniteScroll);
         return () => window.removeEventListener("scroll", handelInfiniteScroll);
     }, []);
 
     useEffect(() => {
-        dispatch(getAllJobs(page));
+        if (toggleDispach) {
+            dispatch(getAllJobs(page));
+        }
     }, [dispatch, page]);
 
     useEffect(() => {
         if (success) {
             if (allJobs.length !== 0) {
                 setJobCard((prev: any) => [...prev, ...allJobs]);
+            } else {
+                setToggleDispach(false);
             }
-            setLoading(false);
             dispatch(clearGetAllJobsSlice());
         }
     }, [success])
@@ -50,7 +52,6 @@ const AllJobs = () => {
                 window.innerHeight + document.documentElement.scrollTop + 1 >=
                 document.documentElement.scrollHeight
             ) {
-                setLoading(true);
                 setPage((prev) => prev + 1);
             }
         } catch (error) {
