@@ -119,7 +119,7 @@ const initialState: AllJobsState = {
 }
 
 export const getFilterJobs = createAsyncThunk(
-    "jobs/filters", async (data: any) => {
+    "filterJobs", async (data: any) => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_PATH}/jobs/filters`, { params: data });
             if (response.status >= 200 && response.status < 300) {
@@ -131,7 +131,7 @@ export const getFilterJobs = createAsyncThunk(
     });
 
 const getFilterJobsSlice = createSlice({
-    name: 'jobs/filters',
+    name: "filterJobs",
     initialState,
     extraReducers: (builder) => {
         builder.addCase(getFilterJobs.pending, (state) => {
