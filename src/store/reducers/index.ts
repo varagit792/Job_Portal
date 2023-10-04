@@ -36,6 +36,8 @@ import jobSeekerEmployment from './jobSeekerProfile/jobSeekerEmploymentAdd';
 import getProfileIndicatorSlice from './jobSeekerProfile/profileIndicator';
 import getAllJobsSlice from './jobs/GetAllJobs';
 import getFilterJobsSlice from './jobs/GetFilterJobs';
+import getJobDetailReducer from './jobs/GetJobDetails';
+import getAllCompanies from './companies/getAllCompanies';
 
 
 export const reducer = combineReducers({
@@ -74,5 +76,7 @@ export const reducer = combineReducers({
     deletePersonalDetailsLanguages: deletePersonalDetailsLanguagesSlice,
     getProfileIndicator: getProfileIndicatorSlice,
     getAllJobs: getAllJobsSlice,
-    getFilterJobs: getFilterJobsSlice
+    getFilterJobs: getFilterJobsSlice,
+    getJobDetail: getJobDetailReducer,
+    getAllCompanies: getAllCompanies,
 });
