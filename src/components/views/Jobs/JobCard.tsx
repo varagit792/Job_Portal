@@ -12,13 +12,9 @@ import BelleIcon from '../../../assets/svg/BelleIcon.svg';
 import DominousIcon from '../../../assets/svg/DominousIcon.svg';
 import GoproIcon from '../../../assets/svg/GoproIcon.svg';
 import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 
 const JobCard = ({ onClickJobCard, jobCard, loading }: any) => {
-    const formatter = new Intl.DateTimeFormat("en-GB", {
-        year: "numeric",
-        month: "long",
-        day: "2-digit"
-    });
     return (
         <>
             {jobCard?.map((item: any, index: number) => (
@@ -45,7 +41,7 @@ const JobCard = ({ onClickJobCard, jobCard, loading }: any) => {
                         {(item?.totalExpYearStart?.title && item?.totalExpYearEnd?.title) &&
                             < div className=" flex justify-start items-center text-[#64748B] text-sm">
                                 <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" />
-                                <span className="ml-2 leading-none">{item?.totalExpYearStart?.title}-{item?.totalExpYearEnd?.title}</span>
+                                <span className="ml-2 leading-none">{item?.totalExpYearStart?.title} - {item?.totalExpYearEnd?.title}</span>
                             </div>
                         }
                         {item?.payScaleUpperRange && <div className=" flex justify-start items-center ml-5 text-[#64748B] text-sm">
@@ -67,7 +63,7 @@ const JobCard = ({ onClickJobCard, jobCard, loading }: any) => {
                     <div className="flex items-center justify-start">
                         <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-1.5 rounded-lg mr-5 text-sm">Remote</button>
                         <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-1.5 rounded-lg mr-5 text-sm">Full-time</button>
-                        <span className="text-[#94A3B8] text-sm">Posted {formatter.format(new Date(item?.createdAt))} hrs ago</span>
+                        <span className="text-[#94A3B8] text-sm">Posted {formatDistanceToNow(new Date(item?.createdAt), { addSuffix: true })}</span>
                     </div>
                 </div >
             ))}
