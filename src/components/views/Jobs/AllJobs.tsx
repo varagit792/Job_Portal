@@ -21,24 +21,24 @@ const AllJobs = () => {
     const [jobCard, setJobCard] = useState<any>([]);
     const [page, setPage] = useState(1);
     const [toggleDispach, setToggleDispach] = useState(true);
-    const [totalExpYear, setTotalExpYear] = useState(0);
+    const [totalExpYear, setTotalExpYear] = useState<number>(0);
     const [filtersData, setFiltersData] = useState<any>({
-        expYear: []
+        expYear: null
     })
-
+    console.log(filtersData);
     useEffect(() => {
         window.addEventListener("scroll", handelInfiniteScroll);
         return () => window.removeEventListener("scroll", handelInfiniteScroll);
     }, []);
 
     useEffect(() => {
-        if (toggleDispach && filtersData?.expYear?.length !== 0) {
+        if (toggleDispach && filtersData?.expYear !== null) {
             dispatch(getFilterJobs({ page, data: filtersData }));
         }
     }, [filtersData])
 
     useEffect(() => {
-        if (toggleDispach && filtersData?.expYear?.length !== 0) {
+        if (toggleDispach && filtersData?.expYear !== null) {
             dispatch(getFilterJobs({ page, data: filtersData }));
         } else {
             dispatch(getFilterJobs({ page }));
@@ -47,7 +47,7 @@ const AllJobs = () => {
 
     useEffect(() => {
         if (success) {
-            if (filtersData?.expYear?.length !== 0) {
+            if (filtersData?.expYear !== null) {
                 setJobCard((prev: any) => [...prev, ...allJobs]);
             } else {
                 if (allJobs.length !== 0) {
@@ -77,18 +77,18 @@ const AllJobs = () => {
         (async () => {
             const experienceYearsList = await getTotalYearsExpList();
             if (Object.keys(experienceYearsList)?.length) {
-                const experienceYearsData = experienceYearsList?.filter((item: any) => {
+                const experienceYearsData = await experienceYearsList?.filter((item: any) => {
                     let data = item?.title?.split('');
                     let splitVal = data?.slice(0, data.length - 5);
                     let joinedVal = parseInt(splitVal?.join(''));
-                    if (joinedVal <= totalExpYear) {
+                    if (joinedVal === totalExpYear) {
                         return item
                     }
                 })
                 setFiltersData((preValue: any) => {
                     return {
                         ...preValue,
-                        expYear: experienceYearsData?.map((item: any) => item?.id)
+                        expYear: experienceYearsData?.[0]?.id
                     }
                 });
                 setJobCard([]);
@@ -130,7 +130,7 @@ const AllJobs = () => {
                                                     value={totalExpYear}
                                                     onMouseUp={handleTotalExpYearChange}
                                                     onChange={(event: React.FormEvent<HTMLInputElement> | any) => {
-                                                        setTotalExpYear(event.target.value);
+                                                        setTotalExpYear(parseInt(event.target.value));
                                                     }}
                                                 />
                                             </div>
