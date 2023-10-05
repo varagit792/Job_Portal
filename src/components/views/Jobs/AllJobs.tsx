@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Disclosure } from '@headlessui/react';
-import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../';
-import { getAllJobs, clearGetAllJobsSlice } from '../../../store/reducers/jobs/GetAllJobs';
+import { getFilterJobs, clearGetFilterJobsSlice } from '../../../store/reducers/jobs/GetFilterJobs';
+import { getTotalYearsExpList, getDepartmentList } from '../../utils/utils';
 import JobCard from './JobCard';
 import compenyBrand from '../../../assets/png/companyBrand.png';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
@@ -17,34 +17,56 @@ import { BiSearch } from 'react-icons/bi';
 
 const AllJobs = () => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-    const { success, allJobs, loading } = useAppSelector((state) => state.getAllJobs);
+    const { success, allJobs, loading } = useAppSelector((state) => state.getFilterJobs);
     const [jobCard, setJobCard] = useState<any>([]);
     const [page, setPage] = useState(1);
     const [toggleDispach, setToggleDispach] = useState(true);
-    const [range, setRange] = useState(0);
-    const [salary, setSalary] = useState(0);
+    const [totalExpYear, setTotalExpYear] = useState<number>(0);
+    const [department, setDepartment] = useState([]);
+    const [filtersData, setFiltersData] = useState<any>({
+        expYear: null,
+        department: []
+    })
+    console.log(filtersData);
     useEffect(() => {
+        (async () => {
+            const departmentList = await getDepartmentList();
+            if (Object.keys(departmentList)?.length) {
+                setDepartment(departmentList);
+            }
+        })();
         window.addEventListener("scroll", handelInfiniteScroll);
         return () => window.removeEventListener("scroll", handelInfiniteScroll);
     }, []);
 
     useEffect(() => {
-        if (toggleDispach) {
-            dispatch(getAllJobs(page));
+        if (toggleDispach && filtersData?.expYear !== null) {
+            dispatch(getFilterJobs({ page, data: filtersData }));
+        }
+    }, [filtersData])
+
+    useEffect(() => {
+        if (toggleDispach && filtersData?.expYear !== null) {
+            dispatch(getFilterJobs({ page, data: filtersData }));
+        } else {
+            dispatch(getFilterJobs({ page }));
         }
     }, [dispatch, page]);
 
     useEffect(() => {
         if (success) {
-            if (allJobs.length !== 0) {
+            if (filtersData?.expYear !== null) {
                 setJobCard((prev: any) => [...prev, ...allJobs]);
             } else {
-                setToggleDispach(false);
+                if (allJobs.length !== 0) {
+                    setJobCard((prev: any) => [...prev, ...allJobs]);
+                } else {
+                    setToggleDispach(false);
+                }
             }
-            dispatch(clearGetAllJobsSlice());
+            dispatch(clearGetFilterJobsSlice());
         }
-    }, [success])
+    }, [success]);
 
     const handelInfiniteScroll = async () => {
         try {
@@ -59,16 +81,32 @@ const AllJobs = () => {
         }
     };
 
-    const handleRangeChange = (event: React.FormEvent<HTMLInputElement> | any) => {
-        setRange(event.target.value);
+    const handleTotalExpYearChange = () => {
+        (async () => {
+            const experienceYearsList = await getTotalYearsExpList();
+            if (Object.keys(experienceYearsList)?.length) {
+                const experienceYearsData = await experienceYearsList?.filter((item: any) => {
+                    let data = item?.title?.split('');
+                    let splitVal = data?.slice(0, data.length - 5);
+                    let joinedVal = parseInt(splitVal?.join(''));
+                    if (joinedVal === totalExpYear) {
+                        return item
+                    }
+                })
+                setFiltersData((preValue: any) => {
+                    return {
+                        ...preValue,
+                        expYear: experienceYearsData?.[0]?.id
+                    }
+                });
+                setJobCard([]);
+                setPage(1);
+            }
+        })();
     };
 
-    const handleSalaryChange = (event: React.FormEvent<HTMLInputElement> | any) => {
-        setSalary(event.target.value);
-    };
-
-    const onClickJobCard = () => {
-        navigate("/allJobs/jobDescription");
+    const onClickJobCard = (jobId: any) => {
+        window.open(`/allJobs/jobDescription/${jobId}`, '_blank');
     }
 
     return (
@@ -92,18 +130,21 @@ const AllJobs = () => {
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-12">
                                             <div className="relative mb-3">
-                                                <span id="inputRangeSelector" className="bg-[#C7D2FE] w-10 text-xs h-10 rounded-full text-[#312E81] absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-[#C7D2FE] after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center" style={{ left: `${range * 5}%` }}>{range}</span>
+                                                <span id="inputRangeSelector" className="bg-[#C7D2FE] w-10 text-xs h-10 rounded-full text-[#312E81] absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-[#C7D2FE] after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center" style={{ left: `${totalExpYear * 2}%` }}>{totalExpYear}</span>
                                                 <input className="w-full h-1 rounded-lg cursor-pointer overflow-hidden appearance-none bg-[#C7D2FE]"
                                                     type="range"
                                                     min="0"
-                                                    max="20"
-                                                    value={range}
-                                                    onChange={handleRangeChange}
+                                                    max="50"
+                                                    value={totalExpYear}
+                                                    onMouseUp={handleTotalExpYearChange}
+                                                    onChange={(event: React.FormEvent<HTMLInputElement> | any) => {
+                                                        setTotalExpYear(parseInt(event.target.value));
+                                                    }}
                                                 />
                                             </div>
                                             <div className="flex justify-between items-center text-[#64748B] text-xs">
                                                 <span>0 Yrs</span>
-                                                <span>20+ Yrs</span>
+                                                <span>30+ Yrs</span>
                                             </div>
                                         </Disclosure.Panel>
                                     </>
@@ -123,27 +164,18 @@ const AllJobs = () => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Engineering</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">IT and Information</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={true} />
-                                                <label className="ml-2">Consulting</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Marketing</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Sales</label>
-                                            </div>
-                                            <button className="text-[#4F46E5]">View all...</button>
+                                            {department?.slice(0, 5)?.map((item: any) => (
+                                                <div className="text-[#475569] mb-3">
+                                                    <input type="checkbox"
+                                                        defaultChecked={false}
+                                                        onClick={() => filtersData?.department?.push(item?.id)}
+                                                    />
+                                                    <label className="ml-2">{item?.title}</label>
+                                                </div>
+                                            ))}
+                                            <button className="text-[#4F46E5]">
+                                                View all...
+                                            </button>
                                         </Disclosure.Panel>
                                     </>
                                 )}
@@ -246,13 +278,11 @@ const AllJobs = () => {
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-12">
                                             <div className="relative mb-3">
-                                                <span id="inputRangeSelector" className="bg-[#C7D2FE] w-10 text-xs h-10 rounded-full text-[#312E81] absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-[#C7D2FE] after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center" style={{ left: `${salary * 2}%` }}>{salary}</span>
+                                                <span id="inputRangeSelector" className="bg-[#C7D2FE] w-10 text-xs h-10 rounded-full text-[#312E81] absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-[#C7D2FE] after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center"></span>
                                                 <input className="w-full h-1 rounded-lg cursor-pointer overflow-hidden appearance-none bg-[#C7D2FE]"
                                                     type="range"
                                                     min="0"
                                                     max="50"
-                                                    value={salary}
-                                                    onChange={handleSalaryChange}
                                                 />
                                             </div>
                                             <div className="flex justify-between items-center text-[#64748B] text-xs">

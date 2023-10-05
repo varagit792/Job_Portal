@@ -26,11 +26,6 @@ interface Recurrence {
     title: string,
     status: boolean
 }
-interface Industry {
-    id: number,
-    title: string,
-    status: boolean
-}
 interface JobsLocation {
     id: number,
     title: string,
@@ -56,17 +51,7 @@ interface EmployeeType {
     title: string,
     status: boolean
 }
-interface Locality {
-    id: number,
-    title: string,
-    status: boolean
-}
 interface JobType {
-    id: number,
-    title: string,
-    status: boolean
-}
-interface Currency {
     id: number,
     title: string,
     status: boolean
@@ -81,12 +66,6 @@ interface Education {
     title: string,
     status: boolean
 }
-interface SalaryRange {
-    id: number,
-    title: string,
-    status: boolean
-}
-
 interface KeySkills {
     id: number,
     title: string,
@@ -97,18 +76,13 @@ interface JobsKeySkills {
     preferred: boolean,
     keySkills: KeySkills
 }
-interface WorkMode {
-    id: number,
-    title: string,
-    status: boolean
-}
 interface GetJob {
     id: number,
     title: string,
-    payScaleLowerRange: { id: string, title: string },
+    payScaleLowerRange: number,
     jobsOpening: number,
     userType: string,
-    payScaleUpperRange: { id: string, title: string },
+    payScaleUpperRange: number,
     jobDescription: string,
     createdAt: string,
     updatedAt: string,
@@ -118,37 +92,16 @@ interface GetJob {
     totalExpYearEnd: TotalExpYearEnd,
     numberSystem: NumberSystem,
     recurrence: Recurrence,
-    jobsLocation: Array<JobsLocation>,
+    jobsLocation: JobsLocation,
     jobsRole: JobsRole,
     industryType: industryType,
     department: Department,
     employeeType: EmployeeType,
-    jobsType: JobType,
+    jobType: JobType,
     roleCategory: RoleCategory,
     education: Education,
-    workMode: WorkMode,
     user: null,
-    jobsKeySkills: Array<JobsKeySkills>,
-    candidateRelocate: boolean,
-    jobLocality: Array<Locality>,
-    currency: Currency,
-    fromSalaryRange: SalaryRange,
-    toSalaryRange: SalaryRange,
-    companyIndustry: Industry,
-    jobEducation: Array<Education>,
-    premiumBTech: boolean,
-    premiumMBAAll: boolean,
-    jobCandidateIndustry: Array<Industry>,
-    diversityHiring: boolean,
-    videoProfile: boolean,
-    includeWalkInDetails: boolean,
-    notifyMeAbout: boolean,
-    notificationEmailAddress1: string,
-    notificationEmailAddress2: string,
-    companyWebsite: string,
-    aboutCompany: string,
-    companyAddress: string,
-    hideSalaryDetails: boolean
+    jobsKeySkills: Array<JobsKeySkills>
 }
 interface GetJobState {
     loading: boolean;
@@ -158,7 +111,7 @@ interface GetJobState {
     errorMessage: string | undefined;
 }
 let job = {} as GetJob;
-const initialState: GetJobState = {
+const initialState:GetJobState = {
     loading: false,
     error: false,
     success: false,
@@ -167,7 +120,7 @@ const initialState: GetJobState = {
 }
 
 export const getJobDetail = createAsyncThunk(
-    "getJobDetail", async (data: any) => {
+    "getJobDetail", async (data: number) => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_PATH}/jobs/get/${data}`);
             if (response.status >= 200 && response.status < 300) {

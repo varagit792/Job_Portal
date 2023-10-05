@@ -12,10 +12,11 @@ import { getJobDetail } from '../../../store/reducers/jobs/GetJobDetails';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { useParams } from 'react-router-dom';
 
-const JobDescription = () => {
+const CompanyDescription = () => {
   const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<Date | null>(null);
+
   const { id } = useParams();
-  
+
   const dispatch = useAppDispatch();
   const { success, jobDetail } = useAppSelector((state) => state.getJobDetail)
 
@@ -38,6 +39,8 @@ const JobDescription = () => {
     }
   }, [jobDetail])
 
+  console.log('job detail ', jobDetail, lastUpdatedTimestamp);
+
   return (
     <Fragment>
       <div className="h-[10%] w-full"></div>
@@ -48,7 +51,7 @@ const JobDescription = () => {
               <div className="flex flex-col">
                 <div className="mb-1">
                   <h1 className="font-semibold">{jobDetail?.title}</h1>
-                </div>
+                </div >
                 <div className="flex flex-row gap-2 mb-3">
                   <div>{jobDetail?.company?.title}</div>
                   <div className="flex items-center">
@@ -75,12 +78,12 @@ const JobDescription = () => {
                   <div className="ml-2 items-center flex">
                     <span> <LiaRupeeSignSolid /></span>
                     <span className="ml-1 ">
-                      {jobDetail?.payScaleLowerRange?.title}
+                      {jobDetail?.payScaleLowerRange}
                       {/* 2.25-3 Lacs P.A. */}
                     </span>
 
                     {jobDetail?.payScaleUpperRange &&
-                      <span className="ml-1"> - {jobDetail?.payScaleUpperRange?.title}
+                      <span className="ml-1"> - {jobDetail?.payScaleUpperRange}
                       </span>}
                     <span className="ml-1">{jobDetail?.numberSystem?.title}</span>
                   </div>
@@ -90,8 +93,7 @@ const JobDescription = () => {
                     <IoLocationOutline />
                   </span>
                   <span className="ml-1  w-96">
-                    {/* Kolkata, Mumbai, New Delhi, Hyderabad/Secunderabad, Pune, Chennai, Bangalore/Bengaluru */}
-                    {jobDetail?.jobsLocation[0].title}
+                    Kolkata, Mumbai, New Delhi, Hyderabad/Secunderabad, Pune, Chennai, Bangalore/Bengaluru
                   </span>
                 </div>
               </div>
@@ -112,7 +114,7 @@ const JobDescription = () => {
                 </span>
                 <span className="ml-1">
                   {/* 4 days ago */}
-                  {lastUpdatedTimestamp !== null && formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true })}
+                  {lastUpdatedTimestamp !==null && formatDistanceToNow(lastUpdatedTimestamp,{addSuffix:true})}
 
                 </span>
                 <div className="border border-right border-gray-100 ml-1">
@@ -147,15 +149,14 @@ const JobDescription = () => {
             <h1 className="mt-1 font-semibold">
               Job description
             </h1>
-            {/* <ul className="list-disc mt-3 px-8" >
+            <ul className="list-disc mt-3 px-8" >
               <li>Previous experience working as a React.js Developer. In-depth knowledge of JavaScript, CSS, HTML, JavaScript, TypeScript</li>
               <li>Knowledge of REACT tools including React.js, Webpack, Enzyme, Redux, and Flux. Experience with user interface design.</li>
               <li>Knowledge of performance testing frameworks including Mocha and Jest.</li>
               <li>Experience with browser-based debugging and performance testing software.</li>
               <li>DB experience in creating queries, structure, manage tables. Troubleshooting & Demonstrable testing skills</li>
               <li>Proven ability to quickly understand functional requirements and technical concepts.</li>
-            </ul> */}
-            {jobDetail?.jobDescription}
+            </ul>
             <div className="flex flex-row mt-3">
               <span className="font-semibold mr-1">
                 Role:
@@ -212,7 +213,7 @@ const JobDescription = () => {
               </span>
               <span>
                 {/* Any Graduate */}
-                {jobDetail?.education?.title}
+                      {jobDetail?.education?.title}
               </span>
             </div>
             <div className="flex flex-row mt-3">
@@ -232,7 +233,7 @@ const JobDescription = () => {
               </button>
               {jobDetail?.jobsKeySkills?.map((job) =>
                 <button className="border border-gray-500 rounded-xl py-1 px-3 ">
-                 {job.keySkills?.title}
+                 {job?.keySkills?.title}
                 </button>
               )}
               {/* <button className="border border-gray-500 rounded-xl py-1 px-3 ">
@@ -379,5 +380,5 @@ const JobDescription = () => {
   )
 }
 
-export default JobDescription;
+export default CompanyDescription;
 

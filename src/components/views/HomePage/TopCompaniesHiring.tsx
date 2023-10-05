@@ -4,6 +4,7 @@ import ArrowRight from '../../../assets/svg/ArrowRight.svg';
 import { FiChevronLeft } from 'react-icons/fi';
 import { BiChevronRight } from 'react-icons/bi';
 import CompanyListItem from '../../commonComponents/CompanyListItem';
+import { Link } from 'react-router-dom';
 
 const responsive = {
   superLargeDesktop: {
@@ -45,7 +46,7 @@ const TopCompaniesHiring = () => {
     <div>
       <div className="flex justify-between items-center mb-10 font-bold">
         <h1 className="text-xl">Top companies hiring</h1>
-        <button className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">View all</span><img src={ArrowRight} alt="ArrowRight" /></button>
+        <Link to="/allCompanies" className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">View all</span><img src={ArrowRight} alt="ArrowRight" /></Link>
       </div>
       <Carousel
         swipeable={false}
