@@ -118,10 +118,10 @@ const initialState: AllJobsState = {
     errorMessage: undefined,
 }
 
-export const getAllJobs = createAsyncThunk(
-    "getAllJobs", async (data: number) => {
+export const getFilterJobs = createAsyncThunk(
+    "filterJobs", async (data: any) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_PATH}/jobs/all/${data}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_PATH}/jobs/filters`, { params: data });
             if (response.status >= 200 && response.status < 300) {
                 return response.data.data;
             }
@@ -130,22 +130,22 @@ export const getAllJobs = createAsyncThunk(
         }
     });
 
-const getAllJobsSlice = createSlice({
-    name: 'getAllJobs',
+const getFilterJobsSlice = createSlice({
+    name: "filterJobs",
     initialState,
     extraReducers: (builder) => {
-        builder.addCase(getAllJobs.pending, (state) => {
+        builder.addCase(getFilterJobs.pending, (state) => {
             state.loading = true;
             state.success = false;
             state.error = false;
         });
-        builder.addCase(getAllJobs.fulfilled, (state, action: PayloadAction<Array<AllJobs>>) => {
+        builder.addCase(getFilterJobs.fulfilled, (state, action: PayloadAction<Array<AllJobs>>) => {
             state.loading = false;
             state.success = true;
             state.error = false;
             state.allJobs = action.payload;
         });
-        builder.addCase(getAllJobs.rejected, (state, action) => {
+        builder.addCase(getFilterJobs.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
             state.error = true;
@@ -153,7 +153,7 @@ const getAllJobsSlice = createSlice({
         });
     },
     reducers: {
-        clearGetAllJobsSlice: (state) => {
+        clearGetFilterJobsSlice: (state) => {
             state.loading = false;
             state.error = false;
             state.success = false;
@@ -161,5 +161,5 @@ const getAllJobsSlice = createSlice({
         },
     }
 });
-export default getAllJobsSlice.reducer;
-export const { clearGetAllJobsSlice } = getAllJobsSlice.actions;
+export default getFilterJobsSlice.reducer;
+export const { clearGetFilterJobsSlice } = getFilterJobsSlice.actions;
