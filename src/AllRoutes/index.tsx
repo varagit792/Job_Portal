@@ -10,6 +10,7 @@ import SignIn from '../components/views/SignIn/SignIn';
 import SignOut from '../components/views/SignIn/SignOut';
 import AllJobs from '../components/views/Jobs/AllJobs';
 import JobDescription from '../components/views/Jobs/JobDescription';
+import PostAJob from '../components/views/Recruiter/PostAJob/PostAJob';
 
 const AllRoutes = () => {
     return (
@@ -25,7 +26,9 @@ const AllRoutes = () => {
             <Route path="/" element={<ProtectedRoute />}>
                 <Route path="/homePage" element={<HomePage />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/postAJob?/:postId" element={<PostAJob />} />
             </Route>
+
         </Routes>
     )
 }

@@ -75,12 +75,12 @@ const JobDescription = () => {
                   <div className="ml-2 items-center flex">
                     <span> <LiaRupeeSignSolid /></span>
                     <span className="ml-1 ">
-                      {jobDetail?.payScaleLowerRange}
+                      {jobDetail?.payScaleLowerRange?.title}
                       {/* 2.25-3 Lacs P.A. */}
                     </span>
 
                     {jobDetail?.payScaleUpperRange &&
-                      <span className="ml-1"> - {jobDetail?.payScaleUpperRange}
+                      <span className="ml-1"> - {jobDetail?.payScaleUpperRange?.title}
                       </span>}
                     <span className="ml-1">{jobDetail?.numberSystem?.title}</span>
                   </div>
@@ -111,7 +111,7 @@ const JobDescription = () => {
                 </span>
                 <span className="ml-1">
                   {/* 4 days ago */}
-                  {lastUpdatedTimestamp !==null && formatDistanceToNow(lastUpdatedTimestamp,{addSuffix:true})}
+                  {lastUpdatedTimestamp !== null && formatDistanceToNow(lastUpdatedTimestamp, { addSuffix: true })}
 
                 </span>
                 <div className="border border-right border-gray-100 ml-1">
@@ -210,7 +210,7 @@ const JobDescription = () => {
               </span>
               <span>
                 {/* Any Graduate */}
-                      {jobDetail?.education?.title}
+                {jobDetail?.education?.title}
               </span>
             </div>
             <div className="flex flex-row mt-3">
@@ -230,7 +230,7 @@ const JobDescription = () => {
               </button>
               {jobDetail?.jobsKeySkills?.map((job) =>
                 <button className="border border-gray-500 rounded-xl py-1 px-3 ">
-                 {job.keySkills.title}
+                  {job.keySkills.title}
                 </button>
               )}
               {/* <button className="border border-gray-500 rounded-xl py-1 px-3 ">
