@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { useAppDispatch, useAppSelector } from '../../../';
 import { getFilterJobs, clearGetFilterJobsSlice } from '../../../store/reducers/jobs/GetFilterJobs';
-import { getTotalYearsExpList } from '../../utils/utils';
+import { getTotalYearsExpList, getDepartmentList } from '../../utils/utils';
 import JobCard from './JobCard';
 import compenyBrand from '../../../assets/png/companyBrand.png';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
@@ -22,11 +22,19 @@ const AllJobs = () => {
     const [page, setPage] = useState(1);
     const [toggleDispach, setToggleDispach] = useState(true);
     const [totalExpYear, setTotalExpYear] = useState<number>(0);
+    const [department, setDepartment] = useState([]);
     const [filtersData, setFiltersData] = useState<any>({
-        expYear: null
+        expYear: null,
+        department: []
     })
     console.log(filtersData);
     useEffect(() => {
+        (async () => {
+            const departmentList = await getDepartmentList();
+            if (Object.keys(departmentList)?.length) {
+                setDepartment(departmentList);
+            }
+        })();
         window.addEventListener("scroll", handelInfiniteScroll);
         return () => window.removeEventListener("scroll", handelInfiniteScroll);
     }, []);
@@ -156,27 +164,18 @@ const AllJobs = () => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Engineering</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">IT and Information</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={true} />
-                                                <label className="ml-2">Consulting</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Marketing</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Sales</label>
-                                            </div>
-                                            <button className="text-[#4F46E5]">View all...</button>
+                                            {department?.slice(0, 5)?.map((item: any) => (
+                                                <div className="text-[#475569] mb-3">
+                                                    <input type="checkbox"
+                                                        defaultChecked={false}
+                                                        onClick={() => filtersData?.department?.push(item?.id)}
+                                                    />
+                                                    <label className="ml-2">{item?.title}</label>
+                                                </div>
+                                            ))}
+                                            <button className="text-[#4F46E5]">
+                                                View all...
+                                            </button>
                                         </Disclosure.Panel>
                                     </>
                                 )}
