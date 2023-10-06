@@ -1,4 +1,4 @@
-import Loader from './Loader';
+import Loader from '../../commonComponents/Loader';
 import ThreeDots from '../../../assets/svg/threeDots.svg';
 import BookMark from '../../../assets/svg/bookMark.svg';
 import MoneyIcon from '../../../assets/svg/MoneyIcon.svg';
@@ -12,6 +12,7 @@ import BelleIcon from '../../../assets/svg/BelleIcon.svg';
 import DominousIcon from '../../../assets/svg/DominousIcon.svg';
 import GoproIcon from '../../../assets/svg/GoproIcon.svg';
 import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
+import StarIcon from '../../../assets/svg/starIcon.svg';
 
 const CompanyCard = ({ onClickCompanyCard, companyCard, loading }: any) => {
     const formatter = new Intl.DateTimeFormat("en-GB", {
@@ -22,13 +23,13 @@ const CompanyCard = ({ onClickCompanyCard, companyCard, loading }: any) => {
     return (
         <>
             {companyCard?.map((item: any, index: number) => (
-                <div className="py-5 px-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mb-5 cursor-pointer" onClick={()=>onClickCompanyCard(item.id)} key={item.id}>
+                <div className="py-5 px-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mb-5 cursor-pointer" onClick={() => onClickCompanyCard(item.id)} key={item.id}>
                     <div className="flex items-start justify-between">
                         <div className="flex justify-start items-start h-full">
                             <img src={companyLogo} alt="companyLogo" />
                             <div className="ml-5">
                                 <h1 className="text-lg font-bold">{item?.title}</h1>
-                                <span className="text-[#94A3B8] text-sm">{item?.company?.title}</span>
+                                <span className="text-[#94A3B8] text-sm">{item?.companyDescription}</span>
                             </div>
                         </div>
                         <div>
@@ -65,8 +66,13 @@ const CompanyCard = ({ onClickCompanyCard, companyCard, loading }: any) => {
                         </div>
                     }
                     <div className="flex items-center justify-start">
-                        <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-1.5 rounded-lg mr-5 text-sm">Remote</button>
-                        <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-1.5 rounded-lg mr-5 text-sm">Full-time</button>
+                        <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-1.5 rounded-lg mr-5 text-sm">
+                        <div className="flex justify-start items-center">
+                                <img src={StarIcon} alt="StarIcon" width="15rem" height="15rem" />
+                                <span className="ml-1">{item?.rating}</span>
+                            </div>
+                        </button>
+                        <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-1.5 rounded-lg mr-5 text-sm">{item?.reviews} reviews</button>
                         <span className="text-[#94A3B8] text-sm">Posted {formatter.format(new Date(item?.createdAt))} hrs ago</span>
                     </div>
                 </div >

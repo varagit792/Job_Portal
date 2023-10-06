@@ -1,4 +1,4 @@
-const Skeleton = () => {
+const CardListSkeleton = () => {
     return (
         <div className=" shadow rounded-xl py-5 px-5 w-full mb-5 bg-[#FFF]">
             <div className="animate-pulse space-y-3">
@@ -27,4 +27,4 @@ const Skeleton = () => {
         </div>
     )
 }
-export default Skeleton;
+export default CardListSkeleton;
