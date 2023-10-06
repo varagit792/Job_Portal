@@ -5,14 +5,7 @@ import MoneyIcon from '../../../assets/svg/MoneyIcon.svg';
 import ExperienceIcon from '../../../assets/svg/ExperienceIcon.svg';
 import LocationIcon from '../../../assets/svg/LocationIcon.svg';
 import compenyBrand from '../../../assets/png/companyBrand.png';
-import BMWIcon from '../../../assets/svg/BMWIcon.svg';
-import PandaIcon from '../../../assets/svg/PandaIcon.svg';
-import DoleIcon from '../../../assets/svg/DoleIcon.svg';
-import BelleIcon from '../../../assets/svg/BelleIcon.svg';
-import DominousIcon from '../../../assets/svg/DominousIcon.svg';
-import GoproIcon from '../../../assets/svg/GoproIcon.svg';
-import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
-import { formatDistanceToNow, parseISO } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 
 const JobCard = ({ onClickJobCard, jobCard, loading }: any) => {
     return (
