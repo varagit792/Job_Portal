@@ -1,35 +1,33 @@
-import React from 'react'
-import { IoLocationOutline } from 'react-icons/io5';
-import { AiFillFacebook, AiFillStar } from 'react-icons/ai';
-import companyLogo from '../../assets/jpeg/company_small.jpeg'
+import bookMarkIcon from '../../assets/svg/bookMarkIcon.svg';
 const ShortJobCard = () => {
 
   return (
 
-    <div className="grid grid-cols-6 gap-4">
-      <div className="col-start-1 col-end-4 ">
-        <h1 className="mt-1 font-semibold">React JS Developer</h1>
-        <div>
-          FaceBook Meta
-        </div>
-        <div className="flex flex-row items-center" >
-          <span>
-            <IoLocationOutline />
-          </span>
-          <span className="ml-1  overflow-hidden whitespace-nowrap text-ellipsis w-40">
-            Kolkata, Mumbai, New Delhi, Hyderabad/Secunderabad, Pune, Chennai, Bangalore/Bengaluru
-          </span>
+    <div className=" p-5 bg-white rounded-xl flex-col justify-start items-start inline-flex">
+      <div className="self-stretch  flex-col justify-start items-start gap-3 flex">
+        <div className="self-stretch pr-7 flex-col justify-start items-start gap-1 flex">
+          <div className="flex flex-row justify-between gap-32">
+            <div className="self-stretch text-slate-900 text-base font-bold  leading-snug tracking-tight">Global Head of Supply Chain Finance
+            </div>
+            <span><img src={bookMarkIcon} alt="bookMark" /></span>
+          </div>
+          <div className="justify-start items-center gap-3 ">
+            <span className="text-slate-500 text-sm font-normal leading-snug tracking-tight">TATA Consultancy Services
+            </span>
+          </div>
+        </div> 
+        <div className="justify-start items-center gap-1 inline-flex">
+          <div className=" px-3 py-2 bg-orange-50 rounded justify-center items-center gap-2.5 flex">
+            <div className="text-orange-600 text-sm font-normal  leading-none tracking-tight">Hybrid</div>
+          </div>
+          <div className=" px-3 py-2 bg-green-50 rounded justify-center items-center gap-2.5 flex">
+            <div className="text-green-600 text-sm font-normal  leading-none tracking-tight">Full-time</div>
+          </div>
+          <div className="text-slate-400 text-sm font-normal  leading-none tracking-tight">Posted 4 hrs ago</div>
         </div>
       </div>
-      <div className="col-start-4 col-end-7 justify-between h-full">
-        <div className="flex items-end justify-end w-full">
-          <AiFillFacebook color='blue' size="24" />
-        </div>
-        <div className="mt-1 text-xs text-gray-400 flex items-baseline justify-end text-end ">
-          Posted 10 days ago
-        </div>
-      </div>
-    </div>
+    </div> 
+     
   )
 }
 
