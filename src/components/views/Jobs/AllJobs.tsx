@@ -40,22 +40,18 @@ const AllJobs = () => {
     }, []);
 
     useEffect(() => {
-        if (toggleDispach && filtersData?.expYear !== null) {
+        if (toggleDispach && (filtersData?.expYear !== null || (filtersData?.department !== undefined && filtersData?.department?.length !== 0))) {
             dispatch(getFilterJobs({ page, data: filtersData }));
-        }
-    }, [filtersData])
-
-    useEffect(() => {
-        if (toggleDispach && filtersData?.expYear !== null) {
-            dispatch(getFilterJobs({ page, data: filtersData }));
+            setJobCard([]);
+            setPage(1);
         } else {
             dispatch(getFilterJobs({ page }));
         }
-    }, [dispatch, page]);
+    }, [dispatch, page, filtersData]);
 
     useEffect(() => {
         if (success) {
-            if (filtersData?.expYear !== null) {
+            if (filtersData?.expYear !== null || (filtersData?.department !== undefined && filtersData?.department?.length !== 0)) {
                 if (allJobs.length !== 0) {
                     setJobCard((prev: any) => [...prev, ...allJobs]);
                 } else {
@@ -118,6 +114,32 @@ const AllJobs = () => {
         })();
     };
 
+    const handleDepartmentCheckbox = (data: any) => {
+        scrollToTop();
+        setToggleDispach(true);
+        setDepartment((prevMapData: any) =>
+            prevMapData.map((item: any) =>
+                item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
+            )
+        );
+        if (data?.isChecked === undefined || data?.isChecked === false) {
+            setFiltersData((preValue: any) => {
+                return {
+                    ...preValue,
+                    department: [...filtersData?.department, data?.id]
+                }
+            });
+        } else {
+            const listOfArray = filtersData?.department?.filter((item: any) => data?.id !== item);
+            setFiltersData((preValue: any) => {
+                return {
+                    ...preValue,
+                    department: listOfArray
+                }
+            });
+        }
+    }
+
     const onClickJobCard = (jobId: any) => {
         window.open(`/allJobs/jobDescription/${jobId}`, '_blank');
     }
@@ -178,12 +200,13 @@ const AllJobs = () => {
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
                                             {department?.slice(0, 5)?.map((item: any) => (
-                                                <div className="text-[#475569] mb-3">
+                                                <div className="text-[#475569] mb-2 flex justify-start items-center">
                                                     <input type="checkbox"
                                                         defaultChecked={false}
-                                                        onClick={() => filtersData?.department?.push(item?.id)}
+                                                        checked={item?.isChecked}
+                                                        onChange={() => handleDepartmentCheckbox(item)}
                                                     />
-                                                    <label className="ml-2">{item?.title}</label>
+                                                    <label className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
                                                 </div>
                                             ))}
                                             <button className="text-[#4F46E5]">
