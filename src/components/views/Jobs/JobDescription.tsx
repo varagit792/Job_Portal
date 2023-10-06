@@ -78,13 +78,13 @@ const JobDescription = () => {
                   </div>
                   <div className="justify-start items-center gap-2 flex">
                     <img src={locationIcon} alt="location" />
-                    
+
                     {jobDetail?.jobsLocation?.map((location) =>
                       <div className="text-slate-500 text-base font-medium leading-snug tracking-tight">
                         {location?.title}
                       </div>)}
-                    </div>
-                  
+                  </div>
+
                 </div>
                 <div className="justify-start items-center gap-5 inline-flex">
                   <div className="w-20 px-3 py-2 bg-orange-50 rounded justify-center items-center gap-2.5 flex">
