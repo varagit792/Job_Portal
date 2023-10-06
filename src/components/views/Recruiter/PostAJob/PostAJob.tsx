@@ -22,7 +22,7 @@ import { clearGetTotalExpYearSlice, totalExpYearGet } from '../../../../store/re
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
 import { postJobUpdate } from '../../../../store/reducers/jobs/postJobs';
 import { IFormInputsPostAJob } from '../../../../interface/employer';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 
 const PostJobSchema = yup.object().shape({
@@ -118,13 +118,7 @@ const PostJobSchema = yup.object().shape({
 }).required();
 
 const PostAJob = () => {
-  let search = window.location.search;
-  const [searchParams] = useSearchParams(search);
-  console.log(searchParams.get('postId'));
-
-  const postId = Number(searchParams.get('postId'));
-  console.log("postId", postId);
-
+  const { postId } = useParams();
   const dispatch = useAppDispatch();
 
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
@@ -215,8 +209,9 @@ const PostAJob = () => {
     dispatch(industryGet());
     dispatch(highestQualificationGet());
     dispatch(localityGet());
-    dispatch(getJobDetail(1));
-
+    if (postId) {
+      dispatch(getJobDetail(postId));
+    }
     dispatch(numberSystemGet());
     dispatch(recurrenceGet());
     dispatch(salaryRangeGet());
@@ -279,9 +274,9 @@ const PostAJob = () => {
     const jobEducation = data?.highestQualification?.map((education: any) => ({ education: { id: education?.value } }));
     const jobLocality = data?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
     const jobCandidateIndustry = data?.candidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.value } }));
-
+    const updatePostId = postId ? Number(postId) : null;
     dispatch(postJobUpdate({
-      id: 1,
+      id: updatePostId,
       title: data?.title,
       payScaleLowerRange: data?.fromSalaryRange?.value,
       jobsOpening: Number(data?.jobsOpening),
