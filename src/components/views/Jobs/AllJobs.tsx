@@ -27,7 +27,7 @@ const AllJobs = () => {
         expYear: null,
         department: []
     })
-    console.log(filtersData);
+
     useEffect(() => {
         (async () => {
             const departmentList = await getDepartmentList();
@@ -56,7 +56,11 @@ const AllJobs = () => {
     useEffect(() => {
         if (success) {
             if (filtersData?.expYear !== null) {
-                setJobCard((prev: any) => [...prev, ...allJobs]);
+                if (allJobs.length !== 0) {
+                    setJobCard((prev: any) => [...prev, ...allJobs]);
+                } else {
+                    setToggleDispach(false);
+                }
             } else {
                 if (allJobs.length !== 0) {
                     setJobCard((prev: any) => [...prev, ...allJobs]);
@@ -81,6 +85,13 @@ const AllJobs = () => {
         }
     };
 
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
     const handleTotalExpYearChange = () => {
         (async () => {
             const experienceYearsList = await getTotalYearsExpList();
@@ -101,6 +112,8 @@ const AllJobs = () => {
                 });
                 setJobCard([]);
                 setPage(1);
+                scrollToTop();
+                setToggleDispach(true);
             }
         })();
     };
