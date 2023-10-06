@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Carousel from "react-multi-carousel";
 import ArrowRight from '../../../assets/svg/ArrowRight.svg';
 import { FiChevronLeft } from 'react-icons/fi';
 import { BiChevronRight } from 'react-icons/bi';
 import CompanyListItem from '../../commonComponents/CompanyListItem';
 import { Link } from 'react-router-dom';
+import { getCompanyList } from '../../utils/utils';
 
 const responsive = {
   superLargeDesktop: {
@@ -15,7 +16,7 @@ const responsive = {
   },
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 3,
+    items: 3.5,
     slidesToSlide: 2
   },
   tablet: {
@@ -42,6 +43,15 @@ const ButtonGroup = ({ next, previous, goToSlide, ...rest }: any) => {
 };
 
 const TopCompaniesHiring = () => {
+  const [companyList, setCompanyList] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const companyList = await getCompanyList()
+      setCompanyList(companyList as any)
+    })();
+  }, [])
+  
   return (
     <div>
       <div className="flex justify-between items-center mb-10 font-bold">
@@ -49,25 +59,23 @@ const TopCompaniesHiring = () => {
         <Link to="/allCompanies" className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">View all</span><img src={ArrowRight} alt="ArrowRight" /></Link>
       </div>
       <Carousel
+        shouldResetAutoplay
         swipeable={false}
         draggable={false}
         showDots={false}
         responsive={responsive}
         ssr={true} // means to render carousel on server-side.
         infinite={true}
-        autoPlay={true}
-        autoPlaySpeed={4000}
+        //autoPlay={true}
+        //autoPlaySpeed={4000}
         keyBoardControl={true}
-        customTransition="all .5"
+        customTransition="all .5s ease-in-out"
         transitionDuration={500}
         arrows={false}
         renderButtonGroupOutside={true}
         customButtonGroup={<ButtonGroup />}
       >
-        <CompanyListItem />
-        <CompanyListItem />
-        <CompanyListItem />
-        <CompanyListItem />
+        {companyList?.slice(0,8)?.map((item, index) => index <= 7 && <CompanyListItem item={ item } />)}
       </Carousel>
     </div>
   )
