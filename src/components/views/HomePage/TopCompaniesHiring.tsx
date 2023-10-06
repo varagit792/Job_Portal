@@ -66,8 +66,8 @@ const TopCompaniesHiring = () => {
         responsive={responsive}
         ssr={true} // means to render carousel on server-side.
         infinite={true}
-        //autoPlay={true}
-        //autoPlaySpeed={4000}
+        autoPlay={true}
+        autoPlaySpeed={4000}
         keyBoardControl={true}
         customTransition="all .5s ease-in-out"
         transitionDuration={500}
