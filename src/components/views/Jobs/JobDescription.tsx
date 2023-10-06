@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 
-import {  AiFillStar } from 'react-icons/ai';
+import { AiFillStar } from 'react-icons/ai';
 import ShortJobCard from '../../commonComponents/ShortJobCard';
 import { useAppDispatch, useAppSelector } from '../../..';
 import { getJobDetail } from '../../../store/reducers/jobs/GetJobDetails';
@@ -23,7 +23,7 @@ const JobDescription = () => {
 
   useEffect(() => {
     dispatch(getJobDetail(id));
-  }, [dispatch,id]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (success) {
@@ -35,14 +35,14 @@ const JobDescription = () => {
     if (!isNaN(parsedDate.getDate())) {
       setLastUpdatedTimestamp(parsedDate);
     }
-  }, [jobDetail, parsedDate]);
+  }, [jobDetail]);
 
   return (
     <Fragment>
       <div className="h-[10%] w-full"></div>
-      <div className="grid grid-cols-12 gap-10 py-7 px-24 bg-white">
+      <div className="grid grid-cols-12 gap-10 py-6 px-32 bg-[#F8FAFC] ">
         <div className="col-start-1 col-end-8  p-5">
-          <div className="border border-[#E0E7FF] rounded-xl p-5">
+          <div className="border border-[#E0E7FF] rounded-xl p-5 bg-white">
             <div className="self-stretch h-44 flex-col justify-start items-start gap-5 flex">
               <div className="self-stretch justify-start items-center gap-3 inline-flex">
                 <img className="w-14 h-14 rounded-lg" src={companyLogo} alt="companyLogo" />
@@ -80,7 +80,7 @@ const JobDescription = () => {
                   <div className="justify-start items-center gap-2 flex">
                     <img src={locationIcon} alt="location" />
                     <div className="text-slate-500 text-base font-medium leading-snug tracking-tight">
-                      { jobDetail?.jobsLocation?.title}
+                      {jobDetail?.jobsLocation?.title}
                     </div>
                   </div>
                 </div>
@@ -106,12 +106,12 @@ const JobDescription = () => {
               </div>
             </div>
           </div>
-          <div className="border border-[#E0E7FF] rounded-xl p-5 mt-4" >
+          <div className="border border-[#E0E7FF] rounded-xl p-5 mt-4 bg-white" >
             <div className="self-stretch  flex-col justify-start items-start gap-5 flex">
               <div className="self-stretch text-slate-900 text-base font-bold leading-snug tracking-tight">Job Description
               </div>
-              <span className="self-stretch text-slate-500 text-base font-medium  leading-snug tracking-tight">               
-                { jobDetail?.jobDescription}
+              <span className="self-stretch text-slate-500 text-base font-medium  leading-snug tracking-tight">
+                {jobDetail?.jobDescription}
               </span>
             </div>
             <div className="self-stretch h-px border border-indigo-100 my-5"></div>
@@ -133,13 +133,13 @@ const JobDescription = () => {
               </div>
             </div>
           </div>
-          <div className="border border-[#E0E7FF] rounded-xl p-5 mt-4">
+          <div className="border border-[#E0E7FF] rounded-xl p-5 mt-4 bg-white">
             <span className="self-stretch text-slate-900 text-base font-bold leading-snug tracking-tight">About the company
             </span>
             <div className="self-stretch justify-start items-center gap-3 flex mt-2">
               <img className="w-14 h-14 rounded-lg" src={companyLogo} alt="companyLogo" />
               <div className="grow shrink basis-0 flex-col justify-start items-start gap-1 inline-flex">
-                <div className="self-stretch text-slate-900 text-2xl font-bold leading-7 tracking-tight">{jobDetail?.company?.title }</div>
+                <div className="self-stretch text-slate-900 text-2xl font-bold leading-7 tracking-tight">{jobDetail?.company?.title}</div>
                 <div className="w-40 justify-start items-center gap-2 inline-flex">
                   <div className="justify-start items-center gap-1 flex">
                     <AiFillStar color="yellow" />
@@ -151,12 +151,12 @@ const JobDescription = () => {
               </div>
             </div>
             <div className="justify-start items-start gap-5 inline-flex mt-2">
-              <div className="justify-start items-center gap-2 flex">                
+              <div className="justify-start items-center gap-2 flex">
                 <img src={locationIcon} alt="location" />
                 <div className="text-slate-500 text-base font-medium leading-snug tracking-tight">Hyderabad, Delhi, Mumbai</div>
-              </div>           
+              </div>
               <div className=" border-l border-indigo-100 h-4"></div>
-              <div className="justify-start items-center gap-2 flex">              
+              <div className="justify-start items-center gap-2 flex">
                 <img src={peopleIcon} alt="people" />
                 <div className="text-slate-500 text-base font-medium leading-snug tracking-tight">500+ employees</div>
               </div>
@@ -166,15 +166,15 @@ const JobDescription = () => {
             </div>
           </div>
         </div>
-        <div className="col-start-8 col-end-13 p-5">
+        <div className="col-start-8 col-end-13">
           <div className="flex flex-row justify-between items-center">
             <span className="font-bold text-xl">Similar Jobs</span>
-            <div className="flex flex-row items-center gap-3 j">
+            <div className="flex flex-row items-center gap-3">
               <span className="flex justify-center items-center text-lg font text-indigo-900 text-center">
                 All Jobs
               </span>
-              <button  className="flex justify-center items-center">
-                <img src={rightArrow} alt="rightArrow" width="w-full" className="text-indigo-900"/>
+              <button className="flex justify-center items-center">
+                <img src={rightArrow} alt="rightArrow" width="w-full" className="text-indigo-900" />
               </button>
             </div>
           </div>
