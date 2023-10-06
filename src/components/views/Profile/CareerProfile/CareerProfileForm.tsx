@@ -15,7 +15,7 @@ import { clearGetEmployeeTypeSlice, employeeTypeGet } from '../../../../store/re
 import { clearGetJobTypeSlice, jobTypeGet } from '../../../../store/reducers/dropdown/jobType';
 import { clearGetPreferredShiftSlice, preferredShiftGet } from '../../../../store/reducers/dropdown/preferredShift';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
-import SingleCheckbox from './SingleCheckbox';
+import SingleCheckbox from '../../../commonComponents/SingleCheckbox';
 
 interface IFormInputs {
   industry: { value: string; label: string; }
@@ -292,27 +292,15 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
           <div className="block text-sm font-medium leading-6 text-gray-900 ">Preferred work location (Max 10)</div>
           <div className="mt-1">
 
-            {/* <AutocompleteBox
+
+            <AutocompleteBox
               control={control}
               isClearable={true}
+              isMulti={true}
               fieldName={"preferredWorkLocation"}
-              dropdownData={location?.map(({ id, title }: any) => ({ value: id, label: title }))}
-              placeholder={"Select location"}
-            /> */}
-
-            <Controller
-              control={control}
-              name="preferredWorkLocation"
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  isMulti
-                  isClearable
-                  placeholder="Select preferred work location"
-                  options={location?.map(({ id, title }) => ({ value: id, label: title } as any))}
-                  defaultValue={watch("preferredWorkLocation")}
-                />
-              )}
+              dropdownData={location?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
+              placeholder={"Select preferred work location"}
+              defaultValue={watch("preferredWorkLocation")}
             />
             {errors?.preferredWorkLocation && <p className="font-normal text-xs text-red-500 absolute">{errors?.preferredWorkLocation?.message}</p>}
           </div>
@@ -331,7 +319,6 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
               {errors?.currency && <p className="font-normal text-xs text-red-500 absolute">{errors?.currency?.label?.message}</p>}
             </div>
             <div className="col-span-7">
-
               <input defaultValue={profileDashboard?.expectedSalary}
                 className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                 placeholder={"Salary"}
@@ -340,9 +327,6 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
             </div>
           </div>
         </div>
-
-
-
         <div className="mt-5 flex justify-end items-center">
           <div>
             <button
