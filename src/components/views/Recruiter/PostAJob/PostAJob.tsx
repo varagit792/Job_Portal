@@ -3,27 +3,12 @@ import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch, useAppSelector } from '../../../../';
-import { clearGetIndustrySlice, industryGet } from '../../../../store/reducers/dropdown/industry';
-import { clearGetDepartmentSlice, departmentGet } from '../../../../store/reducers/dropdown/department';
-import { clearGetRoleCategorySlice, roleCategoryGet } from '../../../../store/reducers/dropdown/roleCategory';
-import { clearGetJobRoleSlice, jobRoleGet } from '../../../../store/reducers/dropdown/jobRole';
-import { clearGetCurrencySlice, currencyGet } from '../../../../store/reducers/dropdown/currency';
-import { clearGetLocationSlice, locationGet } from '../../../../store/reducers/dropdown/location';
-import { clearGetEmployeeTypeSlice, employeeTypeGet } from '../../../../store/reducers/dropdown/employeeType';
-import { clearGetLocalitySlice, localityGet } from '../../../../store/reducers/dropdown/locality';
-import { clearGetNumberSystemSlice, numberSystemGet } from '../../../../store/reducers/dropdown/numberSystem';
-import { clearGetRecurrenceSlice, recurrenceGet } from '../../../../store/reducers/dropdown/recurrence';
-import { clearGetHighestQualificationSlice, highestQualificationGet } from '../../../../store/reducers/dropdown/highestQualification';
-import { clearGetCompanySlice, companyGet } from '../../../../store/reducers/dropdown/company';
-import { clearGetSalaryRangeSlice, salaryRangeGet } from '../../../../store/reducers/dropdown/salaryRange';
-import { clearGetKeySkillsSlice, keySkillsGet } from '../../../../store/reducers/dropdown/keySkills';
-import { clearGetWorkModeSlice, workModeGet } from '../../../../store/reducers/dropdown/workMode';
-import { clearGetTotalExpYearSlice, totalExpYearGet } from '../../../../store/reducers/dropdown/totalExpYear';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
 import { postJobUpdate } from '../../../../store/reducers/jobs/postJobs';
 import { IFormInputsPostAJob } from '../../../../interface/employer';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
+import { getCompanyList, getCurrencyList, getDepartmentList, getEmployeeTypeList, getHighestQualificationList, getIndustryList, getJobRoleList, getKeySkillsList, getLocalityList, getLocationList, getNumberSystemList, getRecurrenceList, getRoleCategoryList, getSalaryRangeList, getTotalYearsExpList, getWorkModeList } from '../../../utils/utils';
 
 const PostJobSchema = yup.object().shape({
   title: yup.string().label("Please enter job title").required(),
@@ -121,23 +106,24 @@ const PostAJob = () => {
   const { postId } = useParams();
   const dispatch = useAppDispatch();
 
+  const [employeeType, setEmployeeType] = useState<any>([]);
+  const [keySkills, setKeySkills] = useState<any>([]);
+  const [department, setDepartment] = useState<any>([]);
+  const [roleCategory, setRoleCategory] = useState<any>([]);
+  const [jobRole, setJobRole] = useState<any>([]);
+  const [workMode, setWorkMode] = useState<any>([]);
+  const [location, setLocation] = useState<any>([]);
+  const [locality, setLocality] = useState<any>([]);
+  const [totalExpYear, setTotalExpYear] = useState<any>([]);
+  const [currency, setCurrency] = useState<any>([]);
+  const [salaryRange, setSalaryRange] = useState<any>([]);
+  const [numberSystem, setNumberSystem] = useState<any>([]);
+  const [recurrence, setRecurrence] = useState<any>([]);
+  const [industry, setIndustry] = useState<any>([]);
+  const [highestQualification, setHighestQualification] = useState<any>([]);
+  const [company, setCopmpany] = useState<any>([]);
+
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
-  const { success: industrySuccess, industry } = useAppSelector((state) => state.getIndustry);
-  const { success: departmentSuccess, department } = useAppSelector((state) => state.getDepartment);
-  const { success: roleCategorySuccess, roleCategory } = useAppSelector((state) => state.getRoleCategory);
-  const { success: jobRoleSuccess, jobRole } = useAppSelector((state) => state.getJobRole);
-  const { success: currencySuccess, currency } = useAppSelector((state) => state.getCurrency);
-  const { success: locationSuccess, location } = useAppSelector((state) => state.getLocation);
-  const { success: employeeTypeSuccess, employeeType } = useAppSelector((state) => state.getEmployeeType);
-  const { success: companySuccess, company } = useAppSelector((state) => state.getCompany);
-  const { success: keySkillsSuccess, keySkills } = useAppSelector((state) => state.getKeySkills);
-  const { success: workModeSuccess, workMode } = useAppSelector((state) => state.getWorkMode);
-  const { success: localitySuccess, locality } = useAppSelector((state) => state.getLocality);
-  const { success: numberSystemSuccess, numberSystem } = useAppSelector((state) => state.getNumberSystem);
-  const { success: recurrenceSuccess, recurrence } = useAppSelector((state) => state.getRecurrence);
-  const { success: totalExpYearSuccess, totalExpYear } = useAppSelector((state) => state.getTotalExpYear);
-  const { success: salaryRangeSuccess, salaryRange } = useAppSelector((state) => state.getSalaryRange);
-  const { success: hightestQualificationSuccess, highestQualification } = useAppSelector((state) => state.getHighestQualification);
   const {
     register,
     handleSubmit,
@@ -206,65 +192,98 @@ const PostAJob = () => {
   }, [setValue, jobDetail]);
 
   useEffect(() => {
-    dispatch(industryGet());
-    dispatch(highestQualificationGet());
-    dispatch(localityGet());
     if (postId) {
       dispatch(getJobDetail(postId));
     }
-    dispatch(numberSystemGet());
-    dispatch(recurrenceGet());
-    dispatch(salaryRangeGet());
-    dispatch(totalExpYearGet());
-    dispatch(departmentGet());
-    dispatch(roleCategoryGet());
-    dispatch(jobRoleGet());
-    dispatch(currencyGet());
-    dispatch(locationGet());
-    dispatch(employeeTypeGet());
-    dispatch(companyGet());
-    dispatch(keySkillsGet());
-    dispatch(workModeGet());
   }, [dispatch]);
 
   useEffect(() => {
-    if (industrySuccess)
-      dispatch(clearGetIndustrySlice());
     if (jobDetailSuccess)
       dispatch(clearGetJobDetailSlice());
-    if (numberSystemSuccess)
-      dispatch(clearGetNumberSystemSlice());
-    if (recurrenceSuccess)
-      dispatch(clearGetRecurrenceSlice());
-    if (companySuccess)
-      dispatch(clearGetCompanySlice());
-    if (totalExpYearSuccess)
-      dispatch(clearGetTotalExpYearSlice());
-    if (hightestQualificationSuccess)
-      dispatch(clearGetHighestQualificationSlice());
-    if (salaryRangeSuccess)
-      dispatch(clearGetSalaryRangeSlice());
-    if (localitySuccess)
-      dispatch(clearGetLocalitySlice());
-    if (workModeSuccess)
-      dispatch(clearGetWorkModeSlice());
-    if (keySkillsSuccess)
-      dispatch(clearGetKeySkillsSlice());
-    if (departmentSuccess)
-      dispatch(clearGetDepartmentSlice());
-    if (roleCategorySuccess)
-      dispatch(clearGetRoleCategorySlice());
-    if (jobRoleSuccess)
-      dispatch(clearGetJobRoleSlice());
-    if (currencySuccess)
-      dispatch(clearGetCurrencySlice());
-    if (locationSuccess)
-      dispatch(clearGetLocationSlice());
-    if (employeeTypeSuccess)
-      dispatch(clearGetEmployeeTypeSlice());
+  }, [dispatch, jobDetailSuccess]);
 
+  useEffect(() => {
+    (async () => {
+      const employeeTypeList = await getEmployeeTypeList()
+      if (Object.keys(employeeTypeList)?.length) {
+        setEmployeeType(employeeTypeList as any)
+      }
+      const keySkillsList = await getKeySkillsList()
+      if (Object.keys(keySkillsList)?.length) {
+        setKeySkills(keySkillsList as any)
+      }
 
-  }, [dispatch, roleCategorySuccess, industrySuccess, departmentSuccess, jobRoleSuccess, currencySuccess, locationSuccess, employeeTypeSuccess, localitySuccess, workModeSuccess, keySkillsSuccess, totalExpYearSuccess, salaryRangeSuccess, hightestQualificationSuccess, companySuccess, numberSystemSuccess, recurrenceSuccess, jobDetailSuccess]);
+      const departmentList = await getDepartmentList()
+      if (Object.keys(departmentList)?.length) {
+        setDepartment(departmentList as any)
+      }
+
+      const roleCategoryList = await getRoleCategoryList()
+      if (Object.keys(roleCategoryList)?.length) {
+        setRoleCategory(roleCategoryList as any)
+      }
+
+      const jobRoleList = await getJobRoleList()
+      if (Object.keys(jobRoleList)?.length) {
+        setJobRole(jobRoleList as any)
+      }
+
+      const workModeList = await getWorkModeList()
+      if (Object.keys(workModeList)?.length) {
+        setWorkMode(workModeList as any)
+      }
+
+      const locationList = await getLocationList()
+      if (Object.keys(locationList)?.length) {
+        setLocation(locationList as any)
+      }
+
+      const localityList = await getLocalityList()
+      if (Object.keys(localityList)?.length) {
+        setLocality(localityList as any)
+      }
+
+      const totalExpYearList = await getTotalYearsExpList()
+      if (Object.keys(totalExpYearList)?.length) {
+        setTotalExpYear(totalExpYearList as any)
+      }
+
+      const currencyList = await getCurrencyList()
+      if (Object.keys(currencyList)?.length) {
+        setCurrency(currencyList as any)
+      }
+
+      const salaryRangeList = await getSalaryRangeList()
+      if (Object.keys(salaryRangeList)?.length) {
+        setSalaryRange(salaryRangeList as any)
+      }
+
+      const numberSystemList = await getNumberSystemList()
+      if (Object.keys(numberSystemList)?.length) {
+        setNumberSystem(numberSystemList as any)
+      }
+
+      const recurrenceList = await getRecurrenceList()
+      if (Object.keys(recurrenceList)?.length) {
+        setRecurrence(recurrenceList as any)
+      }
+
+      const industryList = await getIndustryList()
+      if (Object.keys(industryList)?.length) {
+        setIndustry(industryList as any)
+      }
+
+      const highestQualificationList = await getHighestQualificationList()
+      if (Object.keys(highestQualificationList)?.length) {
+        setHighestQualification(highestQualificationList as any)
+      }
+
+      const companyList = await getCompanyList()
+      if (Object.keys(companyList)?.length) {
+        setCopmpany(companyList as any)
+      }
+    })();
+  }, [])
 
 
   const onSubmit = (data: IFormInputsPostAJob) => {

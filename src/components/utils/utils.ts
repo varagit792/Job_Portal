@@ -80,24 +80,68 @@ export const getDepartmentList = async () => {
   return await axios.get(`${process.env.REACT_APP_API_PATH}/department/get`).then((res: any) => res.data.data)
 }
 
+export const getEmployeeTypeList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/employeeType/get`).then((res: any) => res.data.data)
+}
+
+export const getKeySkillsList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/keySkills/get`).then((res: any) => res.data.data)
+}
+
+export const getRoleCategoryList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/roleCategory/get`).then((res: any) => res.data.data)
+}
+
+export const getJobRoleList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/jobRole/get`).then((res: any) => res.data.data)
+}
+
+export const getWorkModeList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/workMode/get`).then((res: any) => res.data.data)
+}
+
+export const getLocalityList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/locality/get`).then((res: any) => res.data.data)
+}
+
+export const getSalaryRangeList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/salaryRange/get`).then((res: any) => res.data.data)
+}
+
+export const getNumberSystemList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/numberSystem/get`).then((res: any) => res.data.data)
+}
+
+export const getRecurrenceList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/recurrence/get`).then((res: any) => res.data.data)
+}
+
+export const getIndustryList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/industry/get`).then((res: any) => res.data.data)
+}
+
+export const getHighestQualificationList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/highestQualification/get`).then((res: any) => res.data.data)
+}
+
 export const calculateWorkedTime = (startYear: any, startMonth: any) => {
-  const months:any = [
-      'Jan', 'Feb', 'Mar', 'Apr',
-      'May', 'June', 'July', 'Aug',
-      'Sep', 'Oct', 'Nov', 'Dec'
+  const months: any = [
+    'Jan', 'Feb', 'Mar', 'Apr',
+    'May', 'June', 'July', 'Aug',
+    'Sep', 'Oct', 'Nov', 'Dec'
   ];
-  
-    const today = new Date();
-    const startDate = new Date(startYear, months.indexOf(startMonth) - 1); // Note that months are 0-indexed in JavaScript
 
-    let yearDiff = today.getFullYear() - startDate.getFullYear();
-    let monthDiff = today.getMonth() - startDate.getMonth();
+  const today = new Date();
+  const startDate = new Date(startYear, months.indexOf(startMonth) - 1); // Note that months are 0-indexed in JavaScript
 
-    if (monthDiff < 0) {
-        yearDiff--;
-        monthDiff += 12;
-    }
+  let yearDiff = today.getFullYear() - startDate.getFullYear();
+  let monthDiff = today.getMonth() - startDate.getMonth();
 
-    return { years: yearDiff, months: monthDiff };
+  if (monthDiff < 0) {
+    yearDiff--;
+    monthDiff += 12;
+  }
+
+  return { years: yearDiff, months: monthDiff };
 }
 
