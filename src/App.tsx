@@ -9,9 +9,9 @@ const App = () => {
 
   return (
     <div className="h-screen">
-     { location?.pathname !== "/registration" && <Header />}
+      {location?.pathname !== "/registration" && <Header />}
       <AllRoutes />
-      { location?.pathname !== "/registration" && <Footer />}
+      {location?.pathname !== "/registration" && <Footer />}
     </div>
   );
 }

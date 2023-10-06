@@ -14,12 +14,20 @@ import getIndustrySlice from './dropdown/industry';
 import getDepartmentSlice from './dropdown/department';
 import getRoleCategorySlice from './dropdown/roleCategory';
 import getJobRoleSlice from './dropdown/jobRole';
+import getWorkModeSlice from './dropdown/workMode';
+import getLocalitySlice from './dropdown/locality';
+import getRecurrenceSlice from './dropdown/recurrence';
+import getNumberSystemSlice from './dropdown/numberSystem';
+import getCompanySlice from './dropdown/company';
+import getHighestQualificationSlice from './dropdown/highestQualification';
+import getTotalExpYearSlice from './dropdown/totalExpYear';
 import getCitySlice from './dropdown/city';
 import getJobTitleSlice from './dropdown/jobTitle';
 import getCurrencySlice from './dropdown/currency';
 import getLocationSlice from './dropdown/location';
 import getEmployeeTypeSlice from './dropdown/employeeType';
 import getJobTypeSlice from './dropdown/jobType';
+import getSalaryRangeSlice from './dropdown/salaryRange';
 import getKeySkillsSlice from './dropdown/keySkills';
 import getPreferredShiftSlice from './dropdown/preferredShift';
 import getCareerProfileSlice from './jobSeekerProfile/getCareerProfile';
@@ -54,6 +62,13 @@ export const reducer = combineReducers({
     educationDetails: getEducationDetails,
     employment: jobSeekerEmployment,
     getIndustry: getIndustrySlice,
+    getRecurrence: getRecurrenceSlice,
+    getTotalExpYear: getTotalExpYearSlice,
+    getLocality: getLocalitySlice,
+    getNumberSystem: getNumberSystemSlice,
+    getCompany: getCompanySlice,
+    getHighestQualification: getHighestQualificationSlice,
+    getSalaryRange: getSalaryRangeSlice,
     getCity: getCitySlice,
     getDepartment: getDepartmentSlice,
     getRoleCategory: getRoleCategorySlice,
@@ -66,6 +81,7 @@ export const reducer = combineReducers({
     getPreferredShift: getPreferredShiftSlice,
     getCareerProfile: getCareerProfileSlice,
     getKeySkills: getKeySkillsSlice,
+    getWorkMode: getWorkModeSlice,
     jobSeekerDeleteResume: jobSeekerDeleteResumeReducer,
     jobSeekerUploadProfilePicture: jobSeekerPictureUploadSlice,
     jobSeekerDeleteProfilePicture: jobSeekerDeleteProfilePictureReducer,
