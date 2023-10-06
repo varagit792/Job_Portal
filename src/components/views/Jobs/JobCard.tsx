@@ -1,4 +1,4 @@
-import Loader from './Loader';
+import Loader from '../../commonComponents/Loader';
 import ThreeDots from '../../../assets/svg/threeDots.svg';
 import BookMark from '../../../assets/svg/bookMark.svg';
 import MoneyIcon from '../../../assets/svg/MoneyIcon.svg';
