@@ -15,7 +15,7 @@ import { useParams } from 'react-router-dom';
 const JobDescription = () => {
   const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<Date | null>(null);
   const { id } = useParams();
-  
+
   const dispatch = useAppDispatch();
   const { success, jobDetail } = useAppSelector((state) => state.getJobDetail)
 
@@ -91,7 +91,7 @@ const JobDescription = () => {
                   </span>
                   <span className="ml-1  w-96">
                     {/* Kolkata, Mumbai, New Delhi, Hyderabad/Secunderabad, Pune, Chennai, Bangalore/Bengaluru */}
-                    {jobDetail?.jobsLocation[0].title}
+                    {jobDetail?.jobsLocation[0]?.title}
                   </span>
                 </div>
               </div>
@@ -232,7 +232,7 @@ const JobDescription = () => {
               </button>
               {jobDetail?.jobsKeySkills?.map((job) =>
                 <button className="border border-gray-500 rounded-xl py-1 px-3 ">
-                 {job.keySkills?.title}
+                  {job.keySkills?.title}
                 </button>
               )}
               {/* <button className="border border-gray-500 rounded-xl py-1 px-3 ">
