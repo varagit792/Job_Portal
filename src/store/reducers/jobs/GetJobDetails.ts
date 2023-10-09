@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface Company {
+    reviews: any;
+    rating: any;
     id: number,
     title: string,
     status: boolean

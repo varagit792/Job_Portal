@@ -87,7 +87,7 @@ const JobDescription = () => {
                 </div>
                 <div className="justify-start items-center gap-5 inline-flex">
                   <div className="w-20 px-3 py-2 bg-orange-50 rounded justify-center items-center gap-2.5 flex">
-                    <div className="text-orange-600 text-sm font-normal leading-none tracking-tight">On-site</div>
+                    <div className="text-orange-600 text-sm font-normal leading-none tracking-tight">{ jobDetail?.workMode?.title}</div>
                   </div>
                   <div className="w-20 px-3 py-2 bg-green-50 rounded justify-center items-center gap-2.5 flex">
                     <div className="text-green-600 text-sm font-normal leading-none tracking-tight">Full-time</div>
@@ -144,17 +144,17 @@ const JobDescription = () => {
                 <div className="w-40 justify-start items-center gap-2 inline-flex">
                   <div className="justify-start items-center gap-1 flex">
                     <AiFillStar color="yellow" />
-                    <div className="text-black text-sm font-normal leading-none tracking-tight">3.5</div>
+                    <div className="text-black text-sm font-normal leading-none tracking-tight">{jobDetail?.company?.rating }</div>
                   </div>
                   <div className=" border-l border-indigo-100 h-4"></div>
-                  <div className="text-slate-500 text-sm font-normal leading-none tracking-tight">5k+ Reviews</div>
+                  <div className="text-slate-500 text-sm font-normal leading-none tracking-tight">{jobDetail?.company?.reviews }</div>
                 </div>
               </div>
             </div>
             <div className="justify-start items-start gap-5 inline-flex mt-2">
               <div className="justify-start items-center gap-2 flex">
                 <img src={locationIcon} alt="location" />
-                <div className="text-slate-500 text-base font-medium leading-snug tracking-tight">Hyderabad, Delhi, Mumbai</div>
+                <div className="text-slate-500 text-base font-medium leading-snug tracking-tight"></div>
               </div>
               <div className=" border-l border-indigo-100 h-4"></div>
               <div className="justify-start items-center gap-2 flex">
