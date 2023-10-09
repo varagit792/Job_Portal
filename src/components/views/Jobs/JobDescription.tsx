@@ -67,7 +67,7 @@ const JobDescription = () => {
                       {jobDetail?.totalExpYearEnd?.title[0]} Years
                     </span>
                   </div>
-                  <div className="justify-start items-center gap-2 flex">
+                  {!jobDetail?.hideSalaryDetails && <div className="justify-start items-center gap-2 flex">
                     <img src={moneyIcon} alt="moneyIcon" />
                     <span className="text-slate-500 text-base font-medium leading-snug tracking-tight">
                       {jobDetail?.payScaleLowerRange?.title} -
@@ -75,7 +75,7 @@ const JobDescription = () => {
                     {jobDetail?.payScaleUpperRange &&
                       <span className=" text-slate-500 text-base font-medium leading-snug tracking-tight"> {jobDetail?.payScaleUpperRange?.title} LPA
                       </span>}
-                  </div>
+                  </div>}
                   <div className="justify-start items-center gap-2 flex">
                     <img src={locationIcon} alt="location" />
 
