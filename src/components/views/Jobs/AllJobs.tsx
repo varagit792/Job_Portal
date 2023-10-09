@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { useAppDispatch, useAppSelector } from '../../../';
 import { getFilterJobs, clearGetFilterJobsSlice } from '../../../store/reducers/jobs/GetFilterJobs';
-import { getTotalYearsExpList, getDepartmentList } from '../../utils/utils';
+import { getTotalYearsExpList } from '../../utils/utils';
 import JobCard from './JobCard';
+import FiltersExperience from './FiltersExperience';
+import FiltersDepartment from './FiltersDepartment';
+import FiltersLocation from './FiltersLocation';
+import FiltersWorkMode from './FiltersWorkMode';
 import compenyBrand from '../../../assets/png/companyBrand.png';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import BMWIcon from '../../../assets/svg/BMWIcon.svg';
@@ -13,7 +17,6 @@ import BelleIcon from '../../../assets/svg/BelleIcon.svg';
 import DominousIcon from '../../../assets/svg/DominousIcon.svg';
 import GoproIcon from '../../../assets/svg/GoproIcon.svg';
 import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
-import { BiSearch } from 'react-icons/bi';
 
 const AllJobs = () => {
     const dispatch = useAppDispatch();
@@ -21,26 +24,23 @@ const AllJobs = () => {
     const [jobCard, setJobCard] = useState<any>([]);
     const [page, setPage] = useState(1);
     const [toggleDispach, setToggleDispach] = useState(true);
-    const [totalExpYear, setTotalExpYear] = useState<number>(0);
     const [department, setDepartment] = useState([]);
+    const [location, setLocation] = useState([]);
+    const [workMode, setWorkMode] = useState([]);
     const [filtersData, setFiltersData] = useState<any>({
         expYear: null,
-        department: []
+        department: [],
+        location: [],
+        workMode: []
     })
 
     useEffect(() => {
-        (async () => {
-            const departmentList = await getDepartmentList();
-            if (Object.keys(departmentList)?.length) {
-                setDepartment(departmentList);
-            }
-        })();
         window.addEventListener("scroll", handelInfiniteScroll);
         return () => window.removeEventListener("scroll", handelInfiniteScroll);
     }, []);
 
     useEffect(() => {
-        if (toggleDispach && (filtersData?.expYear !== null || (filtersData?.department !== undefined && filtersData?.department?.length !== 0))) {
+        if (toggleDispach && (filtersData?.expYear !== null || (filtersData?.department !== undefined && filtersData?.department?.length !== 0) || (filtersData?.location !== undefined && filtersData?.location?.length !== 0) || (filtersData?.workMode !== undefined && filtersData?.workMode?.length !== 0))) {
             dispatch(getFilterJobs({ page, data: filtersData }));
             setJobCard([]);
             setPage(1);
@@ -51,7 +51,7 @@ const AllJobs = () => {
 
     useEffect(() => {
         if (success) {
-            if (filtersData?.expYear !== null || (filtersData?.department !== undefined && filtersData?.department?.length !== 0)) {
+            if (filtersData?.expYear !== null || (filtersData?.department !== undefined && filtersData?.department?.length !== 0) || (filtersData?.location !== undefined && filtersData?.location?.length !== 0 || (filtersData?.workMode !== undefined && filtersData?.workMode?.length !== 0))) {
                 if (allJobs.length !== 0) {
                     setJobCard((prev: any) => [...prev, ...allJobs]);
                 } else {
@@ -88,7 +88,7 @@ const AllJobs = () => {
         });
     };
 
-    const handleTotalExpYearChange = () => {
+    const handleTotalExpYearChange = (totalExpYear: number) => {
         (async () => {
             const experienceYearsList = await getTotalYearsExpList();
             if (Object.keys(experienceYearsList)?.length) {
@@ -117,8 +117,9 @@ const AllJobs = () => {
     const handleDepartmentCheckbox = (data: any) => {
         scrollToTop();
         setToggleDispach(true);
+        setJobCard([]);
         setDepartment((prevMapData: any) =>
-            prevMapData.map((item: any) =>
+            prevMapData?.map((item: any) =>
                 item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
             )
         );
@@ -138,6 +139,60 @@ const AllJobs = () => {
                 }
             });
         }
+    };
+
+    const handleLocationCheckbox = (data: any) => {
+        scrollToTop();
+        setToggleDispach(true);
+        setJobCard([]);
+        setLocation((prevMapData: any) =>
+            prevMapData?.map((item: any) =>
+                item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
+            )
+        );
+        if (data?.isChecked === undefined || data?.isChecked === false) {
+            setFiltersData((preValue: any) => {
+                return {
+                    ...preValue,
+                    location: [...filtersData?.location, data?.id]
+                }
+            });
+        } else {
+            const listOfArray = filtersData?.location?.filter((item: any) => data?.id !== item);
+            setFiltersData((preValue: any) => {
+                return {
+                    ...preValue,
+                    location: listOfArray
+                }
+            });
+        }
+    }
+
+    const handleWorkModeCheckbox = (data: any) => {
+        scrollToTop();
+        setToggleDispach(true);
+        setJobCard([]);
+        setWorkMode((prevMapData: any) =>
+            prevMapData?.map((item: any) =>
+                item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
+            )
+        );
+        if (data?.isChecked === undefined || data?.isChecked === false) {
+            setFiltersData((preValue: any) => {
+                return {
+                    ...preValue,
+                    workMode: [...filtersData?.workMode, data?.id]
+                }
+            });
+        } else {
+            const listOfArray = filtersData?.workMode?.filter((item: any) => data?.id !== item);
+            setFiltersData((preValue: any) => {
+                return {
+                    ...preValue,
+                    workMode: listOfArray
+                }
+            });
+        }
     }
 
     const onClickJobCard = (jobId: any) => {
@@ -152,154 +207,25 @@ const AllJobs = () => {
                     <div className="bg-[#FFF] rounded-xl p-4 sticky top-[13%]">
                         <h1 className="flex justify-between items-center leading-none"><span className="text-[#475569] font-bold">Filters</span><span className="bg-[#F8FAFC] rounded px-2 py-1 text-[#4F46E5]">4</span></h1>
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <div className="w-full">
-                            <Disclosure>
-                                {({ open }) => (
-                                    <>
-                                        <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-semibold">Experience</label>
-                                            <ChevronUpIcon
-                                                className={`${open ? 'rotate-180 transform' : ''
-                                                    } h-5 w-5 text-gray-600`}
-                                            />
-                                        </Disclosure.Button>
-                                        <Disclosure.Panel className="mt-12">
-                                            <div className="relative mb-3">
-                                                <span id="inputRangeSelector" className="bg-[#C7D2FE] w-10 text-xs h-10 rounded-full text-[#312E81] absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-[#C7D2FE] after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center" style={{ left: `${totalExpYear * 2}%` }}>{totalExpYear}</span>
-                                                <input className="w-full h-1 rounded-lg cursor-pointer overflow-hidden appearance-none bg-[#C7D2FE]"
-                                                    type="range"
-                                                    min="0"
-                                                    max="50"
-                                                    value={totalExpYear}
-                                                    onMouseUp={handleTotalExpYearChange}
-                                                    onChange={(event: React.FormEvent<HTMLInputElement> | any) => {
-                                                        setTotalExpYear(parseInt(event.target.value));
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className="flex justify-between items-center text-[#64748B] text-xs">
-                                                <span>0 Yrs</span>
-                                                <span>30+ Yrs</span>
-                                            </div>
-                                        </Disclosure.Panel>
-                                    </>
-                                )}
-                            </Disclosure>
-                        </div>
+                        <FiltersExperience handleTotalExpYearChange={handleTotalExpYearChange} />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <div className="w-full">
-                            <Disclosure>
-                                {({ open }) => (
-                                    <>
-                                        <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-semibold">Department</label>
-                                            <ChevronUpIcon
-                                                className={`${open ? 'rotate-180 transform' : ''
-                                                    } h-5 w-5 text-gray-600`}
-                                            />
-                                        </Disclosure.Button>
-                                        <Disclosure.Panel className="mt-5">
-                                            {department?.slice(0, 5)?.map((item: any) => (
-                                                <div className="text-[#475569] mb-2 flex justify-start items-center">
-                                                    <input type="checkbox"
-                                                        defaultChecked={false}
-                                                        checked={item?.isChecked}
-                                                        onChange={() => handleDepartmentCheckbox(item)}
-                                                    />
-                                                    <label className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
-                                                </div>
-                                            ))}
-                                            <button className="text-[#4F46E5]">
-                                                View all...
-                                            </button>
-                                        </Disclosure.Panel>
-                                    </>
-                                )}
-                            </Disclosure>
-                        </div>
+                        <FiltersDepartment
+                            handleDepartmentCheckbox={handleDepartmentCheckbox}
+                            department={department}
+                            setDepartment={setDepartment}
+                        />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <div className="w-full">
-                            <Disclosure>
-                                {({ open }) => (
-                                    <>
-                                        <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-semibold">Location</label>
-                                            <ChevronUpIcon
-                                                className={`${open ? 'rotate-180 transform' : ''
-                                                    } h-5 w-5 text-gray-600`}
-                                            />
-                                        </Disclosure.Button>
-                                        <Disclosure.Panel>
-                                            <div className="relative flex items-center w-full py-1.5 border border-[#E0E7FF] rounded-lg overflow-hidden my-5">
-                                                <div className="grid place-items-center h-full w-12 text-gray-300">
-                                                    <BiSearch className="h-5 w-5" />
-                                                </div>
-                                                <input
-                                                    className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
-                                                    type="text"
-                                                    id="search"
-                                                    placeholder="Search something.." />
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">New Delhi</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Bangalore</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={true} />
-                                                <label className="ml-2">Hyderabad</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Noida</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Mumbai</label>
-                                            </div>
-                                            <button className="text-[#4F46E5]">View all...</button>
-                                        </Disclosure.Panel>
-                                    </>
-                                )}
-                            </Disclosure>
-                        </div>
+                        <FiltersLocation
+                            location={location}
+                            setLocation={setLocation}
+                            handleLocationCheckbox={handleLocationCheckbox}
+                        />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <div className="w-full">
-                            <Disclosure>
-                                {({ open }) => (
-                                    <>
-                                        <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-semibold">Work Mode</label>
-                                            <ChevronUpIcon
-                                                className={`${open ? 'rotate-180 transform' : ''
-                                                    } h-5 w-5 text-gray-600`}
-                                            />
-                                        </Disclosure.Button>
-                                        <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">On-site</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Remote</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={true} />
-                                                <label className="ml-2">Hybrid</label>
-                                            </div>
-                                            <div className="text-[#475569]">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Temp. Remote</label>
-                                            </div>
-                                        </Disclosure.Panel>
-                                    </>
-                                )}
-                            </Disclosure>
-                        </div>
+                        <FiltersWorkMode
+                            workMode={workMode}
+                            setWorkMode={setWorkMode}
+                            handleWorkModeCheckbox={handleWorkModeCheckbox}
+                        />
                         <hr className="bg-[#E0E7FF] my-5" />
                         <div className="w-full">
                             <Disclosure>

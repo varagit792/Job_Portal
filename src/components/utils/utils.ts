@@ -101,3 +101,6 @@ export const calculateWorkedTime = (startYear: any, startMonth: any) => {
     return { years: yearDiff, months: monthDiff };
 }
 
+export const getWorkModeList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/workMode/get`).then((res: any) => res.data.data)
+};

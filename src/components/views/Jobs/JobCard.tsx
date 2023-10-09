@@ -37,8 +37,8 @@ const JobCard = ({ onClickJobCard, jobCard, loading }: any) => {
                                 <span className="ml-2 leading-none">{item?.totalExpYearStart?.title} - {item?.totalExpYearEnd?.title}</span>
                             </div>
                         }
-                        {item?.payScaleUpperRange && <div className=" flex justify-start items-center ml-5 text-[#64748B] text-sm">
-                            <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2 leading-none">{item?.payScaleUpperRange}</span>
+                        {item?.payScaleUpperRange?.title && item?.payScaleLowerRange?.title && item?.recurrence?.title && item?.numberSystem?.title && <div className=" flex justify-start items-center ml-5 text-[#64748B] text-sm">
+                            <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2 leading-none">{item?.payScaleUpperRange?.title} {item?.numberSystem?.title} - {item?.payScaleLowerRange?.title} {item?.numberSystem?.title} {item?.recurrence?.title}</span>
                         </div>}
                         {item?.jobsLocation?.title && <div className=" flex justify-start items-center ml-5 text-[#64748B] text-sm">
                             <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2 leading-none">{item?.jobsLocation?.title}</span>
@@ -54,7 +54,7 @@ const JobCard = ({ onClickJobCard, jobCard, loading }: any) => {
                         </div>
                     }
                     <div className="flex items-center justify-start">
-                        <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-1.5 rounded-lg mr-5 text-sm">Remote</button>
+                        <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-1.5 rounded-lg mr-5 text-sm">{item?.workMode?.title}</button>
                         <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-1.5 rounded-lg mr-5 text-sm">Full-time</button>
                         <span className="text-[#94A3B8] text-sm">Posted {formatDistanceToNow(new Date(item?.createdAt), { addSuffix: true })}</span>
                     </div>
