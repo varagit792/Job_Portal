@@ -108,13 +108,13 @@ const JobDescription = () => {
               </div>
             </div>
           </div>
-          <div className="border border-[#E0E7FF] rounded-xl p-5 mt-4 bg-white" >
-            <div className="self-stretch  flex-col justify-start items-start gap-5 flex">
-              <div className="self-stretch text-slate-900 text-base font-bold leading-snug tracking-tight">Job Description
+          <div className="border border-[#E0E7FF] rounded-xl p-5 mt-4 bg-white " >
+            <div className="  flex-col justify-start items-start gap-5 flex-wrap">
+              <div className=" text-slate-900 text-base font-bold leading-snug tracking-tight">Job Description
               </div>
-              <span className="self-stretch text-slate-500 text-base font-medium  leading-snug tracking-tight">
-                {jobDetail?.jobDescription}
-              </span>
+              <div className=" w-full  text-slate-500 text-base font-medium  leading-snug tracking-tight flex flex-wrap">
+                <p className="w-full break-words"> {jobDetail?.jobDescription}</p>
+              </div>
             </div>
             <div className="self-stretch h-px border border-indigo-100 my-5"></div>
             <div className="self-stretch flex-col justify-start items-start gap-5 flex">
