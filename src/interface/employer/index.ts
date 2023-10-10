@@ -1,6 +1,29 @@
+export interface IFormInputsJobDetail {
+  title: string
+  department: { value: string; label: string; }
+  jobsRole: { value: string; label: string; }
+  jobsType: { value: string; label: string; }
+  employmentType: { value: string; label: string; }
+  workMode: { value: string; label: string; }
+  jobLocation: string[]
+  candidateRelocate: boolean
+  currency: { value: string; label: string; }
+  toSalaryRange: { value: string; label: string; }
+  fromSalaryRange: { value: string; label: string; }
+  numberSystem: { value: string; label: string; }
+  recurrence: { value: string; label: string; }
+  roleCategory: { value: string; label: string; }
+  jobDescription: string
+  jobsOpening: number
+  keyResponsibility: string
+
+}
+
+
 export interface IFormInputsPostAJob {
   title: string
   jobsType: { value: string; label: string; }
+  employmentType: { value: string; label: string; }
   keySkills: string[]
   department: { value: string; label: string; }
   roleCategory: { value: string; label: string; }
@@ -17,7 +40,7 @@ export interface IFormInputsPostAJob {
   numberSystem: { value: string; label: string; }
   recurrence: { value: string; label: string; }
   hideSalaryDetails: boolean
-  companyIndustry: { value: string; label: string; }
+  companyType: { value: string; label: string; }
   highestQualification: string[]
   premiumBTech: boolean
   premiumMBAAll: boolean
@@ -68,7 +91,7 @@ export interface PostJobUpdate {
   payScaleUpperRange: string;
   payScaleLowerRange: string;
   hideSalaryDetails: boolean
-  companyIndustry: string;
+  companyType: string;
   jobEducation: { education: { id: string }; }[]
   premiumBTech: boolean
   hideCompanyRating: boolean

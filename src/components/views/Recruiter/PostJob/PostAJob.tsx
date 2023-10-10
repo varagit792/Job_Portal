@@ -16,6 +16,10 @@ const PostJobSchema = yup.object().shape({
     value: yup.string().required("Please select employment type"),
     label: yup.string().required("Please select employment type"),
   }),
+  employmentType: yup.object().shape({
+    value: yup.string().required("Please select employment type"),
+    label: yup.string().required("Please select employment type"),
+  }),
   keySkills: yup.array()
     .min(2, 'Pick at least two keySkills')
     .max(10, 'Pick at most ten keySkills').required("Please select keySkills"),
@@ -73,7 +77,7 @@ const PostJobSchema = yup.object().shape({
     label: yup.string().required("Please select recurrence"),
   }),
   hideSalaryDetails: yup.boolean().label("Please checked hide salary details").required(),
-  companyIndustry: yup.object().shape({
+  companyType: yup.object().shape({
     value: yup.string().required("Please select industry"),
     label: yup.string().required("Please select industry"),
   }),
@@ -174,7 +178,7 @@ const PostAJob = () => {
       jobDetail?.payScaleUpperRange && setValue('toSalaryRange', { label: jobDetail?.payScaleUpperRange?.title, value: jobDetail?.payScaleUpperRange?.id.toString() });
       jobDetail?.numberSystem && setValue('numberSystem', { label: jobDetail?.numberSystem?.title, value: jobDetail?.numberSystem?.id.toString() });
       jobDetail?.recurrence && setValue('recurrence', { label: jobDetail?.recurrence?.title, value: jobDetail?.recurrence?.id.toString() });
-      jobDetail?.companyIndustry && setValue('companyIndustry', { label: jobDetail?.companyIndustry?.title, value: jobDetail?.companyIndustry?.id.toString() });
+      jobDetail?.companyType && setValue('companyType', { label: jobDetail?.companyType?.title, value: jobDetail?.companyType?.id.toString() });
       jobDetail?.jobEducation && setValue('highestQualification', selectedJobEducation);
       jobDetail?.premiumBTech && setValue('premiumBTech', jobDetail?.premiumBTech);
       jobDetail?.premiumMBAAll && setValue('premiumMBAAll', jobDetail?.premiumMBAAll);
@@ -325,7 +329,7 @@ const PostAJob = () => {
       jobLocality: jobLocality,
       currency: data?.currency?.value,
       hideSalaryDetails: data?.hideSalaryDetails,
-      companyIndustry: data?.companyIndustry?.value,
+      companyType: data?.companyType?.value,
       premiumBTech: data?.premiumBTech,
       keyResponsibility: data?.keyResponsibility,
       hideCompanyRating: data?.hideCompanyRating,
@@ -601,12 +605,12 @@ const PostAJob = () => {
                 <AutocompleteBox
                   control={control}
                   isClearable={true}
-                  fieldName={"companyIndustry"}
+                  fieldName={"companyType"}
                   dropdownData={industry?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
                   placeholder={"Select company industry"}
-                  defaultValue={watch("companyIndustry")}
+                  defaultValue={watch("companyType")}
                 />
-                {errors?.companyIndustry && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyIndustry?.label?.message}</p>}
+                {errors?.companyType && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyType?.label?.message}</p>}
               </div>
             </div>
             <div className="mb-4">

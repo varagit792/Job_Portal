@@ -117,6 +117,91 @@ const Response = () => {
 
               </div>
             </div>
+            <div className="w-full flex-col justify-start  gap-2 flex">
+              <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">On which email ids do you want to receive notifications of matching applies?</div>
+              <div className="grid grid-cols-8 gap-4 mt-1">
+                <div className="col-span-2">
+                  <div className="text-slate-700 text-sm">
+                    <input defaultValue={''}
+                      className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                      placeholder={"Please enter email address"}
+                      {...register("notificationEmailAddress1")} />
+                  </div>
+                </div>
+                <div className="col-span-2">
+                  <div className="text-slate-700 text-sm">
+                    <input defaultValue={''}
+                      className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                      placeholder={"Please enter email address"}
+                      {...register("notificationEmailAddress2")} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full flex-col justify-start items-start gap-2 flex">
+              <div className="self-stretch justify-start items-start gap-5 inline-flex">
+                <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
+                  <div className="w-6 h-6 justify-center items-center flex">
+                    <input
+                      type='checkbox'
+                      checked={watch("hideSalaryDetails")}
+                      {...register("hideSalaryDetails")}
+                      className='mx-3 w-4 h-4'
+                    />
+                    {errors?.hideSalaryDetails && <p className="font-normal text-xs text-red-500 absolute">{errors?.hideSalaryDetails?.message}</p>}</div>
+                  <div className="flex-col justify-start items-start gap-1 inline-flex">
+                    <div className="text-black text-base font-normal  leading-snug tracking-tight"> Hide salary details from candidates</div>
+                  </div>
+                </div>
+                <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
+                  <div className="w-6 h-6 justify-center items-center flex">
+                    <input
+                      type='checkbox'
+                      checked={watch("videoProfile")}
+                      {...register("videoProfile")}
+                      className='mx-3 w-4 h-4'
+                    />
+                    {errors?.videoProfile && <p className="font-normal text-xs text-red-500 absolute">{errors?.videoProfile?.message}</p>}
+                  </div>
+                  <div className="flex-col justify-start items-start gap-1 inline-flex">
+                    <div className="text-black text-base font-normal  leading-snug tracking-tight">Request candidate for video profile</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full flex-col justify-start items-start gap-2 flex">
+              <div className="self-stretch justify-start items-start gap-5 inline-flex">
+                <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
+                  <div className="w-6 h-6 justify-center items-center flex">
+                    <input
+                      type='checkbox'
+                      checked={watch("includeWalkInDetails")}
+                      {...register("includeWalkInDetails")}
+                      className='mx-3 w-4 h-4'
+                    />
+                    {errors?.includeWalkInDetails && <p className="font-normal text-xs text-red-500 absolute">{errors?.includeWalkInDetails?.message}</p>}</div>
+                  <div className="flex-col justify-start items-start gap-1 inline-flex">
+                    <div className="text-black text-base font-normal  leading-snug tracking-tight">  Include walk-in details</div>
+                  </div>
+                </div>
+                <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
+                  <div className="w-6 h-6 justify-center items-center flex">
+                    <input
+                      type='checkbox'
+                      checked={watch("notifyMeAbout")}
+                      {...register("notifyMeAbout")}
+                      className='mx-3 w-4 h-4'
+                    />
+                    {errors?.notifyMeAbout && <p className="font-normal text-xs text-red-500 absolute">{errors?.notifyMeAbout?.message}</p>}
+                  </div>
+                  <div className="flex-col justify-start items-start gap-1 inline-flex">
+                    <div className="text-black text-base font-normal  leading-snug tracking-tight"> Notify me about</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div className="self-stretch justify-start items-start gap-5 inline-flex">

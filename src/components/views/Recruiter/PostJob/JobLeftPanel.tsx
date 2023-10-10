@@ -52,6 +52,9 @@ const JobLeftPanel = () => {
           </li>
 
         </ul>
+        <div className="w-full h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 inline-flex">
+          <div className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight">Save as draft</div>
+        </div>
       </div>
     </>
   )

@@ -40,6 +40,7 @@ import getProfileIndicatorSlice from './jobSeekerProfile/profileIndicator';
 import getFilterJobsSlice from './jobs/GetFilterJobs';
 import getJobDetailReducer from './jobs/GetJobDetails';
 import getAllCompanies from './companies/getAllCompanies';
+import updatePostJobUpdateSlice from './jobs/postJobs';
 
 
 export const reducer = combineReducers({
@@ -83,4 +84,5 @@ export const reducer = combineReducers({
     getFilterJobs: getFilterJobsSlice,
     getJobDetail: getJobDetailReducer,
     getAllCompanies: getAllCompanies,
+    updatePostJobUpdate: updatePostJobUpdateSlice
 });

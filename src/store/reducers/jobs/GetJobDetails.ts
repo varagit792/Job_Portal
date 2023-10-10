@@ -134,7 +134,7 @@ interface GetJob {
     currency: Currency,
     fromSalaryRange: SalaryRange,
     toSalaryRange: SalaryRange,
-    companyIndustry: Industry,
+    companyType: Industry,
     jobEducation: Array<Education>,
     premiumBTech: boolean,
     premiumMBAAll: boolean,

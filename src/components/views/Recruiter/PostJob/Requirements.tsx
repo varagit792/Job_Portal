@@ -4,7 +4,7 @@ import JobLeftPanel from './JobLeftPanel'
 import { IFormInputsPostAJob } from '../../../../interface/employer';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
 import close from '../../../../assets/svg/close.svg';
-import { getCompanyList, getCurrencyList, getDepartmentList, getEmployeeTypeList, getHighestQualificationList, getIndustryList, getJobRoleList, getKeySkillsList, getLocalityList, getLocationList, getNumberSystemList, getRecurrenceList, getRoleCategoryList, getSalaryRangeList, getTotalYearsExpList, getWorkModeList } from '../../../utils/utils';
+import { getCompanyList, getCompanyTypeList, getCurrencyList, getDepartmentList, getEmployeeTypeList, getHighestQualificationList, getIndustryList, getJobRoleList, getKeySkillsList, getLocalityList, getLocationList, getNumberSystemList, getRecurrenceList, getRoleCategoryList, getSalaryRangeList, getTotalYearsExpList, getWorkModeList } from '../../../utils/utils';
 
 const Requirements = () => {
 
@@ -24,7 +24,8 @@ const Requirements = () => {
   const [recurrence, setRecurrence] = useState<any>([]);
   const [industry, setIndustry] = useState<any>([]);
   const [highestQualification, setHighestQualification] = useState<any>([]);
-  const [company, setCopmpany] = useState<any>([]);
+  const [company, setCompany] = useState<any>([]);
+  const [companyType, setCompanyType] = useState<any>([]);
 
   const {
     register,
@@ -112,61 +113,35 @@ const Requirements = () => {
       if (Object.keys(highestQualificationList)?.length) {
         setHighestQualification(highestQualificationList as any)
       }
+      const companyTypeList = await getCompanyTypeList()
+      if (Object.keys(companyTypeList)?.length) {
+        setCompanyType(companyTypeList as any)
+      }
 
       const companyList = await getCompanyList()
       if (Object.keys(companyList)?.length) {
-        setCopmpany(companyList as any)
+        setCompany(companyList as any)
       }
     })();
   }, [])
 
   return (
     <>
-      <div className="w-full h-auto flex-col justify-start items-start gap-10 inline-flex">
+      <div className="w-full h-auto flex-col justify-start  gap-10 inline-flex">
         <div className="text-black text-xl font-medium leading-normal tracking-tight">Requirements</div>
-        <div className="flex-col justify-start items-start gap-7 flex">
-          <div className="h-[158px] flex-col justify-start items-start gap-2 flex">
+        <div className="flex-col justify-start  gap-7 flex">
+          <div className="h-auto flex-col justify-start  gap-2 flex">
             <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Skills</div>
-            <div className="self-stretch p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-2 inline-flex">
-              <div className="grow shrink basis-0 h-auto justify-start items-center gap-2 flex">
-                <div className=" grow shrink basis-0 h-auto justify-start items-start gap-1 flex">
-
-                  <div className=" px-3 py-2 bg-slate-50 rounded-lg justify-center items-center gap-2.5 flex">
-                    <div className="text-black text-base font-normal leading-snug tracking-tight">Java</div>
-                    <div className="w-6 h-6 bg-slate-100 rounded justify-center items-center flex">
-                      <img src={close} alt="close" /></div>
-                  </div>
-                  <div className=" px-3 py-2 bg-slate-50 rounded-lg justify-center items-center gap-2.5 flex">
-                    <div className="text-black text-base font-normal leading-snug tracking-tight">Team Management</div>
-                    <div className="w-6 h-6 bg-slate-100 rounded justify-center items-center flex">
-                      <img src={close} alt="close" />
-                    </div>
-                  </div>
-                  <div className="px-3 py-2 bg-slate-50 rounded-lg justify-center items-center gap-2.5 flex">
-                    <div className="text-black text-base font-normal leading-snug tracking-tight">MS Excel</div>
-                    <div className="w-6 h-6 bg-slate-100 rounded justify-center items-center flex">
-                      <img src={close} alt="close" />
-                    </div>
-                  </div>
-                  <div className=" px-3 py-2 bg-slate-50 rounded-lg justify-center items-center gap-2.5 flex">
-                    <div className="text-black text-base font-normal leading-snug tracking-tight">Team Management</div>
-                    <div className="w-6 h-6 bg-slate-100 rounded justify-center items-center flex">
-                      <img src={close} alt="close" /></div>
-                  </div>
-                  <div className=" px-3 py-2 bg-slate-50 rounded-lg justify-center items-center gap-2.5 flex">
-                    <div className="text-black text-base font-normal leading-snug tracking-tight">Team Management</div>
-                    <div className="w-6 h-6 bg-slate-100 rounded justify-center items-center flex"><img src={close} alt="close" /></div>
-                  </div>
-                  <div className=" px-3 py-2 bg-slate-50 rounded-lg justify-center items-center gap-2.5 flex">
-                    <div className="text-black text-base font-normal leading-snug tracking-tight">Team Management</div>
-                    <div className="w-6 h-6 bg-slate-100 rounded justify-center items-center flex"><img src={close} alt="close" /></div>
-                  </div>
-                </div>
-              </div>
-              <div className="border-b border-slate-600 justify-start items-center gap-2.5 flex">
-                <div className="text-slate-600 text-sm font-medium leading-[16.80px] tracking-tight">Add</div>
-              </div>
-            </div>
+            <AutocompleteBox
+              control={control}
+              isClearable={true}
+              isMulti={true}
+              fieldName={"keySkills"}
+              dropdownData={keySkills?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
+              placeholder={"Select key Skills"}
+              defaultValue={watch("keySkills")}
+            />
+            {errors?.keySkills && <p className="font-normal text-xs text-red-500 absolute">{errors?.keySkills?.message}</p>}
             <div className="justify-start items-center gap-2 inline-flex">
               <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Available: 14/20</div>
             </div>
@@ -184,7 +159,34 @@ const Requirements = () => {
             />
             {errors?.highestQualification && <p className="font-normal text-xs text-red-500 absolute">{errors?.highestQualification?.message}</p>}
           </div>
-          <div className="w-full justify-start items-start gap-5 inline-flex">
+          <div className="w-full flex-col justify-start  gap-2 flex">
+            <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Candidate must have all the above specializations in undergraduate, postgraduate and doctorate</div>
+            <div className="grid grid-cols-8 gap-4 mt-1">
+              <div className="col-span-2">
+                <div className="text-slate-700 text-sm">
+                  <input
+                    type='checkbox'
+                    checked={watch("premiumBTech")}
+                    {...register("premiumBTech")}
+                    className='mx-3 w-4 h-4'
+                  /> Premium BTech (All)
+                  {errors?.premiumBTech && <p className="font-normal text-xs text-red-500 absolute">{errors?.premiumBTech?.message}</p>}
+                </div>
+              </div>
+              <div className="col-span-2">
+                <div className="text-slate-700 text-sm">
+                  <input
+                    type='checkbox'
+                    checked={watch("premiumMBAAll")}
+                    {...register("premiumMBAAll")}
+                    className='mx-3 w-4 h-4'
+                  />  Premium MBA (All)
+                  {errors?.premiumMBAAll && <p className="font-normal text-xs text-red-500 absolute">{errors?.premiumMBAAll?.message}</p>}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="w-full justify-start  gap-5 inline-flex">
             <div className="w-full flex-col justify-start  gap-2 inline-flex">
               <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Start Work Experience </div>
               <AutocompleteBox
@@ -211,8 +213,62 @@ const Requirements = () => {
             </div>
           </div>
 
+          <div className="w-full justify-start  gap-5 inline-flex">
+            <div className="w-full flex-col justify-start  gap-2 inline-flex">
+              <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Candidate Industry</div>
+              <AutocompleteBox
+                control={control}
+                isClearable={true}
+                isMulti={true}
+                fieldName={"candidateIndustry"}
+                dropdownData={industry?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
+                placeholder={"Select candidate industry"}
+                defaultValue={watch("candidateIndustry")}
+              />
+              {errors?.candidateIndustry && <p className="font-normal text-xs text-red-500 absolute">{errors?.candidateIndustry?.message}</p>}
+            </div>
+            <div className="w-full text-slate-700 text-sm font-normal flex-col justify-start  gap-2 inline-flex">
+              <div className=" leading-[16.80px] tracking-tight">Diversity Hiring </div>
+              <input
+                type='checkbox'
+                checked={watch("diversityHiring")}
+                {...register("diversityHiring")}
+                className='mx-3 w-4 h-4'
+              /> Hire women candidates for this role
+              {errors?.diversityHiring && <p className="font-normal text-xs text-red-500 absolute">{errors?.diversityHiring?.message}</p>}
+            </div>
+          </div>
+
+          <div className="w-full justify-start  gap-5 inline-flex">
+            <div className="w-full flex-col justify-start  gap-2 inline-flex">
+              <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Locality </div>
+              <AutocompleteBox
+                control={control}
+                isClearable={true}
+                isMulti={true}
+                fieldName={"jobLocality"}
+                dropdownData={locality?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
+                placeholder={"Select localities"}
+                defaultValue={watch("jobLocality")}
+              />
+              {errors?.jobLocality && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobLocality?.message}</p>}
+            </div>
+            <div className="w-full flex-col justify-start  gap-2 inline-flex">
+              <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Company Type </div>
+              <AutocompleteBox
+                control={control}
+                isClearable={true}
+                fieldName={"companyType"}
+                dropdownData={industry?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
+                placeholder={"Select company type"}
+                defaultValue={watch("companyType")}
+              />
+              {errors?.companyType && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyType?.label?.message}</p>}
+            </div>
+          </div>
+
         </div>
-        <div className="self-stretch justify-start items-start gap-5 inline-flex">
+        <div className="self-stretch justify-start  gap-5 inline-flex">
           <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex">
             <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight">Cancel</div>
           </div>
