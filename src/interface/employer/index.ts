@@ -28,8 +28,11 @@ export interface IFormInputsPostAJob {
   videoProfile: boolean
   includeWalkInDetails: boolean
   notifyMeAbout: boolean
+  hideCompanyRating: boolean
   notificationEmailAddress1: string
   notificationEmailAddress2: string
+  keyResponsibility: string
+  fillCompanyInformation: boolean
   company: { value: string; label: string; }
   companyWebsite: string
   aboutCompany: string
@@ -60,12 +63,15 @@ export interface PostJobUpdate {
   numberSystem: string;
   recurrence: string;
   currency: string;
+  keyResponsibility: string
+  fillCompanyInformation: boolean
   payScaleUpperRange: string;
   payScaleLowerRange: string;
   hideSalaryDetails: boolean
   companyIndustry: string;
   jobEducation: { education: { id: string }; }[]
   premiumBTech: boolean
+  hideCompanyRating: boolean
   premiumMBAAll: boolean
   jobCandidateIndustry: { candidateIndustry: { id: string; } }[]
   diversityHiring: boolean

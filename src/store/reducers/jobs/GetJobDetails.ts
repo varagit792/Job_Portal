@@ -148,6 +148,7 @@ interface GetJob {
     companyWebsite: string,
     aboutCompany: string,
     companyAddress: string,
+    keyResponsibility: string,
     hideSalaryDetails: boolean
 }
 interface GetJobState {

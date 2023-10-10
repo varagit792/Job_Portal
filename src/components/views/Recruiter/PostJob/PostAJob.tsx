@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppDispatch, useAppSelector } from '../../../../';
+import { useAppDispatch, useAppSelector } from '../../../..';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
 import { postJobUpdate } from '../../../../store/reducers/jobs/postJobs';
 import { IFormInputsPostAJob } from '../../../../interface/employer';
@@ -90,7 +90,9 @@ const PostJobSchema = yup.object().shape({
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
   videoProfile: yup.boolean().label("Please checked video profile").required(),
   includeWalkInDetails: yup.boolean().label("Please checked walk-in").required(),
+  hideCompanyRating: yup.boolean().label("Please checked hide company rating").required(),
   notifyMeAbout: yup.boolean().label("Please checked notify me").required(),
+  fillCompanyInformation: yup.boolean().label("Please checked company information").required(),
   notificationEmailAddress1: yup.string().label("Please enter notification email address 1").required(),
   notificationEmailAddress2: yup.string().label("Please enter notification email address 2").required(),
   company: yup.object().shape({
@@ -98,6 +100,7 @@ const PostJobSchema = yup.object().shape({
     label: yup.string().required("Please select company"),
   }),
   companyWebsite: yup.string().label("Please enter company website").required(),
+  keyResponsibility: yup.string().label("Please enter key responsibility").required(),
   aboutCompany: yup.string().label("Please enter about company").required(),
   companyAddress: yup.string().label("Please enter company address").required(),
 }).required();
@@ -187,6 +190,7 @@ const PostAJob = () => {
       jobDetail?.company && setValue('company', { label: jobDetail?.company?.title, value: jobDetail?.company?.id.toString() });
       jobDetail?.companyWebsite && setValue('companyWebsite', jobDetail?.companyWebsite);
       jobDetail?.aboutCompany && setValue('aboutCompany', jobDetail?.aboutCompany);
+      jobDetail?.keyResponsibility && setValue('keyResponsibility', jobDetail?.keyResponsibility);
       jobDetail?.companyAddress && setValue('companyAddress', jobDetail?.companyAddress);
     }
   }, [setValue, jobDetail]);
@@ -323,6 +327,9 @@ const PostAJob = () => {
       hideSalaryDetails: data?.hideSalaryDetails,
       companyIndustry: data?.companyIndustry?.value,
       premiumBTech: data?.premiumBTech,
+      keyResponsibility: data?.keyResponsibility,
+      hideCompanyRating: data?.hideCompanyRating,
+      fillCompanyInformation: data?.fillCompanyInformation,
       premiumMBAAll: data?.premiumMBAAll,
       jobCandidateIndustry: jobCandidateIndustry,
       diversityHiring: data?.diversityHiring,
@@ -762,6 +769,17 @@ const PostAJob = () => {
                 </div>
               </div>
             </div>
+
+            <div className="mb-4">
+              <div className="block text-sm font-medium leading-6 text-gray-900 ">Fill company information</div>
+              <div className="mt-1">
+                <input type="checkbox"
+                  {...register("fillCompanyInformation")}
+                  defaultChecked={true}
+                  className=" w-4 h-4" />
+                {errors?.company && <p className="font-normal text-xs text-red-500 absolute">{errors?.company?.message}</p>}
+              </div>
+            </div>
             <div className="mb-4">
               <div className="block text-sm font-medium leading-6 text-gray-900 ">Company Name</div>
               <div className="mt-1">
@@ -798,6 +816,17 @@ const PostAJob = () => {
               </div>
             </div>
             <div className="mb-4">
+              <div className="block text-sm font-medium leading-6 text-gray-900 ">Key responsibility</div>
+              <div className="mt-1">
+                <textarea defaultValue={''}
+                  className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                  placeholder={"Please enter key responsibility"}
+                  {...register("keyResponsibility")} ></textarea>
+
+                {errors?.aboutCompany && <p className="font-normal text-xs text-red-500 absolute">{errors?.aboutCompany?.message}</p>}
+              </div>
+            </div>
+            <div className="mb-4">
               <div className="block text-sm font-medium leading-6 text-gray-900 ">Company Address</div>
               <div className="mt-1">
                 <textarea defaultValue={''}
@@ -806,6 +835,17 @@ const PostAJob = () => {
                   {...register("companyAddress")} ></textarea>
 
                 {errors?.companyAddress && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyAddress?.message}</p>}
+              </div>
+            </div>
+            <div className="mb-4">
+              <div className="block text-sm font-medium leading-6 text-gray-900 ">Hide Company Rating</div>
+              <div className="mt-1">
+                <textarea defaultValue={''}
+                  className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                  placeholder={"Please check hide company rating"}
+                  {...register("hideCompanyRating")} ></textarea>
+
+                {errors?.hideCompanyRating && <p className="font-normal text-xs text-red-500 absolute">{errors?.hideCompanyRating?.message}</p>}
               </div>
             </div>
             <div className="mt-5 flex justify-end items-center">
