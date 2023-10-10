@@ -111,7 +111,7 @@ const JobDescription = () => {
             <div className="  flex-col justify-start items-start gap-5 flex-wrap">
               <div className=" text-slate-900 text-base font-bold leading-snug tracking-tight">Job Description
               </div>
-              <div className=" w-full  text-slate-500 text-base font-medium  leading-snug tracking-tight flex flex-wrap">
+              <div className=" w-full  text-slate-500 text-base font-medium  leading-snug tracking-tight flex flex-wrap mb-2">
                 <p className="w-full break-words"> {jobDetail?.jobDescription}</p>
               </div>
             </div>
