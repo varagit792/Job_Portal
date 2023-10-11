@@ -144,4 +144,3 @@ export const calculateWorkedTime = (startYear: any, startMonth: any) => {
 
   return { years: yearDiff, months: monthDiff };
 }
-
