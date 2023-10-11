@@ -124,6 +124,10 @@ export const getHighestQualificationList = async () => {
   return await axios.get(`${process.env.REACT_APP_API_PATH}/highestQualification/get`).then((res: any) => res.data.data)
 }
 
+export const getCompanyTypeList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/companyType/get`).then((res: any) => res.data.data)
+}
+
 export const calculateWorkedTime = (startYear: any, startMonth: any) => {
   const months: any = [
     'Jan', 'Feb', 'Mar', 'Apr',
