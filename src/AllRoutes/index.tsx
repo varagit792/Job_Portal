@@ -14,6 +14,7 @@ import AllCompanies from '../components/views/Companies/AllCompanies';
 import CompanyDescription from '../components/views/Companies/CompanyDescription';
 import PostAJob from '../components/views/Recruiter/PostJob/PostAJob';
 import PostJob from '../components/views/Recruiter/PostJob/PostJob';
+import NoMatch from '../components/views/NoMatch';
 
 const AllRoutes = () => {
     return (
@@ -34,7 +35,7 @@ const AllRoutes = () => {
                 <Route path="/postAJob?/:postId" element={<PostAJob />} />
                 <Route path="/postJob" element={<PostJob />} />
             </Route>
-
+            <Route path="*" element={ <NoMatch />} />
         </Routes>
     )
 }
