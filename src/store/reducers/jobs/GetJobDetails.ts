@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface Company {
+    reviews: any;
+    rating: any;
     id: number,
     title: string,
     status: boolean
@@ -134,7 +136,7 @@ interface GetJob {
     currency: Currency,
     fromSalaryRange: SalaryRange,
     toSalaryRange: SalaryRange,
-    companyIndustry: Industry,
+    companyType: Industry,
     jobEducation: Array<Education>,
     premiumBTech: boolean,
     premiumMBAAll: boolean,
@@ -148,6 +150,7 @@ interface GetJob {
     companyWebsite: string,
     aboutCompany: string,
     companyAddress: string,
+    keyResponsibility: string,
     hideSalaryDetails: boolean
 }
 interface GetJobState {
