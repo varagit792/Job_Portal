@@ -38,7 +38,7 @@ const JobCard = ({ onClickJobCard, jobCard, loading }: any) => {
                             </div>
                         }
                         {item?.payScaleUpperRange?.title && item?.payScaleLowerRange?.title && item?.recurrence?.title && item?.numberSystem?.title && <div className=" flex justify-start items-center ml-5 text-[#64748B] text-sm">
-                            <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2 leading-none">{item?.payScaleUpperRange?.title} {item?.numberSystem?.title} - {item?.payScaleLowerRange?.title} {item?.numberSystem?.title} {item?.recurrence?.title}</span>
+                            <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2 leading-none">{item?.payScaleLowerRange?.title} {item?.numberSystem?.title} - {item?.payScaleUpperRange?.title} {item?.numberSystem?.title} {item?.recurrence?.title}</span>
                         </div>}
                         {item?.jobsLocation?.title && <div className=" flex justify-start items-center ml-5 text-[#64748B] text-sm">
                             <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2 leading-none">{item?.jobsLocation?.title}</span>

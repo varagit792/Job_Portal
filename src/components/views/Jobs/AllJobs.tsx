@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { useAppDispatch, useAppSelector } from '../../../';
 import { getFilterJobs, clearGetFilterJobsSlice } from '../../../store/reducers/jobs/GetFilterJobs';
-import { getTotalYearsExpList } from '../../utils/utils';
+import { getTotalYearsExpList, getSalaryRangeList } from '../../utils/utils';
 import JobCard from './JobCard';
 import FiltersExperience from './FiltersExperience';
 import FiltersDepartment from './FiltersDepartment';
 import FiltersLocation from './FiltersLocation';
 import FiltersWorkMode from './FiltersWorkMode';
+import FiltersSalary from './FiltersSalary';
+import FiltersRoleCategory from './FiltersRoleCategory';
+import Modal from '../../commonComponents/Modal';
 import compenyBrand from '../../../assets/png/companyBrand.png';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import BMWIcon from '../../../assets/svg/BMWIcon.svg';
@@ -27,12 +30,16 @@ const AllJobs = () => {
     const [department, setDepartment] = useState([]);
     const [location, setLocation] = useState([]);
     const [workMode, setWorkMode] = useState([]);
+    const [roleCategory, setRoleCategory] = useState([]);
     const [filtersData, setFiltersData] = useState<any>({
         expYear: null,
         department: [],
         location: [],
-        workMode: []
-    })
+        workMode: [],
+        salary: null,
+        roleCategory: []
+    });
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         window.addEventListener("scroll", handelInfiniteScroll);
@@ -40,18 +47,20 @@ const AllJobs = () => {
     }, []);
 
     useEffect(() => {
-        if (toggleDispach && (filtersData?.expYear !== null || (filtersData?.department !== undefined && filtersData?.department?.length !== 0) || (filtersData?.location !== undefined && filtersData?.location?.length !== 0) || (filtersData?.workMode !== undefined && filtersData?.workMode?.length !== 0))) {
-            dispatch(getFilterJobs({ page, data: filtersData }));
-            setJobCard([]);
-            setPage(1);
-        } else {
-            dispatch(getFilterJobs({ page }));
+        if (toggleDispach) {
+            if (filtersData?.expYear !== null || (filtersData?.department !== undefined && filtersData?.department?.length !== 0) || (filtersData?.location !== undefined && filtersData?.location?.length !== 0) || (filtersData?.workMode !== undefined && filtersData?.workMode?.length !== 0) || filtersData?.salary !== null || (filtersData?.roleCategory !== undefined && filtersData?.roleCategory?.length !== 0)) {
+                dispatch(getFilterJobs({ page, data: filtersData }));
+                setJobCard([]);
+                setPage(1);
+            } else {
+                dispatch(getFilterJobs({ page }));
+            }
         }
     }, [dispatch, page, filtersData]);
 
     useEffect(() => {
         if (success) {
-            if (filtersData?.expYear !== null || (filtersData?.department !== undefined && filtersData?.department?.length !== 0) || (filtersData?.location !== undefined && filtersData?.location?.length !== 0 || (filtersData?.workMode !== undefined && filtersData?.workMode?.length !== 0))) {
+            if (filtersData?.expYear !== null || (filtersData?.department !== undefined && filtersData?.department?.length !== 0) || (filtersData?.location !== undefined && filtersData?.location?.length !== 0) || (filtersData?.workMode !== undefined && filtersData?.workMode?.length !== 0) || filtersData?.salary !== null || (filtersData?.roleCategory !== undefined && filtersData?.roleCategory?.length !== 0)) {
                 if (allJobs.length !== 0) {
                     setJobCard((prev: any) => [...prev, ...allJobs]);
                 } else {
@@ -195,6 +204,52 @@ const AllJobs = () => {
         }
     }
 
+    const handleSalaryFilter = (salary: number) => {
+        (async () => {
+            const salaryRangeList = await getSalaryRangeList();
+            if (Object.keys(salaryRangeList)?.length) {
+                const salaryRangeListData = await salaryRangeList?.filter((item: any) => parseInt(item?.title) === salary);
+                setFiltersData((preValue: any) => {
+                    return {
+                        ...preValue,
+                        salary: salaryRangeListData?.[0]?.id
+                    }
+                });
+                setJobCard([]);
+                setPage(1);
+                scrollToTop();
+                setToggleDispach(true);
+            }
+        })();
+    };
+
+    const handleRoleCategoryCheckbox = (data: any) => {
+        scrollToTop();
+        setToggleDispach(true);
+        setJobCard([]);
+        setRoleCategory((prevMapData: any) =>
+            prevMapData?.map((item: any) =>
+                item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
+            )
+        );
+        if (data?.isChecked === undefined || data?.isChecked === false) {
+            setFiltersData((preValue: any) => {
+                return {
+                    ...preValue,
+                    roleCategory: [...filtersData?.roleCategory, data?.id]
+                }
+            });
+        } else {
+            const listOfArray = filtersData?.roleCategory?.filter((item: any) => data?.id !== item);
+            setFiltersData((preValue: any) => {
+                return {
+                    ...preValue,
+                    roleCategory: listOfArray
+                }
+            });
+        }
+    }
+
     const onClickJobCard = (jobId: any) => {
         window.open(`/allJobs/jobDescription/${jobId}`, '_blank');
     }
@@ -213,6 +268,7 @@ const AllJobs = () => {
                             handleDepartmentCheckbox={handleDepartmentCheckbox}
                             department={department}
                             setDepartment={setDepartment}
+                            setIsOpen={setIsOpen}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
                         <FiltersLocation
@@ -227,35 +283,7 @@ const AllJobs = () => {
                             handleWorkModeCheckbox={handleWorkModeCheckbox}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <div className="w-full">
-                            <Disclosure>
-                                {({ open }) => (
-                                    <>
-                                        <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-semibold">Salary</label>
-                                            <ChevronUpIcon
-                                                className={`${open ? 'rotate-180 transform' : ''
-                                                    } h-5 w-5 text-gray-600`}
-                                            />
-                                        </Disclosure.Button>
-                                        <Disclosure.Panel className="mt-12">
-                                            <div className="relative mb-3">
-                                                <span id="inputRangeSelector" className="bg-[#C7D2FE] w-10 text-xs h-10 rounded-full text-[#312E81] absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-[#C7D2FE] after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center"></span>
-                                                <input className="w-full h-1 rounded-lg cursor-pointer overflow-hidden appearance-none bg-[#C7D2FE]"
-                                                    type="range"
-                                                    min="0"
-                                                    max="50"
-                                                />
-                                            </div>
-                                            <div className="flex justify-between items-center text-[#64748B] text-xs">
-                                                <span>4 LPA</span>
-                                                <span>50+ LPA</span>
-                                            </div>
-                                        </Disclosure.Panel>
-                                    </>
-                                )}
-                            </Disclosure>
-                        </div>
+                        <FiltersSalary handleSalaryFilter={handleSalaryFilter} />
                         <hr className="bg-[#E0E7FF] my-5" />
                         <div className="w-full">
                             <Disclosure>
@@ -295,43 +323,11 @@ const AllJobs = () => {
                             </Disclosure>
                         </div>
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <div className="w-full">
-                            <Disclosure>
-                                {({ open }) => (
-                                    <>
-                                        <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-semibold">Role Category</label>
-                                            <ChevronUpIcon
-                                                className={`${open ? 'rotate-180 transform' : ''
-                                                    } h-5 w-5 text-gray-600`}
-                                            />
-                                        </Disclosure.Button>
-                                        <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Engineering</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">IT and Information</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={true} />
-                                                <label className="ml-2">Consulting</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Marketing</label>
-                                            </div>
-                                            <div className="text-[#475569]">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Sales</label>
-                                            </div>
-                                        </Disclosure.Panel>
-                                    </>
-                                )}
-                            </Disclosure>
-                        </div>
+                        <FiltersRoleCategory
+                            roleCategory={roleCategory}
+                            setRoleCategory={setRoleCategory}
+                            handleRoleCategoryCheckbox={handleRoleCategoryCheckbox}
+                        />
                         <hr className="bg-[#E0E7FF] my-5" />
                         <div className="w-full">
                             <Disclosure>
@@ -559,8 +555,18 @@ const AllJobs = () => {
                     </div>
                 </div>
             </div >
+            <Modal
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                modalBody={
+                    <>
+                        <h1 className="font-bold absolute top-0 m-0 p-0 mt-6">Filters</h1>
+                     
+                    </>
+                }
+            />
         </>
     )
 }
 
-export default AllJobs
+export default AllJobs;
