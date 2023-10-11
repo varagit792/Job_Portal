@@ -21,6 +21,12 @@ const CompanyCard = ({ onClickCompanyCard, companyCard, loading }: any) => {
                                 <div className="ml-5">
                                     <h1 className="text-lg font-bold">{item?.title}</h1>
                                     <span className="text-[#94A3B8] text-sm">{item?.companyDescription}</span>
+                                    <div className="text-[#94A3B8] mt-1 text-xs flex justify-start items-center">
+                                        {Object.keys(item?.location).length > 0 && <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" />}
+                                        <div className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">
+                                            {item?.location?.map((loc: any) => <span>{loc?.title}, </span>)}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div>
