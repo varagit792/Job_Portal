@@ -1,9 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Disclosure } from '@headlessui/react';
+import { getTotalYearsExpList } from '../../utils/utils';
+import { useAppDispatch } from '../../../';
+import { setExpYears } from '../../../store/reducers/jobs/GetFilterJobs';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
 const FiltersExperience = ({ handleTotalExpYearChange }: any) => {
+    const dispatch = useAppDispatch();
     const [totalExpYear, setTotalExpYear] = useState<number>(0);
+    useEffect(() => {
+        (async () => {
+            const experienceYearsList = await getTotalYearsExpList();
+            if (Object.keys(experienceYearsList)?.length) {
+                dispatch(setExpYears(experienceYearsList));
+            }
+        })();
+    }, []);
     return (
         <div className="w-full">
             <Disclosure>

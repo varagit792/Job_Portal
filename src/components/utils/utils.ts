@@ -144,3 +144,10 @@ export const calculateWorkedTime = (startYear: any, startMonth: any) => {
 
   return { years: yearDiff, months: monthDiff };
 }
+
+export const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+};

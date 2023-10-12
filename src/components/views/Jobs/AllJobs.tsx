@@ -1,8 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { useAppDispatch, useAppSelector } from '../../../';
-import { getFilterJobs, clearGetFilterJobsSlice } from '../../../store/reducers/jobs/GetFilterJobs';
-import { getTotalYearsExpList, getSalaryRangeList } from '../../utils/utils';
+import {
+    getFilterJobs,
+    clearGetFilterJobsSlice,
+    setDepartment,
+    setLocation,
+    setWorkMode,
+    setRoleCategory,
+    setFilterDepartment,
+    setFilterLocation,
+    setFilterWorkMode,
+    setFilterRoleCategory,
+    setFilterExpYear,
+    setFilterSalary
+} from '../../../store/reducers/jobs/GetFilterJobs';
+import { scrollToTop } from '../../utils/utils';
 import JobCard from './JobCard';
 import FiltersExperience from './FiltersExperience';
 import FiltersDepartment from './FiltersDepartment';
@@ -10,7 +23,7 @@ import FiltersLocation from './FiltersLocation';
 import FiltersWorkMode from './FiltersWorkMode';
 import FiltersSalary from './FiltersSalary';
 import FiltersRoleCategory from './FiltersRoleCategory';
-import Modal from '../../commonComponents/Modal';
+import FiltersModal from './FiltersModal';
 import compenyBrand from '../../../assets/png/companyBrand.png';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import BMWIcon from '../../../assets/svg/BMWIcon.svg';
@@ -23,22 +36,17 @@ import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
 
 const AllJobs = () => {
     const dispatch = useAppDispatch();
-    const { success, allJobs, loading } = useAppSelector((state) => state.getFilterJobs);
+    const { success,
+        allJobs,
+        loading,
+        department,
+        location,
+        workMode,
+        roleCategory,
+        filtersData } = useAppSelector((state) => state.getFilterJobs);
     const [jobCard, setJobCard] = useState<any>([]);
     const [page, setPage] = useState(1);
     const [toggleDispach, setToggleDispach] = useState(true);
-    const [department, setDepartment] = useState([]);
-    const [location, setLocation] = useState([]);
-    const [workMode, setWorkMode] = useState([]);
-    const [roleCategory, setRoleCategory] = useState([]);
-    const [filtersData, setFiltersData] = useState<any>({
-        expYear: null,
-        department: [],
-        location: [],
-        workMode: [],
-        salary: null,
-        roleCategory: []
-    });
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -56,22 +64,14 @@ const AllJobs = () => {
                 dispatch(getFilterJobs({ page }));
             }
         }
-    }, [dispatch, page, filtersData]);
+    }, [dispatch, page, filtersData, toggleDispach]);
 
     useEffect(() => {
         if (success) {
-            if (filtersData?.expYear !== null || (filtersData?.department !== undefined && filtersData?.department?.length !== 0) || (filtersData?.location !== undefined && filtersData?.location?.length !== 0) || (filtersData?.workMode !== undefined && filtersData?.workMode?.length !== 0) || filtersData?.salary !== null || (filtersData?.roleCategory !== undefined && filtersData?.roleCategory?.length !== 0)) {
-                if (allJobs.length !== 0) {
-                    setJobCard((prev: any) => [...prev, ...allJobs]);
-                } else {
-                    setToggleDispach(false);
-                }
+            if (allJobs.length !== 0) {
+                setJobCard((prev: any) => [...prev, ...allJobs]);
             } else {
-                if (allJobs.length !== 0) {
-                    setJobCard((prev: any) => [...prev, ...allJobs]);
-                } else {
-                    setToggleDispach(false);
-                }
+                setToggleDispach(false);
             }
             dispatch(clearGetFilterJobsSlice());
         }
@@ -90,63 +90,26 @@ const AllJobs = () => {
         }
     };
 
-    const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    };
-
     const handleTotalExpYearChange = (totalExpYear: number) => {
-        (async () => {
-            const experienceYearsList = await getTotalYearsExpList();
-            if (Object.keys(experienceYearsList)?.length) {
-                const experienceYearsData = await experienceYearsList?.filter((item: any) => {
-                    let data = item?.title?.split('');
-                    let splitVal = data?.slice(0, data.length - 5);
-                    let joinedVal = parseInt(splitVal?.join(''));
-                    if (joinedVal === totalExpYear) {
-                        return item
-                    }
-                })
-                setFiltersData((preValue: any) => {
-                    return {
-                        ...preValue,
-                        expYear: experienceYearsData?.[0]?.id
-                    }
-                });
-                setJobCard([]);
-                setPage(1);
-                scrollToTop();
-                setToggleDispach(true);
-            }
-        })();
+        dispatch(setFilterExpYear(totalExpYear))
+        setPage(1);
+        scrollToTop();
+        setToggleDispach(true);
     };
 
     const handleDepartmentCheckbox = (data: any) => {
         scrollToTop();
         setToggleDispach(true);
         setJobCard([]);
-        setDepartment((prevMapData: any) =>
-            prevMapData?.map((item: any) =>
+        dispatch(setDepartment(
+            department?.map((item: any) =>
                 item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
             )
-        );
+        ));
         if (data?.isChecked === undefined || data?.isChecked === false) {
-            setFiltersData((preValue: any) => {
-                return {
-                    ...preValue,
-                    department: [...filtersData?.department, data?.id]
-                }
-            });
+            dispatch(setFilterDepartment(data?.id));
         } else {
-            const listOfArray = filtersData?.department?.filter((item: any) => data?.id !== item);
-            setFiltersData((preValue: any) => {
-                return {
-                    ...preValue,
-                    department: listOfArray
-                }
-            });
+            dispatch(setFilterDepartment({ filterDepartment: data?.id }));
         }
     };
 
@@ -154,101 +117,56 @@ const AllJobs = () => {
         scrollToTop();
         setToggleDispach(true);
         setJobCard([]);
-        setLocation((prevMapData: any) =>
-            prevMapData?.map((item: any) =>
+        dispatch(setLocation(
+            location?.map((item: any) =>
                 item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
             )
-        );
+        ))
         if (data?.isChecked === undefined || data?.isChecked === false) {
-            setFiltersData((preValue: any) => {
-                return {
-                    ...preValue,
-                    location: [...filtersData?.location, data?.id]
-                }
-            });
+            dispatch(setFilterLocation(data?.id));
         } else {
-            const listOfArray = filtersData?.location?.filter((item: any) => data?.id !== item);
-            setFiltersData((preValue: any) => {
-                return {
-                    ...preValue,
-                    location: listOfArray
-                }
-            });
+            dispatch(setFilterLocation({ filterLocation: data?.id }));
         }
-    }
+    };
 
     const handleWorkModeCheckbox = (data: any) => {
         scrollToTop();
         setToggleDispach(true);
         setJobCard([]);
-        setWorkMode((prevMapData: any) =>
-            prevMapData?.map((item: any) =>
+        dispatch(setWorkMode(
+            workMode?.map((item: any) =>
                 item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
             )
-        );
+        ));
         if (data?.isChecked === undefined || data?.isChecked === false) {
-            setFiltersData((preValue: any) => {
-                return {
-                    ...preValue,
-                    workMode: [...filtersData?.workMode, data?.id]
-                }
-            });
+            dispatch(setFilterWorkMode(data?.id));
         } else {
-            const listOfArray = filtersData?.workMode?.filter((item: any) => data?.id !== item);
-            setFiltersData((preValue: any) => {
-                return {
-                    ...preValue,
-                    workMode: listOfArray
-                }
-            });
+            dispatch(setFilterWorkMode({ filterWorkMode: data?.id }));
         }
-    }
+    };
 
     const handleSalaryFilter = (salary: number) => {
-        (async () => {
-            const salaryRangeList = await getSalaryRangeList();
-            if (Object.keys(salaryRangeList)?.length) {
-                const salaryRangeListData = await salaryRangeList?.filter((item: any) => parseInt(item?.title) === salary);
-                setFiltersData((preValue: any) => {
-                    return {
-                        ...preValue,
-                        salary: salaryRangeListData?.[0]?.id
-                    }
-                });
-                setJobCard([]);
-                setPage(1);
-                scrollToTop();
-                setToggleDispach(true);
-            }
-        })();
+        dispatch(setFilterSalary(salary));
+        setPage(1);
+        scrollToTop();
+        setToggleDispach(true);
     };
 
     const handleRoleCategoryCheckbox = (data: any) => {
         scrollToTop();
         setToggleDispach(true);
         setJobCard([]);
-        setRoleCategory((prevMapData: any) =>
-            prevMapData?.map((item: any) =>
+        dispatch(setRoleCategory(
+            roleCategory?.map((item: any) =>
                 item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
             )
-        );
+        ));
         if (data?.isChecked === undefined || data?.isChecked === false) {
-            setFiltersData((preValue: any) => {
-                return {
-                    ...preValue,
-                    roleCategory: [...filtersData?.roleCategory, data?.id]
-                }
-            });
+            dispatch(setFilterRoleCategory(data?.id));
         } else {
-            const listOfArray = filtersData?.roleCategory?.filter((item: any) => data?.id !== item);
-            setFiltersData((preValue: any) => {
-                return {
-                    ...preValue,
-                    roleCategory: listOfArray
-                }
-            });
+            dispatch(setFilterRoleCategory({ filterRoleCategory: data?.id }));
         }
-    }
+    };
 
     const onClickJobCard = (jobId: any) => {
         window.open(`/allJobs/jobDescription/${jobId}`, '_blank');
@@ -266,20 +184,14 @@ const AllJobs = () => {
                         <hr className="bg-[#E0E7FF] my-5" />
                         <FiltersDepartment
                             handleDepartmentCheckbox={handleDepartmentCheckbox}
-                            department={department}
-                            setDepartment={setDepartment}
                             setIsOpen={setIsOpen}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
                         <FiltersLocation
-                            location={location}
-                            setLocation={setLocation}
                             handleLocationCheckbox={handleLocationCheckbox}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
                         <FiltersWorkMode
-                            workMode={workMode}
-                            setWorkMode={setWorkMode}
                             handleWorkModeCheckbox={handleWorkModeCheckbox}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
@@ -324,8 +236,6 @@ const AllJobs = () => {
                         </div>
                         <hr className="bg-[#E0E7FF] my-5" />
                         <FiltersRoleCategory
-                            roleCategory={roleCategory}
-                            setRoleCategory={setRoleCategory}
                             handleRoleCategoryCheckbox={handleRoleCategoryCheckbox}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
@@ -555,16 +465,7 @@ const AllJobs = () => {
                     </div>
                 </div>
             </div >
-            <Modal
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                modalBody={
-                    <>
-                        <h1 className="font-bold absolute top-0 m-0 p-0 mt-6">Filters</h1>
-                     
-                    </>
-                }
-            />
+            <FiltersModal isOpen={isOpen} setIsOpen={setIsOpen} />
         </>
     )
 }

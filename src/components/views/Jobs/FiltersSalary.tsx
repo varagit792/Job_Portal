@@ -1,9 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Disclosure } from '@headlessui/react';
+import { getSalaryRangeList } from '../../utils/utils';
+import { useAppDispatch } from '../../../';
+import { setSalarys } from '../../../store/reducers/jobs/GetFilterJobs';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
 const FiltersSalary = ({ handleSalaryFilter }: any) => {
+    const dispatch = useAppDispatch();
     const [salary, setSalary] = useState<number>(0);
+    useEffect(() => {
+        (async () => {
+            const salaryRangeList = await getSalaryRangeList();
+            if (Object.keys(salaryRangeList)?.length) {
+                dispatch(setSalarys(salaryRangeList));
+            }
+        })();
+    }, []);
     return (
         <div className="w-full">
             <Disclosure>

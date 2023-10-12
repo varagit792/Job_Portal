@@ -1,17 +1,24 @@
 import { useEffect } from 'react';
 import { getWorkModeList } from '../../utils/utils';
+import { useAppSelector, useAppDispatch } from '../../../';
+import { setWorkMode } from '../../../store/reducers/jobs/GetFilterJobs';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
-const FiltersWorkMode = ({ workMode, setWorkMode, handleWorkModeCheckbox }: any) => {
+const FiltersWorkMode = ({ handleWorkModeCheckbox }: any) => {
+
+    const dispatch = useAppDispatch();
+    const { workMode } = useAppSelector((state) => state.getFilterJobs);
+
     useEffect(() => {
         (async () => {
             const workModeList = await getWorkModeList();
             if (Object.keys(workModeList)?.length) {
-                setWorkMode(workModeList);
+                dispatch(setWorkMode(workModeList));
             }
         })();
-    }, [])
+    }, []);
+
     return (
         <div className="w-full">
             <Disclosure>
