@@ -1,17 +1,23 @@
 import { useEffect } from 'react';
 import { getLocationList } from '../../utils/utils';
+import { useAppSelector, useAppDispatch } from '../../../';
+import { setLocation } from '../../../store/reducers/jobs/GetFilterJobs';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
-const FiltersLocation = ({ location, setLocation, handleLocationCheckbox }: any) => {
+const FiltersLocation = ({ handleLocationCheckbox }: any) => {
+    const dispatch = useAppDispatch();
+    const { location } = useAppSelector((state) => state.getFilterJobs);
+
     useEffect(() => {
         (async () => {
             const locationList = await getLocationList();
             if (Object.keys(locationList)?.length) {
-                setLocation(locationList);
+                dispatch(setLocation(locationList))
             }
         })();
-    }, [])
+    }, []);
+
     return (
         <div className="w-full">
             <Disclosure>

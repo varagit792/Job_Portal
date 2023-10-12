@@ -108,6 +108,13 @@ interface AllJobsState {
     error: boolean;
     success: boolean;
     allJobs: Array<AllJobs>;
+    department: any;
+    location: any;
+    workMode: any;
+    roleCategory: any;
+    expYear: any;
+    filtersData: any;
+    salary: any;
     errorMessage: string | undefined;
 }
 const initialState: AllJobsState = {
@@ -115,6 +122,20 @@ const initialState: AllJobsState = {
     error: false,
     success: false,
     allJobs: [],
+    department: [],
+    location: [],
+    workMode: [],
+    roleCategory: [],
+    expYear: [],
+    salary: [],
+    filtersData: {
+        expYear: null,
+        department: [],
+        location: [],
+        workMode: [],
+        salary: null,
+        roleCategory: []
+    },
     errorMessage: undefined,
 }
 
@@ -159,7 +180,80 @@ const getFilterJobsSlice = createSlice({
             state.success = false;
             return state;
         },
+        setDepartment: (state, action) => {
+            state.department = action.payload;
+        },
+        setLocation: (state, action) => {
+            state.location = action.payload;
+        },
+        setWorkMode: (state, action) => {
+            state.workMode = action.payload;
+        },
+        setRoleCategory: (state, action) => {
+            state.roleCategory = action.payload;
+        },
+        setExpYears: (state, action) => {
+            state.expYear = action.payload;
+        },
+        setSalarys: (state, action) => {
+            state.salary = action.payload;
+        },
+        setFilterDepartment: (state, action) => {
+            if (!action?.payload?.filterDepartment) {
+                state?.filtersData?.department?.push(action.payload);
+            } else {
+                state.filtersData.department = state?.filtersData?.department?.filter((item: any) => action?.payload?.filterDepartment !== item);
+            }
+        },
+        setFilterLocation: (state, action) => {
+            if (!action?.payload?.filterLocation) {
+                state?.filtersData?.location?.push(action.payload);
+            } else {
+                state.filtersData.location = state?.filtersData?.location?.filter((item: any) => action?.payload?.filterLocation !== item);
+            }
+        },
+        setFilterWorkMode: (state, action) => {
+            if (!action?.payload?.filterWorkMode) {
+                state?.filtersData?.workMode?.push(action.payload);
+            } else {
+                state.filtersData.workMode = state?.filtersData?.workMode?.filter((item: any) => action?.payload?.filterWorkMode !== item);
+            }
+        },
+        setFilterRoleCategory: (state, action) => {
+            if (!action?.payload?.filterRoleCategory) {
+                state?.filtersData?.roleCategory?.push(action.payload);
+            } else {
+                state.filtersData.roleCategory = state?.filtersData?.roleCategory?.filter((item: any) => action?.payload?.filterRoleCategory !== item);
+            }
+        },
+        setFilterExpYear: (state, action) => {
+            const experienceYearsData = state?.expYear?.filter((item: any) => {
+                let data = item?.title?.split('');
+                let splitVal = data?.slice(0, data.length - 5);
+                let joinedVal = parseInt(splitVal?.join(''));
+                if (joinedVal === action.payload) {
+                    return item
+                }
+            })
+            state.filtersData.expYear = experienceYearsData?.[0]?.id;
+        },
+        setFilterSalary: (state, action) => {
+            const salaryRangeListData = state?.salary?.filter((item: any) => parseInt(item?.title) === action.payload);
+            state.filtersData.salary = salaryRangeListData?.[0]?.id;
+        },
     }
 });
 export default getFilterJobsSlice.reducer;
-export const { clearGetFilterJobsSlice } = getFilterJobsSlice.actions;
+export const { clearGetFilterJobsSlice,
+    setDepartment,
+    setLocation,
+    setWorkMode,
+    setRoleCategory,
+    setExpYears,
+    setSalarys,
+    setFilterDepartment,
+    setFilterLocation,
+    setFilterWorkMode,
+    setFilterRoleCategory,
+    setFilterExpYear,
+    setFilterSalary } = getFilterJobsSlice.actions;

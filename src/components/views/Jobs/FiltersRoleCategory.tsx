@@ -1,17 +1,24 @@
 import { useEffect, useState } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { getRoleCategoryList } from '../../utils/utils';
+import { useAppSelector, useAppDispatch } from '../../../';
+import { setRoleCategory } from '../../../store/reducers/jobs/GetFilterJobs';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
-const FiltersRoleCategory = ({ roleCategory, setRoleCategory, handleRoleCategoryCheckbox }: any) => {
+const FiltersRoleCategory = ({ handleRoleCategoryCheckbox }: any) => {
+
+    const dispatch = useAppDispatch();
+    const { roleCategory } = useAppSelector((state) => state.getFilterJobs);
+
     useEffect(() => {
         (async () => {
             const roleCategoryList = await getRoleCategoryList();
             if (Object.keys(roleCategoryList)?.length) {
-                setRoleCategory(roleCategoryList);
+                dispatch(setRoleCategory(roleCategoryList));
             }
         })();
-    }, [])
+    }, []);
+
     return (
         <div className="w-full">
             <Disclosure>
