@@ -37,14 +37,14 @@ const AllRoutes = () => {
                 <Route path="/profile" element={<Profile />} />
                 {/* <Route path="/postAJob?/:postId" element={<PostAJob />} /> */}
                 <Route path="/postJob" >
-                    <Route path="jobDetails" element={<JobDetails />} />
+                    <Route path="jobDetails?/:postId" element={<JobDetails />} />
                     <Route path="requirements" element={<Requirements />} />
                     <Route path="company" element={<Company />} />
                     <Route path="recruiter" element={<Recruiter />} />
                     <Route path="response" element={<Response />} />
                 </Route>
             </Route>
-            <Route path="*" element={ <NoMatch />} />
+            <Route path="*" element={<NoMatch />} />
         </Routes>
     )
 }

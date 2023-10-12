@@ -7,8 +7,8 @@ export const PostJobDetailSchema = yup.object().shape({
     label: yup.string().required("Please select role category"),
   }),
   jobsRole: yup.object().shape({
-    value: yup.string().required("Please select role"),
-    label: yup.string().required("Please select role"),
+    value: yup.string().required("Please select job role"),
+    label: yup.string().required("Please select job role"),
   }),
   employmentType: yup.object().shape({
     value: yup.string().required("Please select employment type"),
@@ -19,8 +19,8 @@ export const PostJobDetailSchema = yup.object().shape({
     label: yup.string().required("Please select work mode"),
   }),
   jobLocation: yup.array()
-    .min(3, 'Pick at least three location')
-    .max(10, 'Pick at most ten location').required("Please select location"),
+    .min(1, 'Pick at least one location')
+    .max(3, 'Pick at most three location').required("Please select location"),
   jobsType: yup.object().shape({
     value: yup.string().required("Please select job type"),
     label: yup.string().required("Please select job type"),
@@ -155,8 +155,8 @@ export const PostJobSchema = yup.object().shape({
     label: yup.string().required("Please select work mode"),
   }),
   jobLocation: yup.array()
-    .min(3, 'Pick at least three location')
-    .max(10, 'Pick at most ten location').required("Please select location"),
+    .min(1, 'Pick at least one location')
+    .max(3, 'Pick at most three location').required("Please select location"),
 
   candidateRelocate: yup.boolean().label("Please checked candidate relocation").required(),
   jobLocality: yup.array()
