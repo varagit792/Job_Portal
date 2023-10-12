@@ -128,6 +128,11 @@ export const getCompanyTypeList = async () => {
   return await axios.get(`${process.env.REACT_APP_API_PATH}/companyType/get`).then((res: any) => res.data.data)
 }
 
+export const getJobTypeList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/jobType/get`).then((res: any) => res.data.data)
+}
+
+
 export const calculateWorkedTime = (startYear: any, startMonth: any) => {
   const months: any = [
     'Jan', 'Feb', 'Mar', 'Apr',

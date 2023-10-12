@@ -12,8 +12,11 @@ import AllJobs from '../components/views/Jobs/AllJobs';
 import JobDescription from '../components/views/Jobs/JobDescription';
 import AllCompanies from '../components/views/Companies/AllCompanies';
 import CompanyDescription from '../components/views/Companies/CompanyDescription';
-import PostAJob from '../components/views/Recruiter/PostJob/PostAJob';
-import PostJob from '../components/views/Recruiter/PostJob/PostJob';
+import JobDetails from '../components/views/Recruiter/PostJob/JobDetails';
+import Requirements from '../components/views/Recruiter/PostJob/Requirements';
+import Company from '../components/views/Recruiter/PostJob/Company';
+import Recruiter from '../components/views/Recruiter/PostJob/Recruiter';
+import Response from '../components/views/Recruiter/PostJob/Response';
 import NoMatch from '../components/views/NoMatch';
 
 const AllRoutes = () => {
@@ -32,8 +35,14 @@ const AllRoutes = () => {
             <Route path="/" element={<ProtectedRoute />}>
                 <Route path="/homePage" element={<HomePage />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/postAJob?/:postId" element={<PostAJob />} />
-                <Route path="/postJob" element={<PostJob />} />
+                {/* <Route path="/postAJob?/:postId" element={<PostAJob />} /> */}
+                <Route path="/postJob" >
+                    <Route path="jobDetails" element={<JobDetails />} />
+                    <Route path="requirements" element={<Requirements />} />
+                    <Route path="company" element={<Company />} />
+                    <Route path="recruiter" element={<Recruiter />} />
+                    <Route path="response" element={<Response />} />
+                </Route>
             </Route>
             <Route path="*" element={ <NoMatch />} />
         </Routes>
