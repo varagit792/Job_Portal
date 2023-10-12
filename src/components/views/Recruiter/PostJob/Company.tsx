@@ -123,7 +123,7 @@ const Company = () => {
                               placeholder={"Select company"}
                               defaultValue={watch("companyName")}
                             />
-                            {errors?.companyName && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyName?.message}</p>}
+                            {errors?.companyName && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyName?.label?.message}</p>}
                           </div>
                         </div>
                         <div className="w-full grow shrink basis-0  flex-col justify-start  gap-2 inline-flex">
@@ -141,7 +141,7 @@ const Company = () => {
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">About Company</div>
                         <div className='w-full'>
                           <textarea defaultValue={''}
-                            className='w-full h-[154px] border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                            className='w-full h-[75px] border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter about company"}
                             {...register("aboutCompany")} ></textarea>
 
@@ -155,7 +155,7 @@ const Company = () => {
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Company Address</div>
                         <div className='w-full'>
                           <textarea defaultValue={''}
-                            className='w-full border h-[130px] border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                            className='w-full border h-[75px] border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter company address"}
                             {...register("companyAddress")} ></textarea>
                           {errors?.companyAddress && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyAddress?.message}</p>}

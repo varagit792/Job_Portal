@@ -16,7 +16,6 @@ const JobDetails = () => {
   const navigate = useNavigate();
 
   const [employeeType, setEmployeeType] = useState<any>([]);
-  const [employeeTypeChecked, setEmployeeTypeChecked] = useState([{ id: '', checked: false }]);
   const [department, setDepartment] = useState<any>([]);
   const [roleCategory, setRoleCategory] = useState<any>([]);
   const [jobRole, setJobRole] = useState<any>([]);
@@ -51,7 +50,6 @@ const JobDetails = () => {
     jobDetail?.jobsLocation && jobDetail?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ value: item?.id, label: item?.title }));
     jobDetail?.jobLocality?.filter((item: any) => item && selectedJobLocality.push({ value: item?.locality?.id, label: item?.locality?.title }));
     jobDetail?.jobCandidateIndustry?.filter((item: any) => item && selectedCandidateIndustry.push({ value: item?.candidateIndustry?.id, label: item?.candidateIndustry?.title }));
-
   } else {
     jobDetailData?.jobsKeySkills?.filter((item: any) => item && selectedJobsKeySkills.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }));
     jobDetailData?.jobsLocation && jobDetailData?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ label: item.label, value: item.value }));
@@ -80,6 +78,7 @@ const JobDetails = () => {
       jobDetail?.jobsOpening && setValue('jobsOpening', jobDetail?.jobsOpening);
       jobDetail?.keyResponsibility && setValue('keyResponsibility', jobDetail?.keyResponsibility);
     } else {
+
       jobDetailData?.title && setValue('title', jobDetailData?.title);
       jobDetailData?.department && setValue('department', jobDetailData?.department);
       jobDetailData?.roleCategory && setValue('roleCategory', jobDetailData?.roleCategory);
@@ -262,7 +261,7 @@ const JobDetails = () => {
                               placeholder={"Select employment Type"}
                               defaultValue={watch("employmentType")}
                             />
-                            {errors?.employmentType && <p className="font-normal text-xs text-red-500 absolute">{errors?.employmentType?.message}</p>}
+                            {errors?.employmentType && <p className="font-normal text-xs text-red-500 absolute">{errors?.employmentType?.label?.message}</p>}
                           </div>
                         </div>
                         <div className=" flex-col gap-2 inline-flex">
@@ -308,19 +307,22 @@ const JobDetails = () => {
                               placeholder={"Select job type"}
                               defaultValue={watch("jobsType")}
                             />
-                            {errors?.jobsType && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobsType?.message}</p>}
+                            {errors?.jobsType && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobsType?.label?.message}</p>}
                           </div>
                         </div>
                       </div>
                       <div className="w-full grid grid-cols-1  gap-5 inline-flex">
                         <div className=" flex-col justify-start  gap-2 inline-flex">
                           <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">
-                            <input
-                              type='checkbox'
-                              checked={watch("candidateRelocate")}
-                              {...register("candidateRelocate")}
-                              className='mx-3 w-4 h-4'
-                            />Include candidates willing to relocate to Job locations(s)
+                            <div className='w-full'>
+                              <input
+                                type='checkbox'
+                                checked={watch("candidateRelocate")}
+                                {...register("candidateRelocate")}
+                                className='mx-3 w-4 h-4'
+                              />Include candidates willing to relocate to Job locations(s)
+                              {errors?.candidateRelocate && <p className="font-normal text-xs text-red-500 absolute">{errors?.candidateRelocate?.message}</p>}
+                            </div>
                           </div>
 
                         </div>
@@ -347,7 +349,7 @@ const JobDetails = () => {
                               default={watch("fromSalaryRange")}
                               placeholder={"Salary start range"}
                             />
-                            {errors?.fromSalaryRange && <div className="font-normal text-xs text-red-500 ">{errors?.fromSalaryRange?.message}</div>}
+                            {errors?.fromSalaryRange && <div className="font-normal text-xs text-red-500 ">{errors?.fromSalaryRange?.label?.message}</div>}
                           </div>
                           <div className="col-span-2">
                             <AutocompleteBox
@@ -358,7 +360,7 @@ const JobDetails = () => {
                               default={watch("toSalaryRange")}
                               placeholder={"Salary last range"}
                             />
-                            {errors?.toSalaryRange && <div className="font-normal text-xs text-red-500 ">{errors?.toSalaryRange?.message}</div>}
+                            {errors?.toSalaryRange && <div className="font-normal text-xs text-red-500 ">{errors?.toSalaryRange?.label?.message}</div>}
                           </div>
                           <div className="col-span-2">
                             <AutocompleteBox
@@ -369,7 +371,7 @@ const JobDetails = () => {
                               default={watch("numberSystem")}
                               placeholder={"Select number system"}
                             />
-                            {errors?.numberSystem && <div className="font-normal text-xs text-red-500 ">{errors?.numberSystem?.message}</div>}
+                            {errors?.numberSystem && <div className="font-normal text-xs text-red-500 ">{errors?.numberSystem?.label?.message}</div>}
                           </div>
                           <div className="col-span-1">
                             <AutocompleteBox
@@ -380,7 +382,7 @@ const JobDetails = () => {
                               default={watch("recurrence")}
                               placeholder={"Recurrence"}
                             />
-                            {errors?.recurrence && <div className="font-normal text-xs text-red-500 ">{errors?.recurrence?.message}</div>}
+                            {errors?.recurrence && <div className="font-normal text-xs text-red-500 ">{errors?.recurrence?.label?.message}</div>}
                           </div>
                         </div>
                       </div>

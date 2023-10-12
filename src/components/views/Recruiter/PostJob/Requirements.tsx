@@ -158,7 +158,7 @@ const Requirements = () => {
                           isMulti={true}
                           fieldName={"keySkills"}
                           dropdownData={keySkills?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
-                          placeholder={"Select key Skills"}
+                          placeholder={"Select key Skills (at least 2 skills)"}
                           defaultValue={watch("keySkills")}
                         />
                         {errors?.keySkills && <p className="font-normal text-xs text-red-500 absolute">{errors?.keySkills?.message}</p>}
@@ -173,7 +173,7 @@ const Requirements = () => {
                           isMulti={true}
                           fieldName={"education"}
                           dropdownData={highestQualification?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
-                          placeholder={"Select highest Qualification"}
+                          placeholder={"Select education (at least 2 qualification)"}
                           defaultValue={watch("education")}
                         />
                         {errors?.education && <p className="font-normal text-xs text-red-500 absolute">{errors?.education?.message}</p>}
@@ -209,27 +209,31 @@ const Requirements = () => {
                     <div className="w-full justify-start  gap-5 inline-flex">
                       <div className="w-full flex-col justify-start  gap-2 inline-flex">
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Start Work Experience </div>
-                        <AutocompleteBox
-                          control={control}
-                          isClearable={true}
-                          fieldName={"fromWorkExperience"}
-                          dropdownData={totalExpYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                          default={watch("fromWorkExperience")}
-                          placeholder={"Select work experience"}
-                        />
-                        {errors?.fromWorkExperience && <div className="font-normal text-xs text-red-500 ">{errors?.fromWorkExperience?.message}</div>}
+                        <div className='w-full'>
+                          <AutocompleteBox
+                            control={control}
+                            isClearable={true}
+                            fieldName={"fromWorkExperience"}
+                            dropdownData={totalExpYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                            default={watch("fromWorkExperience")}
+                            placeholder={"Select work experience"}
+                          />
+                          {errors?.fromWorkExperience && <div className="font-normal text-xs text-red-500 ">{errors?.fromWorkExperience?.label?.message}</div>}
+                        </div>
                       </div>
                       <div className="w-full flex-col justify-start  gap-2 inline-flex">
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">End Work Experience </div>
-                        <AutocompleteBox
-                          control={control}
-                          isClearable={true}
-                          fieldName={"toWorkExperience"}
-                          dropdownData={totalExpYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                          default={watch("toWorkExperience")}
-                          placeholder={"Select work experience"}
-                        />
-                        {errors?.toWorkExperience && <div className="font-normal text-xs text-red-500 ">{errors?.toWorkExperience?.message}</div>}
+                        <div className='w-full'>
+                          <AutocompleteBox
+                            control={control}
+                            isClearable={true}
+                            fieldName={"toWorkExperience"}
+                            dropdownData={totalExpYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                            default={watch("toWorkExperience")}
+                            placeholder={"Select work experience"}
+                          />
+                          {errors?.toWorkExperience && <div className="font-normal text-xs text-red-500 ">{errors?.toWorkExperience?.label?.message}</div>}
+                        </div>
                       </div>
                     </div>
                     <div className="w-full justify-start  gap-5 inline-flex">
@@ -242,7 +246,7 @@ const Requirements = () => {
                             isMulti={true}
                             fieldName={"candidateIndustry"}
                             dropdownData={industry?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
-                            placeholder={"Select candidate industry"}
+                            placeholder={"Select candidate industry (at least 2 industry)"}
                             defaultValue={watch("candidateIndustry")}
                           />
                           {errors?.candidateIndustry && <p className="font-normal text-xs text-red-500 absolute">{errors?.candidateIndustry?.message}</p>}
@@ -269,7 +273,7 @@ const Requirements = () => {
                             isMulti={true}
                             fieldName={"jobLocality"}
                             dropdownData={locality?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
-                            placeholder={"Select localities"}
+                            placeholder={"Select localities (at least 3 industry)"}
                             defaultValue={watch("jobLocality")}
                           />
                           {errors?.jobLocality && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobLocality?.message}</p>}
