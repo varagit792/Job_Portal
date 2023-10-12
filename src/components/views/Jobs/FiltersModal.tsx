@@ -1,12 +1,24 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { RxCross1 } from 'react-icons/rx';
 import FiltersDepartment from './FiltersDepartment';
+import { useAppDispatch } from '../../../';
+import {
+    bulkFilter,
+} from '../../../store/reducers/jobs/GetFilterJobs';
 
-const FiltersModal = ({ isOpen, setIsOpen }: any) => {
+const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
+    const dispatch = useAppDispatch();
+    const [departmentIds, setDepartmentIds] = useState([]);
     const closeDialog = () => {
         setIsOpen(false);
     };
+    const handleSubmit = () => {
+        setToggleDispach(true);
+        dispatch(bulkFilter({ bulkData: departmentIds }));
+        setIsOpen(false);
+    }
+
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={closeDialog}>
@@ -61,12 +73,12 @@ const FiltersModal = ({ isOpen, setIsOpen }: any) => {
                                         </ul>
                                     </div>
                                     <div className="col-start-4 col-end-13">
-                                        <FiltersDepartment />
+                                        <FiltersDepartment departmentIds={departmentIds} setDepartmentIds={setDepartmentIds} />
                                     </div>
                                 </div>
                                 <div className="p-5 float-right">
-                                    <button className="text-[#312E81] bg-[#EEF2FF] px-8 py-2 rounded-lg text-sm mr-5">Close</button>
-                                    <button className="text-white bg-[#4F46E5] px-8 py-2 rounded-lg text-sm">Apply</button>
+                                    <button className="text-[#312E81] bg-[#EEF2FF] px-8 py-2 rounded-lg text-sm mr-5" onClick={closeDialog}>Close</button>
+                                    <button className="text-white bg-[#4F46E5] px-8 py-2 rounded-lg text-sm" onClick={handleSubmit} >Apply</button>
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>

@@ -1,4 +1,5 @@
 import Loader from '../../commonComponents/Loader';
+import NoRecords from '../../commonComponents/NoRecords';
 import ThreeDots from '../../../assets/svg/threeDots.svg';
 import BookMark from '../../../assets/svg/bookMark.svg';
 import MoneyIcon from '../../../assets/svg/MoneyIcon.svg';
@@ -10,7 +11,7 @@ import { formatDistanceToNow } from 'date-fns';
 const JobCard = ({ onClickJobCard, jobCard, loading }: any) => {
     return (
         <>
-            {jobCard?.map((item: any) => (
+            {jobCard.length ? jobCard?.map((item: any) => (
                 <div className="py-5 px-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mb-5 cursor-pointer" onClick={() => onClickJobCard(item.id)} key={item.id}>
                     <div className="flex items-start justify-between">
                         <div className="flex justify-start items-start h-full">
@@ -59,10 +60,10 @@ const JobCard = ({ onClickJobCard, jobCard, loading }: any) => {
                         <span className="text-[#94A3B8] text-sm">Posted {formatDistanceToNow(new Date(item?.createdAt), { addSuffix: true })}</span>
                     </div>
                 </div >
-            ))}
+            )) : !loading && <NoRecords />}
             {loading && <Loader />}
         </>
     )
 }
 
-export default JobCard
+export default JobCard;

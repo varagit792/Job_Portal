@@ -3,9 +3,9 @@ import noRecordsFound from '../../assets/png/no-record-found.png';
 
 const NoRecords = () => {
   return (
-      <div className="h-[90%] bg-[#FFF] px-32">
-        <img src={ noRecordsFound } alt="noRecordsFound"/>
-      </div>
+    <div className="h-[37rem] bg-[#FFF] flex justify-center items-center rounded-lg">
+      <img src={noRecordsFound} alt="noRecordsFound" />
+    </div>
   )
 }
 

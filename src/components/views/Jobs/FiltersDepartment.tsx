@@ -6,11 +6,9 @@ import { setDepartment } from '../../../store/reducers/jobs/GetFilterJobs';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { BiSearch } from 'react-icons/bi';
 
-const FiltersDepartment = ({ handleDepartmentCheckbox, setIsOpen }: any) => {
-
+export const FiltersDepartmentSlice = ({ handleDepartmentCheckbox, setIsOpen }: any) => {
     const dispatch = useAppDispatch();
     const { department } = useAppSelector((state) => state.getFilterJobs);
-
     useEffect(() => {
         (async () => {
             const departmentList = await getDepartmentList();
@@ -19,10 +17,9 @@ const FiltersDepartment = ({ handleDepartmentCheckbox, setIsOpen }: any) => {
             }
         })();
     }, []);
-
     return (
         <div className="w-full h-full">
-            {handleDepartmentCheckbox ? <Disclosure>
+            <Disclosure>
                 {({
                     open
                 }) => <>
@@ -41,29 +38,55 @@ const FiltersDepartment = ({ handleDepartmentCheckbox, setIsOpen }: any) => {
                         </Disclosure.Panel>
                     </>}
             </Disclosure>
-                :
-                <div className="flex flex-col justify-between h-full px-5">
-                    <h1 className="font-semibold leading-none my-5 text-lg">Select department</h1>
-                    <div className="relative flex items-center w-full py-2 mb-3 border border-[#E0E7FF] rounded-lg overflow-hidden">
-                        <div className="grid place-items-center h-full w-12 text-gray-300">
-                            <BiSearch className="h-5 w-5" />
-                        </div>
-                        <input
-                            className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
-                            type="text"
-                            id="search"
-                            placeholder="Search department.." />
+        </div>
+    )
+}
+
+const FiltersDepartment = ({ setDepartmentIds, departmentIds }: any) => {
+    const dispatch = useAppDispatch();
+    const { department, filtersData } = useAppSelector((state) => state.getFilterJobs);
+
+    useEffect(() => {
+        setDepartmentIds([...filtersData?.department]);
+    }, []);
+
+    const handleDepartmentCheckbox = (data: any) => {
+        dispatch(setDepartment(
+            department?.map((item: any) =>
+                item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
+            )
+        ));
+        if (data?.isChecked === undefined || data?.isChecked === false) {
+            setDepartmentIds((preValue: number[]) => [...preValue, data?.id]);
+        } else {
+            const departmentFilter = departmentIds?.filter((item: any) => item !== data?.id);
+            setDepartmentIds(departmentFilter);
+        }
+
+    };
+    return (
+        <div className="w-full h-full">
+            <div className="flex flex-col justify-between h-full px-5">
+                <h1 className="font-semibold leading-none my-5 text-lg">Select department</h1>
+                <div className="relative flex items-center w-full py-2 mb-3 border border-[#E0E7FF] rounded-lg overflow-hidden">
+                    <div className="grid place-items-center h-full w-12 text-gray-300">
+                        <BiSearch className="h-5 w-5" />
                     </div>
-                    <div className="h-96 overflow-x-auto overflow-y-hidden flex flex-col flex-wrap">
-                        {department?.map((item: any) =>
-                            <div className="text-[#475569] flex justify-start items-center mt-1 text-sm w-1/2">
-                                <input type="checkbox" defaultChecked={false} checked={item?.isChecked} />
-                                <label className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
-                            </div>
-                        )}
-                    </div>
+                    <input
+                        className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
+                        type="text"
+                        id="search"
+                        placeholder="Search department.." />
                 </div>
-            }
+                <div className="h-96 overflow-x-auto overflow-y-hidden flex flex-col flex-wrap">
+                    {department?.map((item: any) =>
+                        <div className="text-[#475569] flex justify-start items-center mt-1 text-sm w-1/2">
+                            <input type="checkbox" defaultChecked={false} checked={item?.isChecked} onChange={() => handleDepartmentCheckbox(item)} />
+                            <label className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }
