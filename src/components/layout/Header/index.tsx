@@ -10,6 +10,8 @@ import { clearLogOutSlice, logOutUser } from '../../../store/reducers/logout';
 import { useDispatch } from 'react-redux';
 import PopoverHover from '../../commonComponents/PopoverHover';
 import JobCategory from './JobCategory';
+import ellipse32 from '../../../assets/svg/ellipse32.svg';
+import bell_Icons from '../../../assets/svg/bellIcons.svg';
 
 const Header = () => {
     const [auth, setAuth] = useState(false)
@@ -52,8 +54,8 @@ const Header = () => {
 
     return (
         <nav className="h-[10%] w-full bg-[#fff] font-sans border-b border-[#E0E1E6] px-32 flex items-center justify-between box-border fixed top-0 z-50">
-            <div className="flex space-x-6 items-center h-full">     
-                <Link className="text-[#4F46E5] border border-[#4F46E5] p-1 rounded-md font-semibold" to={`${auth}` ? "/homePage" : "/"}>JOB PORTAL</Link>                   
+            <div className="flex space-x-6 items-center h-full">
+                <Link className="text-[#4F46E5] border border-[#4F46E5] p-1 rounded-md font-semibold" to={`${auth}` ? "/homePage" : "/"}>JOB PORTAL</Link>
                 <div className="border border-gray-200 h-8"></div>
                 {/* Navigation Link*/}
                 <div className="flex space-x-6 items-center h-full">
@@ -124,8 +126,8 @@ const Header = () => {
                 </div> */}
                 <div className="border border-gray-200 h-8"></div>
                 {auth && <div className='float-left'>
-                    <img className='float-right' src='./ellipse32.svg' alt="image" />
-                    <img src='./bell-Icons.svg' alt="image" />
+                    <img className='float-right' src={ellipse32} alt="image" />
+                    <img src={bell_Icons} alt="image" />
                 </div>}
                 <div className="text-[#312E81]">
 

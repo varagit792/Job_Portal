@@ -16,10 +16,8 @@ const Response = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
-
 
   const {
     register,
@@ -33,19 +31,15 @@ const Response = () => {
   });
 
   const selectedJobsKeySkills: any = [];
+  const selectedJobsLocation: any = [];
+  const selectedJobLocality: any = [];
+  const selectedCandidateIndustry: any = [];
 
   jobDetailData?.jobsKeySkills?.filter((item: any) => item && selectedJobsKeySkills.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }));
-
-  const selectedJobsLocation: any = [];
-  jobDetailData?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ value: item?.location?.id, label: item?.location?.title }));
-
-  const selectedJobLocality: any = [];
+  jobDetailData?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ value: item?.location?.value, label: item?.location?.title }));
   jobDetailData?.jobLocality?.filter((item: any) => item && selectedJobLocality.push({ value: item?.locality?.id, label: item?.locality?.title }));
-
   const selectedJobEducation: any = [];
   jobDetailData?.jobEducation?.filter((item: any) => item && selectedJobEducation.push({ value: item?.education?.id, label: item?.education?.title }));
-
-  const selectedCandidateIndustry: any = [];
   jobDetailData?.jobCandidateIndustry?.filter((item: any) => item && selectedCandidateIndustry.push({ value: item?.candidateIndustry?.id, label: item?.candidateIndustry?.title }));
 
   useEffect(() => {
@@ -55,13 +49,11 @@ const Response = () => {
       jobDetailData?.jobsKeySkills && setValue('keySkills', selectedJobsKeySkills);
       jobDetailData?.department && setValue('department', jobDetailData?.department);
       jobDetailData?.roleCategory && setValue('roleCategory', jobDetailData?.roleCategory);
-
       jobDetailData?.videoProfile && setValue('videoProfile', jobDetailData?.videoProfile);
       jobDetailData?.includeWalkInDetails && setValue('includeWalkInDetails', jobDetailData?.includeWalkInDetails);
       jobDetailData?.notifyMeAbout && setValue('notifyMeAbout', jobDetailData?.notifyMeAbout);
       jobDetailData?.notificationEmailAddress1 && setValue('notificationEmailAddress1', jobDetailData?.notificationEmailAddress1);
       jobDetailData?.notificationEmailAddress2 && setValue('notificationEmailAddress2', jobDetailData?.notificationEmailAddress2);
-
       jobDetailData?.jobsRole && setValue('jobsRole', jobDetailData?.jobsRole);
       jobDetailData?.workMode && setValue('workMode', jobDetailData?.workMode);
       jobDetailData?.jobsLocation && setValue('jobLocation', selectedJobsLocation);
@@ -99,14 +91,10 @@ const Response = () => {
   }, [setValue, jobDetailData]);
 
   const onSubmit = (data: IFormInputsPostAJob) => {
-
     const keySkills = jobDetailData?.jobsKeySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.keySkills?.value } }));
     const jobLocation = jobDetailData?.jobsLocation?.map((location: any) => ({ location: { id: location?.value } }));
-    console.log("jobDetailData?.jobEducation==", jobDetailData?.jobEducation);
-
     const jobEducation = jobDetailData?.jobEducation?.map((education: any) => ({ education: education?.value }));
-    const jobLocality = jobDetailData?.jobLocality?.map((local: any) => local);
-
+    const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
     const jobCandidateIndustry = jobDetailData?.jobCandidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.candidateIndustry?.value } }));
     const updatePostId = jobDetailData.id ? Number(jobDetailData.id) : null;
 
@@ -153,16 +141,12 @@ const Response = () => {
       notifyMeAbout: data?.notifyMeAbout,
       notificationEmailAddress1: data?.notificationEmailAddress1,
       notificationEmailAddress2: data?.notificationEmailAddress2,
-
-
-
     }));
   }
 
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
-  console.log("jobDetailData===", jobDetailData);
 
   return (
     <>
@@ -184,7 +168,6 @@ const Response = () => {
                       <div className="self-stretch h-[129px] flex-col justify-start items-start gap-2 flex">
                         <div className="self-stretch h-[73px] flex-col justify-start items-start gap-2 flex">
                           <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Who can manage the responses?</div>
-
                           <div className="self-stretch h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-2 inline-flex">
                             <div className="grow shrink basis-0 self-stretch pr-6 justify-start items-center gap-2 flex">
                               <div className="grow shrink basis-0 h-6 justify-start items-center gap-2 flex">
@@ -204,7 +187,6 @@ const Response = () => {
                             </div>
                           </div>
                         </div>
-
                         <div className="self-stretch h-12 flex-col justify-start items-start gap-2 flex">
                           <div className="self-stretch h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-2 inline-flex">
                             <div className="grow shrink basis-0 self-stretch pr-12 justify-start items-center gap-2 flex">
@@ -222,57 +204,6 @@ const Response = () => {
                           </div>
                         </div>
                       </div>
-                      {/* <div className="w-full flex-col justify-start items-start gap-2 flex">
-                        <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">How often do you want to receive updates on email?</div>
-                        <div className="self-stretch justify-start items-start gap-5 inline-flex">
-                          <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
-                            <div className="w-6 h-6 justify-center items-center flex">
-                              <input type="checkbox"
-                                {...register("receiveUpdateOnEmail")}
-                                defaultChecked={true}
-                                className=" w-4 h-4" />
-                              {errors?.receiveUpdateOnEmail && <p className="font-normal text-xs text-red-500 absolute">{errors?.receiveUpdateOnEmail?.message}</p>}
-                            </div>
-                            <div className="flex-col justify-start items-start gap-1 inline-flex">
-                              <div className="text-black text-base font-normal  leading-snug tracking-tight">Daily</div>
-                            </div>
-                          </div>
-                          <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
-                            <div className="w-6 h-6 justify-center items-center flex">
-                              <input type="checkbox"
-                                {...register("receiveUpdateOnEmail")}
-                                defaultChecked={true}
-                                className=" w-4 h-4" />
-                            </div>
-                            <div className="flex-col justify-start items-start gap-1 inline-flex">
-                              <div className="text-black text-base font-normal  leading-snug tracking-tight">Every week</div>
-                            </div>
-                          </div>
-                          <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
-                            <div className="w-6 h-6 justify-center items-center flex">
-                              <input type="checkbox"
-                                {...register("receiveUpdateOnEmail")}
-                                defaultChecked={true}
-                                className=" w-4 h-4" />
-                            </div>
-                            <div className="flex-col justify-start items-start gap-1 inline-flex">
-                              <div className="text-black text-base font-normal  leading-snug tracking-tight">Every month</div>
-                            </div>
-                          </div>
-                          <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
-                            <div className="w-6 h-6 justify-center items-center flex">
-                              <input type="checkbox"
-                                {...register("receiveUpdateOnEmail")}
-                                defaultChecked={true}
-                                className=" w-4 h-4" />
-                            </div>
-                            <div className="flex-col justify-start items-start gap-1 inline-flex">
-                              <div className="text-black text-base font-normal  leading-snug tracking-tight">Every Hour</div>
-                            </div>
-                          </div>
-                          {errors?.receiveUpdateOnEmail && <p className="font-normal text-xs text-red-500 absolute">{errors?.receiveUpdateOnEmail?.message}</p>}
-                        </div>
-                      </div> */}
                       <div className="w-full flex-col justify-start  gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">On which email ids do you want to receive notifications of matching applies?</div>
                         <div className="grid grid-cols-4 gap-4 mt-1">
@@ -282,7 +213,6 @@ const Response = () => {
                                 className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                                 placeholder={"Please enter email address"}
                                 {...register("notificationEmailAddress1")} />
-
                             </div>
                             {errors?.notificationEmailAddress1 && <p className="font-normal text-xs text-red-500 absolute">{errors?.notificationEmailAddress1?.message}</p>}
                           </div>
@@ -297,7 +227,6 @@ const Response = () => {
                           </div>
                         </div>
                       </div>
-
                       <div className="w-full flex-col justify-start items-start gap-2 flex">
                         <div className="self-stretch justify-start items-start gap-5 inline-flex">
                           <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
@@ -329,7 +258,6 @@ const Response = () => {
                           </div>
                         </div>
                       </div>
-
                       <div className="w-full flex-col justify-start items-start gap-2 flex">
                         <div className="self-stretch justify-start items-start gap-5 inline-flex">
                           <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
@@ -369,7 +297,7 @@ const Response = () => {
                       <div className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight">Back</div>
                     </div>
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                      <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Finish'} />
+                      <button className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" >Finish</button>
                     </div>
                   </div>
                 </div>
