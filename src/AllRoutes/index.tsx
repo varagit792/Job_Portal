@@ -12,12 +12,12 @@ import AllJobs from '../components/views/Jobs/AllJobs';
 import JobDescription from '../components/views/Jobs/JobDescription';
 import AllCompanies from '../components/views/Companies/AllCompanies';
 import CompanyDescription from '../components/views/Companies/CompanyDescription';
-//import PostAJob from '../components/views/Recruiter/PostJob/PostAJob';
 import JobDetails from '../components/views/Recruiter/PostJob/JobDetails';
 import Requirements from '../components/views/Recruiter/PostJob/Requirements';
 import Company from '../components/views/Recruiter/PostJob/Company';
 import Recruiter from '../components/views/Recruiter/PostJob/Recruiter';
 import Response from '../components/views/Recruiter/PostJob/Response';
+import NoMatch from '../components/views/NoMatch';
 
 const AllRoutes = () => {
     return (
@@ -44,7 +44,7 @@ const AllRoutes = () => {
                     <Route path="response" element={<Response />} />
                 </Route>
             </Route>
-
+            <Route path="*" element={ <NoMatch />} />
         </Routes>
     )
 }
