@@ -18,7 +18,7 @@ import {
 import { scrollToTop } from '../../utils/utils';
 import JobCard from './JobCard';
 import FiltersExperience from './FiltersExperience';
-import FiltersDepartment from './FiltersDepartment';
+import { FiltersDepartmentSlice } from './FiltersDepartment';
 import FiltersLocation from './FiltersLocation';
 import FiltersWorkMode from './FiltersWorkMode';
 import FiltersSalary from './FiltersSalary';
@@ -182,7 +182,7 @@ const AllJobs = () => {
                         <hr className="bg-[#E0E7FF] my-5" />
                         <FiltersExperience handleTotalExpYearChange={handleTotalExpYearChange} />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <FiltersDepartment
+                        <FiltersDepartmentSlice
                             handleDepartmentCheckbox={handleDepartmentCheckbox}
                             setIsOpen={setIsOpen}
                         />
@@ -465,7 +465,7 @@ const AllJobs = () => {
                     </div>
                 </div>
             </div >
-            <FiltersModal isOpen={isOpen} setIsOpen={setIsOpen} />
+            <FiltersModal isOpen={isOpen} setIsOpen={setIsOpen} setToggleDispach={setToggleDispach} />
         </>
     )
 }

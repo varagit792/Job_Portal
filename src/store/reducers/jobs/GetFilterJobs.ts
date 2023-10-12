@@ -241,6 +241,9 @@ const getFilterJobsSlice = createSlice({
             const salaryRangeListData = state?.salary?.filter((item: any) => parseInt(item?.title) === action.payload);
             state.filtersData.salary = salaryRangeListData?.[0]?.id;
         },
+        bulkFilter: (state, action) => {
+            state.filtersData.department = action?.payload?.bulkData;
+        }
     }
 });
 export default getFilterJobsSlice.reducer;
@@ -256,4 +259,5 @@ export const { clearGetFilterJobsSlice,
     setFilterWorkMode,
     setFilterRoleCategory,
     setFilterExpYear,
-    setFilterSalary } = getFilterJobsSlice.actions;
+    setFilterSalary,
+    bulkFilter } = getFilterJobsSlice.actions;
