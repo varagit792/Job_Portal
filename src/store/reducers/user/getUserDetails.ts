@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 interface User {
+    isMobileVerified: any;
     id: number
     name: string
     email: string
@@ -19,7 +20,8 @@ const emptyUserData = (): User => ({
     accountType: '',
     accountId: '',
     mobileNumber: '',
-    userType: ''
+    userType: '',
+    isMobileVerified:false
 })
 
 interface getUserState {
