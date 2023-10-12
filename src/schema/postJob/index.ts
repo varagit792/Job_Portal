@@ -10,10 +10,6 @@ export const PostJobDetailSchema = yup.object().shape({
     value: yup.string().required("Please select role"),
     label: yup.string().required("Please select role"),
   }),
-  jobsType: yup.object().shape({
-    value: yup.string().required("Please select employment type"),
-    label: yup.string().required("Please select employment type"),
-  }),
   employmentType: yup.object().shape({
     value: yup.string().required("Please select employment type"),
     label: yup.string().required("Please select employment type"),
@@ -25,10 +21,11 @@ export const PostJobDetailSchema = yup.object().shape({
   jobLocation: yup.array()
     .min(3, 'Pick at least three location')
     .max(10, 'Pick at most ten location').required("Please select location"),
-
+  jobsType: yup.object().shape({
+    value: yup.string().required("Please select job type"),
+    label: yup.string().required("Please select job type"),
+  }),
   candidateRelocate: yup.boolean().label("Please checked candidate relocation").required(),
-
-
   toSalaryRange: yup.object().shape({
     value: yup.string().required("Please select salary"),
     label: yup.string().required("Please select salary"),
@@ -60,13 +57,80 @@ export const PostJobDetailSchema = yup.object().shape({
 }).required();
 
 
+export const RequirementSchema = yup.object().shape({
+  keySkills: yup.array()
+    .min(2, 'Pick at least two keySkills')
+    .max(10, 'Pick at most ten keySkills').required("Please select keySkills"),
+  education: yup.array()
+    .min(2, 'Pick at least two education')
+    .max(10, 'Pick at most ten education').required("Please select education"),
+  premiumBTech: yup.boolean().label("Please enter premium BTech").required(),
+  premiumMBAAll: yup.boolean().label("Please enter premium MBA").required(),
+  fromWorkExperience: yup.object().shape({
+    value: yup.string().required("Please select experience"),
+    label: yup.string().required("Please select experience"),
+  }),
+  toWorkExperience: yup.object().shape({
+    value: yup.string().required("Please select experience"),
+    label: yup.string().required("Please select experience"),
+  }),
+  candidateIndustry: yup.array()
+    .min(2, 'Pick at least two industry')
+    .max(10, 'Pick at most ten industry').required("Please select industry"),
+  diversityHiring: yup.boolean().label("Please checked diversity hiring").required(),
+  jobLocality: yup.array()
+    .min(2, 'Pick at least three job locality')
+    .max(3, 'Pick at most three job locality').required("Please select job locality"),
+  companyType: yup.object().shape({
+    value: yup.string().required("Please select industry"),
+    label: yup.string().required("Please select industry"),
+  }),
+}).required();
 
+
+export const CompanySchema = yup.object().shape({
+  companyName: yup.object().shape({
+    value: yup.string().required("Please select company"),
+    label: yup.string().required("Please select company"),
+  }),
+  fillCompanyInformation: yup.boolean().label("Please checked fill company information").required(),
+  companyWebsite: yup.string().label("Please enter company website").required(),
+  aboutCompany: yup.string().label("Please enter about company").required(),
+  companyAddress: yup.string().label("Please enter company address").required(),
+  hideCompanyRating: yup.boolean().label("Please checked hide company rating").required(),
+
+}).required();
+
+
+export const RecruiterSchema = yup.object().shape({
+
+  fillCompanyInformation: yup.boolean().label("Please checked fill company information").required(),
+
+}).required();
+
+
+export const ResponseSchema = yup.object().shape({
+  // receiveUpdateOnEmail: yup.array()
+  //   .min(1, 'Pick at least one location')
+  //   .max(3, 'Pick at most three location').required("Please check at least one"),
+  notificationEmailAddress1: yup.string().label("Please enter notification email address 1").required(),
+  notificationEmailAddress2: yup.string().label("Please enter notification email address 2").required(),
+  hideSalaryDetails: yup.boolean().label("Please checked hide salary details").required(),
+  videoProfile: yup.boolean().label("Please checked video profile").required(),
+  includeWalkInDetails: yup.boolean().label("Please checked walk-in").required(),
+  notifyMeAbout: yup.boolean().label("Please checked notify me").required(),
+
+}).required();
 
 
 
 export const PostJobSchema = yup.object().shape({
   title: yup.string().label("Please enter job title").required(),
   jobsType: yup.object().shape({
+    value: yup.string().required("Please select employment type"),
+    label: yup.string().required("Please select employment type"),
+  }),
+  employmentType: yup.object().shape({
     value: yup.string().required("Please select employment type"),
     label: yup.string().required("Please select employment type"),
   }),
@@ -94,7 +158,10 @@ export const PostJobSchema = yup.object().shape({
     .min(3, 'Pick at least three location')
     .max(10, 'Pick at most ten location').required("Please select location"),
 
-
+  candidateRelocate: yup.boolean().label("Please checked candidate relocation").required(),
+  jobLocality: yup.array()
+    .min(2, 'Pick at least three job locality')
+    .max(3, 'Pick at most three job locality').required("Please select job locality"),
   fromWorkExperience: yup.object().shape({
     value: yup.string().required("Please select experience"),
     label: yup.string().required("Please select experience"),
@@ -143,9 +210,8 @@ export const PostJobSchema = yup.object().shape({
   includeWalkInDetails: yup.boolean().label("Please checked walk-in").required(),
   hideCompanyRating: yup.boolean().label("Please checked hide company rating").required(),
   notifyMeAbout: yup.boolean().label("Please checked notify me").required(),
-  fillCompanyInformation: yup.boolean().label("Please checked company information").required(),
-  notificationEmailAddress1: yup.string().label("Please enter notification email address 1").required(),
-  notificationEmailAddress2: yup.string().label("Please enter notification email address 2").required(),
+  notificationEmailAddress1: yup.string().label("Notification email address 1").required(),
+  notificationEmailAddress2: yup.string().label("Notification email address 2").required(),
   company: yup.object().shape({
     value: yup.string().required("Please select company"),
     label: yup.string().required("Please select company"),
@@ -154,4 +220,7 @@ export const PostJobSchema = yup.object().shape({
   keyResponsibility: yup.string().label("Please enter key responsibility").required(),
   aboutCompany: yup.string().label("Please enter about company").required(),
   companyAddress: yup.string().label("Please enter company address").required(),
+  // receiveUpdateOnEmail: yup.array()
+  //   .min(1, 'Pick at least one location')
+  //   .max(3, 'Pick at most three location').required("Please check at least one"),
 }).required();

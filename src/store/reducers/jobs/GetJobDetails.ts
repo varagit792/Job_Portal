@@ -97,6 +97,11 @@ interface JobsKeySkills {
     preferred: boolean,
     keySkills: KeySkills
 }
+interface employmentType {
+    id: number,
+    title: string,
+    status: boolean
+}
 interface WorkMode {
     id: number,
     title: string,
@@ -121,6 +126,7 @@ interface GetJob {
     jobsLocation: Array<JobsLocation>,
     jobsRole: JobsRole,
     industryType: industryType,
+    employmentType: employmentType,
     department: Department,
     employeeType: EmployeeType,
     jobsType: JobType,
@@ -140,6 +146,7 @@ interface GetJob {
     premiumMBAAll: boolean,
     jobCandidateIndustry: Array<Industry>,
     diversityHiring: boolean,
+    hideCompanyRating: boolean,
     videoProfile: boolean,
     includeWalkInDetails: boolean,
     notifyMeAbout: boolean,

@@ -139,7 +139,7 @@ const PostAJob = () => {
     setValue,
     formState: { errors }
   } = useForm<IFormInputsPostAJob>({
-    resolver: yupResolver(PostJobSchema),
+    // resolver: yupResolver(PostJobSchema),
   });
   const selectedJobsKeySkills: any = [];
 
@@ -333,7 +333,7 @@ const PostAJob = () => {
       premiumBTech: data?.premiumBTech,
       keyResponsibility: data?.keyResponsibility,
       hideCompanyRating: data?.hideCompanyRating,
-      fillCompanyInformation: data?.fillCompanyInformation,
+      //fillCompanyInformation: data?.fillCompanyInformation,
       premiumMBAAll: data?.premiumMBAAll,
       jobCandidateIndustry: jobCandidateIndustry,
       diversityHiring: data?.diversityHiring,

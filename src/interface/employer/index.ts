@@ -2,10 +2,10 @@ export interface IFormInputsJobDetail {
   title: string
   department: { value: string; label: string; }
   jobsRole: { value: string; label: string; }
-  jobsType: { value: string; label: string; }
   employmentType: { value: string; label: string; }
   workMode: { value: string; label: string; }
   jobLocation: string[]
+  jobsType: { value: string; label: string; }
   candidateRelocate: boolean
   currency: { value: string; label: string; }
   toSalaryRange: { value: string; label: string; }
@@ -18,6 +18,48 @@ export interface IFormInputsJobDetail {
   keyResponsibility: string
 
 }
+
+export interface IFormInputsRequirement {
+
+  keySkills: string[]
+  education: string[]
+  premiumBTech: boolean
+  premiumMBAAll: boolean
+  fromWorkExperience: { value: string; label: string; }
+  toWorkExperience: { value: string; label: string; }
+  candidateIndustry: string[]
+  diversityHiring: boolean
+  jobLocality: string[]
+  companyType: { value: string; label: string; }
+
+}
+
+
+export interface IFormInputsCompany {
+  companyName: { value: string; label: string; }
+  companyWebsite: string
+  aboutCompany: string
+  companyAddress: string
+  hideCompanyRating: boolean
+  fillCompanyInformation: boolean
+}
+
+export interface IFormInputsRecruiter {
+  fillCompanyInformation: boolean
+}
+
+
+export interface IFormInputsResponse {
+  //receiveUpdateOnEmail: string[]
+  notificationEmailAddress1: string
+  notificationEmailAddress2: string
+  hideSalaryDetails: boolean
+  videoProfile: boolean
+  includeWalkInDetails: boolean
+  notifyMeAbout: boolean
+
+}
+
 
 
 export interface IFormInputsPostAJob {
@@ -55,11 +97,11 @@ export interface IFormInputsPostAJob {
   notificationEmailAddress1: string
   notificationEmailAddress2: string
   keyResponsibility: string
-  fillCompanyInformation: boolean
   company: { value: string; label: string; }
   companyWebsite: string
   aboutCompany: string
   companyAddress: string
+  // receiveUpdateOnEmail: string[]
 
 }
 
@@ -87,7 +129,7 @@ export interface PostJobUpdate {
   recurrence: string;
   currency: string;
   keyResponsibility: string
-  fillCompanyInformation: boolean
+  employmentType: string
   payScaleUpperRange: string;
   payScaleLowerRange: string;
   hideSalaryDetails: boolean
@@ -112,4 +154,5 @@ export interface PostJobUpdate {
   companyAddress: string
   user: string
   status: boolean
+
 }

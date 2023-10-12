@@ -19,55 +19,13 @@ const initialState: registerUserState = {
   error: false,
   success: false,
   postJob: [],
-  formData: {
-    //   id: '',
-    //   title: '',
-    //   payScaleLowerRange: '',
-    //   jobsOpening: '',
-    //   userType: "employer",
-    //   payScaleUpperRange: '',
-    //   jobDescription: '',
-    //   company: '',
-    //   totalExpYearStart: '',
-    //   totalExpYearEnd: '',
-    //   numberSystem: '',
-    //   recurrence: '',
-    //   jobsLocation: '',
-    //   jobsRole: '',
-    //   department: '',
-    //   jobsType: '',
-    //   roleCategory: '',
-    //   jobEducation: '',
-    //   user: "1",
-    //   jobsKeySkills: '',
-    //   status: '',
-    //   workMode: '',
-    //   candidateRelocate: '',
-    //   jobLocality: '',
-    //   currency: '',
-    //   hideSalaryDetails: '',
-    //   companyType: '',
-    //   premiumBTech: '',
-    //   keyResponsibility: '',
-    //   hideCompanyRating: '',
-    //   fillCompanyInformation: '',
-    //   premiumMBAAll: '',
-    //   jobCandidateIndustry: '',
-    //   diversityHiring: '',
-    //   videoProfile: '',
-    //   includeWalkInDetails: '',
-    //   notifyMeAbout: '',
-    //   notificationEmailAddress1: '',
-    //   notificationEmailAddress2: '',
-    //   companyWebsite: '',
-    //   aboutCompany: '',
-    //   companyAddress: ''
-  },
+  formData: {},
   errorMessage: undefined,
 }
 
 export const postJobUpdate = createAsyncThunk(
   "postJob", async (data: PostJobUpdate) => {
+    console.log("data====", data);
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
@@ -79,7 +37,7 @@ export const postJobUpdate = createAsyncThunk(
         }
       );
       if (response.status >= 200 && response.status < 300) {
-
+        console.log("formData===", response.status);
         return response.data;
       }
     } catch (error) {
