@@ -25,22 +25,22 @@ export const PostJobDetailSchema = yup.object().shape({
     value: yup.string().required("Please select job type"),
     label: yup.string().required("Please select job type"),
   }),
-  candidateRelocate: yup.boolean().label("Please checked candidate relocation").required(),
+  candidateRelocate: yup.boolean().default(false),
   toSalaryRange: yup.object().shape({
-    value: yup.string().required("Please select salary"),
-    label: yup.string().required("Please select salary"),
+    value: yup.string().required("Salary last range"),
+    label: yup.string().required("Salary last range"),
   }),
   fromSalaryRange: yup.object().shape({
-    value: yup.string().required("Please select salary"),
-    label: yup.string().required("Please select salary"),
+    value: yup.string().required("Salary start range"),
+    label: yup.string().required("Salary start range"),
   }),
   numberSystem: yup.object().shape({
-    value: yup.string().required("Please select number system"),
-    label: yup.string().required("Please select number system"),
+    value: yup.string().required("Number system"),
+    label: yup.string().required("Number system"),
   }),
   recurrence: yup.object().shape({
-    value: yup.string().required("Please select recurrence"),
-    label: yup.string().required("Please select recurrence"),
+    value: yup.string().required("Recurrence"),
+    label: yup.string().required("Recurrence"),
   }),
   roleCategory: yup.object().shape({
     value: yup.string().required("Please select role category"),
@@ -48,8 +48,8 @@ export const PostJobDetailSchema = yup.object().shape({
   }),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
   currency: yup.object().shape({
-    value: yup.string().required("Please select currency"),
-    label: yup.string().required("Please select currency"),
+    value: yup.string().required("Currency"),
+    label: yup.string().required("Currency"),
   }),
   jobDescription: yup.string().label("Please enter job description").required(),
   keyResponsibility: yup.string().label("Please enter key responsibility").required(),
@@ -64,8 +64,8 @@ export const RequirementSchema = yup.object().shape({
   education: yup.array()
     .min(2, 'Pick at least two education')
     .max(10, 'Pick at most ten education').required("Please select education"),
-  premiumBTech: yup.boolean().label("Please enter premium BTech").required(),
-  premiumMBAAll: yup.boolean().label("Please enter premium MBA").required(),
+  premiumBTech: yup.boolean().default(false),
+  premiumMBAAll: yup.boolean().default(false),
   fromWorkExperience: yup.object().shape({
     value: yup.string().required("Please select experience"),
     label: yup.string().required("Please select experience"),
@@ -77,7 +77,7 @@ export const RequirementSchema = yup.object().shape({
   candidateIndustry: yup.array()
     .min(2, 'Pick at least two industry')
     .max(10, 'Pick at most ten industry').required("Please select industry"),
-  diversityHiring: yup.boolean().label("Please checked diversity hiring").required(),
+  diversityHiring: yup.boolean().default(false),
   jobLocality: yup.array()
     .min(2, 'Pick at least three job locality')
     .max(3, 'Pick at most three job locality').required("Please select job locality"),
@@ -158,7 +158,7 @@ export const PostJobSchema = yup.object().shape({
     .min(1, 'Pick at least one location')
     .max(3, 'Pick at most three location').required("Please select location"),
 
-  candidateRelocate: yup.boolean().label("Please checked candidate relocation").required(),
+  candidateRelocate: yup.boolean().default(false),
   jobLocality: yup.array()
     .min(2, 'Pick at least three job locality')
     .max(3, 'Pick at most three job locality').required("Please select job locality"),
@@ -198,12 +198,12 @@ export const PostJobSchema = yup.object().shape({
   highestQualification: yup.array()
     .min(2, 'Pick at least two education')
     .max(10, 'Pick at most ten education').required("Please select education"),
-  premiumBTech: yup.boolean().label("Please enter premium BTech").required(),
-  premiumMBAAll: yup.boolean().label("Please enter premium MBA").required(),
+  premiumBTech: yup.boolean().default(false),
+  premiumMBAAll: yup.boolean().default(false),
   candidateIndustry: yup.array()
     .min(2, 'Pick at least two industry')
     .max(10, 'Pick at most ten industry').required("Please select industry"),
-  diversityHiring: yup.boolean().label("Please checked diversity hiring").required(),
+  diversityHiring: yup.boolean().default(false),
   jobDescription: yup.string().label("Please enter job description").required(),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
   videoProfile: yup.boolean().label("Please checked video profile").required(),
