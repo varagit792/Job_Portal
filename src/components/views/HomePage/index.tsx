@@ -35,7 +35,7 @@ const HomePage = () => {
                     <hr className="my-10" />
                     <MostDemandingCategory />
                     <hr className="my-10" />
-                    <TopCompaniesHiring />
+                    <TopCompaniesHiring title="Top companies hiring" viewLabel="View all"/>
                     <hr className="my-10" />
                     <FeaturedCity />
                 </div>
