@@ -6,6 +6,7 @@ import { getJobDetail } from '../../../store/reducers/jobs/GetJobDetails';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import companyLogo from '../../../assets/png/company_logo.png';
+import nokiaLogo from '../../../assets/svg/nokiaLogo.svg';
 import experienceIcon from '../../../assets/svg/ExperienceIcon.svg';
 import moneyIcon from '../../../assets/svg/MoneyIcon.svg';
 import locationIcon from '../../../assets/svg/LocationIcon.svg';
@@ -51,7 +52,7 @@ const CompanyDescription = () => {
           <div className="border border-[#E0E7FF] rounded-xl p-5 bg-white">
             <div className="self-stretch h-full flex-col justify-start items-start gap-5 flex">
               <div className="self-stretch justify-start items-center gap-3 inline-flex">
-                <img className="w-14 h-14 rounded-lg" src={companyLogo} alt="companyLogo" />
+                <img className="w-14 h-14 rounded-lg" src={nokiaLogo} alt="nokiaLogo" />
                 <div className="grow shrink basis-0 flex-col justify-start items-start gap-1 inline-flex">
                   <div className="self-stretch text-slate-900 text-2xl font-bold  leading-7 tracking-tight">{companyDetail?.title}</div>
                   <div className="self-stretch justify-start items-start gap-1 inline-flex">
@@ -113,7 +114,7 @@ const CompanyDescription = () => {
                 <div className="self-stretch text-slate-900 text-base font-bold  leading-snug tracking-tight">
                   About the company</div>
                 <span className="self-stretch text-slate-500 text-base leading-snug tracking-tight">
-                  Translate complex ideas into design that is compelling, consistent & scalable, including but not limited to workflows, user flows, wireframes, mockups, high fidelity UI/UX, prototypes.Carry out UI/UX branding projects for our customers from start to finish.Present product designs & concepts to internal and external stakeholders.Utilize & contribute to an existing design system to ensure cohesion across designs.Provide design QA.Prepare and maintain relevant documentation on each project.Handle multiple tasks and meet deadlines. When necessary, organize workload around changing prioritiesInspire and share ideas with other design members across the organization.Display strong organizational skills, liaise confidently with stakeholders to obtain relevant input on projects.Flexibility in working hours when required on urgent projects.Accurately report time spent on projects.Actively participate in ideation sessions & design reviews across design and product disciplines.
+                  {companyDetail?.companyDescription}
                 </span>
               </div>
               <hr className="indigo-100 w-full"/>
@@ -190,39 +191,7 @@ const CompanyDescription = () => {
                 </div>
               </div>
             </div>
-          </div>
-          {/* <div className="border border-[#E0E7FF] rounded-xl p-5 mt-4 bg-white">
-            <span className="self-stretch text-slate-900 text-base font-bold leading-snug tracking-tight">About the company
-            </span>
-            <div className="self-stretch justify-start items-center gap-3 flex mt-2">
-              <img className="w-14 h-14 rounded-lg" src={companyLogo} alt="companyLogo" />
-              <div className="grow shrink basis-0 flex-col justify-start items-start gap-1 inline-flex">
-                <div className="self-stretch text-slate-900 text-2xl font-bold leading-7 tracking-tight">{companyDetail?.company?.title}</div>
-                <div className="w-40 justify-start items-center gap-2 inline-flex">
-                  <div className="justify-start items-center gap-1 flex">
-                    <AiFillStar color="yellow" />
-                    <div className="text-black text-sm font-normal leading-none tracking-tight">{companyDetail?.company?.rating}</div>
-                  </div>
-                  <div className=" border-l border-indigo-100 h-4"></div>
-                  <div className="text-slate-500 text-sm font-normal leading-none tracking-tight">{companyDetail?.company?.reviews}</div>
-                </div>
-              </div>
-            </div>
-            <div className="justify-start items-start gap-5 inline-flex mt-2">
-              <div className="justify-start items-center gap-2 flex">
-                <img src={locationIcon} alt="location" />
-                <div className="text-slate-500 text-base font-medium leading-snug tracking-tight"></div>
-              </div>
-              <div className=" border-l border-indigo-100 h-4"></div>
-              <div className="justify-start items-center gap-2 flex">
-                <img src={peopleIcon} alt="people" />
-                <div className="text-slate-500 text-base font-medium leading-snug tracking-tight">500+ employees</div>
-              </div>
-            </div>
-            <div className="px-2 py-1.5  w-44 bg-indigo-50 rounded-lg justify-center items-center text-center mt-2">
-              <button className="text-indigo-900 text-base font-medium  leading-snug tracking-tight ">More open positions</button>
-            </div>
-          </div> */}
+          </div>          
         </div>
         <div className="col-start-8 col-end-13">
           <div className="flex flex-row justify-between items-center mb-5">
