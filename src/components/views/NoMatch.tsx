@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo } from 'react';
-import pageNotFound from '../../assets/jpeg/pageNotFound.jpg';
+import pageNotFound from '../../assets/jpeg/pageNotFound1.jpg';
 
 const NoMatch = () => {
 

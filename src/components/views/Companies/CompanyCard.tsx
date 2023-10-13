@@ -5,9 +5,11 @@ import MoneyIcon from '../../../assets/svg/MoneyIcon.svg';
 import ExperienceIcon from '../../../assets/svg/ExperienceIcon.svg';
 import LocationIcon from '../../../assets/svg/LocationIcon.svg';
 import companyLogo from '../../../assets/png/company_logo.png';
+import employeeCount from '../../../assets/svg/employeeCount.svg'
 import StarIcon from '../../../assets/svg/starIcon.svg';
 import { formatDistanceToNow } from 'date-fns';
 import NoRecords from '../../commonComponents/NoRecords';
+import { addLabel } from '../../utils/utils';
 
 const CompanyCard = ({ onClickCompanyCard, companyCard, loading }: any) => {
     return (
@@ -15,18 +17,17 @@ const CompanyCard = ({ onClickCompanyCard, companyCard, loading }: any) => {
             {
                 companyCard?.length ? companyCard?.map((item: any, index: number) => (
                     <div className="py-5 px-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mb-5 cursor-pointer" onClick={() => onClickCompanyCard(item.id)} key={item.id}>
-                        <div className="flex items-start justify-between">
+                        <div className="flex items-start justify-between mb-5">
                             <div className="flex justify-start items-start h-full">
                                 <img src={companyLogo} alt="companyLogo" />
                                 <div className="ml-5">
                                     <h1 className="text-lg font-bold">{item?.title}</h1>
-                                    <span className="text-[#94A3B8] text-sm">{item?.companyDescription}</span>
-                                    <div className="text-[#94A3B8] mt-1 text-xs flex justify-start items-center">
-                                        {Object.keys(item?.location).length > 0 && <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" />}
-                                        <div className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">
-                                            {item?.location?.map((loc: any) => <span>{loc?.title}, </span>)}
-                                        </div>
-                                    </div>
+                                    {item?.rating && <div className="flex justify-start items-center">
+                                        <img src={StarIcon} alt="StarIcon" width="15rem" height="15rem" />
+                                        <span className="ml-1">{item?.rating}</span>
+                                        <span className=" border-l h-5 border-gray-300 mx-4"></span>
+                                        <span className="text-[#94A3B8] text-sm">{addLabel(item?.reviews)} Reviews</span>
+                                    </div>}
                                 </div>
                             </div>
                             <div>
@@ -38,40 +39,41 @@ const CompanyCard = ({ onClickCompanyCard, companyCard, loading }: any) => {
                                 </button>
                             </div>
                         </div>
-                        <hr className="my-5 bg-[#E0E7FF]" />
                         <div className="flex justify-start items-center mb-5">
-                            {(item?.totalExpYearStart?.title && item?.totalExpYearEnd?.title) &&
-                                < div className=" flex justify-start items-center text-[#64748B] text-sm">
-                                    <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" />
-                                    <span className="ml-2 leading-none">{item?.totalExpYearStart?.title}-{item?.totalExpYearEnd?.title}</span>
+                            {item?.employeeCount &&
+                                <div className=" flex justify-start items-center text-[#64748B] text-sm font-semibold">
+                                    <img src={employeeCount} alt="employeeCount" width="15rem" height="15rem" /><span className="ml-2 leading-none">{addLabel(item?.employeeCount)} employees</span>
                                 </div>
                             }
-                            {item?.payScaleUpperRange && <div className=" flex justify-start items-center ml-5 text-[#64748B] text-sm">
-                                <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2 leading-none">{item?.payScaleUpperRange}</span>
-                            </div>}
-                            {item?.jobsLocation?.title && <div className=" flex justify-start items-center ml-5 text-[#64748B] text-sm">
-                                <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2 leading-none">{item?.jobsLocation?.title}</span>
-                            </div>}
+                            {
+                                item?.employeeCount && Object.keys(item?.location).length
+                                ? <span className=" border-l h-5 border-gray-300 mx-4"></span> : <></>
+                            }
+                            {Object.keys(item?.location).length ? <div className=" flex justify-start items-center ml-5 text-[#64748B] text-sm font-semibold">
+                                <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /><span className="ml-2 leading-none">{item?.location?.map((loc: any) => <span>{loc?.title}, </span>)}</span>
+                            </div> : <></>}
                         </div>
-                        {item?.jobDescription &&
                             <div className="mb-5">
                                 <ul className="list-disc text-[#94A3B8] text-sm pl-5">
                                     <li>
-                                        <span className="line-clamp-3 list-inside">{item?.companyDescription}</span>
+                                        <span className="line-clamp-3 list-inside">{item?.companyDescription ? item?.companyDescription : 'Not Disclosed'}</span>
                                     </li>
                                 </ul>
                             </div>
-                        }
-                        <div className="flex items-center justify-start">
-                            <button className="bg-[#FFFAF2] text-[#EA580C] px-3 py-1.5 rounded-lg mr-5 text-sm">
+                        <div className="flex items-center justify-between">
+                            <div>
+                            <button className="bg-[#F8FAFC] px-3 py-1.5 rounded-lg mr-5 text-sm">
                                 <div className="flex justify-start items-center">
-                                    <img src={StarIcon} alt="StarIcon" width="15rem" height="15rem" />
-                                    <span className="ml-1">{item?.rating}</span>
+                                    <span className="ml-1">Fintech</span>
                                 </div>
                             </button>
-                            <button className="bg-[#F0FFF5] text-[#16A34A] px-3 py-1.5 rounded-lg mr-5 text-sm">{item?.reviews} reviews</button>
-                            {/* <span className="text-[#94A3B8] text-sm">Posted {formatter.format(new Date(item?.createdAt))} hrs ago</span> */}
-                            <span className="text-[#94A3B8] text-sm">Posted {formatDistanceToNow(new Date(item?.createdAt), { addSuffix: true })}</span>
+                            <button className="bg-[#F8FAFC] px-3 py-1.5 rounded-lg mr-5 text-sm"> Travel & Tourism</button>
+                            <span className="text-[#94A3B8] text-sm mr-5">Posted {formatDistanceToNow(new Date(item?.createdAt), { addSuffix: true })}</span>
+                            </div>
+
+                            {item?.jobs && <button className="px-3 py-2 bg-gray-200 rounded-2xl text-xs">
+                                {item?.jobs} Jobs
+                            </button>}
                         </div>
                     </div >
                 ))
