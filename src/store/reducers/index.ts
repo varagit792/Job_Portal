@@ -86,6 +86,7 @@ export const reducer = combineReducers({
     getFilterJobs: getFilterJobsSlice,
     getJobDetail: getJobDetailReducer,
     getAllCompanies: getAllCompanies,
+    getCompanyDetails: getCompanyDetailsReducer,
     updatePostJobUpdate: updatePostJobUpdateSlice,
     jobSeekerSendOtp: sendOtpReducer,
     jobSeekerVerifyMobile: verifyMobileOtpReducer
