@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from '../../../..';
 import { useNavigate } from 'react-router-dom';
 import { RecruiterSchema } from '../../../../schema/postJob';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { formData } from '../../../../store/reducers/jobs/postJobs';
 
 const Recruiter = () => {
   const dispatch = useAppDispatch();
@@ -14,7 +13,6 @@ const Recruiter = () => {
 
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
-
 
   const {
     register,
@@ -27,17 +25,7 @@ const Recruiter = () => {
     resolver: yupResolver(RecruiterSchema),
   });
 
-  useEffect(() => {
-    if (jobDetail) {
-      // jobDetail?.notifyMeAbout && setValue('notifyMeAbout', jobDetail?.notifyMeAbout);
-    }
-  }, [setValue, jobDetail]);
-
   const onSubmit = (data: IFormInputsRecruiter) => {
-
-    dispatch(formData({
-
-    }));
     navigate('/postJob/response');
   }
   const returnBack = (returnURL: string) => {
@@ -89,14 +77,16 @@ const Recruiter = () => {
                         <input defaultValue={''}
                           className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                           placeholder={"Please enter full name"}
-                          value={'Company Name'} />
+                          value={'Company Name'}
+                          readOnly />
                       </div>
                       <div className="h-[73px] flex-col justify-start  gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Designation</div>
                         <input defaultValue={''}
                           className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                           placeholder={"Please enter designation"}
-                          value={'Designation'} />
+                          value={'Designation'}
+                          readOnly />
                       </div>
                     </div>
                   </div>

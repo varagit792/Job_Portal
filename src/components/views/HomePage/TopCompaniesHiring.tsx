@@ -42,8 +42,11 @@ const ButtonGroup = ({ next, previous, goToSlide, ...rest }: any) => {
     </div>
   );
 };
-
-const TopCompaniesHiring = () => {
+interface Companies {
+  title?: string;
+  viewLabel?: string;
+}
+const TopCompaniesHiring = ({title, viewLabel}:Companies) => {
   const [companyList, setCompanyList] = useState([]);
 
   useEffect(() => {
@@ -56,9 +59,9 @@ const TopCompaniesHiring = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-10 font-bold">
-        <h1 className="text-xl">Top companies hiring</h1>
+        <h1 className="text-xl">{title}</h1>
         {companyList?.length  ? <Link to="/allCompanies" className="text-base flex justify-center items-center text-[#312E81]">
-          <span className="mr-2">View all</span>
+          <span className="mr-2">{viewLabel}</span>
           <img src={ArrowRight} alt="ArrowRight" />
         </Link> : <></>}
       </div>

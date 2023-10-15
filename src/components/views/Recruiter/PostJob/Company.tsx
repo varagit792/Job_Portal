@@ -14,12 +14,9 @@ import { formData } from '../../../../store/reducers/jobs/postJobs';
 const Company = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  const [company, setCopmpany] = useState<any>([]);
-
+  const [company, setCompany] = useState<any>([]);
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
-
 
   const {
     register,
@@ -49,7 +46,6 @@ const Company = () => {
     }
   }, [setValue, jobDetail, jobDetailData]);
 
-
   const onSubmit = (data: IFormInputsCompany) => {
 
     dispatch(formData({
@@ -62,13 +58,11 @@ const Company = () => {
     }));
     navigate('/postJob/recruiter');
   }
-
   useEffect(() => {
     (async () => {
-
       const companyList = await getCompanyList()
       if (Object.keys(companyList)?.length) {
-        setCopmpany(companyList as any)
+        setCompany(companyList as any)
       }
     })();
   }, []);
@@ -79,9 +73,6 @@ const Company = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
-  
-
-
 
   return (
     <>
@@ -103,12 +94,10 @@ const Company = () => {
                           {...register("fillCompanyInformation")}
                           defaultChecked={true}
                           className=" w-4 h-4" />
-
                       </div>
                       <div className="text-black text-base font-normal  leading-snug tracking-tight">Fill saved company information</div>
                     </div>
                     <div className="flex-col justify-start  gap-7 flex">
-
                       <div className="flex-col justify-start  gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Company logo</div>
                         <div className="justify-start  inline-flex">
@@ -134,7 +123,7 @@ const Company = () => {
                               placeholder={"Select company"}
                               defaultValue={watch("companyName")}
                             />
-                            {errors?.companyName && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyName?.message}</p>}
+                            {errors?.companyName && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyName?.label?.message}</p>}
                           </div>
                         </div>
                         <div className="w-full grow shrink basis-0  flex-col justify-start  gap-2 inline-flex">
@@ -152,7 +141,7 @@ const Company = () => {
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">About Company</div>
                         <div className='w-full'>
                           <textarea defaultValue={''}
-                            className='w-full h-[154px] border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                            className='w-full h-[75px] border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter about company"}
                             {...register("aboutCompany")} ></textarea>
 
@@ -162,22 +151,19 @@ const Company = () => {
                           {watchKeyAboutCompany ? 1000 - watchKeyAboutCompany : 1000} character(s) left
                         </div>
                       </div>
-
                       <div className="w-full h-auto flex-col justify-start  gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Company Address</div>
                         <div className='w-full'>
                           <textarea defaultValue={''}
-                            className='w-full border h-[130px] border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                            className='w-full border h-[75px] border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter company address"}
                             {...register("companyAddress")} ></textarea>
-
                           {errors?.companyAddress && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyAddress?.message}</p>}
                         </div>
                         <div className="w-full text-xs font-light text-gray-600 text-right float-right">
                           {watchCompanyAddress ? 1000 - watchCompanyAddress : 1000} character(s) left
                         </div>
                       </div>
-
                       <div className="flex-col justify-start  gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Rating</div>
                         <div className="justify-start items-center gap-5 inline-flex">

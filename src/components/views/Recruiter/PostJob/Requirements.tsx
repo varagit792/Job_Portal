@@ -59,7 +59,6 @@ const Requirements = () => {
       jobDetail?.jobLocality && setValue('jobLocality', selectedJobLocality);
       jobDetail?.totalExpYearStart && setValue('fromWorkExperience', { label: jobDetail?.totalExpYearStart?.title, value: jobDetail?.totalExpYearStart?.id?.toString() });
       jobDetail?.totalExpYearEnd && setValue('toWorkExperience', { label: jobDetail?.totalExpYearEnd?.title, value: jobDetail?.totalExpYearEnd?.id?.toString() });
-
       jobDetail?.companyType && setValue('companyType', { label: jobDetail?.companyType?.title, value: jobDetail?.companyType?.id?.toString() });
       jobDetail?.premiumBTech && setValue('premiumBTech', jobDetail?.premiumBTech);
       jobDetail?.premiumMBAAll && setValue('premiumMBAAll', jobDetail?.premiumMBAAll);
@@ -67,12 +66,10 @@ const Requirements = () => {
       jobDetail?.diversityHiring && setValue('diversityHiring', jobDetail?.diversityHiring);
     } else {
       jobDetailData?.jobsKeySkills && setValue('keySkills', selectedJobsKeySkills);
-
       jobDetailData?.jobEducation && setValue('education', selectedJobEducation);
       jobDetailData?.jobLocality && setValue('jobLocality', selectedJobLocality);
       jobDetailData?.totalExpYearStart && setValue('fromWorkExperience', jobDetailData?.totalExpYearStart);
       jobDetailData?.totalExpYearEnd && setValue('toWorkExperience', jobDetailData?.totalExpYearEnd);
-
       jobDetailData?.companyType && setValue('companyType', jobDetailData?.companyType);
       jobDetailData?.premiumBTech && setValue('premiumBTech', jobDetailData?.premiumBTech);
       jobDetailData?.premiumMBAAll && setValue('premiumMBAAll', jobDetailData?.premiumMBAAll);
@@ -99,7 +96,6 @@ const Requirements = () => {
       premiumMBAAll: data?.premiumMBAAll,
       jobCandidateIndustry: jobCandidateIndustry,
       diversityHiring: data?.diversityHiring,
-
     }));
 
     navigate('/postJob/company');
@@ -107,12 +103,10 @@ const Requirements = () => {
 
   useEffect(() => {
     (async () => {
-
       const keySkillsList = await getKeySkillsList()
       if (Object.keys(keySkillsList)?.length) {
         setKeySkills(keySkillsList as any)
       }
-
 
       const localityList = await getLocalityList()
       if (Object.keys(localityList)?.length) {
@@ -137,13 +131,10 @@ const Requirements = () => {
     })();
   }, []);
 
-
-
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
-  console.log("jobDetailData", jobDetailData);
-  console.log("jobDetail", jobDetail);
+
   return (
     <>
       <div className="h-[10%] w-full"></div>
@@ -167,12 +158,11 @@ const Requirements = () => {
                           isMulti={true}
                           fieldName={"keySkills"}
                           dropdownData={keySkills?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
-                          placeholder={"Select key Skills"}
+                          placeholder={"Select key Skills (at least 2 skills)"}
                           defaultValue={watch("keySkills")}
                         />
                         {errors?.keySkills && <p className="font-normal text-xs text-red-500 absolute">{errors?.keySkills?.message}</p>}
                       </div>
-
                     </div>
                     <div className="w-full flex-col justify-start  gap-2 flex">
                       <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Education</div>
@@ -183,7 +173,7 @@ const Requirements = () => {
                           isMulti={true}
                           fieldName={"education"}
                           dropdownData={highestQualification?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
-                          placeholder={"Select highest Qualification"}
+                          placeholder={"Select education (at least 2 qualification)"}
                           defaultValue={watch("education")}
                         />
                         {errors?.education && <p className="font-normal text-xs text-red-500 absolute">{errors?.education?.message}</p>}
@@ -219,30 +209,33 @@ const Requirements = () => {
                     <div className="w-full justify-start  gap-5 inline-flex">
                       <div className="w-full flex-col justify-start  gap-2 inline-flex">
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Start Work Experience </div>
-                        <AutocompleteBox
-                          control={control}
-                          isClearable={true}
-                          fieldName={"fromWorkExperience"}
-                          dropdownData={totalExpYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                          default={watch("fromWorkExperience")}
-                          placeholder={"Select work experience"}
-                        />
-                        {errors?.fromWorkExperience && <div className="font-normal text-xs text-red-500 ">{errors?.fromWorkExperience?.message}</div>}
+                        <div className='w-full'>
+                          <AutocompleteBox
+                            control={control}
+                            isClearable={true}
+                            fieldName={"fromWorkExperience"}
+                            dropdownData={totalExpYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                            default={watch("fromWorkExperience")}
+                            placeholder={"Select work experience"}
+                          />
+                          {errors?.fromWorkExperience && <div className="font-normal text-xs text-red-500 ">{errors?.fromWorkExperience?.label?.message}</div>}
+                        </div>
                       </div>
                       <div className="w-full flex-col justify-start  gap-2 inline-flex">
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">End Work Experience </div>
-                        <AutocompleteBox
-                          control={control}
-                          isClearable={true}
-                          fieldName={"toWorkExperience"}
-                          dropdownData={totalExpYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                          default={watch("toWorkExperience")}
-                          placeholder={"Select work experience"}
-                        />
-                        {errors?.toWorkExperience && <div className="font-normal text-xs text-red-500 ">{errors?.toWorkExperience?.message}</div>}
+                        <div className='w-full'>
+                          <AutocompleteBox
+                            control={control}
+                            isClearable={true}
+                            fieldName={"toWorkExperience"}
+                            dropdownData={totalExpYear?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                            default={watch("toWorkExperience")}
+                            placeholder={"Select work experience"}
+                          />
+                          {errors?.toWorkExperience && <div className="font-normal text-xs text-red-500 ">{errors?.toWorkExperience?.label?.message}</div>}
+                        </div>
                       </div>
                     </div>
-
                     <div className="w-full justify-start  gap-5 inline-flex">
                       <div className="w-full flex-col justify-start  gap-2 inline-flex">
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Candidate Industry</div>
@@ -253,7 +246,7 @@ const Requirements = () => {
                             isMulti={true}
                             fieldName={"candidateIndustry"}
                             dropdownData={industry?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
-                            placeholder={"Select candidate industry"}
+                            placeholder={"Select candidate industry (at least 2 industry)"}
                             defaultValue={watch("candidateIndustry")}
                           />
                           {errors?.candidateIndustry && <p className="font-normal text-xs text-red-500 absolute">{errors?.candidateIndustry?.message}</p>}
@@ -261,7 +254,6 @@ const Requirements = () => {
                       </div>
                       <div className="w-full text-slate-700 text-sm font-normal flex-col justify-start  gap-2 inline-flex">
                         <div className=" leading-[16.80px] tracking-tight">Diversity Hiring </div>
-
                         <input
                           type='checkbox'
                           checked={watch("diversityHiring")}
@@ -271,7 +263,6 @@ const Requirements = () => {
                         {errors?.diversityHiring && <p className="font-normal text-xs text-red-500 absolute">{errors?.diversityHiring?.message}</p>}
                       </div>
                     </div>
-
                     <div className="w-full justify-start  gap-5 inline-flex">
                       <div className="w-full flex-col justify-start  gap-2 inline-flex">
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Locality </div>
@@ -282,7 +273,7 @@ const Requirements = () => {
                             isMulti={true}
                             fieldName={"jobLocality"}
                             dropdownData={locality?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
-                            placeholder={"Select localities"}
+                            placeholder={"Select localities (at least 3 industry)"}
                             defaultValue={watch("jobLocality")}
                           />
                           {errors?.jobLocality && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobLocality?.message}</p>}
@@ -303,7 +294,6 @@ const Requirements = () => {
                         </div>
                       </div>
                     </div>
-
                   </div>
                   <div className="self-stretch justify-start  gap-5 inline-flex">
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack('/postJob/jobDetails')}>

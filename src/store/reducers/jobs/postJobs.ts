@@ -3,7 +3,6 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { PostJobUpdate } from '../../../interface/employer';
 
-
 export interface registerUserState {
   loading: boolean;
   error: boolean;
@@ -11,7 +10,6 @@ export interface registerUserState {
   postJob: Array<PostJobUpdate>;
   formData: any;
   errorMessage: string | undefined;
-
 }
 
 const initialState: registerUserState = {
@@ -25,8 +23,6 @@ const initialState: registerUserState = {
 
 export const postJobUpdate = createAsyncThunk(
   "postJob", async (data: PostJobUpdate) => {
-    console.log("data====", data);
-
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
         data,

@@ -16,7 +16,6 @@ const JobDetails = () => {
   const navigate = useNavigate();
 
   const [employeeType, setEmployeeType] = useState<any>([]);
-  const [employeeTypeChecked, setEmployeeTypeChecked] = useState([{ id: '', checked: false }]);
   const [department, setDepartment] = useState<any>([]);
   const [roleCategory, setRoleCategory] = useState<any>([]);
   const [jobRole, setJobRole] = useState<any>([]);
@@ -51,13 +50,11 @@ const JobDetails = () => {
     jobDetail?.jobsLocation && jobDetail?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ value: item?.id, label: item?.title }));
     jobDetail?.jobLocality?.filter((item: any) => item && selectedJobLocality.push({ value: item?.locality?.id, label: item?.locality?.title }));
     jobDetail?.jobCandidateIndustry?.filter((item: any) => item && selectedCandidateIndustry.push({ value: item?.candidateIndustry?.id, label: item?.candidateIndustry?.title }));
-
   } else {
     jobDetailData?.jobsKeySkills?.filter((item: any) => item && selectedJobsKeySkills.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }));
     jobDetailData?.jobsLocation && jobDetailData?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ label: item.label, value: item.value }));
     jobDetailData?.jobLocality?.filter((item: any) => item && selectedJobLocality.push({ value: item?.locality?.id, label: item?.locality?.title }));
     jobDetailData?.jobCandidateIndustry?.filter((item: any) => item && selectedCandidateIndustry.push({ value: item?.candidateIndustry?.id, label: item?.candidateIndustry?.title }));
-
 
   }
 
@@ -72,7 +69,6 @@ const JobDetails = () => {
       jobDetail?.workMode && setValue('workMode', { label: jobDetail?.workMode?.title, value: jobDetail?.workMode?.id?.toString() });
       jobDetail?.jobsLocation && setValue('jobLocation', selectedJobsLocation);
       jobDetail?.candidateRelocate && setValue('candidateRelocate', jobDetail?.candidateRelocate);
-
       jobDetail?.currency && setValue('currency', { label: jobDetail?.currency?.title, value: jobDetail?.currency?.id?.toString() });
       jobDetail?.payScaleLowerRange && setValue('fromSalaryRange', { label: jobDetail?.payScaleLowerRange?.title, value: jobDetail?.payScaleLowerRange?.id });
       jobDetail?.payScaleUpperRange && setValue('toSalaryRange', { label: jobDetail?.payScaleUpperRange?.title, value: jobDetail?.payScaleUpperRange?.id?.toString() });
@@ -82,6 +78,7 @@ const JobDetails = () => {
       jobDetail?.jobsOpening && setValue('jobsOpening', jobDetail?.jobsOpening);
       jobDetail?.keyResponsibility && setValue('keyResponsibility', jobDetail?.keyResponsibility);
     } else {
+
       jobDetailData?.title && setValue('title', jobDetailData?.title);
       jobDetailData?.department && setValue('department', jobDetailData?.department);
       jobDetailData?.roleCategory && setValue('roleCategory', jobDetailData?.roleCategory);
@@ -91,7 +88,6 @@ const JobDetails = () => {
       jobDetailData?.workMode && setValue('workMode', jobDetailData?.workMode);
       jobDetailData?.jobsLocation && setValue('jobLocation', selectedJobsLocation);
       jobDetailData?.candidateRelocate && setValue('candidateRelocate', jobDetailData?.candidateRelocate);
-
       jobDetailData?.currency && setValue('currency', jobDetailData?.currency);
       jobDetailData?.payScaleLowerRange && setValue('fromSalaryRange', jobDetailData?.payScaleLowerRange);
       jobDetailData?.payScaleUpperRange && setValue('toSalaryRange', jobDetailData?.payScaleUpperRange);
@@ -103,10 +99,7 @@ const JobDetails = () => {
     }
   }, [setValue, jobDetail, jobDetailData]);
 
-
   const onSubmit = (data: IFormInputsJobDetail) => {
-    console.log("data", data);
-
     const jobLocation = data?.jobLocation?.map((location: any) => location);
     const updatePostId = postId ? Number(postId) : null;
 
@@ -132,9 +125,7 @@ const JobDetails = () => {
       candidateRelocate: data?.candidateRelocate,
       currency: data?.currency,
       keyResponsibility: data?.keyResponsibility,
-
     }));
-
     navigate('/postJob/requirements');
   }
 
@@ -195,13 +186,8 @@ const JobDetails = () => {
         setJobType(jobTypeList as any)
       }
 
-
     })();
   }, [])
-
-
-  console.log("watch===", watch());
-  console.log("formData===", jobDetailData);
 
   const watchKeyResponsibility = watch('keyResponsibility')?.length;
   const watchJobDescription = watch('jobDescription')?.length;
@@ -222,11 +208,11 @@ const JobDetails = () => {
 
                     <div className="text-black text-xl font-medium leading-normal tracking-tight">Job Details</div>
                     <div className="flex-col justify-start items-start gap-7 flex">
-                      <div className="h-[73px] w-full flex-col justify-start items-start gap-2 flex">
+                      <div className="h-auto w-full flex-col justify-start items-start gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Job Title</div>
                         <div className='w-full'>
                           <input defaultValue={''}
-                            className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                            className="w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5"
                             placeholder={"Job Title / Designation"}
                             {...register("title")} />
                           {errors?.title && <p className="font-normal text-xs text-red-500 absolute">{errors?.title?.message}</p>}
@@ -263,7 +249,6 @@ const JobDetails = () => {
                           </div>
                         </div>
                       </div>
-
                       <div className="w-full grid grid-cols-2 justify-start items-start gap-5 ">
                         <div className="flex-col gap-2 inline-flex">
                           <div className="text-slate-700  text-sm font-normal leading-[16.80px] tracking-tight">Employment Type</div>
@@ -276,7 +261,7 @@ const JobDetails = () => {
                               placeholder={"Select employment Type"}
                               defaultValue={watch("employmentType")}
                             />
-                            {errors?.employmentType && <p className="font-normal text-xs text-red-500 absolute">{errors?.employmentType?.message}</p>}
+                            {errors?.employmentType && <p className="font-normal text-xs text-red-500 absolute">{errors?.employmentType?.label?.message}</p>}
                           </div>
                         </div>
                         <div className=" flex-col gap-2 inline-flex">
@@ -295,7 +280,6 @@ const JobDetails = () => {
                           </div>
                         </div>
                       </div>
-
                       <div className="w-full grid grid-cols-2 items-start gap-5 inline-flex">
                         <div className=" flex-col justify-start  gap-2 inline-flex">
                           <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Job Location (max 3)</div>
@@ -323,25 +307,26 @@ const JobDetails = () => {
                               placeholder={"Select job type"}
                               defaultValue={watch("jobsType")}
                             />
-                            {errors?.jobsType && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobsType?.message}</p>}
+                            {errors?.jobsType && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobsType?.label?.message}</p>}
                           </div>
                         </div>
                       </div>
-
                       <div className="w-full grid grid-cols-1  gap-5 inline-flex">
                         <div className=" flex-col justify-start  gap-2 inline-flex">
                           <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">
-                            <input
-                              type='checkbox'
-                              checked={watch("candidateRelocate")}
-                              {...register("candidateRelocate")}
-                              className='mx-3 w-4 h-4'
-                            />Include candidates willing to relocate to Job locations(s)
+                            <div className='w-full'>
+                              <input
+                                type='checkbox'
+                                checked={watch("candidateRelocate")}
+                                {...register("candidateRelocate")}
+                                className='mx-3 w-4 h-4'
+                              />Include candidates willing to relocate to Job locations(s)
+                              {errors?.candidateRelocate && <p className="font-normal text-xs text-red-500 absolute">{errors?.candidateRelocate?.message}</p>}
+                            </div>
                           </div>
 
                         </div>
                       </div>
-
                       <div className="mb-4">
                         <label htmlFor="expectedSalary" className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Annual Salary Range (Enter the salary for this job)</label>
                         <div className="grid grid-cols-8 gap-4 mt-1">
@@ -351,7 +336,7 @@ const JobDetails = () => {
                               fieldName={"currency"}
                               dropdownData={currency?.map(({ id, title }: any) => ({ value: id, label: title }))}
                               default={watch("currency")}
-                              placeholder={""}
+                              placeholder={"Currency"}
                             />
                             {errors?.currency && <p className="font-normal text-xs text-red-500 absolute">{errors?.currency?.label?.message}</p>}
                           </div>
@@ -362,9 +347,9 @@ const JobDetails = () => {
                               fieldName={"fromSalaryRange"}
                               dropdownData={salaryRange?.map(({ id, title }: any) => ({ value: id, label: title }))}
                               default={watch("fromSalaryRange")}
-                              placeholder={"Select salary range"}
+                              placeholder={"Salary start range"}
                             />
-                            {errors?.fromSalaryRange && <div className="font-normal text-xs text-red-500 ">{errors?.fromSalaryRange?.message}</div>}
+                            {errors?.fromSalaryRange && <div className="font-normal text-xs text-red-500 ">{errors?.fromSalaryRange?.label?.message}</div>}
                           </div>
                           <div className="col-span-2">
                             <AutocompleteBox
@@ -373,9 +358,9 @@ const JobDetails = () => {
                               fieldName={"toSalaryRange"}
                               dropdownData={salaryRange?.map(({ id, title }: any) => ({ value: id, label: title }))}
                               default={watch("toSalaryRange")}
-                              placeholder={"Select salary range"}
+                              placeholder={"Salary last range"}
                             />
-                            {errors?.toSalaryRange && <div className="font-normal text-xs text-red-500 ">{errors?.toSalaryRange?.message}</div>}
+                            {errors?.toSalaryRange && <div className="font-normal text-xs text-red-500 ">{errors?.toSalaryRange?.label?.message}</div>}
                           </div>
                           <div className="col-span-2">
                             <AutocompleteBox
@@ -386,7 +371,7 @@ const JobDetails = () => {
                               default={watch("numberSystem")}
                               placeholder={"Select number system"}
                             />
-                            {errors?.numberSystem && <div className="font-normal text-xs text-red-500 ">{errors?.numberSystem?.message}</div>}
+                            {errors?.numberSystem && <div className="font-normal text-xs text-red-500 ">{errors?.numberSystem?.label?.message}</div>}
                           </div>
                           <div className="col-span-1">
                             <AutocompleteBox
@@ -397,7 +382,7 @@ const JobDetails = () => {
                               default={watch("recurrence")}
                               placeholder={"Recurrence"}
                             />
-                            {errors?.recurrence && <div className="font-normal text-xs text-red-500 ">{errors?.recurrence?.message}</div>}
+                            {errors?.recurrence && <div className="font-normal text-xs text-red-500 ">{errors?.recurrence?.label?.message}</div>}
                           </div>
                         </div>
                       </div>
@@ -432,7 +417,7 @@ const JobDetails = () => {
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Job description</div>
                         <div className='w-full'>
                           <textarea defaultValue={''}
-                            className='w-full border border-gray-200 h-[154px] focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                            className='w-full border border-gray-200 h-[75px] focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter job description"}
                             {...register("jobDescription")} ></textarea>
 
@@ -446,7 +431,7 @@ const JobDetails = () => {
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Key Responsibility</div>
                         <div className='w-full'>
                           <textarea defaultValue={''}
-                            className='w-full border border-gray-200 h-[154px] focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                            className='w-full border border-gray-200 h-[75px] focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter job description"}
                             {...register("keyResponsibility")} ></textarea>
 
@@ -457,15 +442,13 @@ const JobDetails = () => {
                         </div>
                       </div>
                     </div>
-
                   </div>
-
-                  <div className="self-stretch justify-start items-start gap-5 inline-flex">
-                    <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex">
-                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight">Cancel</div>
+                  <div className="w-full self-stretch justify-start  gap-5 inline-flex">
+                    <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Cancel</div>
                     </div>
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                      <input className="text-white text-xl font-medium leading-normal tracking-tight" type="submit" value={'Continue'} />
+                      <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} />
                     </div>
                   </div>
                 </form >
