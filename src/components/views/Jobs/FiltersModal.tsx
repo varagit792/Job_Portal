@@ -1,19 +1,22 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { RxCross1 } from 'react-icons/rx';
 import FiltersDepartment from './FiltersDepartment';
 import { useAppDispatch, useAppSelector } from '../../../';
 import {
     bulkFilter,
-    setNavigateFilterOption
+    setNavigateFilterOption,
+    setDepartment,
+    setLocation,
+    setWorkMode
 } from '../../../store/reducers/jobs/GetFilterJobs';
 import FiltersLocation from './FiltersLocation';
 import FiltersWorkMode from './FiltersWorkMode';
+import FiltersExperience from './FiltersExperience';
 
 const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
     const dispatch = useAppDispatch();
-    const { navigateFilterOption, departmentIds, locationIds, workModeIds } = useAppSelector((state) => state.getFilterJobs);
-    console.log(workModeIds);
+    const { navigateFilterOption, checkItems, departmentIds, locationIds, workModeIds, maxExpYearId } = useAppSelector((state) => state.getFilterJobs);
 
     const closeDialog = () => {
         setIsOpen(false);
@@ -21,7 +24,10 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
 
     const handleSubmit = () => {
         setToggleDispach(true);
-        dispatch(bulkFilter({ department: departmentIds, location: locationIds, workMode: workModeIds }));
+        dispatch(bulkFilter({ department: departmentIds, location: locationIds, workMode: workModeIds, expYear: maxExpYearId }));
+        dispatch(setDepartment(checkItems?.department));
+        dispatch(setLocation(checkItems?.location));
+        dispatch(setWorkMode(checkItems?.workMode));
         setIsOpen(false);
     }
 
@@ -115,6 +121,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         </ul>
                                     </div>
                                     <div className="col-start-4 col-end-13">
+                                        {navigateFilterOption === "Experience" && <FiltersExperience />}
                                         {navigateFilterOption === "Department" && <FiltersDepartment />}
                                         {navigateFilterOption === "Location" && <FiltersLocation />}
                                         {navigateFilterOption === "Work mode" && <FiltersWorkMode />}

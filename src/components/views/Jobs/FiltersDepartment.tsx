@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { useAppSelector, useAppDispatch } from '../../../';
 import { getDepartmentList } from '../../utils/utils';
-import { setDepartment, setNavigateFilterOption, setDepartmentIds } from '../../../store/reducers/jobs/GetFilterJobs';
+import { setDepartment, setNavigateFilterOption, setDepartmentIds, setCheckItems } from '../../../store/reducers/jobs/GetFilterJobs';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { BiSearch } from 'react-icons/bi';
 
-export const FiltersDepartmentSlice = ({ handleDepartmentCheckbox, setIsOpen }: any) => {
+export const DepartmentBasedFilter = ({ handleDepartmentCheckbox, setIsOpen }: any) => {
     const dispatch = useAppDispatch();
     const { department } = useAppSelector((state) => state.getFilterJobs);
     useEffect(() => {
@@ -48,15 +48,15 @@ export const FiltersDepartmentSlice = ({ handleDepartmentCheckbox, setIsOpen }: 
 
 const FiltersDepartment = () => {
     const dispatch = useAppDispatch();
-    const { department } = useAppSelector((state) => state.getFilterJobs);
+    const { checkItems } = useAppSelector((state) => state.getFilterJobs);
     const [searchQuery, setSearchQuery] = useState("");
 
     const handleDepartmentCheckbox = (data: any) => {
-        dispatch(setDepartment(
-            department?.map((item: any) =>
+        dispatch(setCheckItems({
+            department: checkItems?.department?.map((item: any) =>
                 item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
             )
-        ));
+        }));
         if (data?.isChecked === undefined || data?.isChecked === false) {
             dispatch(setDepartmentIds(data?.id));
         } else {
@@ -68,7 +68,7 @@ const FiltersDepartment = () => {
         setSearchQuery(event.target.value);
     };
 
-    const filteredItems = department.filter((item: any) =>
+    const filteredItems = checkItems?.department?.filter((item: any) =>
         item?.title?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 

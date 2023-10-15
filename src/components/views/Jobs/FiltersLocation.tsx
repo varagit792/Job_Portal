@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getLocationList } from '../../utils/utils';
 import { useAppSelector, useAppDispatch } from '../../../';
-import { setLocation, setNavigateFilterOption, setLocationIds } from '../../../store/reducers/jobs/GetFilterJobs';
+import { setLocation, setNavigateFilterOption, setLocationIds, setCheckItems } from '../../../store/reducers/jobs/GetFilterJobs';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { BiSearch } from 'react-icons/bi';
 
-export const FiltersLocationSlice = ({ handleLocationCheckbox, setIsOpen }: any) => {
+export const LocationBasedFilter = ({ handleLocationCheckbox, setIsOpen }: any) => {
     const dispatch = useAppDispatch();
     const { location } = useAppSelector((state) => state.getFilterJobs);
 
@@ -49,15 +49,15 @@ export const FiltersLocationSlice = ({ handleLocationCheckbox, setIsOpen }: any)
 
 const FiltersLocation = () => {
     const dispatch = useAppDispatch();
-    const { location } = useAppSelector((state) => state.getFilterJobs);
+    const { checkItems } = useAppSelector((state) => state.getFilterJobs);
     const [searchQuery, setSearchQuery] = useState("");
 
     const handleLocationCheckbox = (data: any) => {
-        dispatch(setLocation(
-            location?.map((item: any) =>
+        dispatch(setCheckItems({
+            location: checkItems?.location?.map((item: any) =>
                 item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
             )
-        ));
+        }));
         if (data?.isChecked === undefined || data?.isChecked === false) {
             dispatch(setLocationIds(data?.id));
         } else {
@@ -69,7 +69,7 @@ const FiltersLocation = () => {
         setSearchQuery(event.target.value);
     };
 
-    const filteredItems = location.filter((item: any) =>
+    const filteredItems = checkItems?.location?.filter((item: any) =>
         item?.title?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 

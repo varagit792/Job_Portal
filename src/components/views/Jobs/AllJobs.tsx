@@ -17,10 +17,10 @@ import {
 } from '../../../store/reducers/jobs/GetFilterJobs';
 import { scrollToTop } from '../../utils/utils';
 import JobCard from './JobCard';
-import FiltersExperience from './FiltersExperience';
-import { FiltersDepartmentSlice } from './FiltersDepartment';
-import { FiltersLocationSlice } from './FiltersLocation';
-import { AllJobsFiltersWorkMode } from './FiltersWorkMode';
+import { ExperienceBasedFilter } from './FiltersExperience';
+import { DepartmentBasedFilter } from './FiltersDepartment';
+import { LocationBasedFilter } from './FiltersLocation';
+import { WorkModeBasedFilter } from './FiltersWorkMode';
 import FiltersSalary from './FiltersSalary';
 import FiltersRoleCategory from './FiltersRoleCategory';
 import FiltersModal from './FiltersModal';
@@ -180,19 +180,19 @@ const AllJobs = () => {
                     <div className="bg-[#FFF] rounded-xl p-4 sticky top-[13%]">
                         <h1 className="flex justify-between items-center leading-none"><span className="text-[#475569] font-bold">Filters</span><span className="bg-[#F8FAFC] rounded px-2 py-1 text-[#4F46E5]">4</span></h1>
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <FiltersExperience handleTotalExpYearChange={handleTotalExpYearChange} />
+                        <ExperienceBasedFilter handleTotalExpYearChange={handleTotalExpYearChange} />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <FiltersDepartmentSlice
+                        <DepartmentBasedFilter
                             handleDepartmentCheckbox={handleDepartmentCheckbox}
                             setIsOpen={setIsOpen}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <FiltersLocationSlice
+                        <LocationBasedFilter
                             handleLocationCheckbox={handleLocationCheckbox}
                             setIsOpen={setIsOpen}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <AllJobsFiltersWorkMode
+                        <WorkModeBasedFilter
                             handleWorkModeCheckbox={handleWorkModeCheckbox}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
