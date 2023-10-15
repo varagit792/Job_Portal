@@ -82,7 +82,6 @@ const jobSeekerResumeDeleteSlice = createSlice({
       state.formData = action.payload.data;
     });
     builder.addCase(resumeDelete.rejected, (state, action: any) => {
-      console.log("action-->", action);
       state.loading = false;
       state.error = true;
       state.errorMessage = action.error.message;

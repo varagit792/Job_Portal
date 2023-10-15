@@ -57,15 +57,16 @@ const TopCompaniesHiring = ({title, viewLabel}:Companies) => {
   }, [])
   
   return (
-    <div>
+    <>
+      {companyList?.length ? 
+      <div>
       <div className="flex justify-between items-center mb-10 font-bold">
         <h1 className="text-xl">{title}</h1>
-        {companyList?.length  ? <Link to="/allCompanies" className="text-base flex justify-center items-center text-[#312E81]">
+        <Link to="/allCompanies" className="text-base flex justify-center items-center text-[#312E81]">
           <span className="mr-2">{viewLabel}</span>
           <img src={ArrowRight} alt="ArrowRight" />
-        </Link> : <></>}
+        </Link>
       </div>
-      {companyList?.length ? 
         <Carousel
         shouldResetAutoplay
         swipeable={false}
@@ -85,9 +86,10 @@ const TopCompaniesHiring = ({title, viewLabel}:Companies) => {
       >
         {companyList?.slice(0,8)?.map((item, index) => index <= 7 && <CompanyListItem item={ item } />)}
         </Carousel>
-        :<NoRecords/>
-      }
-    </div>
+        </div>
+        : <>No Companies to list</>
+     }
+    </>
   )
 }
 

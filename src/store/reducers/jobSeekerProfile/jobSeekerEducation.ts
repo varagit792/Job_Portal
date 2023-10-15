@@ -62,9 +62,7 @@ const jobSeekerEducationAddSlice = createSlice({
         builder.addCase(jobSeekerEducationAdd.fulfilled, (state, action: any) => {
             state.loading = false;
             state.success = true;
-            state.error = false;
-            console.log('payload-->',action?.payload);
-            
+            state.error = false;            
             state.educationData = action?.payload?.data;
         });
         builder.addCase(jobSeekerEducationAdd.rejected, (state, action) => {

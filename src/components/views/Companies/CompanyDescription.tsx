@@ -42,13 +42,11 @@ const CompanyDescription = () => {
     }
   }, [companyDetail]);
 
-  console.log("companyDetails-->", companyDetail);
-
   return (
     <Fragment>
       <div className="h-[10%] w-full"></div>
       <div className="grid grid-cols-12 gap-10 py-6 px-32 bg-[#F8FAFC] ">
-        <div className="col-start-1 col-end-8  p-5">
+        <div className="col-start-1 col-end-8 py-5">
           <div className="border border-[#E0E7FF] rounded-xl p-5 bg-white">
             <div className="self-stretch h-full flex-col justify-start items-start gap-5 flex">
               <div className="self-stretch justify-start items-center gap-3 inline-flex">
@@ -193,7 +191,7 @@ const CompanyDescription = () => {
             </div>
           </div>          
         </div>
-        <div className="col-start-8 col-end-13">
+        <div className="col-start-8 col-end-13 py-5">
           <div className="flex flex-row justify-between items-center mb-5">
             <div className="flex items-center">
               <span className="font-bold text-xl">Open positions</span>
@@ -201,7 +199,7 @@ const CompanyDescription = () => {
             </div>
             
             <div className="flex flex-row items-center gap-3">
-              <span className="flex justify-center items-center text-lg font text-indigo-900 text-center">
+              <span className="flex justify-center items-center text-base font text-indigo-900 text-center">
                 All Jobs
               </span>
               <button className="flex justify-center items-center">

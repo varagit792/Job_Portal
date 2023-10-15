@@ -68,7 +68,6 @@ const getUserDataSlice = createSlice({
             state.error = false;
         });
         builder.addCase(getUserData.fulfilled, (state, action: PayloadAction<User>) => {
-            console.log('user ', action.payload);
             state.loading = false;
             state.success = true;
             state.userData = action.payload;
