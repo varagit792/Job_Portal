@@ -515,8 +515,6 @@ export default function ({ closeDialog, selectedEmployment }: any) {
       }
     })();
   }, [])
-
-  console.log("errors-->", errors);
   
   // OnSubmit button
   const onSubmit = (data: IFormInputs) => {

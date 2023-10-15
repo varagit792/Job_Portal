@@ -139,7 +139,6 @@ const ResumeUpload = () => {
     dispatch(resumeDelete(data));
   }
 
-  console.log('resume split ', resumeFileSplit)
   return (
     <>
       <div className="rounded-2xl bg-[#EEF2FF] border border-[#E0E7FF] w-full h-full p-7">

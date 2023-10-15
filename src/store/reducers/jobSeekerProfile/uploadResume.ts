@@ -45,7 +45,6 @@ const initialState: UploadState = {
 export const resumeUpload = createAsyncThunk(
   'upload/resumeUpload', async (data: any) => {
     try {
-      console.log('token', Cookies.get('token'));
       const response = await axios.put(`${process.env.REACT_APP_API_PATH}/jobSeekerProfile/resume`,
         data,
         {
@@ -80,7 +79,6 @@ const jobSeekerUploadSlice = createSlice({
       state.formData = action.payload.data;
     });
     builder.addCase(resumeUpload.rejected, (state, action) => {
-      console.log("action-->", action);
       state.loading = false;
       state.error = true;
       state.errorMessage = action.error.message;
