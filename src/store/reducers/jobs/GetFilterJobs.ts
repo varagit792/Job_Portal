@@ -115,6 +115,8 @@ interface AllJobsState {
     expYear: any;
     filtersData: any;
     salary: any;
+    navigateFilterOption: string;
+    departmentIds: number[],
     errorMessage: string | undefined;
 }
 const initialState: AllJobsState = {
@@ -136,6 +138,8 @@ const initialState: AllJobsState = {
         salary: null,
         roleCategory: []
     },
+    navigateFilterOption: "",
+    departmentIds: [],
     errorMessage: undefined,
 }
 
@@ -201,8 +205,11 @@ const getFilterJobsSlice = createSlice({
         setFilterDepartment: (state, action) => {
             if (!action?.payload?.filterDepartment) {
                 state?.filtersData?.department?.push(action.payload);
+                state?.departmentIds.push(action.payload);
             } else {
-                state.filtersData.department = state?.filtersData?.department?.filter((item: any) => action?.payload?.filterDepartment !== item);
+                const filterDate = state?.filtersData?.department?.filter((item: any) => action?.payload?.filterDepartment !== item);
+                state.filtersData.department = filterDate;
+                state.departmentIds = filterDate;
             }
         },
         setFilterLocation: (state, action) => {
@@ -243,6 +250,17 @@ const getFilterJobsSlice = createSlice({
         },
         bulkFilter: (state, action) => {
             state.filtersData.department = action?.payload?.bulkData;
+        },
+        setNavigateFilterOption: (state, action) => {
+            state.navigateFilterOption = action?.payload;
+        },
+        setDepartmentIds: (state, action) => {
+            if (action?.payload?.filter) {
+                const departmentFilter = state?.departmentIds?.filter((item: any) => item !== action?.payload?.filter);
+                state.departmentIds = departmentFilter;
+            } else {
+                state.departmentIds?.push(action.payload);
+            }
         }
     }
 });
@@ -260,4 +278,6 @@ export const { clearGetFilterJobsSlice,
     setFilterRoleCategory,
     setFilterExpYear,
     setFilterSalary,
-    bulkFilter } = getFilterJobsSlice.actions;
+    bulkFilter,
+    setNavigateFilterOption,
+    setDepartmentIds } = getFilterJobsSlice.actions;

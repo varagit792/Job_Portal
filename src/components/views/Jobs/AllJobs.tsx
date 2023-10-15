@@ -13,7 +13,7 @@ import {
     setFilterWorkMode,
     setFilterRoleCategory,
     setFilterExpYear,
-    setFilterSalary
+    setFilterSalary,
 } from '../../../store/reducers/jobs/GetFilterJobs';
 import { scrollToTop } from '../../utils/utils';
 import JobCard from './JobCard';
