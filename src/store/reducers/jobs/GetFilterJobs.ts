@@ -116,7 +116,9 @@ interface AllJobsState {
     filtersData: any;
     salary: any;
     navigateFilterOption: string;
-    departmentIds: number[],
+    departmentIds: number[];
+    locationIds: number[];
+    workModeIds: number[];
     errorMessage: string | undefined;
 }
 const initialState: AllJobsState = {
@@ -140,6 +142,8 @@ const initialState: AllJobsState = {
     },
     navigateFilterOption: "",
     departmentIds: [],
+    locationIds: [],
+    workModeIds: [],
     errorMessage: undefined,
 }
 
@@ -215,6 +219,7 @@ const getFilterJobsSlice = createSlice({
         setFilterLocation: (state, action) => {
             if (!action?.payload?.filterLocation) {
                 state?.filtersData?.location?.push(action.payload);
+                state?.locationIds.push(action.payload);
             } else {
                 state.filtersData.location = state?.filtersData?.location?.filter((item: any) => action?.payload?.filterLocation !== item);
             }
@@ -222,6 +227,7 @@ const getFilterJobsSlice = createSlice({
         setFilterWorkMode: (state, action) => {
             if (!action?.payload?.filterWorkMode) {
                 state?.filtersData?.workMode?.push(action.payload);
+                state?.workModeIds?.push(action.payload);
             } else {
                 state.filtersData.workMode = state?.filtersData?.workMode?.filter((item: any) => action?.payload?.filterWorkMode !== item);
             }
@@ -249,7 +255,9 @@ const getFilterJobsSlice = createSlice({
             state.filtersData.salary = salaryRangeListData?.[0]?.id;
         },
         bulkFilter: (state, action) => {
-            state.filtersData.department = action?.payload?.bulkData;
+            state.filtersData.department = action?.payload?.department;
+            state.filtersData.location = action?.payload?.location;
+            state.filtersData.workMode = action?.payload?.workMode;
         },
         setNavigateFilterOption: (state, action) => {
             state.navigateFilterOption = action?.payload;
@@ -260,6 +268,22 @@ const getFilterJobsSlice = createSlice({
                 state.departmentIds = departmentFilter;
             } else {
                 state.departmentIds?.push(action.payload);
+            }
+        },
+        setLocationIds: (state, action) => {
+            if (action?.payload?.filter) {
+                const locationFilter = state?.locationIds?.filter((item: any) => item !== action?.payload?.filter);
+                state.locationIds = locationFilter;
+            } else {
+                state.locationIds?.push(action.payload);
+            }
+        },
+        setWorkModeIds: (state, action) => {
+            if (action?.payload?.filter) {
+                const workModeFilter = state?.workModeIds?.filter((item: any) => item !== action?.payload?.filter);
+                state.workModeIds = workModeFilter;
+            } else {
+                state.workModeIds?.push(action.payload);
             }
         }
     }
@@ -280,4 +304,6 @@ export const { clearGetFilterJobsSlice,
     setFilterSalary,
     bulkFilter,
     setNavigateFilterOption,
-    setDepartmentIds } = getFilterJobsSlice.actions;
+    setDepartmentIds,
+    setLocationIds,
+    setWorkModeIds } = getFilterJobsSlice.actions;

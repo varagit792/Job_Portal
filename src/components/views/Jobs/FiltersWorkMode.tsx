@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { getWorkModeList } from '../../utils/utils';
 import { useAppSelector, useAppDispatch } from '../../../';
-import { setWorkMode } from '../../../store/reducers/jobs/GetFilterJobs';
+import { setWorkMode, setWorkModeIds } from '../../../store/reducers/jobs/GetFilterJobs';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
-const FiltersWorkMode = ({ handleWorkModeCheckbox }: any) => {
+export const AllJobsFiltersWorkMode = ({ handleWorkModeCheckbox }: any) => {
 
     const dispatch = useAppDispatch();
     const { workMode } = useAppSelector((state) => state.getFilterJobs);
@@ -37,6 +37,38 @@ const FiltersWorkMode = ({ handleWorkModeCheckbox }: any) => {
                         </Disclosure.Panel>
                     </>}
             </Disclosure>
+        </div>
+    )
+};
+
+const FiltersWorkMode = () => {
+    const dispatch = useAppDispatch();
+    const { workMode } = useAppSelector((state) => state.getFilterJobs);
+
+    const handleWorkModeCheckbox = (data: any) => {
+        dispatch(setWorkMode(
+            workMode?.map((item: any) =>
+                item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
+            )
+        ));
+        if (data?.isChecked === undefined || data?.isChecked === false) {
+            dispatch(setWorkModeIds(data?.id));
+        } else {
+            dispatch(setWorkModeIds({ filter: data?.id }));
+        }
+    };
+
+    return (
+        <div className="w-full h-full px-5">
+            <h1 className="font-semibold leading-none mt-5 mb-2 text-lg">Work mode</h1>
+            <div className="flex flex-wrap items-center w-full">
+                {workMode?.map((item: any, index: number) =>
+                    <div className="text-[#475569] flex justify-start items-center mt-2 text-sm w-1/2" key={index}>
+                        <input type="checkbox" defaultChecked={false} checked={item?.isChecked} onChange={() => handleWorkModeCheckbox(item)} />
+                        <label className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
+                    </div>
+                )}
+            </div>
         </div>
     )
 };

@@ -19,8 +19,8 @@ import { scrollToTop } from '../../utils/utils';
 import JobCard from './JobCard';
 import FiltersExperience from './FiltersExperience';
 import { FiltersDepartmentSlice } from './FiltersDepartment';
-import FiltersLocation from './FiltersLocation';
-import FiltersWorkMode from './FiltersWorkMode';
+import { FiltersLocationSlice } from './FiltersLocation';
+import { AllJobsFiltersWorkMode } from './FiltersWorkMode';
 import FiltersSalary from './FiltersSalary';
 import FiltersRoleCategory from './FiltersRoleCategory';
 import FiltersModal from './FiltersModal';
@@ -187,11 +187,12 @@ const AllJobs = () => {
                             setIsOpen={setIsOpen}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <FiltersLocation
+                        <FiltersLocationSlice
                             handleLocationCheckbox={handleLocationCheckbox}
+                            setIsOpen={setIsOpen}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <FiltersWorkMode
+                        <AllJobsFiltersWorkMode
                             handleWorkModeCheckbox={handleWorkModeCheckbox}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />

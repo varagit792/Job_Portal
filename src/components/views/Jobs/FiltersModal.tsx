@@ -7,10 +7,13 @@ import {
     bulkFilter,
     setNavigateFilterOption
 } from '../../../store/reducers/jobs/GetFilterJobs';
+import FiltersLocation from './FiltersLocation';
+import FiltersWorkMode from './FiltersWorkMode';
 
 const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
     const dispatch = useAppDispatch();
-    const { navigateFilterOption, departmentIds } = useAppSelector((state) => state.getFilterJobs);
+    const { navigateFilterOption, departmentIds, locationIds, workModeIds } = useAppSelector((state) => state.getFilterJobs);
+    console.log(workModeIds);
 
     const closeDialog = () => {
         setIsOpen(false);
@@ -18,7 +21,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
 
     const handleSubmit = () => {
         setToggleDispach(true);
-        dispatch(bulkFilter({ bulkData: departmentIds }));
+        dispatch(bulkFilter({ department: departmentIds, location: locationIds, workMode: workModeIds }));
         setIsOpen(false);
     }
 
@@ -80,8 +83,28 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                                         {departmentIds?.length}
                                                     </span>}
                                             </li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Location"))}>Location</li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Work mode"))}>Work mode</li>
+                                            <li
+                                                className={navigateFilterOption !== "Location" ?
+                                                    "px-5 py-2 cursor-pointer flex justify-between items-center"
+                                                    : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
+                                                onClick={() => dispatch(setNavigateFilterOption("Location"))}>
+                                                <span>Location</span>
+                                                {locationIds?.length !== 0 &&
+                                                    <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
+                                                        {locationIds?.length}
+                                                    </span>}
+                                            </li>
+                                            <li
+                                                className={navigateFilterOption !== "Work mode" ?
+                                                    "px-5 py-2 cursor-pointer flex justify-between items-center"
+                                                    : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
+                                                onClick={() => dispatch(setNavigateFilterOption("Work mode"))}>
+                                                <span>Work mode</span>
+                                                {workModeIds?.length !== 0 &&
+                                                    <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
+                                                        {workModeIds?.length}
+                                                    </span>}
+                                            </li>
                                             <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Salary"))}>Salary</li>
                                             <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Company type"))}>Company type</li>
                                             <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Role category"))}>Role category</li>
@@ -93,6 +116,8 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                     </div>
                                     <div className="col-start-4 col-end-13">
                                         {navigateFilterOption === "Department" && <FiltersDepartment />}
+                                        {navigateFilterOption === "Location" && <FiltersLocation />}
+                                        {navigateFilterOption === "Work mode" && <FiltersWorkMode />}
                                     </div>
                                 </div>
                                 <div className="p-5 float-right">
