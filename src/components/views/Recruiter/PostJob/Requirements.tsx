@@ -4,6 +4,7 @@ import JobLeftPanel from './JobLeftPanel'
 import { IFormInputsRequirement } from '../../../../interface/employer';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
 import { getHighestQualificationList, getIndustryList, getKeySkillsList, getLocalityList, getTotalYearsExpList } from '../../../utils/utils';
+import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { useNavigate, useParams } from 'react-router-dom';
 import { formData } from '../../../../store/reducers/jobs/postJobs';
@@ -20,6 +21,8 @@ const Requirements = () => {
   const [totalExpYear, setTotalExpYear] = useState<any>([]);
   const [industry, setIndustry] = useState<any>([]);
   const [highestQualification, setHighestQualification] = useState<any>([]);
+  const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
+  const [jobTitle, setJobTitle] = useState('');
 
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
@@ -40,9 +43,9 @@ const Requirements = () => {
   const selectedCandidateIndustry: any = [];
   const selectedJobEducation: any = []
 
-  if (Object.keys(jobDetail).length !== 0 && jobDetail.constructor !== Object) {
+  if (Object.keys(jobDetail).length !== 0) {
     jobDetail?.jobsKeySkills?.filter((item: any) => item && selectedJobsKeySkills.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }));
-    jobDetail?.jobEducation?.filter((item: any) => item && selectedJobEducation.push(item?.jobEducation));
+    jobDetail?.jobEducation?.filter((item: any) => item && selectedJobEducation.push({ value: item?.education?.id, label: item?.education?.title }));
     jobDetail?.jobLocality?.filter((item: any) => item && selectedJobLocality.push({ value: item?.locality?.id, label: item?.locality?.title }));
     jobDetail?.jobCandidateIndustry?.filter((item: any) => item && selectedCandidateIndustry.push({ value: item?.candidateIndustry?.id, label: item?.candidateIndustry?.title }));
   } else {
@@ -53,7 +56,7 @@ const Requirements = () => {
   }
 
   useEffect(() => {
-    if (Object.keys(jobDetail).length !== 0 && jobDetail.constructor !== Object) {
+    if (Object.keys(jobDetail).length !== 0) {
       jobDetail?.jobsKeySkills && setValue('keySkills', selectedJobsKeySkills);
       jobDetail?.jobEducation && setValue('education', selectedJobEducation);
       jobDetail?.jobLocality && setValue('jobLocality', selectedJobLocality);
@@ -83,7 +86,6 @@ const Requirements = () => {
     const jobEducation = data?.education?.map((education: any) => education);
     const jobLocality = data?.jobLocality?.map((local: any) => local);
     const jobCandidateIndustry = data?.candidateIndustry?.map((industry: any) => ({ candidateIndustry: industry }));
-    const updatePostId = postId ? Number(postId) : null;
     dispatch(formData({
       totalExpYearStart: data?.fromWorkExperience,
       totalExpYearEnd: data?.toWorkExperience,
@@ -97,9 +99,19 @@ const Requirements = () => {
       jobCandidateIndustry: jobCandidateIndustry,
       diversityHiring: data?.diversityHiring,
     }));
-
-    navigate('/postJob/company');
+    navigate(postBack.postURL);
   }
+
+  useEffect(() => {
+    if (Number(postId)) {
+      dispatch(getJobDetail(postId));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (jobDetailSuccess)
+      dispatch(clearGetJobDetailSlice());
+  }, [dispatch, jobDetailSuccess]);
 
   useEffect(() => {
     (async () => {
@@ -129,19 +141,26 @@ const Requirements = () => {
       }
 
     })();
+
+    if (Number(postId)) {
+      setPostBack({ postURL: `/postJob/company/${postId}`, backURL: `/postJob/jobDetails/${postId}` })
+      setJobTitle(jobDetail?.title);
+    } else {
+      setPostBack({ postURL: '/postJob/company', backURL: '/postJob/jobDetails' })
+    }
+
   }, []);
 
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
-
   return (
     <>
       <div className="h-[10%] w-full"></div>
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
         <div className="grid grid-cols-9 gap-4">
           <div className="col-start-1 col-end-4">
-            <JobLeftPanel />
+            <JobLeftPanel jobTitle={jobTitle} />
           </div>
           <div className="col-start-4 col-end-11">
             <div id="jobDetails" className="scroll-mt-24 scroll-smooth">
@@ -208,7 +227,7 @@ const Requirements = () => {
                     </div>
                     <div className="w-full justify-start  gap-5 inline-flex">
                       <div className="w-full flex-col justify-start  gap-2 inline-flex">
-                        <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Start Work Experience </div>
+                        <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Min Work Experience </div>
                         <div className='w-full'>
                           <AutocompleteBox
                             control={control}
@@ -222,7 +241,7 @@ const Requirements = () => {
                         </div>
                       </div>
                       <div className="w-full flex-col justify-start  gap-2 inline-flex">
-                        <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">End Work Experience </div>
+                        <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Max Work Experience </div>
                         <div className='w-full'>
                           <AutocompleteBox
                             control={control}
@@ -296,9 +315,15 @@ const Requirements = () => {
                     </div>
                   </div>
                   <div className="self-stretch justify-start  gap-5 inline-flex">
-                    <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack('/postJob/jobDetails')}>
+                    <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack.backURL)}>
                       <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight">Back</div>
                     </div>
+                    {Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save</div>
+                    </div>}
+                    {!Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save as Draft</div>
+                    </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
                       <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} />
                     </div>
