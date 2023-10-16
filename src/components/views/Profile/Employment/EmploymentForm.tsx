@@ -8,6 +8,7 @@ import { keySkillsGet } from '../../../../store/reducers/dropdown/keySkills';
 import { filterArray } from '../../../utils/filterArray';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { getAllCompanies } from '../../../../store/reducers/companies/getAllCompanies';
 
 const currentEmployment = ['Yes', 'No'];
 const employmentType = ['Full Time', 'Internship'];
@@ -56,6 +57,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
 
   const { profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
   const { success: keySkillsSuccess, keySkills } = useAppSelector((state) => state.getKeySkills);
+  const { success, allCompanies } = useAppSelector((state) => state.getAllCompanies);
 
   const id = profileDashboard?.id;
 
@@ -433,13 +435,15 @@ export default function ({ closeDialog, selectedEmployment }: any) {
   useEffect(() => {
     setSkillsUsed(keySkills as any)
   }, [keySkills])
-
+  
   useEffect(() => {
-    (async () => {
-      const companyList = await getCompanyList()
-      setCurrentCompany(companyList as any)
-    })();
-  }, [])
+    const page = 1;
+    dispatch(getAllCompanies({}));
+  }, [dispatch])
+  
+  useEffect(() => {
+    setCurrentCompany(allCompanies as any)
+  },[success])
 
   useEffect(() => {
     (async () => {

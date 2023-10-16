@@ -13,17 +13,29 @@ import DominousIcon from '../../../assets/svg/DominousIcon.svg';
 import GoproIcon from '../../../assets/svg/GoproIcon.svg';
 import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
 import { BiSearch } from 'react-icons/bi';
-import { getAllCompanies, clearGetAllCompaniesSlice } from '../../../store/reducers/companies/getAllCompanies';
+import { getAllCompanies, clearGetAllCompaniesSlice, setDepartment, setFilterDepartment } from '../../../store/reducers/companies/getAllCompanies';
+import { FiltersDepartmentSlice } from '../Companies/FiltersDepartment';
+import { scrollToTop } from '../../utils/utils';
+import FiltersModal from '../Jobs/FiltersModal';
 
 const AllCompanies = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { success, allCompanies, loading } = useAppSelector((state) => state.getAllCompanies);
-    const [companyCard, setCompanyCard] = useState<any>([]);
+    const { success, allCompanies, loading, department } = useAppSelector((state) => state.getAllCompanies);
+    // const { success:filteredSuccess,
+    //     allCompanies:allFilteredCompanies,
+    //     loading:filteredLoading,
+    //     department,
+    //     location,
+    //     workMode,
+    //     roleCategory,
+    //     filtersData } = useAppSelector((state) => state.getFilterCompanies);
     const [page, setPage] = useState(1);
     const [toggleDispach, setToggleDispach] = useState(true);
     const [range, setRange] = useState(0);
     const [salary, setSalary] = useState(0);
+    const [isOpen, setIsOpen] = useState(false);
+    const [companyCard, setCompanyCard] = useState<any>([]);
 
     useEffect(() => {
         window.addEventListener("scroll", handelInfiniteScroll);
@@ -32,7 +44,7 @@ const AllCompanies = () => {
 
     useEffect(() => {
         if (toggleDispach) {
-            dispatch(getAllCompanies(page));
+            dispatch(getAllCompanies({page}));
         }
     }, [dispatch, page]);
 
@@ -72,6 +84,23 @@ const AllCompanies = () => {
 		window.open(`/allCompanies/companyDescription/${companyId}`, '_blank');
     }
 
+    const handleDepartmentCheckbox = (data: any) => {  
+        console.log("data in all companies-->", data);
+        scrollToTop();
+        setToggleDispach(true);
+        setCompanyCard([]);
+        dispatch(setDepartment(
+            department?.map((item: any) =>
+                item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
+            )
+        ));
+        if (data?.isChecked === undefined || data?.isChecked === false) {
+            dispatch(setFilterDepartment(data?.id));
+        } else {
+            dispatch(setFilterDepartment({ filterDepartment: data?.id }));
+        }
+    };
+
     return (
         <>
             <div className="h-[10%] w-full"></div>
@@ -79,38 +108,6 @@ const AllCompanies = () => {
                 <div className="col-start-1 col-end-4">
                     <div className="bg-[#FFF] rounded-xl p-4 sticky top-[13%]">
                         <h1 className="flex justify-between items-center leading-none"><span className="text-[#475569] font-bold">Filters</span><span className="bg-[#F8FAFC] rounded px-2 py-1 text-[#4F46E5]">4</span></h1>
-                        {/* <hr className="bg-[#E0E7FF] my-5" />
-                        <div className="w-full">
-                            <Disclosure>
-                                {({ open }) => (
-                                    <>
-                                        <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-semibold">Experience</label>
-                                            <ChevronUpIcon
-                                                className={`${open ? 'rotate-180 transform' : ''
-                                                    } h-5 w-5 text-gray-600`}
-                                            />
-                                        </Disclosure.Button>
-                                        <Disclosure.Panel className="mt-12">
-                                            <div className="relative mb-3">
-                                                <span id="inputRangeSelector" className="bg-[#C7D2FE] w-10 text-xs h-10 rounded-full text-[#312E81] absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-[#C7D2FE] after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center" style={{ left: `${range * 5}%` }}>{range}</span>
-                                                <input className="w-full h-1 rounded-lg cursor-pointer overflow-hidden appearance-none bg-[#C7D2FE]"
-                                                    type="range"
-                                                    min="0"
-                                                    max="20"
-                                                    value={range}
-                                                    onChange={handleRangeChange}
-                                                />
-                                            </div>
-                                            <div className="flex justify-between items-center text-[#64748B] text-xs">
-                                                <span>0 Yrs</span>
-                                                <span>20+ Yrs</span>
-                                            </div>
-                                        </Disclosure.Panel>
-                                    </>
-                                )}
-                            </Disclosure>
-                        </div> */}
                         <hr className="bg-[#E0E7FF] my-5" />
                         <div className="w-full">
                             <Disclosure>
@@ -238,6 +235,11 @@ const AllCompanies = () => {
                             </Disclosure>
                         </div>
                         <hr className="bg-[#E0E7FF] my-5" />
+                        <FiltersDepartmentSlice
+                            handleDepartmentCheckbox={handleDepartmentCheckbox}
+                            setIsOpen={setIsOpen}
+                        />
+                        <hr className="bg-[#E0E7FF] my-5" />
                         <div className="w-full">
                             <Disclosure>
                                 {({ open }) => (
@@ -308,6 +310,7 @@ const AllCompanies = () => {
                     </div>
                 </div>
             </div >
+            <FiltersModal isOpen={isOpen} setIsOpen={setIsOpen} setToggleDispach={setToggleDispach} />
         </>
     )
 }
