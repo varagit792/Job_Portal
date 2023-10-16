@@ -7,6 +7,9 @@ import CompanyListItem from '../../commonComponents/CompanyListItem';
 import { Link } from 'react-router-dom';
 import { getCompanyList } from '../../utils/utils';
 import NoRecords from '../../commonComponents/NoRecords';
+import { useDispatch } from 'react-redux';
+import { getAllCompanies, clearGetAllCompaniesSlice } from '../../../store/reducers/companies/getAllCompanies';
+import { useAppDispatch, useAppSelector } from '../../..';
 
 const responsive = {
   superLargeDesktop: {
@@ -47,14 +50,20 @@ interface Companies {
   viewLabel?: string;
 }
 const TopCompaniesHiring = ({title, viewLabel}:Companies) => {
+  const dispatch = useAppDispatch();
+  
   const [companyList, setCompanyList] = useState([]);
+  const [page, setPage] = useState(1);
+
+  const { success, allCompanies } = useAppSelector((state) => state.getAllCompanies);
 
   useEffect(() => {
-    (async () => {
-      const companyList = await getCompanyList()
-      setCompanyList(companyList as any)
-    })();
-  }, [])
+    dispatch(getAllCompanies({ page } as any));
+  }, [dispatch, page])
+  
+  useEffect(() => {
+    setCompanyList(allCompanies as any)
+  },[success])
   
   return (
     <>
