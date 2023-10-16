@@ -1,23 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { IFormInputsPostAJob, IFormInputsResponse, PostJobUpdate } from '../../../../interface/employer';
+import JobLeftPanel from './JobLeftPanel'
+import { IFormInputsCompany, IFormInputsResponse } from '../../../../interface/employer';
+import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
+import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
+import star from '../../../../assets/svg/star.svg';
 import user from '../../../../assets/png/user.png';
 import envelop from '../../../../assets/svg/envelop.svg';
 import close from '../../../../assets/svg/close.svg';
 import user_icon from '../../../../assets/svg/user_icon.svg';
-import JobLeftPanel from './JobLeftPanel';
+import { getCompanyList } from '../../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../../..';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { CompanySchema, ResponseSchema } from '../../../../schema/postJob';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { formData, postJobUpdate } from '../../../../store/reducers/jobs/postJobs';
-import { PostJobSchema, ResponseSchema } from '../../../../schema/postJob';
+import { formData } from '../../../../store/reducers/jobs/postJobs';
 
 const Response = () => {
-
   const dispatch = useAppDispatch();
+  const { postId } = useParams();
   const navigate = useNavigate();
+  const [company, setCompany] = useState<any>([]);
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
+  const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
+  const [jobTitle, setJobTitle] = useState('');
 
   const {
     register,
@@ -26,123 +33,69 @@ const Response = () => {
     watch,
     setValue,
     formState: { errors }
-  } = useForm<IFormInputsPostAJob>({
-    resolver: yupResolver(PostJobSchema),
+  } = useForm<IFormInputsResponse>({
+    resolver: yupResolver(ResponseSchema),
   });
 
-  const selectedJobsKeySkills: any = [];
-  const selectedJobsLocation: any = [];
-  const selectedJobLocality: any = [];
-  const selectedCandidateIndustry: any = [];
-
-  jobDetailData?.jobsKeySkills?.filter((item: any) => item && selectedJobsKeySkills.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }));
-  jobDetailData?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ value: item?.location?.value, label: item?.location?.title }));
-  jobDetailData?.jobLocality?.filter((item: any) => item && selectedJobLocality.push({ value: item?.locality?.id, label: item?.locality?.title }));
-  const selectedJobEducation: any = [];
-  jobDetailData?.jobEducation?.filter((item: any) => item && selectedJobEducation.push({ value: item?.education?.id, label: item?.education?.title }));
-  jobDetailData?.jobCandidateIndustry?.filter((item: any) => item && selectedCandidateIndustry.push({ value: item?.candidateIndustry?.id, label: item?.candidateIndustry?.title }));
-
   useEffect(() => {
-    if (jobDetailData) {
-      jobDetailData?.title && setValue('title', jobDetailData?.title);
-      jobDetailData?.jobsType && setValue('jobsType', jobDetailData?.jobsType);
-      jobDetailData?.jobsKeySkills && setValue('keySkills', selectedJobsKeySkills);
-      jobDetailData?.department && setValue('department', jobDetailData?.department);
-      jobDetailData?.roleCategory && setValue('roleCategory', jobDetailData?.roleCategory);
-      jobDetailData?.videoProfile && setValue('videoProfile', jobDetailData?.videoProfile);
-      jobDetailData?.includeWalkInDetails && setValue('includeWalkInDetails', jobDetailData?.includeWalkInDetails);
-      jobDetailData?.notifyMeAbout && setValue('notifyMeAbout', jobDetailData?.notifyMeAbout);
+
+    if (Object.keys(jobDetail).length !== 0) {
+      jobDetail?.notificationEmailAddress1 && setValue('notificationEmailAddress1', jobDetail?.notificationEmailAddress1);
+      jobDetail?.notificationEmailAddress2 && setValue('notificationEmailAddress2', jobDetail?.notificationEmailAddress2);
+      jobDetail?.hideSalaryDetails && setValue('hideSalaryDetails', jobDetail?.hideSalaryDetails);
+      jobDetail?.videoProfile && setValue('videoProfile', jobDetail?.videoProfile);
+      jobDetail?.includeWalkInDetails && setValue('includeWalkInDetails', jobDetail?.includeWalkInDetails);
+      jobDetail?.notifyMeAbout && setValue('notifyMeAbout', jobDetail?.notifyMeAbout);
+    } else {
       jobDetailData?.notificationEmailAddress1 && setValue('notificationEmailAddress1', jobDetailData?.notificationEmailAddress1);
       jobDetailData?.notificationEmailAddress2 && setValue('notificationEmailAddress2', jobDetailData?.notificationEmailAddress2);
-      jobDetailData?.jobsRole && setValue('jobsRole', jobDetailData?.jobsRole);
-      jobDetailData?.workMode && setValue('workMode', jobDetailData?.workMode);
-      jobDetailData?.jobsLocation && setValue('jobLocation', selectedJobsLocation);
-      jobDetailData?.candidateRelocate && setValue('candidateRelocate', jobDetailData?.candidateRelocate);
       jobDetailData?.hideSalaryDetails && setValue('hideSalaryDetails', jobDetailData?.hideSalaryDetails);
-      jobDetailData?.jobLocality && setValue('jobLocality', selectedJobLocality);
-      jobDetailData?.totalExpYearStart && setValue('fromWorkExperience', jobDetailData?.totalExpYearStart);
-      jobDetailData?.totalExpYearEnd && setValue('toWorkExperience', jobDetailData?.totalExpYearEnd);
-      jobDetailData?.employmentType && setValue('employmentType', jobDetailData?.employmentType);
-      jobDetailData?.currency && setValue('currency', jobDetailData?.currency);
-      jobDetailData?.payScaleLowerRange && setValue('fromSalaryRange', jobDetailData?.payScaleLowerRange);
-      jobDetailData?.payScaleUpperRange && setValue('toSalaryRange', jobDetailData?.payScaleUpperRange);
-      jobDetailData?.numberSystem && setValue('numberSystem', jobDetailData?.numberSystem);
-      jobDetailData?.recurrence && setValue('recurrence', jobDetailData?.recurrence);
-      jobDetailData?.companyType && setValue('companyType', jobDetailData?.companyType);
-      jobDetailData?.jobEducation && setValue('highestQualification', selectedJobEducation);
-      jobDetailData?.premiumBTech && setValue('premiumBTech', jobDetailData?.premiumBTech);
-      jobDetailData?.premiumMBAAll && setValue('premiumMBAAll', jobDetailData?.premiumMBAAll);
-      jobDetailData?.jobCandidateIndustry && setValue('candidateIndustry', selectedCandidateIndustry);
-      jobDetailData?.diversityHiring && setValue('diversityHiring', jobDetailData?.diversityHiring);
-      jobDetailData?.jobDescription && setValue('jobDescription', jobDetailData?.jobDescription);
-      jobDetailData?.jobsOpening && setValue('jobsOpening', jobDetailData?.jobsOpening);
       jobDetailData?.videoProfile && setValue('videoProfile', jobDetailData?.videoProfile);
       jobDetailData?.includeWalkInDetails && setValue('includeWalkInDetails', jobDetailData?.includeWalkInDetails);
       jobDetailData?.notifyMeAbout && setValue('notifyMeAbout', jobDetailData?.notifyMeAbout);
-      jobDetailData?.notificationEmailAddress1 && setValue('notificationEmailAddress1', jobDetailData?.notificationEmailAddress1);
-      jobDetailData?.notificationEmailAddress2 && setValue('notificationEmailAddress2', jobDetailData?.notificationEmailAddress2);
-      jobDetailData?.company && setValue('company', jobDetailData?.company);
-      jobDetailData?.companyWebsite && setValue('companyWebsite', jobDetailData?.companyWebsite);
-      jobDetailData?.aboutCompany && setValue('aboutCompany', jobDetailData?.aboutCompany);
-      jobDetailData?.keyResponsibility && setValue('keyResponsibility', jobDetailData?.keyResponsibility);
-      jobDetailData?.companyAddress && setValue('companyAddress', jobDetailData?.companyAddress);
-      jobDetailData?.hideCompanyRating && setValue('hideCompanyRating', jobDetailData?.hideCompanyRating);
     }
-  }, [setValue, jobDetailData]);
+  }, [setValue, jobDetail, jobDetailData]);
 
-  const onSubmit = (data: IFormInputsPostAJob) => {
-    const keySkills = jobDetailData?.jobsKeySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.keySkills?.value } }));
-    const jobLocation = jobDetailData?.jobsLocation?.map((location: any) => ({ location: { id: location?.value } }));
-    const jobEducation = jobDetailData?.jobEducation?.map((education: any) => ({ education: education?.value }));
-    const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
-    const jobCandidateIndustry = jobDetailData?.jobCandidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.candidateIndustry?.value } }));
-    const updatePostId = jobDetailData.id ? Number(jobDetailData.id) : null;
+  const onSubmit = (data: IFormInputsResponse) => {
 
-    dispatch(postJobUpdate({
-      id: updatePostId,
-      title: jobDetailData?.title,
-      payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
-      jobsOpening: Number(jobDetailData?.jobsOpening),
-      userType: "employer",
-      payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
-      jobDescription: jobDetailData?.jobDescription,
-      company: jobDetailData?.company?.value,
-      totalExpYearStart: jobDetailData?.totalExpYearStart?.value,
-      totalExpYearEnd: jobDetailData?.totalExpYearEnd?.value,
-      numberSystem: jobDetailData?.numberSystem?.value,
-      recurrence: jobDetailData?.recurrence?.value,
-      jobsLocation: jobLocation,
-      jobsRole: jobDetailData?.jobsRole?.value,
-      department: jobDetailData?.department?.value,
-      jobsType: jobDetailData?.jobsType?.value,
-      roleCategory: jobDetailData?.roleCategory?.value,
-      jobEducation: jobEducation,
-      user: "1",
-      jobsKeySkills: keySkills,
-      employmentType: jobDetailData?.employmentType?.value,
-      status: true,
-      workMode: jobDetailData?.workMode?.value,
-      candidateRelocate: data?.candidateRelocate,
-      jobLocality: jobLocality,
-      currency: jobDetailData?.currency?.value,
-      companyType: jobDetailData?.companyType?.value,
-      premiumBTech: jobDetailData?.premiumBTech,
-      keyResponsibility: jobDetailData?.keyResponsibility,
-      hideCompanyRating: jobDetailData?.hideCompanyRating,
-      premiumMBAAll: jobDetailData?.premiumMBAAll,
-      jobCandidateIndustry: jobCandidateIndustry,
-      diversityHiring: jobDetailData?.diversityHiring,
-      companyWebsite: jobDetailData?.companyWebsite,
-      aboutCompany: jobDetailData?.aboutCompany,
-      companyAddress: jobDetailData?.companyAddress,
+    dispatch(formData({
       hideSalaryDetails: data?.hideSalaryDetails,
       videoProfile: data?.videoProfile,
       includeWalkInDetails: data?.includeWalkInDetails,
       notifyMeAbout: data?.notifyMeAbout,
       notificationEmailAddress1: data?.notificationEmailAddress1,
       notificationEmailAddress2: data?.notificationEmailAddress2,
+
     }));
+    navigate(postBack?.postURL);
   }
+
+  useEffect(() => {
+    if (Number(postId)) {
+      dispatch(getJobDetail(postId));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (jobDetailSuccess)
+      dispatch(clearGetJobDetailSlice());
+  }, [dispatch, jobDetailSuccess]);
+
+  useEffect(() => {
+    (async () => {
+      const companyList = await getCompanyList()
+      if (Object.keys(companyList)?.length) {
+        setCompany(companyList as any)
+      }
+    })();
+
+    if (Number(postId)) {
+      setPostBack({ postURL: `/postJob/preview/${postId}`, backURL: `/postJob/recruiter/${postId}` });
+      setJobTitle(jobDetail?.title);
+    } else {
+      setPostBack({ postURL: '/postJob/preview', backURL: '/postJob/recruiter' })
+    }
+  }, []);
 
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
@@ -154,7 +107,7 @@ const Response = () => {
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
         <div className="grid grid-cols-9 gap-4">
           <div className="col-start-1 col-end-4">
-            <JobLeftPanel />
+            <JobLeftPanel jobTitle={jobTitle} />
           </div>
           <div className="col-start-4 col-end-11">
             <div id="jobDetails" className="scroll-mt-24 scroll-smooth">
@@ -209,7 +162,7 @@ const Response = () => {
                         <div className="grid grid-cols-4 gap-4 mt-1">
                           <div className="col-span-2">
                             <div className="text-slate-700 text-sm">
-                              <input defaultValue={''}
+                              <input
                                 className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                                 placeholder={"Please enter email address"}
                                 {...register("notificationEmailAddress1")} />
@@ -218,7 +171,7 @@ const Response = () => {
                           </div>
                           <div className="col-span-2">
                             <div className="text-slate-700 text-sm">
-                              <input defaultValue={''}
+                              <input
                                 className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                                 placeholder={"Please enter email address"}
                                 {...register("notificationEmailAddress2")} />
@@ -292,12 +245,18 @@ const Response = () => {
                     </div>
                   </div>
                   <div className="self-stretch justify-start items-start gap-5 inline-flex">
-                    <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack('/postJob/recruiter')}>
+                    <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack?.backURL)}>
                       <div className="w-6 h-6 justify-center items-center flex"></div>
                       <div className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight">Back</div>
                     </div>
+                    {Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save</div>
+                    </div>}
+                    {!Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save as Draft</div>
+                    </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                      <button className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" >Finish</button>
+                      <button className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" >Continue</button>
                     </div>
                   </div>
                 </div>

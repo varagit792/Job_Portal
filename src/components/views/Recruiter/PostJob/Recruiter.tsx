@@ -3,16 +3,19 @@ import { useForm } from 'react-hook-form';
 import { IFormInputsRecruiter } from '../../../../interface/employer';
 import JobLeftPanel from './JobLeftPanel';
 import { useAppDispatch, useAppSelector } from '../../../..';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RecruiterSchema } from '../../../../schema/postJob';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const Recruiter = () => {
+  const { postId } = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
+  const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
+  const [jobTitle, setJobTitle] = useState('');
 
   const {
     register,
@@ -26,18 +29,30 @@ const Recruiter = () => {
   });
 
   const onSubmit = (data: IFormInputsRecruiter) => {
-    navigate('/postJob/response');
+    navigate(postBack?.postURL);
   }
+
+  useEffect(() => {
+    if (Number(postId)) {
+      setPostBack({ postURL: `/postJob/response/${postId}`, backURL: `/postJob/company/${postId}` });
+      setJobTitle(jobDetail?.title);
+    } else {
+      setPostBack({ postURL: '/postJob/response', backURL: '/postJob/company' })
+    }
+  }, []);
+
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
+
+
   return (
     <>
       <div className="h-[10%] w-full"></div>
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
         <div className="grid grid-cols-9 gap-4">
           <div className="col-start-1 col-end-4">
-            <JobLeftPanel />
+            <JobLeftPanel jobTitle={jobTitle} />
           </div>
           <div className="col-start-4 col-end-11">
             <div id="jobDetails" className="scroll-mt-24 scroll-smooth">
@@ -91,10 +106,16 @@ const Recruiter = () => {
                     </div>
                   </div>
                   <div className="self-stretch justify-start  gap-5 inline-flex">
-                    <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack('/postJob/company')}>
+                    <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack?.backURL)}>
                       <div className="w-6 h-6 justify-center items-center flex"></div>
                       <div className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight">Back</div>
                     </div>
+                    {Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save</div>
+                    </div>}
+                    {!Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save as Draft</div>
+                    </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
                       <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} />
                     </div>

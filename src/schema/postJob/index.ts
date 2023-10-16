@@ -101,7 +101,6 @@ export const CompanySchema = yup.object().shape({
 
 }).required();
 
-
 export const RecruiterSchema = yup.object().shape({
 
   fillCompanyInformation: yup.boolean().label("Please checked fill company information").required(),

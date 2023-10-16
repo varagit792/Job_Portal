@@ -4,6 +4,7 @@ import { IFormInputsJobDetail, IFormInputsPostAJob } from '../../../../interface
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
 import { formData } from '../../../../store/reducers/jobs/postJobs';
 import { getCurrencyList, getDepartmentList, getEmployeeTypeList, getJobRoleList, getJobTypeList, getLocationList, getNumberSystemList, getRecurrenceList, getRoleCategoryList, getSalaryRangeList, getWorkModeList } from '../../../utils/utils';
+import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { PostJobDetailSchema } from '../../../../schema/postJob';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
@@ -26,6 +27,8 @@ const JobDetails = () => {
   const [numberSystem, setNumberSystem] = useState<any>([]);
   const [recurrence, setRecurrence] = useState<any>([]);
   const [jobType, setJobType] = useState<any>([]);
+  const [postBack, setPostBack] = useState({ postURL: '' });
+  const [jobTitle, setJobTitle] = useState('');
 
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
@@ -45,9 +48,9 @@ const JobDetails = () => {
   const selectedJobLocality: any = [];
   const selectedCandidateIndustry: any = [];
 
-  if (Object.keys(jobDetail).length !== 0 && jobDetail.constructor !== Object) {
+  if (Object.keys(jobDetail).length !== 0) {
     jobDetail?.jobsKeySkills?.filter((item: any) => item && selectedJobsKeySkills.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }));
-    jobDetail?.jobsLocation && jobDetail?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ value: item?.id, label: item?.title }));
+    jobDetail?.jobsLocation && jobDetail?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ value: item?.location?.id, label: item?.location?.title }));
     jobDetail?.jobLocality?.filter((item: any) => item && selectedJobLocality.push({ value: item?.locality?.id, label: item?.locality?.title }));
     jobDetail?.jobCandidateIndustry?.filter((item: any) => item && selectedCandidateIndustry.push({ value: item?.candidateIndustry?.id, label: item?.candidateIndustry?.title }));
   } else {
@@ -59,7 +62,7 @@ const JobDetails = () => {
   }
 
   useEffect(() => {
-    if (Object.keys(jobDetail).length !== 0 && jobDetail.constructor !== Object) {
+    if (Object.keys(jobDetail).length !== 0) {
       jobDetail?.title && setValue('title', jobDetail?.title);
       jobDetail?.department && setValue('department', { label: jobDetail?.department?.title, value: jobDetail?.department?.id?.toString() });
       jobDetail?.roleCategory && setValue('roleCategory', { label: jobDetail?.roleCategory?.title, value: jobDetail?.roleCategory?.id?.toString() });
@@ -126,8 +129,19 @@ const JobDetails = () => {
       currency: data?.currency,
       keyResponsibility: data?.keyResponsibility,
     }));
-    navigate('/postJob/requirements');
+    navigate(postBack.postURL);
   }
+
+  useEffect(() => {
+    if (Number(postId)) {
+      dispatch(getJobDetail(postId));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (jobDetailSuccess)
+      dispatch(clearGetJobDetailSlice());
+  }, [dispatch, jobDetailSuccess]);
 
   useEffect(() => {
     (async () => {
@@ -187,10 +201,23 @@ const JobDetails = () => {
       }
 
     })();
+
+    if (Number(postId)) {
+      setPostBack({ postURL: `/postJob/requirements/${postId}` });
+      setJobTitle(jobDetail?.title);
+    } else {
+      setPostBack({ postURL: '/postJob/requirements' })
+    }
+
   }, [])
+
+  const changeTitle = (value: any) => {
+    setJobTitle(value);
+  }
 
   const watchKeyResponsibility = watch('keyResponsibility')?.length;
   const watchJobDescription = watch('jobDescription')?.length;
+  console.log(jobDetailData);
 
   return (
     <>
@@ -198,7 +225,7 @@ const JobDetails = () => {
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
         <div className="grid grid-cols-9 gap-4">
           <div className="col-start-1 col-end-4">
-            <JobLeftPanel />
+            <JobLeftPanel jobTitle={jobTitle} />
           </div>
           <div className="col-start-4 col-end-11">
             <div id="jobDetails" className="scroll-mt-24 scroll-smooth">
@@ -214,7 +241,9 @@ const JobDetails = () => {
                           <input defaultValue={''}
                             className="w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5"
                             placeholder={"Job Title / Designation"}
-                            {...register("title")} />
+                            {...register("title", {
+                              onChange: (e) => { changeTitle(e.currentTarget.value) },
+                            })} />
                           {errors?.title && <p className="font-normal text-xs text-red-500 absolute">{errors?.title?.message}</p>}
                         </div>
                       </div>
@@ -447,6 +476,12 @@ const JobDetails = () => {
                     <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
                       <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Cancel</div>
                     </div>
+                    {Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save</div>
+                    </div>}
+                    {!Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save as Draft</div>
+                    </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
                       <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} />
                     </div>

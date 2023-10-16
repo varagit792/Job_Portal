@@ -34,6 +34,14 @@ export interface IFormInputsRequirement {
 
 }
 
+export interface IFormInputsResponse {
+  hideSalaryDetails: boolean
+  videoProfile: boolean
+  includeWalkInDetails: boolean
+  notifyMeAbout: boolean
+  notificationEmailAddress1: string
+  notificationEmailAddress2: string
+}
 
 export interface IFormInputsCompany {
   companyName: { value: string; label: string; }

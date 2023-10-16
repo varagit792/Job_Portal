@@ -33,7 +33,6 @@ export const postJobUpdate = createAsyncThunk(
         }
       );
       if (response.status >= 200 && response.status < 300) {
-        console.log("formData===", response.status);
         return response.data;
       }
     } catch (error) {
