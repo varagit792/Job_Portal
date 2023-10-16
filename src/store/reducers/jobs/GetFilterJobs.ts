@@ -114,7 +114,13 @@ interface AllJobsState {
     roleCategory: any;
     expYear: any;
     filtersData: any;
+    checkItems: any;
     salary: any;
+    navigateFilterOption: string;
+    departmentIds: number[];
+    locationIds: number[];
+    workModeIds: number[];
+    maxExpYearId: any;
     errorMessage: string | undefined;
 }
 const initialState: AllJobsState = {
@@ -136,6 +142,16 @@ const initialState: AllJobsState = {
         salary: null,
         roleCategory: []
     },
+    checkItems: {
+        department: [],
+        location: [],
+        workMode: [],
+    },
+    navigateFilterOption: "",
+    departmentIds: [],
+    locationIds: [],
+    workModeIds: [],
+    maxExpYearId: null,
     errorMessage: undefined,
 }
 
@@ -182,12 +198,15 @@ const getFilterJobsSlice = createSlice({
         },
         setDepartment: (state, action) => {
             state.department = action.payload;
+            state.checkItems.department = action.payload;
         },
         setLocation: (state, action) => {
             state.location = action.payload;
+            state.checkItems.location = action.payload;
         },
         setWorkMode: (state, action) => {
             state.workMode = action.payload;
+            state.checkItems.workMode = action.payload;
         },
         setRoleCategory: (state, action) => {
             state.roleCategory = action.payload;
@@ -201,22 +220,31 @@ const getFilterJobsSlice = createSlice({
         setFilterDepartment: (state, action) => {
             if (!action?.payload?.filterDepartment) {
                 state?.filtersData?.department?.push(action.payload);
+                state?.departmentIds.push(action.payload);
             } else {
-                state.filtersData.department = state?.filtersData?.department?.filter((item: any) => action?.payload?.filterDepartment !== item);
+                const filterDate = state?.filtersData?.department?.filter((item: any) => action?.payload?.filterDepartment !== item);
+                state.filtersData.department = filterDate;
+                state.departmentIds = filterDate;
             }
         },
         setFilterLocation: (state, action) => {
             if (!action?.payload?.filterLocation) {
                 state?.filtersData?.location?.push(action.payload);
+                state?.locationIds.push(action.payload);
             } else {
-                state.filtersData.location = state?.filtersData?.location?.filter((item: any) => action?.payload?.filterLocation !== item);
+                const filterDate = state?.filtersData?.location?.filter((item: any) => action?.payload?.filterLocation !== item);
+                state.filtersData.location = filterDate;
+                state.locationIds = filterDate;
             }
         },
         setFilterWorkMode: (state, action) => {
             if (!action?.payload?.filterWorkMode) {
                 state?.filtersData?.workMode?.push(action.payload);
+                state?.workModeIds.push(action.payload);
             } else {
-                state.filtersData.workMode = state?.filtersData?.workMode?.filter((item: any) => action?.payload?.filterWorkMode !== item);
+                const filterDate = state?.filtersData?.workMode?.filter((item: any) => action?.payload?.filterWorkMode !== item);
+                state.filtersData.workMode = filterDate;
+                state.workModeIds = filterDate;
             }
         },
         setFilterRoleCategory: (state, action) => {
@@ -236,13 +264,66 @@ const getFilterJobsSlice = createSlice({
                 }
             })
             state.filtersData.expYear = experienceYearsData?.[0]?.id;
+            state.maxExpYearId = experienceYearsData?.[0]?.id;
         },
         setFilterSalary: (state, action) => {
             const salaryRangeListData = state?.salary?.filter((item: any) => parseInt(item?.title) === action.payload);
             state.filtersData.salary = salaryRangeListData?.[0]?.id;
         },
         bulkFilter: (state, action) => {
-            state.filtersData.department = action?.payload?.bulkData;
+            const experienceYearsData = state?.expYear?.filter((item: any) => {
+                let data = item?.title?.split('');
+                let splitVal = data?.slice(0, data.length - 5);
+                let joinedVal = parseInt(splitVal?.join(''));
+                if (joinedVal === action.payload.expYear) {
+                    return item
+                }
+            });
+            state.filtersData.expYear = experienceYearsData?.[0]?.id;
+            state.filtersData.department = action?.payload?.department;
+            state.filtersData.location = action?.payload?.location;
+            state.filtersData.workMode = action?.payload?.workMode;
+        },
+        setNavigateFilterOption: (state, action) => {
+            state.navigateFilterOption = action?.payload;
+        },
+        setCheckItems: (state, action) => {
+            if (action?.payload?.department) {
+                state.checkItems.department = action?.payload?.department;
+            }
+            if (action?.payload?.location) {
+                state.checkItems.location = action?.payload?.location;
+            }
+            if (action?.payload?.workMode) {
+                state.checkItems.workMode = action?.payload?.workMode;
+            }
+        },
+        setDepartmentIds: (state, action) => {
+            if (action?.payload?.filter) {
+                const departmentFilter = state?.departmentIds?.filter((item: any) => item !== action?.payload?.filter);
+                state.departmentIds = departmentFilter;
+            } else {
+                state.departmentIds?.push(action.payload);
+            }
+        },
+        setLocationIds: (state, action) => {
+            if (action?.payload?.filter) {
+                const locationFilter = state?.locationIds?.filter((item: any) => item !== action?.payload?.filter);
+                state.locationIds = locationFilter;
+            } else {
+                state.locationIds?.push(action.payload);
+            }
+        },
+        setWorkModeIds: (state, action) => {
+            if (action?.payload?.filter) {
+                const workModeFilter = state?.workModeIds?.filter((item: any) => item !== action?.payload?.filter);
+                state.workModeIds = workModeFilter;
+            } else {
+                state.workModeIds?.push(action.payload);
+            }
+        },
+        setMaxExpYearId: (state, action) => {
+            state.maxExpYearId = action.payload;
         }
     }
 });
@@ -260,4 +341,10 @@ export const { clearGetFilterJobsSlice,
     setFilterRoleCategory,
     setFilterExpYear,
     setFilterSalary,
-    bulkFilter } = getFilterJobsSlice.actions;
+    bulkFilter,
+    setNavigateFilterOption,
+    setCheckItems,
+    setDepartmentIds,
+    setLocationIds,
+    setWorkModeIds,
+    setMaxExpYearId } = getFilterJobsSlice.actions;
