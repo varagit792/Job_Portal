@@ -68,13 +68,11 @@ const verifyMobileOtpSlice = createSlice({
             state.error = false;
         });
         builder.addCase(verifyMobileOtp.fulfilled, (state, action: PayloadAction<User>) => {
-            console.log('user ', action.payload);
             state.loading = false;
             state.success = true;
             state.userData = action.payload;
         });
         builder.addCase(verifyMobileOtp.rejected, (state, action) => {
-            console.log('action ', action)
             state.success = false;
             state.loading = false;
             state.error = true;

@@ -66,7 +66,6 @@ const sendUserOtpSlice = createSlice({
             state.error = false;
         });
         builder.addCase(sendUserOtp.fulfilled, (state, action: PayloadAction<User>) => {
-            console.log('user ', action.payload);
             state.loading = false;
             state.success = true;
             state.userData = action.payload;
