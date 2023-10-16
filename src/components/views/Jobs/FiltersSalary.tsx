@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { getSalaryRangeList } from '../../utils/utils';
-import { useAppDispatch } from '../../../';
-import { setSalarys } from '../../../store/reducers/jobs/GetFilterJobs';
+import { useAppDispatch, useAppSelector } from '../../../';
+import { setSalarys, setMaxSalaryId } from '../../../store/reducers/jobs/GetFilterJobs';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
+import Select from 'react-select';
 
-const FiltersSalary = ({ handleSalaryFilter }: any) => {
+export const SalaryBasedFilter = ({ handleSalaryFilter, isOpen }: any) => {
     const dispatch = useAppDispatch();
+    const { filtersData } = useAppSelector((state) => state.getFilterJobs);
     const [salary, setSalary] = useState<number>(0);
     useEffect(() => {
         (async () => {
@@ -16,6 +18,11 @@ const FiltersSalary = ({ handleSalaryFilter }: any) => {
             }
         })();
     }, []);
+    useEffect(() => {
+        if (filtersData?.salary !== null && !isOpen) {
+            setSalary(filtersData?.salary);
+        }
+    }, [isOpen]);
     return (
         <div className="w-full">
             <Disclosure>
@@ -48,6 +55,60 @@ const FiltersSalary = ({ handleSalaryFilter }: any) => {
                         </Disclosure.Panel>
                     </>}
             </Disclosure>
+        </div>
+    )
+};
+
+const FiltersSalary = () => {
+    const dispatch = useAppDispatch();
+    const { salary: intialSalary, maxSalaryId } = useAppSelector((state) => state.getFilterJobs);
+    const [salaryMaster, setSalaryMaster] = useState([]);
+    const [salary, setSalary] = useState<number>(0);
+
+    useEffect(() => {
+        setSalaryMaster(intialSalary?.map(({ id, title }: any) => ({ value: id, label: title })));
+        if (maxSalaryId !== null && maxSalaryId !== 0) {
+            const salaryRangeListData = intialSalary?.filter((item: any) => parseInt(item?.id) === maxSalaryId);
+            setSalary(parseInt(salaryRangeListData?.[0]?.title));
+        }
+    }, []);
+
+    const handleSalaryFilter = (salary: number) => {
+        dispatch(setMaxSalaryId(salary));
+    };
+    return (
+        <div className="w-full px-5">
+            <h1 className="font-semibold leading-none mt-5 mb-12 text-lg">Salary</h1>
+            <div className="relative mb-3">
+                <span id="inputRangeSelector" className="bg-[#C7D2FE] w-10 text-xs h-10 rounded-full text-[#312E81] absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-[#C7D2FE] after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center"
+                    style={{
+                        left: `${salary}%`
+                    }}>
+                    {salary}LPA
+                </span>
+                <input className="w-full h-1 rounded-lg cursor-pointer overflow-hidden appearance-none bg-[#C7D2FE]" type="range" min="0" max="100"
+                    value={salary}
+                    onMouseUp={() => handleSalaryFilter(salary)}
+                    onChange={(event: React.FormEvent<HTMLInputElement> | any) => {
+                        setSalary(parseInt(event.target.value));
+                    }} />
+            </div>
+            <div className="flex justify-between items-center text-[#64748B] text-xs mb-3">
+                <span>4 LPA</span>
+                <span>50+ LPA</span>
+            </div>
+            <div>
+                <h1 className="text-[#64748B] text-xs mb-3">Max salary</h1>
+                <Select
+                    isClearable
+                    isSearchable={true}
+                    className="text-sm w-1/2"
+                    classNamePrefix="dropdown"
+                    options={salaryMaster}
+                    placeholder="LPA"
+                />
+            </div>
+
         </div>
     )
 };

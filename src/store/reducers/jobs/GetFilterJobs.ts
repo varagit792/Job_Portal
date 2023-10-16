@@ -121,6 +121,7 @@ interface AllJobsState {
     locationIds: number[];
     workModeIds: number[];
     maxExpYearId: any;
+    maxSalaryId: any;
     errorMessage: string | undefined;
 }
 const initialState: AllJobsState = {
@@ -152,6 +153,7 @@ const initialState: AllJobsState = {
     locationIds: [],
     workModeIds: [],
     maxExpYearId: null,
+    maxSalaryId: null,
     errorMessage: undefined,
 }
 
@@ -263,26 +265,20 @@ const getFilterJobsSlice = createSlice({
                     return item
                 }
             })
-            state.filtersData.expYear = experienceYearsData?.[0]?.id;
-            state.maxExpYearId = experienceYearsData?.[0]?.id;
+            state.filtersData.expYear = action.payload !== 0 ? experienceYearsData?.[0]?.id : 0;
+            state.maxExpYearId = action.payload !== 0 ? experienceYearsData?.[0]?.id : 0;
         },
         setFilterSalary: (state, action) => {
             const salaryRangeListData = state?.salary?.filter((item: any) => parseInt(item?.title) === action.payload);
-            state.filtersData.salary = salaryRangeListData?.[0]?.id;
+            state.filtersData.salary = action.payload !== 0 ? salaryRangeListData?.[0]?.id : 0;
+            state.maxSalaryId = action.payload !== 0 ? salaryRangeListData?.[0]?.id : 0;
         },
         bulkFilter: (state, action) => {
-            const experienceYearsData = state?.expYear?.filter((item: any) => {
-                let data = item?.title?.split('');
-                let splitVal = data?.slice(0, data.length - 5);
-                let joinedVal = parseInt(splitVal?.join(''));
-                if (joinedVal === action.payload.expYear) {
-                    return item
-                }
-            });
-            state.filtersData.expYear = experienceYearsData?.[0]?.id;
+            state.filtersData.expYear = action?.payload?.expYear;
             state.filtersData.department = action?.payload?.department;
             state.filtersData.location = action?.payload?.location;
             state.filtersData.workMode = action?.payload?.workMode;
+            state.filtersData.salary = action?.payload?.salary;
         },
         setNavigateFilterOption: (state, action) => {
             state.navigateFilterOption = action?.payload;
@@ -324,6 +320,9 @@ const getFilterJobsSlice = createSlice({
         },
         setMaxExpYearId: (state, action) => {
             state.maxExpYearId = action.payload;
+        },
+        setMaxSalaryId: (state, action) => {
+            state.maxSalaryId = action.payload;
         }
     }
 });
@@ -347,4 +346,5 @@ export const { clearGetFilterJobsSlice,
     setDepartmentIds,
     setLocationIds,
     setWorkModeIds,
-    setMaxExpYearId } = getFilterJobsSlice.actions;
+    setMaxExpYearId,
+    setMaxSalaryId } = getFilterJobsSlice.actions;
