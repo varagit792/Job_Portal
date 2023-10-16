@@ -21,7 +21,7 @@ import { ExperienceBasedFilter } from './FiltersExperience';
 import { DepartmentBasedFilter } from './FiltersDepartment';
 import { LocationBasedFilter } from './FiltersLocation';
 import { WorkModeBasedFilter } from './FiltersWorkMode';
-import FiltersSalary from './FiltersSalary';
+import { SalaryBasedFilter } from './FiltersSalary';
 import FiltersRoleCategory from './FiltersRoleCategory';
 import FiltersModal from './FiltersModal';
 import compenyBrand from '../../../assets/png/companyBrand.png';
@@ -180,7 +180,7 @@ const AllJobs = () => {
                     <div className="bg-[#FFF] rounded-xl p-4 sticky top-[13%]">
                         <h1 className="flex justify-between items-center leading-none"><span className="text-[#475569] font-bold">Filters</span><span className="bg-[#F8FAFC] rounded px-2 py-1 text-[#4F46E5]">4</span></h1>
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <ExperienceBasedFilter handleTotalExpYearChange={handleTotalExpYearChange} />
+                        <ExperienceBasedFilter handleTotalExpYearChange={handleTotalExpYearChange} isOpen={isOpen} />
                         <hr className="bg-[#E0E7FF] my-5" />
                         <DepartmentBasedFilter
                             handleDepartmentCheckbox={handleDepartmentCheckbox}
@@ -196,7 +196,7 @@ const AllJobs = () => {
                             handleWorkModeCheckbox={handleWorkModeCheckbox}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <FiltersSalary handleSalaryFilter={handleSalaryFilter} />
+                        <SalaryBasedFilter handleSalaryFilter={handleSalaryFilter} isOpen={isOpen} />
                         <hr className="bg-[#E0E7FF] my-5" />
                         <div className="w-full">
                             <Disclosure>
