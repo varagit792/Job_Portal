@@ -39,14 +39,13 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
 
   useEffect(() => {
     dispatch(sendUserOtp());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (successSendOtp) {
       dispatch(clearSendUserOtpSlice());
     }
-  }, [dispatch, successSendOtp]);
-
-  useEffect(() => {
-    dispatch(sendUserOtp());
-  }, [dispatch]);
+  }, [successSendOtp]);
 
   useEffect(() => {
     if (successVerifyOtp) {
@@ -86,9 +85,7 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
   useEffect(() => {
     setValue('mobileOtp', '');
     
-  },[setValue])
-  const watchMobileOtp = watch('mobileOtp')?.length;
-  console.log('watch mobile ', watchMobileOtp);
+  }, [setValue]);
 
   return (
     <Fragment>
