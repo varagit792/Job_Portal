@@ -33,7 +33,6 @@ export const postJobUpdate = createAsyncThunk(
         }
       );
       if (response.status >= 200 && response.status < 300) {
-        console.log("formData===", response.status);
         return response.data;
       }
     } catch (error) {
@@ -72,8 +71,6 @@ const updatePostJobUpdateSlice = createSlice({
       return state;
     },
     formData: (state, action) => {
-      console.log("action.payload", action.payload);
-
       state.formData = { ...state.formData, ...action.payload };
     },
   }

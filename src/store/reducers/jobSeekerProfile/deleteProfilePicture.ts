@@ -82,7 +82,6 @@ const jobSeekerDeleteProfilePictureSlice = createSlice({
       state.formData = action.payload.data;
     });
     builder.addCase(deleteProfilePicture.rejected, (state, action: any) => {
-      console.log("action-->", action);
       state.loading = false;
       state.error = true;
       state.errorMessage = action.error.message;

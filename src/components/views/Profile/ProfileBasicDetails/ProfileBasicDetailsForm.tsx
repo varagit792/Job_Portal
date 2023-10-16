@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useAppDispatch } from '../../../..';
+import { useAppDispatch, useAppSelector } from '../../../..';
 import { getCompanyList, getLocationList, getNoticePeriodList, getTotalMonthsExpList, getTotalYearsExpList, getjobTitleList } from '../../../utils/utils';
 import { LiaRupeeSignSolid } from 'react-icons/lia';
 import { Controller, useForm } from 'react-hook-form';
@@ -8,6 +8,7 @@ import { updateProfileBasicDetails } from '../../../../store/reducers/jobSeekerP
 import Select from 'react-select';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { getAllCompanies } from '../../../../store/reducers/companies/getAllCompanies';
 
 type Parameters = {
   closeDialog: () => void;
@@ -101,6 +102,8 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
   const [companyList, setCompanyList] = useState<any>([]);
   const [jobTitleList, setJobTitleList] = useState<any>([]);
 
+  const { success, allCompanies } = useAppSelector((state) => state.getAllCompanies);
+
   //react hook form controls
   const {
     control,
@@ -160,12 +163,13 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
   }, []);
 
   useEffect(() => {
-    (async () => {
-      const company = await getCompanyList();
-      setCompanyList(company);
-    })();
-  }, []);
-
+    dispatch(getAllCompanies({ } as any));
+  }, [dispatch])
+  
+  useEffect(() => {
+    setCompanyList(allCompanies as any)
+  }, [success])
+  
   useEffect(() => {
     (async () => {
       const jobTitle = await getjobTitleList();

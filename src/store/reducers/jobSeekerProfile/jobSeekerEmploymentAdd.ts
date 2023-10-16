@@ -61,9 +61,7 @@ const jobSeekerEmploymentAddSlice = createSlice({
         builder.addCase(jobSeekerEmploymentAdd.fulfilled, (state, action: any) => {
             state.loading = false;
             state.success = true;
-            state.error = false;
-            console.log('payload-->',action?.payload);
-            
+            state.error = false;            
             state.employmentData = action?.payload?.data;
         });
         builder.addCase(jobSeekerEmploymentAdd.rejected, (state, action) => {

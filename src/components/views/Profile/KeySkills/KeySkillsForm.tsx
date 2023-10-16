@@ -62,8 +62,6 @@ const KeySkillsForm = ({ keySkill, profileDashboard, setDatabaseSkillSet, keySki
   }
 
   const handleChange = (data: any) => {
-    console.log("data==", data);
-
     setKeySkillFetch([...keySkillFetch, { id: '', profileKeySkills: { id: data?.value, title: data?.label, status: true } }]);
   }
   var arrayPost = new Array();

@@ -15,7 +15,9 @@ import { profileDashboardGet } from "../../../../store/reducers/jobSeekerProfile
 import PhoneIcon from '../../../../assets/svg/Phone.svg';
 import EmailIcon from '../../../../assets/svg/Email.svg';
 import LocationIcon from '../../../../assets/svg/LocationIcon.svg';
-import { clearUploadState } from "../../../../store/reducers/jobSeekerProfile/uploadResume"
+import { clearUploadState } from "../../../../store/reducers/jobSeekerProfile/uploadResume";
+import VerifyOtpForm from "./VerifyOtpForm";
+import greenTickIcon from '../../../../assets/svg/greenTickIcon.svg';
 
 
 const ProfileBasicDetails = () => {
@@ -25,6 +27,7 @@ const ProfileBasicDetails = () => {
   const { success: successBasicDetails } = useAppSelector((state) => state.updateProfileBasicDetails)
   const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isVerifyOtpOpen, setIsVerifyOtpOpen] = useState<boolean>(false);
   useEffect(() => {
     dispatch(getUserData());
   }, [dispatch]);
@@ -52,6 +55,13 @@ const ProfileBasicDetails = () => {
 
   const closeDialog = () => {
     setIsOpen(false);
+  }
+
+  const openOtpModel = () => {
+    setIsVerifyOtpOpen(true);
+  };
+  const closeOtpDialog = () => {
+    setIsVerifyOtpOpen(false);
   }
 
   const parsedDate = parseISO(profileDashboard?.profileLastUpdated)
@@ -120,11 +130,15 @@ const ProfileBasicDetails = () => {
           <div className="flex justify-start items-center">
             {userData.mobileNumber ? <div className="flex justify-start items-center mr-2">
               <img src={PhoneIcon} alt="PhoneIcon" width="12rem" height="12rem" />
-              <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{userData.mobileNumber}</span>
+              <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis mr-1">{userData.mobileNumber}</span>
+              {userData.isMobileVerified ?
+                <img src={greenTickIcon} alt="PhoneIcon" width="14rem" height="14rem" /> :
+                <button className=" ml-1 text-blue-600 text-sm, font-medium" onClick={openOtpModel}>Verify</button>}
+
             </div> : <div className="mr-4 text-blue-600 font-md cursor-pointer font-semibold" onClick={openModal}>
               Add PhoneNumber </div>
             }
-            {profileDashboard?.currentLocation ? <div className="flex justify-start items-center">
+            {profileDashboard?.currentLocation ? <div className="flex justify-start items-center ml-1">
               <img src={LocationIcon} alt="LocationIcon" width="12rem" height="12rem" />
               <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{profileDashboard?.currentLocation?.title && `${profileDashboard?.currentLocation?.title},`} {profileDashboard?.currentCountry}</span>
             </div> :
@@ -144,6 +158,18 @@ const ProfileBasicDetails = () => {
           />
         }
       />}
+      {isVerifyOtpOpen &&
+        <Modal
+        isOpen={isVerifyOtpOpen}
+        setIsOpen={setIsVerifyOtpOpen}
+          modalBody={
+            <VerifyOtpForm
+              closeOtpDialog={closeOtpDialog}
+              mobileNumber={userData?.mobileNumber}
+            />
+          }
+        />
+      }
     </>
   )
 }
