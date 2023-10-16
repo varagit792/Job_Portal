@@ -3,7 +3,6 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 interface User {
-    isMobileVerified: any;
     id: number
     name: string
     email: string
@@ -20,8 +19,7 @@ const emptyUserData = (): User => ({
     accountType: '',
     accountId: '',
     mobileNumber: '',
-    userType: '',
-    isMobileVerified:false
+    userType: ''
 })
 
 interface getUserState {
@@ -40,10 +38,11 @@ const initialState: getUserState = {
     errorMessage: undefined,
 }
 
-export const getUserData = createAsyncThunk(
-    "getUserData", async () => {
+export const verifyMobileOtp = createAsyncThunk(
+    "verifyMobileOtp", async (data:any) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_PATH}/user/getDetails`,
+            const response = await axios.put(`${process.env.REACT_APP_API_PATH}/jobSeekerProfile/verifyMobile`,
+            data,
                 {
                     headers: {
                         'Authorization': `Bearer ${Cookies.get('token')}`
@@ -53,26 +52,29 @@ export const getUserData = createAsyncThunk(
             if (response.status >= 200 && response.status < 300) {
                 return response.data.data;
             }
-        } catch (error) {
-            throw error;
+        } catch (error: any) {
+            console.log('error ', error)
+            throw error?.response?.data?.message;
         }
     });
 
-const getUserDataSlice = createSlice({
-    name: 'getUserData',
+const verifyMobileOtpSlice = createSlice({
+    name: 'verifyMobileOtp',
     initialState,
     extraReducers: (builder) => {
-        builder.addCase(getUserData.pending, (state) => {
+        builder.addCase(verifyMobileOtp.pending, (state) => {
             state.loading = true;
             state.success = false;
             state.error = false;
         });
-        builder.addCase(getUserData.fulfilled, (state, action: PayloadAction<User>) => {
+        builder.addCase(verifyMobileOtp.fulfilled, (state, action: PayloadAction<User>) => {
+            console.log('user ', action.payload);
             state.loading = false;
             state.success = true;
             state.userData = action.payload;
         });
-        builder.addCase(getUserData.rejected, (state, action) => {
+        builder.addCase(verifyMobileOtp.rejected, (state, action) => {
+            console.log('action ', action)
             state.success = false;
             state.loading = false;
             state.error = true;
@@ -81,7 +83,7 @@ const getUserDataSlice = createSlice({
         });
     },
     reducers: {
-        clearGetUserDataSlice: (state) => {
+        clearVerifyMobileOtpSlice: (state) => {
             state.loading = false;
             state.error = false;
             state.success = false;
@@ -89,5 +91,5 @@ const getUserDataSlice = createSlice({
         },
     }
 });
-export default getUserDataSlice.reducer;
-export const { clearGetUserDataSlice } = getUserDataSlice.actions;
+export default verifyMobileOtpSlice.reducer;
+export const { clearVerifyMobileOtpSlice } = verifyMobileOtpSlice.actions;

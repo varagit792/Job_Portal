@@ -97,19 +97,15 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
       setCourses(courseList as any)
     })();
   }, [])
-
-  //console.log("selectedEducation-->", (institute?.filter((item:any)=> item?.title === selectedEducation?.institute) as any)[0].id);
     
   useEffect(() => {
     (async () => {
       const eductionTypeList = await getEducationTypeList()
-      console.log("educationDetails-->", educationDetails);
       const coursesString = [] as any
       if (Object.keys(educationDetails).length && !Object.keys(selectedEducation).length && !isEdit) {
         educationDetails.map((item: any) => {
           coursesString.push(item.education)
           const filteredCourses = eductionTypeList.filter((item1: any) => !coursesString.includes(item1.title))
-          console.log("filteredCourses-->", filteredCourses);
           setEducationType(filteredCourses as any)
         })
       } else {
@@ -156,7 +152,7 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
     
     dispatch(jobSeekerEducationAdd(educationData as any));
   };
-  console.log('errors--->',errors);
+  
   return (
     <div>
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>

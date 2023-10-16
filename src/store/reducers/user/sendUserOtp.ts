@@ -3,7 +3,6 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 interface User {
-    isMobileVerified: any;
     id: number
     name: string
     email: string
@@ -20,8 +19,7 @@ const emptyUserData = (): User => ({
     accountType: '',
     accountId: '',
     mobileNumber: '',
-    userType: '',
-    isMobileVerified:false
+    userType: ''
 })
 
 interface getUserState {
@@ -40,10 +38,10 @@ const initialState: getUserState = {
     errorMessage: undefined,
 }
 
-export const getUserData = createAsyncThunk(
-    "getUserData", async () => {
+export const sendUserOtp = createAsyncThunk(
+    "sendUserOtp", async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_PATH}/user/getDetails`,
+            const response = await axios.get(`${process.env.REACT_APP_API_PATH}/jobSeekerProfile/sendOtp`,
                 {
                     headers: {
                         'Authorization': `Bearer ${Cookies.get('token')}`
@@ -58,21 +56,22 @@ export const getUserData = createAsyncThunk(
         }
     });
 
-const getUserDataSlice = createSlice({
-    name: 'getUserData',
+const sendUserOtpSlice = createSlice({
+    name: 'sendUserOtp',
     initialState,
     extraReducers: (builder) => {
-        builder.addCase(getUserData.pending, (state) => {
+        builder.addCase(sendUserOtp.pending, (state) => {
             state.loading = true;
             state.success = false;
             state.error = false;
         });
-        builder.addCase(getUserData.fulfilled, (state, action: PayloadAction<User>) => {
+        builder.addCase(sendUserOtp.fulfilled, (state, action: PayloadAction<User>) => {
+            console.log('user ', action.payload);
             state.loading = false;
             state.success = true;
             state.userData = action.payload;
         });
-        builder.addCase(getUserData.rejected, (state, action) => {
+        builder.addCase(sendUserOtp.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
             state.error = true;
@@ -81,7 +80,7 @@ const getUserDataSlice = createSlice({
         });
     },
     reducers: {
-        clearGetUserDataSlice: (state) => {
+        clearSendUserOtpSlice: (state) => {
             state.loading = false;
             state.error = false;
             state.success = false;
@@ -89,5 +88,5 @@ const getUserDataSlice = createSlice({
         },
     }
 });
-export default getUserDataSlice.reducer;
-export const { clearGetUserDataSlice } = getUserDataSlice.actions;
+export default sendUserOtpSlice.reducer;
+export const { clearSendUserOtpSlice } = sendUserOtpSlice.actions;

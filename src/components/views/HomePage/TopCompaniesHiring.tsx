@@ -7,6 +7,9 @@ import CompanyListItem from '../../commonComponents/CompanyListItem';
 import { Link } from 'react-router-dom';
 import { getCompanyList } from '../../utils/utils';
 import NoRecords from '../../commonComponents/NoRecords';
+import { useDispatch } from 'react-redux';
+import { getAllCompanies, clearGetAllCompaniesSlice } from '../../../store/reducers/companies/getAllCompanies';
+import { useAppDispatch, useAppSelector } from '../../..';
 
 const responsive = {
   superLargeDesktop: {
@@ -42,27 +45,37 @@ const ButtonGroup = ({ next, previous, goToSlide, ...rest }: any) => {
     </div>
   );
 };
-
-const TopCompaniesHiring = () => {
+interface Companies {
+  title?: string;
+  viewLabel?: string;
+}
+const TopCompaniesHiring = ({title, viewLabel}:Companies) => {
+  const dispatch = useAppDispatch();
+  
   const [companyList, setCompanyList] = useState([]);
+  const [page, setPage] = useState(1);
+
+  const { success, allCompanies } = useAppSelector((state) => state.getAllCompanies);
 
   useEffect(() => {
-    (async () => {
-      const companyList = await getCompanyList()
-      setCompanyList(companyList as any)
-    })();
-  }, [])
+    dispatch(getAllCompanies({ page } as any));
+  }, [dispatch, page])
+  
+  useEffect(() => {
+    setCompanyList(allCompanies as any)
+  },[success])
   
   return (
-    <div>
-      <div className="flex justify-between items-center mb-10 font-bold">
-        <h1 className="text-xl">Top companies hiring</h1>
-        {companyList?.length  ? <Link to="/allCompanies" className="text-base flex justify-center items-center text-[#312E81]">
-          <span className="mr-2">View all</span>
-          <img src={ArrowRight} alt="ArrowRight" />
-        </Link> : <></>}
-      </div>
+    <>
       {companyList?.length ? 
+      <div>
+      <div className="flex justify-between items-center mb-10 font-bold">
+        <h1 className="text-xl">{title}</h1>
+        <Link to="/allCompanies" className="text-base flex justify-center items-center text-[#312E81]">
+          <span className="mr-2">{viewLabel}</span>
+          <img src={ArrowRight} alt="ArrowRight" />
+        </Link>
+      </div>
         <Carousel
         shouldResetAutoplay
         swipeable={false}
@@ -82,9 +95,10 @@ const TopCompaniesHiring = () => {
       >
         {companyList?.slice(0,8)?.map((item, index) => index <= 7 && <CompanyListItem item={ item } />)}
         </Carousel>
-        :<NoRecords/>
-      }
-    </div>
+        </div>
+        : <>No Companies to list</>
+     }
+    </>
   )
 }
 

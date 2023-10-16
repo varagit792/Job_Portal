@@ -11,6 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CompanySchema } from '../../../../schema/postJob';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { formData } from '../../../../store/reducers/jobs/postJobs';
+import { getAllCompanies } from '../../../../store/reducers/companies/getAllCompanies';
 
 const Company = () => {
   const dispatch = useAppDispatch();
@@ -21,6 +22,7 @@ const Company = () => {
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
   const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
   const [jobTitle, setJobTitle] = useState('');
+  const { success, allCompanies } = useAppSelector((state) => state.getAllCompanies);
 
   const {
     register,
@@ -89,6 +91,13 @@ const Company = () => {
       setPostBack({ postURL: '/postJob/recruiter', backURL: '/postJob/requirements' })
     }
   }, []);
+  useEffect(() => {
+    dispatch(getAllCompanies({} as any));
+  }, [dispatch])
+
+  useEffect(() => {
+    setCompany(allCompanies as any)
+  }, [success])
 
   const watchKeyAboutCompany = watch('aboutCompany')?.length;
   const watchCompanyAddress = watch('companyAddress')?.length;

@@ -160,3 +160,18 @@ export const scrollToTop = () => {
     behavior: 'smooth'
   });
 };
+
+export const addLabel = (limit: any) => {
+  let label = '';
+  let crores = Math.round(limit / 10000000);
+  let lakhs = Math.round(limit / 100000);
+  let thousands = Math.round(limit / 1000);
+  if (limit / 10000000 >= 1) {
+    limit / 10000000 > 1 ? label = crores + 'Crores+' : label = crores + 'Crore+';
+  } else if (limit / 100000 >= 1) {
+    limit / 100000 > 1 ? label = lakhs + 'Lakhs+' : label = lakhs + 'Lakh+';
+  } else if (limit / 1000 >= 1) {
+    label = thousands + 'k+';
+  } else label = limit + '+'
+  return label;
+}

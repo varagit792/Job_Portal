@@ -109,6 +109,8 @@ interface AllCompaniesState {
     success: boolean;
     allCompanies: Array<AllCompanies>;
     errorMessage: string | undefined;
+    department: any;
+    filtersData: any;
 }
 const initialState: AllCompaniesState = {
     loading: false,
@@ -116,12 +118,16 @@ const initialState: AllCompaniesState = {
     success: false,
     allCompanies: [],
     errorMessage: undefined,
+    department: [],
+    filtersData: {
+        department: [],
+    },
 }
 
 export const getAllCompanies = createAsyncThunk(
-    "getAllCompanies", async (data: number) => {
+    "getAllCompanies", async (data: any) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_PATH}/companies/all/${data}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_PATH}/companies/all`, { params: data && data });
             if (response.status >= 200 && response.status < 300) {
                 return response.data.data;
             }
@@ -159,7 +165,26 @@ const getAllCompaniesSlice = createSlice({
             state.success = false;
             return state;
         },
+        setDepartment: (state, action) => {
+            state.department = action.payload;
+        },
+        setFilterDepartment: (state, action) => {
+            console.log("action-->", action?.payload);
+            
+            if (!action?.payload?.filterDepartment) {
+                state?.filtersData?.department?.push(action.payload);
+            } else {
+                state.filtersData.department = state?.filtersData?.department?.filter((item: any) => action?.payload?.filterDepartment !== item);
+            }
+        },
+        bulkFilter: (state, action) => {
+            state.filtersData.department = action?.payload?.bulkData;
+        }
     }
 });
 export default getAllCompaniesSlice.reducer;
-export const { clearGetAllCompaniesSlice } = getAllCompaniesSlice.actions;
+export const {
+    clearGetAllCompaniesSlice,
+    setDepartment,
+    setFilterDepartment
+} = getAllCompaniesSlice.actions;

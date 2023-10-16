@@ -269,7 +269,7 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="h-[65%] bg-[#F1F5F9] px-32 flex flex-col justify-center">
-                <TopCompaniesHiring/>
+                <TopCompaniesHiring title="Top companies hiring" viewLabel="View all"/>
             </div>
             <div className="h-[65%] bg-[#F8FAFC] px-32 flex flex-col justify-center">
                 <div className="flex justify-between items-center mb-10 font-bold">

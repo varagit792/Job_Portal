@@ -71,8 +71,6 @@ const updatePostJobUpdateSlice = createSlice({
       return state;
     },
     formData: (state, action) => {
-      console.log("action.payload", action.payload);
-
       state.formData = { ...state.formData, ...action.payload };
     },
   }
