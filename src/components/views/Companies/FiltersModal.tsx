@@ -7,19 +7,21 @@ import {
     bulkFilter,
     setNavigateFilterOption,
     setDepartment,
-    //setLocation,
+    setLocation,
     //setWorkMode
 } from '../../../store/reducers/companies/getAllCompanies';
-//import FiltersLocation from './FiltersLocation';
+import FiltersLocation from './CompanyLocationFilter';
 //import FiltersWorkMode from './FiltersWorkMode';
 //import FiltersExperience from './FiltersExperience';
 
 const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
     const dispatch = useAppDispatch();
-    const { navigateFilterOption, checkItems, departmentIds,
-        //locationIds, workModeIds, maxExpYearId
+    const { navigateFilterOption, checkItems, departmentIds, locationIds,
+        //workModeIds, maxExpYearId
     } = useAppSelector((state) => state.getAllCompanies);
 
+    console.log("locationIds --- >", locationIds);
+    
     const closeDialog = () => {
         setIsOpen(false);
     };
@@ -28,12 +30,12 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
         setToggleDispach(true);
         dispatch(bulkFilter({
             department: departmentIds,
-            //location: locationIds,
+            location: locationIds,
             //workMode: workModeIds,
             //expYear: maxExpYearId
         }));
         dispatch(setDepartment(checkItems?.department));
-        //dispatch(setLocation(checkItems?.location));
+        dispatch(setLocation(checkItems?.location));
         //dispatch(setWorkMode(checkItems?.workMode));
         setIsOpen(false);
     }
@@ -96,7 +98,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                                         {departmentIds?.length}
                                                     </span>}
                                             </li>
-                                            {/* <li
+                                            <li
                                                 className={navigateFilterOption !== "Location" ?
                                                     "px-5 py-2 cursor-pointer flex justify-between items-center"
                                                     : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
@@ -106,7 +108,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                                     <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
                                                         {locationIds?.length}
                                                     </span>}
-                                            </li> */}
+                                            </li>
                                             {/* <li
                                                 className={navigateFilterOption !== "Work mode" ?
                                                     "px-5 py-2 cursor-pointer flex justify-between items-center"
@@ -130,7 +132,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                     <div className="col-start-4 col-end-13">
                                         {/* {navigateFilterOption === "Experience" && <FiltersExperience />} */}
                                         {navigateFilterOption === "Department" && <FiltersDepartment />}
-                                        {/* {navigateFilterOption === "Location" && <FiltersLocation />} */}
+                                        {navigateFilterOption === "Location" && <FiltersLocation />}
                                         {/* {navigateFilterOption === "Work mode" && <FiltersWorkMode />} */}
                                     </div>
                                 </div>

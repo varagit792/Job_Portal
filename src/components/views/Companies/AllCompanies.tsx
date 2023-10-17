@@ -13,15 +13,16 @@ import DominousIcon from '../../../assets/svg/DominousIcon.svg';
 import GoproIcon from '../../../assets/svg/GoproIcon.svg';
 import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
 import { BiSearch } from 'react-icons/bi';
-import { getAllCompanies, clearGetAllCompaniesSlice, setDepartment, setFilterDepartment } from '../../../store/reducers/companies/getAllCompanies';
+import { getAllCompanies, clearGetAllCompaniesSlice, setDepartment, setFilterDepartment, setFilterLocation, setLocation } from '../../../store/reducers/companies/getAllCompanies';
 import { CompanyDepartmentFilter } from './CompanyDepartmentFilter';
 import { scrollToTop } from '../../utils/utils';
 import FiltersModal from '../Companies/FiltersModal';
+import { CompanyLocationFilter } from './CompanyLocationFilter';
 
 const AllCompanies = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { success, allCompanies, loading, department, filtersData } = useAppSelector((state) => state.getAllCompanies);
+    const { success, allCompanies, loading, department, filtersData, location } = useAppSelector((state) => state.getAllCompanies);
     // const { success:filteredSuccess,
     //     allCompanies:allFilteredCompanies,
     //     loading:filteredLoading,
@@ -37,6 +38,8 @@ const AllCompanies = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [companyCard, setCompanyCard] = useState<any>([]);
 
+    console.log("filtersData-->", filtersData);
+    
     useEffect(() => {
         window.addEventListener("scroll", handelInfiniteScroll);
         return () => window.removeEventListener("scroll", handelInfiniteScroll);
@@ -50,7 +53,7 @@ const AllCompanies = () => {
 
     useEffect(() => {
         if (toggleDispach) {
-            if ((filtersData?.department !== undefined && filtersData?.department?.length !== 0)) {
+            if ((filtersData?.department !== undefined && filtersData?.department?.length !== 0) || (filtersData?.location !== undefined && filtersData?.location?.length !== 0)) {
                 dispatch(getAllCompanies({ page, data: filtersData }));
                 setCompanyCard([]);
                 setPage(1);
@@ -112,6 +115,22 @@ const AllCompanies = () => {
         }
     };
     
+    const handleLocationCheckbox = (data: any) => {
+        scrollToTop();
+        setToggleDispach(true);
+        setCompanyCard([]);
+        dispatch(setLocation(
+            location?.map((item: any) =>
+                item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
+            )
+        ))
+        if (data?.isChecked === undefined || data?.isChecked === false) {
+            dispatch(setFilterLocation(data?.id));
+        } else {
+            dispatch(setFilterLocation({ filterLocation: data?.id }));
+        }
+    };
+
     return (
         <>
             <div className="h-[10%] w-full"></div>
@@ -197,7 +216,7 @@ const AllCompanies = () => {
                             </Disclosure>
                         </div>
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <div className="w-full">
+                        {/* <div className="w-full">
                             <Disclosure>
                                 {({ open }) => (
                                     <>
@@ -244,7 +263,11 @@ const AllCompanies = () => {
                                     </>
                                 )}
                             </Disclosure>
-                        </div>
+                        </div> */}
+                        <CompanyLocationFilter
+                            handleLocationCheckbox={handleLocationCheckbox}
+                            setIsOpen={setIsOpen}
+                        />
                         <hr className="bg-[#E0E7FF] my-5" />
                         <CompanyDepartmentFilter
                             handleDepartmentCheckbox={handleDepartmentCheckbox}
