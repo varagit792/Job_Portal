@@ -8,27 +8,32 @@ import {
     setNavigateFilterOption,
     setDepartment,
     setLocation,
-    setWorkMode
+    setWorkMode,
+    setCompanyType,
+    resetCheckItem
 } from '../../../store/reducers/jobs/GetFilterJobs';
 import FiltersLocation from './FiltersLocation';
 import FiltersWorkMode from './FiltersWorkMode';
 import FiltersExperience from './FiltersExperience';
 import FiltersSalary from './FiltersSalary';
+import FiltersCompanyType from './FiltersCompanyType';
 
 const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
     const dispatch = useAppDispatch();
-    const { navigateFilterOption, checkItems, departmentIds, locationIds, workModeIds, maxExpYearId, maxSalaryId } = useAppSelector((state) => state.getFilterJobs);
+    const { navigateFilterOption, checkItems, departmentIds, locationIds, workModeIds, companyTypeIds, maxExpYearId, maxSalaryId } = useAppSelector((state) => state.getFilterJobs);
 
     const closeDialog = () => {
         setIsOpen(false);
+        dispatch(resetCheckItem());
     };
 
     const handleSubmit = () => {
         setToggleDispach(true);
-        dispatch(bulkFilter({ department: departmentIds, location: locationIds, workMode: workModeIds, expYear: maxExpYearId, salary: maxSalaryId }));
+        dispatch(bulkFilter({ department: departmentIds, location: locationIds, workMode: workModeIds, companyType: companyTypeIds, expYear: maxExpYearId, salary: maxSalaryId }));
         dispatch(setDepartment(checkItems?.department));
         dispatch(setLocation(checkItems?.location));
         dispatch(setWorkMode(checkItems?.workMode));
+        dispatch(setCompanyType(checkItems?.companyType));
         setIsOpen(false);
     }
 
@@ -127,7 +132,17 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                                         1
                                                     </span>}
                                             </li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Company type"))}>Company type</li>
+                                            <li
+                                                className={navigateFilterOption !== "Company type" ?
+                                                    "px-5 py-2 cursor-pointer flex justify-between items-center"
+                                                    : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
+                                                onClick={() => dispatch(setNavigateFilterOption("Company type"))}>
+                                                <span>Company type</span>
+                                                {companyTypeIds?.length !== 0 &&
+                                                    <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
+                                                        {companyTypeIds?.length}
+                                                    </span>}
+                                            </li>
                                             <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Role category"))}>Role category</li>
                                             <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Posted by"))}>Posted by</li>
                                             <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Industry"))}>Industry</li>
@@ -141,6 +156,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         {navigateFilterOption === "Location" && <FiltersLocation />}
                                         {navigateFilterOption === "Work mode" && <FiltersWorkMode />}
                                         {navigateFilterOption === "Salary" && <FiltersSalary />}
+                                        {navigateFilterOption === "Company type" && <FiltersCompanyType />}
                                     </div>
                                 </div>
                                 <div className="p-5 float-right">
