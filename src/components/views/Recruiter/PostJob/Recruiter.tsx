@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { IFormInputsRecruiter } from '../../../../interface/employer';
+import { IFormInputsCompanySave, IFormInputsRecruiter } from '../../../../interface/employer';
 import JobLeftPanel from './JobLeftPanel';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { useNavigate, useParams } from 'react-router-dom';
-import { RecruiterSchema } from '../../../../schema/postJob';
+import { CompanySaveSchema, RecruiterSchema } from '../../../../schema/postJob';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { postCompanyDraft, postCompanySave } from '../../../../store/reducers/jobs/postJobs';
 
 const Recruiter = () => {
   const { postId } = useParams();
@@ -16,6 +17,7 @@ const Recruiter = () => {
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
   const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
   const [jobTitle, setJobTitle] = useState('');
+  const [buttonClick, setButtonClick] = useState('');
 
   const {
     register,
@@ -24,12 +26,124 @@ const Recruiter = () => {
     watch,
     setValue,
     formState: { errors }
-  } = useForm<IFormInputsRecruiter>({
-    resolver: yupResolver(RecruiterSchema),
+  } = useForm<IFormInputsRecruiter | IFormInputsCompanySave>({
+    resolver: yupResolver(RecruiterSchema || CompanySaveSchema),
   });
 
-  const onSubmit = (data: IFormInputsRecruiter) => {
-    navigate(postBack?.postURL);
+  const onSubmit = (data: IFormInputsRecruiter | IFormInputsCompanySave) => {
+
+    const updatePostId = postId ? Number(postId) : null;
+
+    if (buttonClick === 'Continue') {
+      navigate(postBack?.postURL);
+    }
+    if (buttonClick === 'Draft') {
+      let draft = true;
+      let jobStatus = false;
+      const jobEducation = jobDetailData?.education?.map((education: any) => ({ education: education?.value }));
+      const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
+      const jobLocation = jobDetailData?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
+      const jobCandidateIndustry = jobDetailData?.candidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.value } }));
+      const keySkills = jobDetailData?.keySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.value } }));
+      const updatePostId = postId ? Number(postId) : null;
+      dispatch(postCompanyDraft({
+        totalExpYearStart: jobDetailData?.totalExpYearStart?.value,
+        totalExpYearEnd: jobDetailData?.totalExpYearEnd?.value,
+        jobsKeySkills: keySkills,
+        status: jobStatus,
+        isDraft: draft,
+        jobLocality: jobLocality,
+        jobEducation: jobEducation,
+        companyType: jobDetailData?.companyType?.value,
+        premiumBTech: jobDetailData?.premiumBTech,
+        premiumMBAAll: jobDetailData?.premiumMBAAll,
+        jobCandidateIndustry: jobCandidateIndustry,
+        diversityHiring: jobDetailData?.diversityHiring,
+        id: updatePostId,
+        title: jobDetailData?.title,
+        payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
+        jobsOpening: Number(jobDetailData?.jobsOpening),
+        userType: "employer",
+        payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
+        jobDescription: jobDetailData?.jobDescription,
+        numberSystem: jobDetailData?.numberSystem?.value,
+        recurrence: jobDetailData?.recurrence?.value,
+        jobsLocation: jobLocation,
+        jobsType: jobDetailData?.jobsType?.value,
+        jobsRole: jobDetailData?.jobsRole?.value,
+        department: jobDetailData?.department?.value,
+        roleCategory: jobDetailData?.roleCategory?.value,
+        user: "1",
+        employmentType: jobDetailData?.employmentType?.value,
+        workMode: jobDetailData?.workMode?.value,
+        candidateRelocate: jobDetailData?.candidateRelocate,
+        currency: jobDetailData?.currency?.value,
+        keyResponsibility: jobDetailData?.keyResponsibility,
+        company: jobDetailData.companyName?.value,
+        hideCompanyRating: jobDetailData?.hideCompanyRating,
+        companyWebsite: jobDetailData?.companyWebsite,
+        aboutCompany: jobDetailData?.aboutCompany,
+        companyAddress: jobDetailData?.companyAddress,
+
+        hideSalaryDetails: false,
+        videoProfile: false,
+        includeWalkInDetails: false,
+        notifyMeAbout: false,
+        notificationEmailAddress1: '',
+        notificationEmailAddress2: '',
+      }));
+    }
+    if (buttonClick === 'Save') {
+      let draft = false;
+      let jobStatus = true;
+
+
+      const jobEducation = jobDetailData?.education?.map((education: any) => ({ education: education?.value }));
+      const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
+      const jobLocation = jobDetailData?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
+      const jobCandidateIndustry = jobDetailData?.candidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.value } }));
+      const keySkills = jobDetailData?.keySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.value } }));
+
+      dispatch(postCompanySave({
+        totalExpYearStart: jobDetailData?.totalExpYearStart?.value,
+        totalExpYearEnd: jobDetailData?.totalExpYearEnd?.value,
+        jobsKeySkills: keySkills,
+        status: jobStatus,
+        jobLocality: jobLocality,
+        jobEducation: jobEducation,
+        companyType: jobDetailData?.companyType?.value,
+        premiumBTech: jobDetailData?.premiumBTech,
+        premiumMBAAll: jobDetailData?.premiumMBAAll,
+        jobCandidateIndustry: jobCandidateIndustry,
+        diversityHiring: jobDetailData?.diversityHiring,
+        id: updatePostId,
+        title: jobDetailData?.title,
+        payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
+        jobsOpening: Number(jobDetailData?.jobsOpening),
+        userType: "employer",
+        payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
+        jobDescription: jobDetailData?.jobDescription,
+        numberSystem: jobDetailData?.numberSystem?.value,
+        recurrence: jobDetailData?.recurrence?.value,
+        jobsLocation: jobLocation,
+        jobsType: jobDetailData?.jobsType?.value,
+        jobsRole: jobDetailData?.jobsRole?.value,
+        department: jobDetailData?.department?.value,
+        roleCategory: jobDetailData?.roleCategory?.value,
+        user: "1",
+        employmentType: jobDetailData?.employmentType?.value,
+        workMode: jobDetailData?.workMode?.value,
+        candidateRelocate: jobDetailData?.candidateRelocate,
+        currency: jobDetailData?.currency?.value,
+        keyResponsibility: jobDetailData?.keyResponsibility,
+        isDraft: draft,
+        company: jobDetailData.companyName?.value,
+        hideCompanyRating: jobDetailData?.hideCompanyRating,
+        companyWebsite: jobDetailData?.companyWebsite,
+        aboutCompany: jobDetailData?.aboutCompany,
+        companyAddress: jobDetailData?.companyAddress,
+      }));
+    }
   }
 
   useEffect(() => {
@@ -110,14 +224,14 @@ const Recruiter = () => {
                       <div className="w-6 h-6 justify-center items-center flex"></div>
                       <div className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight">Back</div>
                     </div>
-                    {Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save</div>
+                    {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
                     </div>}
-                    {!Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save as Draft</div>
+                    {isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
                     </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                      <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} />
+                      <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} onClick={() => setButtonClick('Continue')} />
                     </div>
                   </div>
                 </div>

@@ -5,7 +5,7 @@ import JobLeftPanel from './JobLeftPanel';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { formData, postJobUpdate } from '../../../../store/reducers/jobs/postJobs';
+import { formData, postJobUpdate, postResponseDraft } from '../../../../store/reducers/jobs/postJobs';
 import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import { PostJobSchema, ResponseSchema } from '../../../../schema/postJob';
 
@@ -18,6 +18,7 @@ const Preview = () => {
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
   const [jobTitle, setJobTitle] = useState('');
+  const [buttonClick, setButtonClick] = useState('');
   const [sectionURL, setSectionURL] = useState({ jobDetailsURL: "", requirementsURL: "", companyURL: "", recruiterURL: "", responseURL: "", previewURL: "" });
 
   const {
@@ -104,62 +105,125 @@ const Preview = () => {
       jobDetailData?.notificationEmailAddress1 && setValue('notificationEmailAddress1', jobDetailData?.notificationEmailAddress1);
       jobDetailData?.notificationEmailAddress2 && setValue('notificationEmailAddress2', jobDetailData?.notificationEmailAddress2);
     }
-
-
   }, [setValue, jobDetailData]);
 
   const onSubmit = (data: IFormInputsPostAJob) => {
-    const keySkills = jobDetailData?.jobsKeySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.keySkills?.value } }));
-    const jobLocation = jobDetailData?.jobsLocation?.map((location: any) => ({ location: { id: location?.value } }));
-    const jobEducation = jobDetailData?.jobEducation?.map((education: any) => ({ education: education?.value }));
-    const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
-    const jobCandidateIndustry = jobDetailData?.jobCandidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.candidateIndustry?.value } }));
-    const updatePostId = jobDetailData.id ? Number(jobDetailData.id) : null;
 
-    dispatch(postJobUpdate({
-      id: updatePostId,
-      title: jobDetailData?.title,
-      payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
-      jobsOpening: Number(jobDetailData?.jobsOpening),
-      userType: "employer",
-      payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
-      jobDescription: jobDetailData?.jobDescription,
-      company: jobDetailData?.company?.value,
-      totalExpYearStart: jobDetailData?.totalExpYearStart?.value,
-      totalExpYearEnd: jobDetailData?.totalExpYearEnd?.value,
-      numberSystem: jobDetailData?.numberSystem?.value,
-      recurrence: jobDetailData?.recurrence?.value,
-      jobsLocation: jobLocation,
-      jobsRole: jobDetailData?.jobsRole?.value,
-      department: jobDetailData?.department?.value,
-      jobsType: jobDetailData?.jobsType?.value,
-      roleCategory: jobDetailData?.roleCategory?.value,
-      jobEducation: jobEducation,
-      user: "1",
-      jobsKeySkills: keySkills,
-      employmentType: jobDetailData?.employmentType?.value,
-      status: true,
-      workMode: jobDetailData?.workMode?.value,
-      candidateRelocate: data?.candidateRelocate,
-      jobLocality: jobLocality,
-      currency: jobDetailData?.currency?.value,
-      companyType: jobDetailData?.companyType?.value,
-      premiumBTech: jobDetailData?.premiumBTech,
-      keyResponsibility: jobDetailData?.keyResponsibility,
-      hideCompanyRating: jobDetailData?.hideCompanyRating,
-      premiumMBAAll: jobDetailData?.premiumMBAAll,
-      jobCandidateIndustry: jobCandidateIndustry,
-      diversityHiring: jobDetailData?.diversityHiring,
-      companyWebsite: jobDetailData?.companyWebsite,
-      aboutCompany: jobDetailData?.aboutCompany,
-      companyAddress: jobDetailData?.companyAddress,
-      hideSalaryDetails: jobDetailData?.hideSalaryDetails,
-      videoProfile: jobDetailData?.videoProfile,
-      includeWalkInDetails: jobDetailData?.includeWalkInDetails,
-      notifyMeAbout: jobDetailData?.notifyMeAbout,
-      notificationEmailAddress1: jobDetailData?.notificationEmailAddress1,
-      notificationEmailAddress2: jobDetailData?.notificationEmailAddress2,
-    }));
+    if (buttonClick === 'Continue') {
+      const keySkills = jobDetailData?.jobsKeySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.keySkills?.value } }));
+      const jobLocation = jobDetailData?.jobsLocation?.map((location: any) => ({ location: { id: location?.value } }));
+      const jobEducation = jobDetailData?.jobEducation?.map((education: any) => ({ education: education?.value }));
+      const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
+      const jobCandidateIndustry = jobDetailData?.jobCandidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.candidateIndustry?.value } }));
+      const updatePostId = jobDetailData.id ? Number(jobDetailData.id) : null;
+
+      dispatch(postJobUpdate({
+        id: updatePostId,
+        title: jobDetailData?.title,
+        payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
+        jobsOpening: Number(jobDetailData?.jobsOpening),
+        userType: "employer",
+        payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
+        jobDescription: jobDetailData?.jobDescription,
+        company: jobDetailData?.company?.value,
+        totalExpYearStart: jobDetailData?.totalExpYearStart?.value,
+        totalExpYearEnd: jobDetailData?.totalExpYearEnd?.value,
+        numberSystem: jobDetailData?.numberSystem?.value,
+        recurrence: jobDetailData?.recurrence?.value,
+        jobsLocation: jobLocation,
+        jobsRole: jobDetailData?.jobsRole?.value,
+        department: jobDetailData?.department?.value,
+        jobsType: jobDetailData?.jobsType?.value,
+        roleCategory: jobDetailData?.roleCategory?.value,
+        jobEducation: jobEducation,
+        user: "1",
+        isDraft: false,
+        jobsKeySkills: keySkills,
+        employmentType: jobDetailData?.employmentType?.value,
+        status: true,
+        workMode: jobDetailData?.workMode?.value,
+        candidateRelocate: data?.candidateRelocate,
+        jobLocality: jobLocality,
+        currency: jobDetailData?.currency?.value,
+        companyType: jobDetailData?.companyType?.value,
+        premiumBTech: jobDetailData?.premiumBTech,
+        keyResponsibility: jobDetailData?.keyResponsibility,
+        hideCompanyRating: jobDetailData?.hideCompanyRating,
+        premiumMBAAll: jobDetailData?.premiumMBAAll,
+        jobCandidateIndustry: jobCandidateIndustry,
+        diversityHiring: jobDetailData?.diversityHiring,
+        companyWebsite: jobDetailData?.companyWebsite,
+        aboutCompany: jobDetailData?.aboutCompany,
+        companyAddress: jobDetailData?.companyAddress,
+        hideSalaryDetails: jobDetailData?.hideSalaryDetails,
+        videoProfile: jobDetailData?.videoProfile,
+        includeWalkInDetails: jobDetailData?.includeWalkInDetails,
+        notifyMeAbout: jobDetailData?.notifyMeAbout,
+        notificationEmailAddress1: jobDetailData?.notificationEmailAddress1,
+        notificationEmailAddress2: jobDetailData?.notificationEmailAddress2,
+      }));
+    }
+
+    if (buttonClick === 'Draft' || buttonClick === 'Save') {
+
+      let draft = true;
+      let jobStatus = false;
+      if (buttonClick === 'Save') {
+        draft = false;
+        jobStatus = true;
+      }
+      const keySkills = jobDetailData?.jobsKeySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.keySkills?.value } }));
+      const jobLocation = jobDetailData?.jobsLocation?.map((location: any) => ({ location: { id: location?.value } }));
+      const jobEducation = jobDetailData?.jobEducation?.map((education: any) => ({ education: education?.value }));
+      const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
+      const jobCandidateIndustry = jobDetailData?.jobCandidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.candidateIndustry?.value } }));
+      const updatePostId = postId ? Number(postId) : null;
+      dispatch(postResponseDraft({
+        totalExpYearStart: jobDetailData?.totalExpYearStart?.value,
+        totalExpYearEnd: jobDetailData?.totalExpYearEnd?.value,
+        jobsKeySkills: keySkills,
+        status: jobStatus,
+        isDraft: draft,
+        jobLocality: jobLocality,
+        jobEducation: jobEducation,
+        companyType: jobDetailData?.companyType?.value,
+        premiumBTech: jobDetailData?.premiumBTech,
+        premiumMBAAll: jobDetailData?.premiumMBAAll,
+        jobCandidateIndustry: jobCandidateIndustry,
+        diversityHiring: jobDetailData?.diversityHiring,
+        id: updatePostId,
+        title: jobDetailData?.title,
+        payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
+        jobsOpening: Number(jobDetailData?.jobsOpening),
+        userType: "employer",
+        payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
+        jobDescription: jobDetailData?.jobDescription,
+        numberSystem: jobDetailData?.numberSystem?.value,
+        recurrence: jobDetailData?.recurrence?.value,
+        jobsLocation: jobLocation,
+        jobsType: jobDetailData?.jobsType?.value,
+        jobsRole: jobDetailData?.jobsRole?.value,
+        department: jobDetailData?.department?.value,
+        roleCategory: jobDetailData?.roleCategory?.value,
+        user: "1",
+        employmentType: jobDetailData?.employmentType?.value,
+        workMode: jobDetailData?.workMode?.value,
+        candidateRelocate: jobDetailData?.candidateRelocate,
+        currency: jobDetailData?.currency?.value,
+        keyResponsibility: jobDetailData?.keyResponsibility,
+        company: jobDetailData.company?.value,
+        hideCompanyRating: jobDetailData?.hideCompanyRating,
+        companyWebsite: jobDetailData?.companyWebsite,
+        aboutCompany: jobDetailData?.aboutCompany,
+        companyAddress: jobDetailData?.companyAddress,
+        hideSalaryDetails: jobDetailData?.hideSalaryDetails,
+        videoProfile: jobDetailData?.videoProfile,
+        includeWalkInDetails: jobDetailData?.includeWalkInDetails,
+        notifyMeAbout: jobDetailData?.notifyMeAbout,
+        notificationEmailAddress1: jobDetailData?.notificationEmailAddress1,
+        notificationEmailAddress2: jobDetailData?.notificationEmailAddress2,
+      }));
+    }
   }
 
   useEffect(() => {
@@ -168,6 +232,7 @@ const Preview = () => {
       setJobTitle(jobDetail?.title);
       setSectionURL({ jobDetailsURL: `/postJob/jobDetails/${postId}`, requirementsURL: `/postJob/requirements/${postId}`, companyURL: `/postJob/company/${postId}`, recruiterURL: `/postJob/recruiter/${postId}`, responseURL: `/postJob/response/${postId}`, previewURL: `/postJob/preview/${postId}` })
     } else {
+      setJobTitle(jobDetailData?.title);
       setPostBack({ postURL: '/postJob/preview', backURL: '/postJob/recruiter' })
     }
   }, []);
@@ -187,6 +252,8 @@ const Preview = () => {
     navigate(returnURL);
   }
   console.log(jobDetailData);
+
+  console.log(errors);
 
 
   return (
@@ -505,14 +572,14 @@ const Preview = () => {
                   <div className=" px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex">
                     <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight">Discard</div>
                   </div>
-                  {Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                    <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save</div>
+                  {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                    <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
                   </div>}
-                  {!Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                    <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save as Draft</div>
+                  {isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                    <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
                   </div>}
                   <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                    <button className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" >Post a Job</button>
+                    <button className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" onClick={() => setButtonClick('Continue')}>Post a Job</button>
                   </div>
                 </div>
               </div>

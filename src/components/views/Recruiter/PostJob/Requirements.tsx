@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import JobLeftPanel from './JobLeftPanel'
-import { IFormInputsRequirement } from '../../../../interface/employer';
+import { IFormInputsRequirement, IFormInputsRequirementDraft, IFormInputsRequirementSave } from '../../../../interface/employer';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
 import { getHighestQualificationList, getIndustryList, getKeySkillsList, getLocalityList, getTotalYearsExpList } from '../../../utils/utils';
-import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
+import { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { useNavigate, useParams } from 'react-router-dom';
-import { formData } from '../../../../store/reducers/jobs/postJobs';
-import { RequirementSchema } from '../../../../schema/postJob';
+import { formData, postRequirementDraft, postRequirementSave } from '../../../../store/reducers/jobs/postJobs';
+import { RequirementDraftSchema, RequirementSaveSchema, RequirementSchema } from '../../../../schema/postJob';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const Requirements = () => {
@@ -23,6 +23,7 @@ const Requirements = () => {
   const [highestQualification, setHighestQualification] = useState<any>([]);
   const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
   const [jobTitle, setJobTitle] = useState('');
+  const [buttonClick, setButtonClick] = useState('');
 
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
@@ -34,14 +35,14 @@ const Requirements = () => {
     watch,
     setValue,
     formState: { errors }
-  } = useForm<IFormInputsRequirement>({
-    resolver: yupResolver(RequirementSchema),
+  } = useForm<IFormInputsRequirement | IFormInputsRequirementDraft | IFormInputsRequirementSave>({
+    resolver: yupResolver(RequirementSchema || RequirementDraftSchema || RequirementSaveSchema),
   });
 
   const selectedJobsKeySkills: any = [];
   const selectedJobLocality: any = [];
   const selectedCandidateIndustry: any = [];
-  const selectedJobEducation: any = []
+  const selectedJobEducation: any = [];
 
   if (Object.keys(jobDetail).length !== 0) {
     jobDetail?.jobsKeySkills?.filter((item: any) => item && selectedJobsKeySkills.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }));
@@ -80,26 +81,133 @@ const Requirements = () => {
       jobDetailData?.diversityHiring && setValue('diversityHiring', jobDetailData?.diversityHiring);
     }
   }, [setValue, jobDetail, jobDetailData]);
-  const onSubmit = (data: IFormInputsRequirement) => {
+  const onSubmit = (data: IFormInputsRequirement | IFormInputsRequirementDraft | IFormInputsRequirementSave) => {
 
-    const keySkills = data?.keySkills?.map((skills: any) => ({ preferred: true, keySkills: skills }));
-    const jobEducation = data?.education?.map((education: any) => education);
-    const jobLocality = data?.jobLocality?.map((local: any) => local);
-    const jobCandidateIndustry = data?.candidateIndustry?.map((industry: any) => ({ candidateIndustry: industry }));
-    dispatch(formData({
-      totalExpYearStart: data?.fromWorkExperience,
-      totalExpYearEnd: data?.toWorkExperience,
-      jobsKeySkills: keySkills,
-      status: true,
-      jobLocality: jobLocality,
-      jobEducation: jobEducation,
-      companyType: data?.companyType,
-      premiumBTech: data?.premiumBTech,
-      premiumMBAAll: data?.premiumMBAAll,
-      jobCandidateIndustry: jobCandidateIndustry,
-      diversityHiring: data?.diversityHiring,
-    }));
-    navigate(postBack.postURL);
+
+    if (buttonClick === 'Continue') {
+      const keySkills = data?.keySkills?.map((skills: any) => ({ preferred: true, keySkills: skills }));
+
+      const jobEducation = data?.education?.map((education: any) => education);
+      const jobLocality = data?.jobLocality?.map((local: any) => local);
+      const jobLocation = jobDetailData?.jobLocation?.map((location: any) => location);
+      const jobCandidateIndustry = data?.candidateIndustry?.map((industry: any) => ({ candidateIndustry: industry }));
+      dispatch(formData({
+        totalExpYearStart: data?.fromWorkExperience,
+        totalExpYearEnd: data?.toWorkExperience,
+        jobsKeySkills: keySkills,
+        status: true,
+        jobLocality: jobLocality,
+        jobEducation: jobEducation,
+        companyType: data?.companyType,
+        premiumBTech: data?.premiumBTech,
+        premiumMBAAll: data?.premiumMBAAll,
+        jobCandidateIndustry: jobCandidateIndustry,
+        diversityHiring: data?.diversityHiring,
+      }));
+      navigate(postBack.postURL);
+    }
+    if (buttonClick === 'Draft') {
+      let draft = true;
+      let jobStatus = false;
+
+      const jobEducation = data?.education?.map((education: any) => ({ education: education?.value }));
+      const jobLocality = data?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
+      const jobLocation = jobDetailData?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
+      const jobCandidateIndustry = data?.candidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.value } }));
+      const keySkills = data?.keySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.value } }));
+      const updatePostId = postId ? Number(postId) : null;
+      dispatch(postRequirementDraft({
+        totalExpYearStart: data?.fromWorkExperience?.value,
+        totalExpYearEnd: data?.toWorkExperience?.value,
+        jobsKeySkills: keySkills,
+        status: jobStatus,
+        jobLocality: jobLocality,
+        jobEducation: jobEducation,
+        companyType: data?.companyType?.value,
+        premiumBTech: data?.premiumBTech,
+        premiumMBAAll: data?.premiumMBAAll,
+        jobCandidateIndustry: jobCandidateIndustry,
+        diversityHiring: data?.diversityHiring,
+        id: updatePostId,
+        title: jobDetailData?.title,
+        payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
+        jobsOpening: Number(jobDetailData?.jobsOpening),
+        userType: "employer",
+        payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
+        jobDescription: jobDetailData?.jobDescription,
+        numberSystem: jobDetailData?.numberSystem?.value,
+        recurrence: jobDetailData?.recurrence?.value,
+        jobsLocation: jobLocation,
+        jobsType: jobDetailData?.jobsType?.value,
+        jobsRole: jobDetailData?.jobsRole?.value,
+        department: jobDetailData?.department?.value,
+        roleCategory: jobDetailData?.roleCategory?.value,
+        user: "1",
+        employmentType: jobDetailData?.employmentType?.value,
+        workMode: jobDetailData?.workMode?.value,
+        candidateRelocate: jobDetailData?.candidateRelocate,
+        currency: jobDetailData?.currency?.value,
+        keyResponsibility: jobDetailData?.keyResponsibility,
+        hideSalaryDetails: false,
+        hideCompanyRating: false,
+        isDraft: draft,
+        videoProfile: false,
+        includeWalkInDetails: false,
+        notifyMeAbout: false,
+        notificationEmailAddress1: '',
+        notificationEmailAddress2: '',
+        company: null,
+        companyWebsite: '',
+        aboutCompany: '',
+        companyAddress: '',
+      }));
+    }
+
+    if (buttonClick === 'Save') {
+      let draft = false;
+      let jobStatus = true;
+
+      const jobEducation = data?.education?.map((education: any) => ({ education: education?.value }));
+      const jobLocality = data?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
+      const jobLocation = jobDetailData?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
+      const jobCandidateIndustry = data?.candidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.value } }));
+      const keySkills = data?.keySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.value } }));
+      const updatePostId = postId ? Number(postId) : null;
+      dispatch(postRequirementSave({
+        totalExpYearStart: data?.fromWorkExperience?.value,
+        totalExpYearEnd: data?.toWorkExperience?.value,
+        jobsKeySkills: keySkills,
+        status: jobStatus,
+        jobLocality: jobLocality,
+        jobEducation: jobEducation,
+        companyType: data?.companyType?.value,
+        premiumBTech: data?.premiumBTech,
+        premiumMBAAll: data?.premiumMBAAll,
+        jobCandidateIndustry: jobCandidateIndustry,
+        diversityHiring: data?.diversityHiring,
+        id: updatePostId,
+        title: jobDetailData?.title,
+        payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
+        jobsOpening: Number(jobDetailData?.jobsOpening),
+        userType: "employer",
+        payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
+        jobDescription: jobDetailData?.jobDescription,
+        numberSystem: jobDetailData?.numberSystem?.value,
+        recurrence: jobDetailData?.recurrence?.value,
+        jobsLocation: jobLocation,
+        jobsType: jobDetailData?.jobsType?.value,
+        jobsRole: jobDetailData?.jobsRole?.value,
+        department: jobDetailData?.department?.value,
+        roleCategory: jobDetailData?.roleCategory?.value,
+        user: "1",
+        employmentType: jobDetailData?.employmentType?.value,
+        workMode: jobDetailData?.workMode?.value,
+        candidateRelocate: jobDetailData?.candidateRelocate,
+        currency: jobDetailData?.currency?.value,
+        keyResponsibility: jobDetailData?.keyResponsibility,
+        isDraft: draft,
+      }));
+    }
   }
 
   useEffect(() => {
@@ -154,6 +262,7 @@ const Requirements = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
+
   return (
     <>
       <div className="h-[10%] w-full"></div>
@@ -292,7 +401,7 @@ const Requirements = () => {
                             isMulti={true}
                             fieldName={"jobLocality"}
                             dropdownData={locality?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
-                            placeholder={"Select localities (at least 3 industry)"}
+                            placeholder={"Select localities (at least 3 locality)"}
                             defaultValue={watch("jobLocality")}
                           />
                           {errors?.jobLocality && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobLocality?.message}</p>}
@@ -318,14 +427,14 @@ const Requirements = () => {
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack.backURL)}>
                       <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight">Back</div>
                     </div>
-                    {Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save</div>
+                    {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
                     </div>}
-                    {!Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save as Draft</div>
+                    {isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
                     </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                      <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} />
+                      <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} onClick={() => setButtonClick('Continue')} />
                     </div>
                   </div>
                 </div>
