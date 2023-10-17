@@ -14,14 +14,14 @@ import GoproIcon from '../../../assets/svg/GoproIcon.svg';
 import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
 import { BiSearch } from 'react-icons/bi';
 import { getAllCompanies, clearGetAllCompaniesSlice, setDepartment, setFilterDepartment } from '../../../store/reducers/companies/getAllCompanies';
-import { FiltersDepartmentSlice } from '../Companies/FiltersDepartment';
+import { CompanyDepartmentFilter } from './CompanyDepartmentFilter';
 import { scrollToTop } from '../../utils/utils';
-import FiltersModal from '../Jobs/FiltersModal';
+import FiltersModal from '../Companies/FiltersModal';
 
 const AllCompanies = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { success, allCompanies, loading, department } = useAppSelector((state) => state.getAllCompanies);
+    const { success, allCompanies, loading, department, filtersData } = useAppSelector((state) => state.getAllCompanies);
     // const { success:filteredSuccess,
     //     allCompanies:allFilteredCompanies,
     //     loading:filteredLoading,
@@ -47,6 +47,18 @@ const AllCompanies = () => {
             dispatch(getAllCompanies({page}));
         }
     }, [dispatch, page]);
+
+    useEffect(() => {
+        if (toggleDispach) {
+            if ((filtersData?.department !== undefined && filtersData?.department?.length !== 0)) {
+                dispatch(getAllCompanies({ page, data: filtersData }));
+                setCompanyCard([]);
+                setPage(1);
+            } else {
+                dispatch(getAllCompanies({ page }));
+            }
+        }
+    }, [dispatch, page, filtersData, toggleDispach]);
 
     useEffect(() => {
         if (success) {
@@ -84,8 +96,7 @@ const AllCompanies = () => {
 		window.open(`/allCompanies/companyDescription/${companyId}`, '_blank');
     }
 
-    const handleDepartmentCheckbox = (data: any) => {  
-        console.log("data in all companies-->", data);
+    const handleDepartmentCheckbox = (data: any) => { 
         scrollToTop();
         setToggleDispach(true);
         setCompanyCard([]);
@@ -100,7 +111,7 @@ const AllCompanies = () => {
             dispatch(setFilterDepartment({ filterDepartment: data?.id }));
         }
     };
-
+    
     return (
         <>
             <div className="h-[10%] w-full"></div>
@@ -235,7 +246,7 @@ const AllCompanies = () => {
                             </Disclosure>
                         </div>
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <FiltersDepartmentSlice
+                        <CompanyDepartmentFilter
                             handleDepartmentCheckbox={handleDepartmentCheckbox}
                             setIsOpen={setIsOpen}
                         />
@@ -310,7 +321,7 @@ const AllCompanies = () => {
                     </div>
                 </div>
             </div >
-            <FiltersModal isOpen={isOpen} setIsOpen={setIsOpen} setToggleDispach={setToggleDispach} />
+            {isOpen &&  <FiltersModal isOpen={isOpen} setIsOpen={setIsOpen} setToggleDispach={setToggleDispach} />}
         </>
     )
 }

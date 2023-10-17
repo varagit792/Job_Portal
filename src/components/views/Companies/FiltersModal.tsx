@@ -1,23 +1,24 @@
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { RxCross1 } from 'react-icons/rx';
-import FiltersDepartment from './FiltersDepartment';
+import FiltersDepartment from './CompanyDepartmentFilter';
 import { useAppDispatch, useAppSelector } from '../../../';
 import {
     bulkFilter,
     setNavigateFilterOption,
     setDepartment,
-    setLocation,
-    setWorkMode
-} from '../../../store/reducers/jobs/GetFilterJobs';
-import FiltersLocation from './FiltersLocation';
-import FiltersWorkMode from './FiltersWorkMode';
-import FiltersExperience from './FiltersExperience';
-import FiltersSalary from './FiltersSalary';
+    //setLocation,
+    //setWorkMode
+} from '../../../store/reducers/companies/getAllCompanies';
+//import FiltersLocation from './FiltersLocation';
+//import FiltersWorkMode from './FiltersWorkMode';
+//import FiltersExperience from './FiltersExperience';
 
 const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
     const dispatch = useAppDispatch();
-    const { navigateFilterOption, checkItems, departmentIds, locationIds, workModeIds, maxExpYearId, maxSalaryId } = useAppSelector((state) => state.getFilterJobs);
+    const { navigateFilterOption, checkItems, departmentIds,
+        //locationIds, workModeIds, maxExpYearId
+    } = useAppSelector((state) => state.getAllCompanies);
 
     const closeDialog = () => {
         setIsOpen(false);
@@ -25,10 +26,15 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
 
     const handleSubmit = () => {
         setToggleDispach(true);
-        dispatch(bulkFilter({ department: departmentIds, location: locationIds, workMode: workModeIds, expYear: maxExpYearId, salary: maxSalaryId }));
+        dispatch(bulkFilter({
+            department: departmentIds,
+            //location: locationIds,
+            //workMode: workModeIds,
+            //expYear: maxExpYearId
+        }));
         dispatch(setDepartment(checkItems?.department));
-        dispatch(setLocation(checkItems?.location));
-        dispatch(setWorkMode(checkItems?.workMode));
+        //dispatch(setLocation(checkItems?.location));
+        //dispatch(setWorkMode(checkItems?.workMode));
         setIsOpen(false);
     }
 
@@ -77,11 +83,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                                     "px-5 py-2 cursor-pointer flex justify-between items-center"
                                                     : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
                                                 onClick={() => dispatch(setNavigateFilterOption("Experience"))}>
-                                                <span>Experience</span>
-                                                {maxExpYearId ?
-                                                    <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
-                                                        1
-                                                    </span> : null}
+                                                Experience
                                             </li>
                                             <li
                                                 className={navigateFilterOption !== "Department" ?
@@ -94,7 +96,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                                         {departmentIds?.length}
                                                     </span>}
                                             </li>
-                                            <li
+                                            {/* <li
                                                 className={navigateFilterOption !== "Location" ?
                                                     "px-5 py-2 cursor-pointer flex justify-between items-center"
                                                     : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
@@ -104,8 +106,8 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                                     <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
                                                         {locationIds?.length}
                                                     </span>}
-                                            </li>
-                                            <li
+                                            </li> */}
+                                            {/* <li
                                                 className={navigateFilterOption !== "Work mode" ?
                                                     "px-5 py-2 cursor-pointer flex justify-between items-center"
                                                     : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
@@ -115,18 +117,8 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                                     <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
                                                         {workModeIds?.length}
                                                     </span>}
-                                            </li>
-                                            <li
-                                                className={navigateFilterOption !== "Salary" ?
-                                                    "px-5 py-2 cursor-pointer flex justify-between items-center"
-                                                    : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
-                                                onClick={() => dispatch(setNavigateFilterOption("Salary"))}>
-                                                <span>Salary</span>
-                                                {maxSalaryId &&
-                                                    <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
-                                                        1
-                                                    </span>}
-                                            </li>
+                                            </li> */}
+                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Salary"))}>Salary</li>
                                             <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Company type"))}>Company type</li>
                                             <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Role category"))}>Role category</li>
                                             <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Posted by"))}>Posted by</li>
@@ -136,11 +128,10 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         </ul>
                                     </div>
                                     <div className="col-start-4 col-end-13">
-                                        {navigateFilterOption === "Experience" && <FiltersExperience />}
+                                        {/* {navigateFilterOption === "Experience" && <FiltersExperience />} */}
                                         {navigateFilterOption === "Department" && <FiltersDepartment />}
-                                        {navigateFilterOption === "Location" && <FiltersLocation />}
-                                        {navigateFilterOption === "Work mode" && <FiltersWorkMode />}
-                                        {navigateFilterOption === "Salary" && <FiltersSalary />}
+                                        {/* {navigateFilterOption === "Location" && <FiltersLocation />} */}
+                                        {/* {navigateFilterOption === "Work mode" && <FiltersWorkMode />} */}
                                     </div>
                                 </div>
                                 <div className="p-5 float-right">

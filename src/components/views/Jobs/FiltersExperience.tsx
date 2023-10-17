@@ -6,7 +6,7 @@ import { setExpYears, setMaxExpYearId } from '../../../store/reducers/jobs/GetFi
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import Select from 'react-select';
 
-export const ExperienceBasedFilter = ({ handleTotalExpYearChange }: any) => {
+export const ExperienceBasedFilter = ({ handleTotalExpYearChange, isOpen }: any) => {
     const dispatch = useAppDispatch();
     const { filtersData } = useAppSelector((state) => state.getFilterJobs);
     const [totalExpYear, setTotalExpYear] = useState<number>(0);
@@ -19,10 +19,10 @@ export const ExperienceBasedFilter = ({ handleTotalExpYearChange }: any) => {
         })();
     }, []);
     useEffect(() => {
-        if (filtersData?.expYear !== null) {
+        if (filtersData?.expYear !== null && !isOpen) {
             setTotalExpYear(filtersData?.expYear);
         }
-    }, [filtersData]);
+    }, [!isOpen]);
     return (
         <div className="w-full">
             <Disclosure>
@@ -61,59 +61,53 @@ export const ExperienceBasedFilter = ({ handleTotalExpYearChange }: any) => {
 
 const FiltersExperience = () => {
     const dispatch = useAppDispatch();
-    const { expYear, filtersData } = useAppSelector((state) => state.getFilterJobs);
+    const { expYear, maxExpYearId } = useAppSelector((state) => state.getFilterJobs);
     const [expYearMaster, setExpYearMaster] = useState([]);
     const [totalExpYear, setTotalExpYear] = useState<number>(0);
 
     useEffect(() => {
         setExpYearMaster(expYear?.map(({ id, title }: any) => ({ value: id, label: title })));
-    }, []);
-
-    useEffect(() => {
-        if (filtersData?.expYear !== null) {
-            setTotalExpYear(filtersData?.expYear);
+        if (maxExpYearId !== null && maxExpYearId !== 0) {
+            const experienceYearsData = expYear?.filter((item: any) => parseInt(item?.id) === maxExpYearId);
+            let data = experienceYearsData[0]?.title?.split('');
+            setTotalExpYear(parseInt(data?.slice(0, data.length - 5).join('')));
         }
-    }, [filtersData]);
+    }, []);
 
     const handleTotalExpYearChange = (totalExpYear: number) => {
         dispatch(setMaxExpYearId(totalExpYear));
     };
 
     return (
-        <div className="w-full">
-            <div className="px-5">
-                <h1 className="font-semibold leading-none mt-5 mb-12 text-lg">Select department</h1>
-                <div className="relative mb-3">
-                    <span id="inputRangeSelector" className="bg-[#C7D2FE] w-10 text-xs h-10 rounded-full text-[#312E81] absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-[#C7D2FE] after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center"
-                        style={{
-                            left: `${totalExpYear * 2}%`
-                        }}>
-                        {totalExpYear}
-                    </span>
-                    <input className="w-full h-1 rounded-lg cursor-pointer overflow-hidden appearance-none bg-[#C7D2FE]" type="range" min="0" max="50"
-                        value={totalExpYear}
-                        onMouseUp={() => handleTotalExpYearChange(totalExpYear)}
-                        onChange={(event: React.FormEvent<HTMLInputElement> | any) => {
-                            setTotalExpYear(parseInt(event.target.value));
-                        }} />
-                </div>
-                <div className="flex justify-between items-center text-[#64748B] text-xs mb-3">
-                    <span>0 Yrs</span>
-                    <span>30+ Yrs</span>
-                </div>
-                <div>
-                    <h1 className="text-[#64748B] text-xs mb-3">Max salary</h1>
-                    <Select
-                        isClearable
-                        isSearchable={true}
-                        className="text-sm w-1/2"
-                        classNamePrefix="dropdown"
-                        options={expYearMaster}
-                        // defaultValue={watch('day')}
-                        placeholder="LPA"
-
-                    />
-                </div>
+        <div className="w-full px-5">
+            <h1 className="font-semibold leading-none mt-5 mb-12 text-lg">Experience required</h1>
+            <div className="relative mb-3">
+                <span id="inputRangeSelector" className="bg-[#C7D2FE] w-10 text-xs h-10 rounded-full text-[#312E81] absolute -top-1 -translate-y-full -translate-x-1/2 leading-none cursor-pointer after:content-normal after:border-t-[18px] after:border-t-[#C7D2FE] after:border-l-[17px] after:border-l-white after:border-r-[17px] after:border-r-white after:absolute after:top-[80%] after:left-1/2 after:-translate-x-1/2 flex justify-center items-center"
+                    style={{
+                        left: `${totalExpYear * 2}%`
+                    }}>
+                    {totalExpYear}
+                </span>
+                <input className="w-full h-1 rounded-lg cursor-pointer overflow-hidden appearance-none bg-[#C7D2FE]" type="range" min="0" max="50"
+                    value={totalExpYear}
+                    onMouseUp={() => handleTotalExpYearChange(totalExpYear)}
+                    onChange={(event: React.FormEvent<HTMLInputElement> | any) => {
+                        setTotalExpYear(parseInt(event.target.value));
+                    }} />
+            </div>
+            <div className="flex justify-between items-center text-[#64748B] text-xs mb-3">
+                <span>0 Yrs</span>
+                <span>30+ Yrs</span>
+            </div>
+            <div>
+                <h1 className="text-[#64748B] text-xs mb-3">Max experience</h1>
+                <Select
+                    isClearable
+                    isSearchable={true}
+                    className="text-sm w-1/2"
+                    classNamePrefix="dropdown"
+                    options={expYearMaster}
+                />
             </div>
         </div>
     )
