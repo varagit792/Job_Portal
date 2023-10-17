@@ -26,11 +26,11 @@ import axios from 'axios';
 //     title: string,
 //     status: boolean
 // }
-// interface JobsLocation {
-//     id: number,
-//     title: string,
-//     status: boolean
-// }
+interface CompaniesLocation {
+    id: number,
+    title: string,
+    status: boolean
+}
 // interface JobsRole {
 //     id: number,
 //     title: string,
@@ -92,7 +92,7 @@ interface AllCompanies {
     // totalExpYearEnd: TotalExpYearEnd,
     // numberSystem: NumberSystem,
     // recurrence: Recurrence,
-    // jobsLocation: JobsLocation,
+    companiesLocation: CompaniesLocation,
     // jobsRole: JobsRole,
     // industryType: industryType,
     department: Department,
@@ -110,10 +110,12 @@ interface AllCompaniesState {
     allCompanies: Array<AllCompanies>;
     errorMessage: string | undefined;
     department: any;
+    location: any;
     filtersData: any;
     checkItems: any;
     navigateFilterOption: string;
     departmentIds: number[];
+    locationIds: number[];
 }
 const initialState: AllCompaniesState = {
     loading: false,
@@ -122,8 +124,10 @@ const initialState: AllCompaniesState = {
     allCompanies: [],
     errorMessage: undefined,
     department: [],
+    location: [],
     filtersData: {
         department: [],
+        location:[]
     },
     checkItems: {
         department: [],
@@ -131,7 +135,8 @@ const initialState: AllCompaniesState = {
         workMode: [],
     },
     navigateFilterOption: "",
-    departmentIds: []
+    departmentIds: [],
+    locationIds: []
 }
 
 export const getAllCompanies = createAsyncThunk(
@@ -179,6 +184,10 @@ const getAllCompaniesSlice = createSlice({
             state.department = action.payload;
             state.checkItems.department = action.payload;
         },
+        setLocation: (state, action) => {
+            state.location = action.payload;
+            state.checkItems.location = action.payload;
+        },
         setNavigateFilterOption: (state, action) => {
             state.navigateFilterOption = action?.payload;
         },
@@ -186,9 +195,9 @@ const getAllCompaniesSlice = createSlice({
             if (action?.payload?.department) {
                 state.checkItems.department = action?.payload?.department;
             }
-            // if (action?.payload?.location) {
-            //     state.checkItems.location = action?.payload?.location;
-            // }
+            if (action?.payload?.location) {
+                state.checkItems.location = action?.payload?.location;
+            }
             // if (action?.payload?.workMode) {
             //     state.checkItems.workMode = action?.payload?.workMode;
             // }
@@ -203,6 +212,16 @@ const getAllCompaniesSlice = createSlice({
                 state.departmentIds = filterDate;
             }
         },
+        setFilterLocation: (state, action) => {
+            if (!action?.payload?.filterLocation) {
+                state?.filtersData?.location?.push(action.payload);
+                state?.locationIds.push(action.payload);
+            } else {
+                const filterDate = state?.filtersData?.location?.filter((item: any) => action?.payload?.filterLocation !== item);
+                state.filtersData.location = filterDate;
+                state.locationIds = filterDate;
+            }
+        },
         setDepartmentIds: (state, action) => {
             if (action?.payload?.filter) {
                 const departmentFilter = state?.departmentIds?.filter((item: any) => item !== action?.payload?.filter);
@@ -211,8 +230,17 @@ const getAllCompaniesSlice = createSlice({
                 state.departmentIds?.push(action.payload);
             }
         },
+        setLocationIds: (state, action) => {
+            if (action?.payload?.filter) {
+                const locationFilter = state?.locationIds?.filter((item: any) => item !== action?.payload?.filter);
+                state.locationIds = locationFilter;
+            } else {
+                state.locationIds?.push(action.payload);
+            }
+        },
         bulkFilter: (state, action) => {
             state.filtersData.department = action?.payload?.department;
+            state.filtersData.location = action?.payload?.location;
         }
     }
 });
@@ -220,9 +248,12 @@ export default getAllCompaniesSlice.reducer;
 export const {
     clearGetAllCompaniesSlice,
     setDepartment,
+    setLocation,
     setFilterDepartment,
+    setFilterLocation,
     setNavigateFilterOption,
     setCheckItems,
     setDepartmentIds,
+    setLocationIds,
     bulkFilter
 } = getAllCompaniesSlice.actions;
