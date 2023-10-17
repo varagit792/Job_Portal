@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import JobLeftPanel from './JobLeftPanel'
-import { IFormInputsCompany, IFormInputsResponse } from '../../../../interface/employer';
+import { IFormInputsCompany, IFormInputsResponse, IFormInputsResponseDraft } from '../../../../interface/employer';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
 import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import star from '../../../../assets/svg/star.svg';
@@ -12,9 +12,9 @@ import user_icon from '../../../../assets/svg/user_icon.svg';
 import { getCompanyList } from '../../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { useNavigate, useParams } from 'react-router-dom';
-import { CompanySchema, ResponseSchema } from '../../../../schema/postJob';
+import { CompanySchema, ResponseDraftSchema, ResponseSchema } from '../../../../schema/postJob';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { formData } from '../../../../store/reducers/jobs/postJobs';
+import { formData, postResponseDraft } from '../../../../store/reducers/jobs/postJobs';
 
 const Response = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +25,7 @@ const Response = () => {
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
   const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
   const [jobTitle, setJobTitle] = useState('');
+  const [buttonClick, setButtonClick] = useState('');
 
   const {
     register,
@@ -33,8 +34,8 @@ const Response = () => {
     watch,
     setValue,
     formState: { errors }
-  } = useForm<IFormInputsResponse>({
-    resolver: yupResolver(ResponseSchema),
+  } = useForm<IFormInputsResponse | IFormInputsResponseDraft>({
+    resolver: yupResolver(ResponseSchema || ResponseDraftSchema),
   });
 
   useEffect(() => {
@@ -56,18 +57,86 @@ const Response = () => {
     }
   }, [setValue, jobDetail, jobDetailData]);
 
-  const onSubmit = (data: IFormInputsResponse) => {
+  const onSubmit = (data: IFormInputsResponse | IFormInputsResponseDraft) => {
+    if (buttonClick === 'Continue') {
+      dispatch(formData({
+        hideSalaryDetails: data?.hideSalaryDetails,
+        videoProfile: data?.videoProfile,
+        includeWalkInDetails: data?.includeWalkInDetails,
+        notifyMeAbout: data?.notifyMeAbout,
+        notificationEmailAddress1: data?.notificationEmailAddress1,
+        notificationEmailAddress2: data?.notificationEmailAddress2,
 
-    dispatch(formData({
-      hideSalaryDetails: data?.hideSalaryDetails,
-      videoProfile: data?.videoProfile,
-      includeWalkInDetails: data?.includeWalkInDetails,
-      notifyMeAbout: data?.notifyMeAbout,
-      notificationEmailAddress1: data?.notificationEmailAddress1,
-      notificationEmailAddress2: data?.notificationEmailAddress2,
+      }));
+      navigate(postBack?.postURL);
+    }
 
-    }));
-    navigate(postBack?.postURL);
+    if (buttonClick === 'Draft' || buttonClick === 'Save') {
+
+      let draft = true;
+      let jobStatus = false;
+      if (buttonClick === 'Save') {
+        draft = false;
+        jobStatus = true;
+      }
+      const keySkills = jobDetailData?.jobsKeySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.keySkills?.value } }));
+      const jobLocation = jobDetailData?.jobsLocation?.map((location: any) => ({ location: { id: location?.value } }));
+      const jobEducation = jobDetailData?.jobEducation?.map((education: any) => ({ education: education?.value }));
+      const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
+      const jobCandidateIndustry = jobDetailData?.jobCandidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.candidateIndustry?.value } }));
+      const updatePostId = postId ? Number(postId) : null;
+      dispatch(postResponseDraft({
+        totalExpYearStart: jobDetailData?.totalExpYearStart?.value,
+        totalExpYearEnd: jobDetailData?.totalExpYearEnd?.value,
+        jobsKeySkills: keySkills,
+        status: jobStatus,
+        isDraft: draft,
+        jobLocality: jobLocality,
+        jobEducation: jobEducation,
+        companyType: jobDetailData?.companyType?.value,
+        premiumBTech: jobDetailData?.premiumBTech,
+        premiumMBAAll: jobDetailData?.premiumMBAAll,
+        jobCandidateIndustry: jobCandidateIndustry,
+        diversityHiring: jobDetailData?.diversityHiring,
+        id: updatePostId,
+        title: jobDetailData?.title,
+        payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
+        jobsOpening: Number(jobDetailData?.jobsOpening),
+        userType: "employer",
+        payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
+        jobDescription: jobDetailData?.jobDescription,
+        numberSystem: jobDetailData?.numberSystem?.value,
+        recurrence: jobDetailData?.recurrence?.value,
+        jobsLocation: jobLocation,
+        jobsType: jobDetailData?.jobsType?.value,
+        jobsRole: jobDetailData?.jobsRole?.value,
+        department: jobDetailData?.department?.value,
+        roleCategory: jobDetailData?.roleCategory?.value,
+        user: "1",
+        employmentType: jobDetailData?.employmentType?.value,
+        workMode: jobDetailData?.workMode?.value,
+        candidateRelocate: jobDetailData?.candidateRelocate,
+        currency: jobDetailData?.currency?.value,
+        keyResponsibility: jobDetailData?.keyResponsibility,
+        company: jobDetailData.company?.value,
+        hideCompanyRating: jobDetailData?.hideCompanyRating,
+        companyWebsite: jobDetailData?.companyWebsite,
+        aboutCompany: jobDetailData?.aboutCompany,
+        companyAddress: jobDetailData?.companyAddress,
+
+        hideSalaryDetails: data?.hideSalaryDetails,
+        videoProfile: data?.videoProfile,
+        includeWalkInDetails: data?.includeWalkInDetails,
+        notifyMeAbout: data?.notifyMeAbout,
+        notificationEmailAddress1: data?.notificationEmailAddress1,
+        notificationEmailAddress2: data?.notificationEmailAddress2,
+
+
+      }));
+
+
+
+    }
   }
 
   useEffect(() => {
@@ -100,6 +169,7 @@ const Response = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
+  console.log(jobDetailData);
 
   return (
     <>
@@ -249,14 +319,14 @@ const Response = () => {
                       <div className="w-6 h-6 justify-center items-center flex"></div>
                       <div className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight">Back</div>
                     </div>
-                    {Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save</div>
+                    {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
                     </div>}
-                    {!Number(postId) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Save as Draft</div>
+                    {isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
                     </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                      <button className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" >Continue</button>
+                      <button className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" onClick={() => setButtonClick('Continue')} >Continue</button>
                     </div>
                   </div>
                 </div>
