@@ -7,10 +7,12 @@ import {
     setDepartment,
     setLocation,
     setWorkMode,
+    setCompanyType,
     setRoleCategory,
     setFilterDepartment,
     setFilterLocation,
     setFilterWorkMode,
+    setFilterCompanyType,
     setFilterRoleCategory,
     setFilterExpYear,
     setFilterSalary,
@@ -22,6 +24,7 @@ import { DepartmentBasedFilter } from './FiltersDepartment';
 import { LocationBasedFilter } from './FiltersLocation';
 import { WorkModeBasedFilter } from './FiltersWorkMode';
 import { SalaryBasedFilter } from './FiltersSalary';
+import { CompanyTypeBasedFilter } from './FiltersCompanyType';
 import FiltersRoleCategory from './FiltersRoleCategory';
 import FiltersModal from './FiltersModal';
 import compenyBrand from '../../../assets/png/companyBrand.png';
@@ -43,6 +46,7 @@ const AllJobs = () => {
         location,
         workMode,
         roleCategory,
+        companyType,
         filtersData } = useAppSelector((state) => state.getFilterJobs);
     const [jobCard, setJobCard] = useState<any>([]);
     const [page, setPage] = useState(1);
@@ -56,7 +60,14 @@ const AllJobs = () => {
 
     useEffect(() => {
         if (toggleDispach) {
-            if (filtersData?.expYear !== null || (filtersData?.department !== undefined && filtersData?.department?.length !== 0) || (filtersData?.location !== undefined && filtersData?.location?.length !== 0) || (filtersData?.workMode !== undefined && filtersData?.workMode?.length !== 0) || filtersData?.salary !== null || (filtersData?.roleCategory !== undefined && filtersData?.roleCategory?.length !== 0)) {
+            if (filtersData?.expYear !== null
+                || (filtersData?.department !== undefined && filtersData?.department?.length !== 0)
+                || (filtersData?.location !== undefined && filtersData?.location?.length !== 0)
+                || (filtersData?.workMode !== undefined && filtersData?.workMode?.length !== 0)
+                || filtersData?.salary !== null
+                || (filtersData?.companyType !== undefined && filtersData?.companyType?.length !== 0)
+                || (filtersData?.roleCategory !== undefined && filtersData?.roleCategory?.length !== 0)
+            ) {
                 dispatch(getFilterJobs({ page, data: filtersData }));
                 setJobCard([]);
                 setPage(1);
@@ -152,6 +163,22 @@ const AllJobs = () => {
         setToggleDispach(true);
     };
 
+    const handleCompanyTypeCheckbox = (data: any) => {
+        scrollToTop();
+        setToggleDispach(true);
+        setJobCard([]);
+        dispatch(setCompanyType(
+            companyType?.map((item: any) =>
+                item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
+            )
+        ));
+        if (data?.isChecked === undefined || data?.isChecked === false) {
+            dispatch(setFilterCompanyType(data?.id));
+        } else {
+            dispatch(setFilterCompanyType({ filterCompanyType: data?.id }));
+        }
+    }
+
     const handleRoleCategoryCheckbox = (data: any) => {
         scrollToTop();
         setToggleDispach(true);
@@ -198,43 +225,10 @@ const AllJobs = () => {
                         <hr className="bg-[#E0E7FF] my-5" />
                         <SalaryBasedFilter handleSalaryFilter={handleSalaryFilter} isOpen={isOpen} />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <div className="w-full">
-                            <Disclosure>
-                                {({ open }) => (
-                                    <>
-                                        <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-semibold">Company Type</label>
-                                            <ChevronUpIcon
-                                                className={`${open ? 'rotate-180 transform' : ''
-                                                    } h-5 w-5 text-gray-600`}
-                                            />
-                                        </Disclosure.Button>
-                                        <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Engineering</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">IT and Information</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={true} />
-                                                <label className="ml-2">Consulting</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Marketing</label>
-                                            </div>
-                                            <div className="text-[#475569]">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Sales</label>
-                                            </div>
-                                        </Disclosure.Panel>
-                                    </>
-                                )}
-                            </Disclosure>
-                        </div>
+                        <CompanyTypeBasedFilter
+                            handleCompanyTypeCheckbox={handleCompanyTypeCheckbox}
+                            setIsOpen={setIsOpen}
+                        />
                         <hr className="bg-[#E0E7FF] my-5" />
                         <FiltersRoleCategory
                             handleRoleCategoryCheckbox={handleRoleCategoryCheckbox}

@@ -90,7 +90,7 @@ const FiltersDepartment = () => {
                 <div className="h-96 overflow-x-auto overflow-y-hidden flex flex-col flex-wrap">
                     {filteredItems?.map((item: any) =>
                         <div className="text-[#475569] flex justify-start items-center mt-1 text-sm w-1/2">
-                            <input type="checkbox" defaultChecked={false} checked={item?.isChecked} onChange={() => handleDepartmentCheckbox(item)} />
+                            <input type="checkbox" defaultChecked={false} checked={item?.isChecked !== undefined && item?.isChecked} onChange={() => handleDepartmentCheckbox(item)} />
                             <label className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
                         </div>
                     )}
