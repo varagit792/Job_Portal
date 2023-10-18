@@ -12,6 +12,7 @@ import { RequirementDraftSchema, RequirementSaveSchema, RequirementSchema } from
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import Toaster from '../../../commonComponents/Toaster';
+import Cookies from 'js-cookie';
 
 const Requirements = () => {
   const { postId } = useParams();
@@ -26,6 +27,8 @@ const Requirements = () => {
   const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
   const [jobTitle, setJobTitle] = useState('');
   const [buttonClick, setButtonClick] = useState('');
+  const [userType, setUserType] = useState(Cookies.get('userType'));
+  const [userId, setUserId] = useState(Cookies.get('userId'));
 
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
@@ -108,7 +111,7 @@ const Requirements = () => {
       }));
       navigate(postBack.postURL);
     }
-    if (buttonClick === 'Draft') {
+    if (buttonClick === 'Draft' && userType && userId) {
       let draft = true;
       let jobStatus = false;
 
@@ -134,7 +137,7 @@ const Requirements = () => {
         title: jobDetailData?.title,
         payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
         jobsOpening: Number(jobDetailData?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
         jobDescription: jobDetailData?.jobDescription,
         numberSystem: jobDetailData?.numberSystem?.value,
@@ -144,7 +147,7 @@ const Requirements = () => {
         jobsRole: jobDetailData?.jobsRole?.value,
         department: jobDetailData?.department?.value,
         roleCategory: jobDetailData?.roleCategory?.value,
-        user: "1",
+        user: userId,
         employmentType: jobDetailData?.employmentType?.value,
         workMode: jobDetailData?.workMode?.value,
         candidateRelocate: jobDetailData?.candidateRelocate,
@@ -167,7 +170,7 @@ const Requirements = () => {
       });
     }
 
-    if (buttonClick === 'Save') {
+    if (buttonClick === 'Save' && userType && userId) {
       let draft = false;
       let jobStatus = true;
 
@@ -193,7 +196,7 @@ const Requirements = () => {
         title: jobDetailData?.title,
         payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
         jobsOpening: Number(jobDetailData?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
         jobDescription: jobDetailData?.jobDescription,
         numberSystem: jobDetailData?.numberSystem?.value,
@@ -203,7 +206,7 @@ const Requirements = () => {
         jobsRole: jobDetailData?.jobsRole?.value,
         department: jobDetailData?.department?.value,
         roleCategory: jobDetailData?.roleCategory?.value,
-        user: "1",
+        user: userId,
         employmentType: jobDetailData?.employmentType?.value,
         workMode: jobDetailData?.workMode?.value,
         candidateRelocate: jobDetailData?.candidateRelocate,
@@ -264,6 +267,10 @@ const Requirements = () => {
     }
 
   }, []);
+  useEffect(() => {
+    setUserType(Cookies.get('userType'));
+    setUserId(Cookies.get('userId'));
+  }, [Cookies])
 
   const returnBack = (returnURL: string) => {
     navigate(returnURL);

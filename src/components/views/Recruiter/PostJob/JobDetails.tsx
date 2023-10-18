@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../../..';
 import JobLeftPanel from './JobLeftPanel';
 import { toast } from 'react-toastify';
 import Toaster from '../../../commonComponents/Toaster';
+import Cookies from 'js-cookie';
 
 const JobDetails = () => {
   const { postId } = useParams();
@@ -32,6 +33,8 @@ const JobDetails = () => {
   const [postBack, setPostBack] = useState({ postURL: '' });
   const [jobTitle, setJobTitle] = useState('');
   const [buttonClick, setButtonClick] = useState('');
+  const [userType, setUserType] = useState(Cookies.get('userType'));
+  const [userId, setUserId] = useState(Cookies.get('userId'));
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
 
@@ -107,16 +110,17 @@ const JobDetails = () => {
 
   const onSubmit = (data: IFormInputsJobDetail | IFormInputsJobDetailDraft | IFormInputsJobDetailSave) => {
 
+
     const updatePostId = postId ? Number(postId) : null;
 
-    if (buttonClick === 'Continue') {
+    if (buttonClick === 'Continue' && userType && userId) {
       const jobLocation = data?.jobLocation?.map((location: any) => location);
       dispatch(formData({
         id: updatePostId,
         title: data?.title,
         payScaleLowerRange: data?.fromSalaryRange,
         jobsOpening: Number(data?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: data?.toSalaryRange,
         jobDescription: data?.jobDescription,
         numberSystem: data?.numberSystem,
@@ -126,7 +130,7 @@ const JobDetails = () => {
         jobsRole: data?.jobsRole,
         department: data?.department,
         roleCategory: data?.roleCategory,
-        user: "1",
+        user: userId,
         status: true,
         employmentType: data?.employmentType,
         workMode: data?.workMode,
@@ -137,7 +141,7 @@ const JobDetails = () => {
       navigate(postBack.postURL);
     }
 
-    if (buttonClick === 'Draft') {
+    if (buttonClick === 'Draft' && userType && userId) {
 
       const jobLocation = data?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
       let draft = true;
@@ -148,7 +152,7 @@ const JobDetails = () => {
         title: data?.title,
         payScaleLowerRange: data?.fromSalaryRange?.value,
         jobsOpening: Number(data?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: data?.toSalaryRange?.value,
         jobDescription: data?.jobDescription,
         numberSystem: data?.numberSystem?.value,
@@ -158,7 +162,7 @@ const JobDetails = () => {
         jobsRole: data?.jobsRole?.value,
         department: data?.department?.value,
         roleCategory: data?.roleCategory?.value,
-        user: "1",
+        user: userId,
         status: jobStatus,
         isDraft: draft,
         employmentType: data?.employmentType?.value,
@@ -192,7 +196,7 @@ const JobDetails = () => {
       });
     }
 
-    if (buttonClick === 'Save') {
+    if (buttonClick === 'Save' && userType && userId) {
       const jobLocation = data?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
       let draft = false;
       let jobStatus = true;
@@ -203,7 +207,7 @@ const JobDetails = () => {
         payScaleLowerRange: data?.fromSalaryRange?.value,
         payScaleUpperRange: data?.toSalaryRange?.value,
         jobsOpening: Number(data?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         jobDescription: data?.jobDescription,
         numberSystem: data?.numberSystem?.value,
         recurrence: data?.recurrence?.value,
@@ -212,7 +216,7 @@ const JobDetails = () => {
         jobsRole: data?.jobsRole?.value,
         department: data?.department?.value,
         roleCategory: data?.roleCategory?.value,
-        user: "1",
+        user: userId,
         status: jobStatus,
         isDraft: draft,
         employmentType: data?.employmentType?.value,
@@ -303,7 +307,12 @@ const JobDetails = () => {
       setPostBack({ postURL: '/postJob/requirements' })
     }
 
-  }, [jobDetail])
+  }, [jobDetail]);
+
+  useEffect(() => {
+    setUserType(Cookies.get('userType'));
+    setUserId(Cookies.get('userId'));
+  }, [Cookies])
 
   const changeTitle = (value: any) => {
     setJobTitle(value);
@@ -540,8 +549,8 @@ const JobDetails = () => {
                           <textarea defaultValue={''}
                             className='w-full border border-gray-200 h-[75px] focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter job description"}
-                            {...register("jobDescription")} ></textarea>
-
+                            {...register("jobDescription")}>
+                          </textarea>
                           {errors?.jobDescription && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobDescription?.message}</p>}
                         </div>
                         <div className="w-full text-xs font-light text-gray-600 text-right float-right">

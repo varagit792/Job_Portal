@@ -15,6 +15,7 @@ import { ResponseDraftSchema, ResponseSchema } from '../../../../schema/postJob'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { formData, postResponseDraft } from '../../../../store/reducers/jobs/postJobs';
 import Toaster from '../../../commonComponents/Toaster';
+import Cookies from 'js-cookie';
 
 const Response = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +27,8 @@ const Response = () => {
   const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
   const [jobTitle, setJobTitle] = useState('');
   const [buttonClick, setButtonClick] = useState('');
+  const [userType, setUserType] = useState(Cookies.get('userType'));
+  const [userId, setUserId] = useState(Cookies.get('userId'));
 
   const {
     register,
@@ -71,7 +74,7 @@ const Response = () => {
       navigate(postBack?.postURL);
     }
 
-    if (buttonClick === 'Draft' || buttonClick === 'Save') {
+    if ((buttonClick === 'Draft' || buttonClick === 'Save') && userType && userId) {
 
       let draft = true;
       let jobStatus = false;
@@ -104,7 +107,7 @@ const Response = () => {
         title: jobDetailData?.title,
         payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
         jobsOpening: Number(jobDetailData?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
         jobDescription: jobDetailData?.jobDescription,
         numberSystem: jobDetailData?.numberSystem?.value,
@@ -114,7 +117,7 @@ const Response = () => {
         jobsRole: jobDetailData?.jobsRole?.value,
         department: jobDetailData?.department?.value,
         roleCategory: jobDetailData?.roleCategory?.value,
-        user: "1",
+        user: userId,
         employmentType: jobDetailData?.employmentType?.value,
         workMode: jobDetailData?.workMode?.value,
         candidateRelocate: jobDetailData?.candidateRelocate,
@@ -156,7 +159,6 @@ const Response = () => {
         setCompany(companyList as any)
       }
     })();
-
     if (Number(postId)) {
       setPostBack({ postURL: `/postJob/preview/${postId}`, backURL: `/postJob/recruiter/${postId}` });
       setJobTitle(jobDetail?.title);
@@ -164,6 +166,11 @@ const Response = () => {
       setPostBack({ postURL: '/postJob/preview', backURL: '/postJob/recruiter' })
     }
   }, []);
+
+  useEffect(() => {
+    setUserType(Cookies.get('userType'));
+    setUserId(Cookies.get('userId'));
+  }, [Cookies])
 
   const returnBack = (returnURL: string) => {
     navigate(returnURL);

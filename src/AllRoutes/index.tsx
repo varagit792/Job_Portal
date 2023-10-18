@@ -19,6 +19,7 @@ import Recruiter from '../components/views/Recruiter/PostJob/Recruiter';
 import Response from '../components/views/Recruiter/PostJob/Response';
 import NoMatch from '../components/views/NoMatch';
 import Preview from '../components/views/Recruiter/PostJob/preview';
+import EmployerDashboard from '../components/views/Recruiter/Dashboard/EmployerDashboard';
 
 const AllRoutes = () => {
 
@@ -46,6 +47,7 @@ const AllRoutes = () => {
                     <Route path="response/:postId?" element={<Response />} />
                     <Route path="preview/:postId?" element={<Preview />} />
                 </Route>
+                <Route path="/employerProfile" element={<EmployerDashboard />} />
             </Route>
             <Route path="*" element={<NoMatch />} />
         </Routes>

@@ -14,6 +14,7 @@ import { formData, postCompanyDraft, postCompanySave } from '../../../../store/r
 import { getAllCompanies } from '../../../../store/reducers/companies/getAllCompanies';
 import { toast } from 'react-toastify';
 import Toaster from '../../../commonComponents/Toaster';
+import Cookies from 'js-cookie';
 
 const Company = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +26,8 @@ const Company = () => {
   const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
   const [jobTitle, setJobTitle] = useState('');
   const [buttonClick, setButtonClick] = useState('');
+  const [userType, setUserType] = useState(Cookies.get('userType'));
+  const [userId, setUserId] = useState(Cookies.get('userId'));
   const { success, allCompanies } = useAppSelector((state) => state.getAllCompanies);
 
   const {
@@ -70,7 +73,7 @@ const Company = () => {
       }));
       navigate(postBack?.postURL);
     }
-    if (buttonClick === 'Draft') {
+    if (buttonClick === 'Draft' && userType && userId) {
       let draft = true;
       let jobStatus = false;
 
@@ -97,7 +100,7 @@ const Company = () => {
         title: jobDetailData?.title,
         payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
         jobsOpening: Number(jobDetailData?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
         jobDescription: jobDetailData?.jobDescription,
         numberSystem: jobDetailData?.numberSystem?.value,
@@ -107,7 +110,7 @@ const Company = () => {
         jobsRole: jobDetailData?.jobsRole?.value,
         department: jobDetailData?.department?.value,
         roleCategory: jobDetailData?.roleCategory?.value,
-        user: "1",
+        user: userId,
         employmentType: jobDetailData?.employmentType?.value,
         workMode: jobDetailData?.workMode?.value,
         candidateRelocate: jobDetailData?.candidateRelocate,
@@ -131,7 +134,7 @@ const Company = () => {
       });
     }
 
-    if (buttonClick === 'Save') {
+    if (buttonClick === 'Save' && userType && userId) {
       let draft = false;
       let jobStatus = true;
 
@@ -158,7 +161,7 @@ const Company = () => {
         title: jobDetailData?.title,
         payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
         jobsOpening: Number(jobDetailData?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
         jobDescription: jobDetailData?.jobDescription,
         numberSystem: jobDetailData?.numberSystem?.value,
@@ -168,7 +171,7 @@ const Company = () => {
         jobsRole: jobDetailData?.jobsRole?.value,
         department: jobDetailData?.department?.value,
         roleCategory: jobDetailData?.roleCategory?.value,
-        user: "1",
+        user: userId,
         employmentType: jobDetailData?.employmentType?.value,
         workMode: jobDetailData?.workMode?.value,
         candidateRelocate: jobDetailData?.candidateRelocate,
@@ -219,6 +222,11 @@ const Company = () => {
   useEffect(() => {
     setCompany(allCompanies as any)
   }, [success])
+
+  useEffect(() => {
+    setUserType(Cookies.get('userType'));
+    setUserId(Cookies.get('userId'));
+  }, [Cookies])
 
   const watchKeyAboutCompany = watch('aboutCompany')?.length;
   const watchCompanyAddress = watch('companyAddress')?.length;

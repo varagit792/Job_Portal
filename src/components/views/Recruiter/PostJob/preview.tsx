@@ -10,6 +10,7 @@ import { formData, postJobUpdate, postResponseDraft } from '../../../../store/re
 import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import { PostJobSchema, ResponseSchema } from '../../../../schema/postJob';
 import Toaster from '../../../commonComponents/Toaster';
+import Cookies from 'js-cookie';
 
 const Preview = () => {
 
@@ -21,6 +22,8 @@ const Preview = () => {
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
   const [jobTitle, setJobTitle] = useState('');
   const [buttonClick, setButtonClick] = useState('');
+  const [userType, setUserType] = useState(Cookies.get('userType'));
+  const [userId, setUserId] = useState(Cookies.get('userId'));
   const [sectionURL, setSectionURL] = useState({ jobDetailsURL: "", requirementsURL: "", companyURL: "", recruiterURL: "", responseURL: "", previewURL: "" });
 
   const {
@@ -111,7 +114,7 @@ const Preview = () => {
 
   const onSubmit = (data: IFormInputsPostAJob) => {
 
-    if (buttonClick === 'Continue') {
+    if (buttonClick === 'Continue' && userType && userId) {
       const keySkills = jobDetailData?.jobsKeySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.keySkills?.value } }));
       const jobLocation = jobDetailData?.jobsLocation?.map((location: any) => ({ location: { id: location?.value } }));
       const jobEducation = jobDetailData?.jobEducation?.map((education: any) => ({ education: education?.value }));
@@ -124,7 +127,7 @@ const Preview = () => {
         title: jobDetailData?.title,
         payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
         jobsOpening: Number(jobDetailData?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
         jobDescription: jobDetailData?.jobDescription,
         company: jobDetailData?.company?.value,
@@ -138,7 +141,7 @@ const Preview = () => {
         jobsType: jobDetailData?.jobsType?.value,
         roleCategory: jobDetailData?.roleCategory?.value,
         jobEducation: jobEducation,
-        user: "1",
+        user: userId,
         isDraft: false,
         jobsKeySkills: keySkills,
         employmentType: jobDetailData?.employmentType?.value,
@@ -168,7 +171,7 @@ const Preview = () => {
       });
     }
 
-    if (buttonClick === 'Draft' || buttonClick === 'Save') {
+    if ((buttonClick === 'Draft' || buttonClick === 'Save') && userType && userId) {
 
       let draft = true;
       let jobStatus = false;
@@ -201,7 +204,7 @@ const Preview = () => {
         title: jobDetailData?.title,
         payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
         jobsOpening: Number(jobDetailData?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
         jobDescription: jobDetailData?.jobDescription,
         numberSystem: jobDetailData?.numberSystem?.value,
@@ -211,7 +214,7 @@ const Preview = () => {
         jobsRole: jobDetailData?.jobsRole?.value,
         department: jobDetailData?.department?.value,
         roleCategory: jobDetailData?.roleCategory?.value,
-        user: "1",
+        user: userId,
         employmentType: jobDetailData?.employmentType?.value,
         workMode: jobDetailData?.workMode?.value,
         candidateRelocate: jobDetailData?.candidateRelocate,
@@ -255,6 +258,11 @@ const Preview = () => {
     if (jobDetailSuccess)
       dispatch(clearGetJobDetailSlice());
   }, [dispatch, jobDetailSuccess]);
+
+  useEffect(() => {
+    setUserType(Cookies.get('userType'));
+    setUserId(Cookies.get('userId'));
+  }, [Cookies])
 
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
@@ -310,10 +318,10 @@ const Preview = () => {
                     <div className="self-stretch h-[0px] border border-indigo-100"></div>
                     <div className="self-stretch justify-start items-center gap-5 inline-flex">
                       <div className="justify-start items-center gap-3 flex">
-                        <div className="w-[85px] px-3 py-2 bg-green-50 rounded justify-center items-center gap-2.5 flex">
+                        <div className="w-full px-3 py-2 bg-green-50 rounded justify-center items-center gap-2.5 flex">
                           <div className="text-green-600 text-sm font-normal leading-[16.80px] tracking-tight">{jobDetailData?.employmentType?.label}</div>
                         </div>
-                        <div className="w-[77px] px-3 py-2 bg-orange-50 rounded justify-center items-center gap-2.5 flex">
+                        <div className="w-full px-3 py-2 bg-orange-50 rounded justify-center items-center gap-2.5 flex">
                           <div className="text-orange-600 text-sm font-normal leading-[16.80px] tracking-tight">{jobDetailData?.workMode?.label}</div>
                         </div>
                       </div>
@@ -370,7 +378,7 @@ const Preview = () => {
                       <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Education</div>
                       <div className="self-stretch justify-start  gap-3 inline-flex">
                         {jobDetailData?.jobEducation?.map((item: any) =>
-                          <div className="w-[225px] px-3 py-2 bg-slate-50 rounded-lg justify-center items-center gap-2.5 flex">
+                          <div className="w-full px-3 py-2 bg-slate-50 rounded-lg justify-center items-center gap-2.5 flex">
                             <div className="text-black text-base font-normal leading-snug tracking-tight">{item?.label}</div>
                           </div>)}
                       </div>

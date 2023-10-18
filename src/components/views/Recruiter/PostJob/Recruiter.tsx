@@ -9,6 +9,7 @@ import { CompanySaveSchema, RecruiterSchema } from '../../../../schema/postJob';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { postCompanyDraft, postCompanySave } from '../../../../store/reducers/jobs/postJobs';
 import Toaster from '../../../commonComponents/Toaster';
+import Cookies from 'js-cookie';
 
 
 const Recruiter = () => {
@@ -21,6 +22,8 @@ const Recruiter = () => {
   const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
   const [jobTitle, setJobTitle] = useState('');
   const [buttonClick, setButtonClick] = useState('');
+  const [userType, setUserType] = useState(Cookies.get('userType'));
+  const [userId, setUserId] = useState(Cookies.get('userId'));
 
   const {
     register,
@@ -40,7 +43,7 @@ const Recruiter = () => {
     if (buttonClick === 'Continue') {
       navigate(postBack?.postURL);
     }
-    if (buttonClick === 'Draft') {
+    if (buttonClick === 'Draft' && userType && userId) {
       let draft = true;
       let jobStatus = false;
       const jobEducation = jobDetailData?.education?.map((education: any) => ({ education: education?.value }));
@@ -66,7 +69,7 @@ const Recruiter = () => {
         title: jobDetailData?.title,
         payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
         jobsOpening: Number(jobDetailData?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
         jobDescription: jobDetailData?.jobDescription,
         numberSystem: jobDetailData?.numberSystem?.value,
@@ -76,7 +79,7 @@ const Recruiter = () => {
         jobsRole: jobDetailData?.jobsRole?.value,
         department: jobDetailData?.department?.value,
         roleCategory: jobDetailData?.roleCategory?.value,
-        user: "1",
+        user: userId,
         employmentType: jobDetailData?.employmentType?.value,
         workMode: jobDetailData?.workMode?.value,
         candidateRelocate: jobDetailData?.candidateRelocate,
@@ -98,7 +101,7 @@ const Recruiter = () => {
         toast.success("Job drafted successfully !!")
       });
     }
-    if (buttonClick === 'Save') {
+    if (buttonClick === 'Save' && userType && userId) {
       let draft = false;
       let jobStatus = true;
 
@@ -125,7 +128,7 @@ const Recruiter = () => {
         title: jobDetailData?.title,
         payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
         jobsOpening: Number(jobDetailData?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
         jobDescription: jobDetailData?.jobDescription,
         numberSystem: jobDetailData?.numberSystem?.value,
@@ -135,7 +138,7 @@ const Recruiter = () => {
         jobsRole: jobDetailData?.jobsRole?.value,
         department: jobDetailData?.department?.value,
         roleCategory: jobDetailData?.roleCategory?.value,
-        user: "1",
+        user: userId,
         employmentType: jobDetailData?.employmentType?.value,
         workMode: jobDetailData?.workMode?.value,
         candidateRelocate: jobDetailData?.candidateRelocate,
@@ -161,6 +164,11 @@ const Recruiter = () => {
       setPostBack({ postURL: '/postJob/response', backURL: '/postJob/company' })
     }
   }, []);
+
+  useEffect(() => {
+    setUserType(Cookies.get('userType'));
+    setUserId(Cookies.get('userId'));
+  }, [Cookies])
 
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
