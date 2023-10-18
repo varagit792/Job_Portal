@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { IFormInputsJobDetail, IFormInputsJobDetailDraft, IFormInputsJobDetailSave, IFormInputsPostAJob } from '../../../../interface/employer';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
-import { formData, postJobDetailDraft, postJobDetailSave, postJobUpdate } from '../../../../store/reducers/jobs/postJobs';
+import { formData, postJobDetailDraft, postJobDetailSave } from '../../../../store/reducers/jobs/postJobs';
 import { getCurrencyList, getDepartmentList, getEmployeeTypeList, getJobRoleList, getJobTypeList, getLocationList, getNumberSystemList, getRecurrenceList, getRoleCategoryList, getSalaryRangeList, getWorkModeList } from '../../../utils/utils';
-import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
+import { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { JobDetailDraftSchema, JobDetailSaveSchema, PostJobDetailSchema, PostJobSchema } from '../../../../schema/postJob';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import JobLeftPanel from './JobLeftPanel';
+import { toast } from 'react-toastify';
+import Toaster from '../../../commonComponents/Toaster';
 
 const JobDetails = () => {
   const { postId } = useParams();
@@ -39,6 +41,7 @@ const JobDetails = () => {
     control,
     watch,
     setValue,
+    reset,
     formState: { errors }
   } = useForm<IFormInputsJobDetail | IFormInputsJobDetailDraft | IFormInputsJobDetailSave>({
     resolver: yupResolver(PostJobDetailSchema || JobDetailDraftSchema || JobDetailSaveSchema),
@@ -105,7 +108,6 @@ const JobDetails = () => {
   const onSubmit = (data: IFormInputsJobDetail | IFormInputsJobDetailDraft | IFormInputsJobDetailSave) => {
 
     const updatePostId = postId ? Number(postId) : null;
-    console.log(buttonClick);
 
     if (buttonClick === 'Continue') {
       const jobLocation = data?.jobLocation?.map((location: any) => location);
@@ -185,8 +187,9 @@ const JobDetails = () => {
         companyWebsite: '',
         aboutCompany: '',
         companyAddress: ''
-      }));
-      //navigate(postBack.postURL);
+      })).then(() => {
+        toast.success("Job drafted successfully !!")
+      });
     }
 
     if (buttonClick === 'Save') {
@@ -218,8 +221,9 @@ const JobDetails = () => {
         currency: data?.currency?.value,
         keyResponsibility: data?.keyResponsibility,
 
-      }));
-      //navigate(postBack.postURL);
+      })).then(() => {
+        toast.success("Job save successfully !!")
+      });
     }
   }
 
@@ -562,16 +566,16 @@ const JobDetails = () => {
                   </div>
                   <div className="w-full self-stretch justify-start  gap-5 inline-flex">
                     <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Cancel</div>
+                      <div className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" onClick={() => reset()}>Cancel</div>
                     </div>
                     {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
+                      <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
                     </div>}
                     {isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex ">
-                      <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
+                      <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
                     </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                      <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='Continue' onClick={() => setButtonClick('Continue')} value={'Continue'} />
+                      <input className="text-white font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='Continue' onClick={() => setButtonClick('Continue')} value={'Continue'} />
                     </div>
                   </div>
                 </form >
@@ -580,6 +584,7 @@ const JobDetails = () => {
           </div>
         </div>
       </div>
+      <Toaster />
     </>
   )
 }

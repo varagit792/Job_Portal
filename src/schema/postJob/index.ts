@@ -114,10 +114,10 @@ export const ResponseSchema = yup.object().shape({
   //   .max(3, 'Pick at most three location').required("Please check at least one"),
   notificationEmailAddress1: yup.string().label("Please enter notification email address 1").required(),
   notificationEmailAddress2: yup.string().label("Please enter notification email address 2").required(),
-  hideSalaryDetails: yup.boolean().label("Please checked hide salary details").required(),
-  videoProfile: yup.boolean().label("Please checked video profile").required(),
-  includeWalkInDetails: yup.boolean().label("Please checked walk-in").required(),
-  notifyMeAbout: yup.boolean().label("Please checked notify me").required(),
+  hideSalaryDetails: yup.boolean().default(false),
+  videoProfile: yup.boolean().default(false),
+  includeWalkInDetails: yup.boolean().default(false),
+  notifyMeAbout: yup.boolean().default(false),
 
 }).required();
 
@@ -189,7 +189,7 @@ export const PostJobSchema = yup.object().shape({
     value: yup.string().required("Please select recurrence"),
     label: yup.string().required("Please select recurrence"),
   }),
-  hideSalaryDetails: yup.boolean().label("Please checked hide salary details").required(),
+  hideSalaryDetails: yup.boolean().default(false),
   companyType: yup.object().shape({
     value: yup.string().required("Please select industry"),
     label: yup.string().required("Please select industry"),
@@ -294,7 +294,7 @@ export const RequirementDraftSchema = yup.object().shape({
     value: yup.string().required("Please select recurrence"),
     label: yup.string().required("Please select recurrence"),
   }),
-  hideSalaryDetails: yup.boolean().label("Please checked hide salary details").required(),
+  hideSalaryDetails: yup.boolean().default(false),
   companyType: yup.object().shape({
     value: yup.string().required("Please select industry"),
     label: yup.string().required("Please select industry"),
@@ -311,10 +311,10 @@ export const RequirementDraftSchema = yup.object().shape({
   jobDescription: yup.string().label("Please enter job description").required(),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
 
-  videoProfile: yup.boolean().label("Please checked video profile").required(),
-  includeWalkInDetails: yup.boolean().label("Please checked walk-in").required(),
-  hideCompanyRating: yup.boolean().label("Please checked hide company rating").required(),
-  notifyMeAbout: yup.boolean().label("Please checked notify me").required(),
+  videoProfile: yup.boolean().default(false),
+  includeWalkInDetails: yup.boolean().default(false),
+  hideCompanyRating: yup.boolean().default(false),
+  notifyMeAbout: yup.boolean().default(false),
   notificationEmailAddress1: yup.string().label("Notification email address 1").required(),
   notificationEmailAddress2: yup.string().label("Notification email address 2").required(),
   company: yup.object().shape({
@@ -397,7 +397,7 @@ export const JobDetailDraftSchema = yup.object().shape({
     value: yup.string().required("Please select recurrence"),
     label: yup.string().required("Please select recurrence"),
   }),
-  hideSalaryDetails: yup.boolean().label("Please checked hide salary details").required(),
+  hideSalaryDetails: yup.boolean().default(false),
   companyType: yup.object().shape({
     value: yup.string().required("Please select industry"),
     label: yup.string().required("Please select industry"),
@@ -414,10 +414,10 @@ export const JobDetailDraftSchema = yup.object().shape({
   jobDescription: yup.string().label("Please enter job description").required(),
   totalExpYearEnd: yup.string().optional(),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
-  videoProfile: yup.boolean().label("Please checked video profile").required(),
-  includeWalkInDetails: yup.boolean().label("Please checked walk-in").required(),
-  hideCompanyRating: yup.boolean().label("Please checked hide company rating").required(),
-  notifyMeAbout: yup.boolean().label("Please checked notify me").required(),
+  videoProfile: yup.boolean().default(false),
+  includeWalkInDetails: yup.boolean().default(false),
+  hideCompanyRating: yup.boolean().default(false),
+  notifyMeAbout: yup.boolean().default(false),
   notificationEmailAddress1: yup.string().label("Notification email address 1").required(),
   notificationEmailAddress2: yup.string().label("Notification email address 2").required(),
   company: yup.object().shape({
@@ -501,7 +501,7 @@ export const CompanyDraftSchema = yup.object().shape({
     value: yup.string().required("Please select recurrence"),
     label: yup.string().required("Please select recurrence"),
   }),
-  hideSalaryDetails: yup.boolean().label("Please checked hide salary details").required(),
+  hideSalaryDetails: yup.boolean().default(false),
   companyType: yup.object().shape({
     value: yup.string().required("Please select industry"),
     label: yup.string().required("Please select industry"),
@@ -519,10 +519,10 @@ export const CompanyDraftSchema = yup.object().shape({
   jobDescription: yup.string().label("Please enter job description").required(),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
 
-  videoProfile: yup.boolean().label("Please checked video profile").required(),
-  includeWalkInDetails: yup.boolean().label("Please checked walk-in").required(),
-  hideCompanyRating: yup.boolean().label("Please checked hide company rating").required(),
-  notifyMeAbout: yup.boolean().label("Please checked notify me").required(),
+  videoProfile: yup.boolean().default(false),
+  includeWalkInDetails: yup.boolean().default(false),
+  hideCompanyRating: yup.boolean().default(false),
+  notifyMeAbout: yup.boolean().default(false),
   notificationEmailAddress1: yup.string().label("Notification email address 1").required(),
   notificationEmailAddress2: yup.string().label("Notification email address 2").required(),
   company: yup.object().shape({
@@ -609,7 +609,7 @@ export const ResponseDraftSchema = yup.object().shape({
     value: yup.string().required("Please select recurrence"),
     label: yup.string().required("Please select recurrence"),
   }),
-  hideSalaryDetails: yup.boolean().label("Please checked hide salary details").required(),
+  hideSalaryDetails: yup.boolean().default(false),
   companyType: yup.object().shape({
     value: yup.string().required("Please select industry"),
     label: yup.string().required("Please select industry"),
@@ -627,10 +627,10 @@ export const ResponseDraftSchema = yup.object().shape({
   jobDescription: yup.string().label("Please enter job description").required(),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
 
-  videoProfile: yup.boolean().label("Please checked video profile").required(),
-  includeWalkInDetails: yup.boolean().label("Please checked walk-in").required(),
-  hideCompanyRating: yup.boolean().label("Please checked hide company rating").required(),
-  notifyMeAbout: yup.boolean().label("Please checked notify me").required(),
+  videoProfile: yup.boolean().default(false),
+  includeWalkInDetails: yup.boolean().default(false),
+  hideCompanyRating: yup.boolean().default(false),
+  notifyMeAbout: yup.boolean().default(false),
   notificationEmailAddress1: yup.string().label("Notification email address 1").required(),
   notificationEmailAddress2: yup.string().label("Notification email address 2").required(),
   company: yup.object().shape({

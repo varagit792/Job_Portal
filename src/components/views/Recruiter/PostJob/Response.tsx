@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import JobLeftPanel from './JobLeftPanel'
-import { IFormInputsCompany, IFormInputsResponse, IFormInputsResponseDraft } from '../../../../interface/employer';
-import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
-import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
-import star from '../../../../assets/svg/star.svg';
+import { IFormInputsResponse, IFormInputsResponseDraft } from '../../../../interface/employer';
+import { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import user from '../../../../assets/png/user.png';
 import envelop from '../../../../assets/svg/envelop.svg';
 import close from '../../../../assets/svg/close.svg';
@@ -12,9 +11,10 @@ import user_icon from '../../../../assets/svg/user_icon.svg';
 import { getCompanyList } from '../../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { useNavigate, useParams } from 'react-router-dom';
-import { CompanySchema, ResponseDraftSchema, ResponseSchema } from '../../../../schema/postJob';
+import { ResponseDraftSchema, ResponseSchema } from '../../../../schema/postJob';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { formData, postResponseDraft } from '../../../../store/reducers/jobs/postJobs';
+import Toaster from '../../../commonComponents/Toaster';
 
 const Response = () => {
   const dispatch = useAppDispatch();
@@ -75,9 +75,11 @@ const Response = () => {
 
       let draft = true;
       let jobStatus = false;
+      let successMessage = "Job drafted successfully !!";
       if (buttonClick === 'Save') {
         draft = false;
         jobStatus = true;
+        successMessage = "Job saved successfully !!";
       }
       const keySkills = jobDetailData?.jobsKeySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.keySkills?.value } }));
       const jobLocation = jobDetailData?.jobsLocation?.map((location: any) => ({ location: { id: location?.value } }));
@@ -130,12 +132,9 @@ const Response = () => {
         notifyMeAbout: data?.notifyMeAbout,
         notificationEmailAddress1: data?.notificationEmailAddress1,
         notificationEmailAddress2: data?.notificationEmailAddress2,
-
-
-      }));
-
-
-
+      })).then(() => {
+        toast.success(successMessage)
+      });
     }
   }
 
@@ -169,7 +168,6 @@ const Response = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
-  console.log(jobDetailData);
 
   return (
     <>
@@ -317,16 +315,16 @@ const Response = () => {
                   <div className="self-stretch justify-start items-start gap-5 inline-flex">
                     <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack?.backURL)}>
                       <div className="w-6 h-6 justify-center items-center flex"></div>
-                      <div className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight">Back</div>
+                      <div className="text-indigo-900 font-medium  leading-normal tracking-tight">Back</div>
                     </div>
                     {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
+                      <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
                     </div>}
                     {isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
+                      <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
                     </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                      <button className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" onClick={() => setButtonClick('Continue')} >Continue</button>
+                      <button className="text-white font-medium leading-normal tracking-tight cursor-pointer" type="submit" onClick={() => setButtonClick('Continue')} >Continue</button>
                     </div>
                   </div>
                 </div>
@@ -335,6 +333,7 @@ const Response = () => {
           </div >
         </div >
       </div >
+      <Toaster />
     </>
   )
 }

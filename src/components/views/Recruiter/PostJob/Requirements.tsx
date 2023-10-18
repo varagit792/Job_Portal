@@ -10,6 +10,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { formData, postRequirementDraft, postRequirementSave } from '../../../../store/reducers/jobs/postJobs';
 import { RequirementDraftSchema, RequirementSaveSchema, RequirementSchema } from '../../../../schema/postJob';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { toast } from 'react-toastify';
+import Toaster from '../../../commonComponents/Toaster';
 
 const Requirements = () => {
   const { postId } = useParams();
@@ -160,7 +162,9 @@ const Requirements = () => {
         companyWebsite: '',
         aboutCompany: '',
         companyAddress: '',
-      }));
+      })).then(() => {
+        toast.success("Job drafted successfully !!")
+      });
     }
 
     if (buttonClick === 'Save') {
@@ -206,7 +210,9 @@ const Requirements = () => {
         currency: jobDetailData?.currency?.value,
         keyResponsibility: jobDetailData?.keyResponsibility,
         isDraft: draft,
-      }));
+      })).then(() => {
+        toast.success("Job saved successfully !!")
+      });
     }
   }
 
@@ -425,16 +431,16 @@ const Requirements = () => {
                   </div>
                   <div className="self-stretch justify-start  gap-5 inline-flex">
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack.backURL)}>
-                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight">Back</div>
+                      <div className="text-indigo-900 font-medium leading-normal tracking-tight">Back</div>
                     </div>
                     {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
+                      <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
                     </div>}
                     {isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
+                      <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
                     </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                      <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} onClick={() => setButtonClick('Continue')} />
+                      <input className="text-white font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} onClick={() => setButtonClick('Continue')} />
                     </div>
                   </div>
                 </div>
@@ -443,6 +449,7 @@ const Requirements = () => {
           </div>
         </div>
       </div >
+      <Toaster />
     </>
   )
 }
