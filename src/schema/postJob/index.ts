@@ -51,8 +51,26 @@ export const PostJobDetailSchema = yup.object().shape({
     value: yup.string().required("Currency"),
     label: yup.string().required("Currency"),
   }),
-  jobDescription: yup.string().label("Please enter job description").required(),
-  keyResponsibility: yup.string().label("Please enter key responsibility").required(),
+  jobDescription: yup.string().label("Please enter job description").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
+  keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
 
 }).required();
 
@@ -94,7 +112,10 @@ export const CompanySchema = yup.object().shape({
     label: yup.string().required("Please select company"),
   }),
   fillCompanyInformation: yup.boolean().label("Please checked fill company information").required(),
-  companyWebsite: yup.string().label("Please enter company website").required(),
+  companyWebsite: yup.string().label("Please enter company website").matches(
+    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+    'Enter correct url!'
+  ).required(),
   aboutCompany: yup.string().label("Please enter about company").required(),
   companyAddress: yup.string().label("Please enter company address").required(),
   hideCompanyRating: yup.boolean().label("Please checked hide company rating").required(),
@@ -112,8 +133,8 @@ export const ResponseSchema = yup.object().shape({
   // receiveUpdateOnEmail: yup.array()
   //   .min(1, 'Pick at least one location')
   //   .max(3, 'Pick at most three location').required("Please check at least one"),
-  notificationEmailAddress1: yup.string().label("Please enter notification email address 1").required(),
-  notificationEmailAddress2: yup.string().label("Please enter notification email address 2").required(),
+  notificationEmailAddress1: yup.string().label("Please enter notification email address 1").email().required(),
+  notificationEmailAddress2: yup.string().label("Please enter notification email address 2").email().required(),
   hideSalaryDetails: yup.boolean().default(false),
   videoProfile: yup.boolean().default(false),
   includeWalkInDetails: yup.boolean().default(false),
@@ -203,20 +224,41 @@ export const PostJobSchema = yup.object().shape({
     .min(2, 'Pick at least two industry')
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
-  jobDescription: yup.string().label("Please enter job description").required(),
+  jobDescription: yup.string().label("Please enter job description").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
   videoProfile: yup.boolean().default(false),
   includeWalkInDetails: yup.boolean().default(false),
   hideCompanyRating: yup.boolean().default(false),
   notifyMeAbout: yup.boolean().default(false),
-  notificationEmailAddress1: yup.string().label("Notification email address 1").required(),
-  notificationEmailAddress2: yup.string().label("Notification email address 2").required(),
+  notificationEmailAddress1: yup.string().label("Notification email address 1").email().required(),
+  notificationEmailAddress2: yup.string().label("Notification email address 2").email().required(),
   company: yup.object().shape({
     value: yup.string().required("Please select company"),
     label: yup.string().required("Please select company"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").required(),
-  keyResponsibility: yup.string().label("Please enter key responsibility").required(),
+  companyWebsite: yup.string().label("Please enter company website").matches(
+    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+    'Enter correct url!'
+  ).required(),
+  keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   aboutCompany: yup.string().label("Please enter about company").required(),
   companyAddress: yup.string().label("Please enter company address").required(),
   // receiveUpdateOnEmail: yup.array()
@@ -308,21 +350,42 @@ export const RequirementDraftSchema = yup.object().shape({
     .min(2, 'Pick at least two industry')
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
-  jobDescription: yup.string().label("Please enter job description").required(),
+  jobDescription: yup.string().label("Please enter job description").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
 
   videoProfile: yup.boolean().default(false),
   includeWalkInDetails: yup.boolean().default(false),
   hideCompanyRating: yup.boolean().default(false),
   notifyMeAbout: yup.boolean().default(false),
-  notificationEmailAddress1: yup.string().label("Notification email address 1").required(),
-  notificationEmailAddress2: yup.string().label("Notification email address 2").required(),
+  notificationEmailAddress1: yup.string().label("Notification email address 1").email().required(),
+  notificationEmailAddress2: yup.string().label("Notification email address 2").email().required(),
   company: yup.object().shape({
     value: yup.string().required("Please select company"),
     label: yup.string().required("Please select company"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").required(),
-  keyResponsibility: yup.string().label("Please enter key responsibility").required(),
+  companyWebsite: yup.string().label("Please enter company website").matches(
+    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+    'Enter correct url!'
+  ).required(),
+  keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   aboutCompany: yup.string().label("Please enter about company").required(),
   companyAddress: yup.string().label("Please enter company address").required(),
   // receiveUpdateOnEmail: yup.array()
@@ -411,21 +474,42 @@ export const JobDetailDraftSchema = yup.object().shape({
     .min(2, 'Pick at least two industry')
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
-  jobDescription: yup.string().label("Please enter job description").required(),
+  jobDescription: yup.string().label("Please enter job description").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   totalExpYearEnd: yup.string().optional(),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
   videoProfile: yup.boolean().default(false),
   includeWalkInDetails: yup.boolean().default(false),
   hideCompanyRating: yup.boolean().default(false),
   notifyMeAbout: yup.boolean().default(false),
-  notificationEmailAddress1: yup.string().label("Notification email address 1").required(),
-  notificationEmailAddress2: yup.string().label("Notification email address 2").required(),
+  notificationEmailAddress1: yup.string().label("Notification email address 1").email().required(),
+  notificationEmailAddress2: yup.string().label("Notification email address 2").email().required(),
   company: yup.object().shape({
     value: yup.string().required("Please select company"),
     label: yup.string().required("Please select company"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").required(),
-  keyResponsibility: yup.string().label("Please enter key responsibility").required(),
+  companyWebsite: yup.string().label("Please enter company website").matches(
+    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+    'Enter correct url!'
+  ).required(),
+  keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   aboutCompany: yup.string().label("Please enter about company").required(),
   companyAddress: yup.string().label("Please enter company address").required(),
   // receiveUpdateOnEmail: yup.array()
@@ -516,15 +600,24 @@ export const CompanyDraftSchema = yup.object().shape({
     .min(2, 'Pick at least two industry')
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
-  jobDescription: yup.string().label("Please enter job description").required(),
+  jobDescription: yup.string().label("Please enter job description").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
 
   videoProfile: yup.boolean().default(false),
   includeWalkInDetails: yup.boolean().default(false),
   hideCompanyRating: yup.boolean().default(false),
   notifyMeAbout: yup.boolean().default(false),
-  notificationEmailAddress1: yup.string().label("Notification email address 1").required(),
-  notificationEmailAddress2: yup.string().label("Notification email address 2").required(),
+  notificationEmailAddress1: yup.string().label("Notification email address 1").email().required(),
+  notificationEmailAddress2: yup.string().label("Notification email address 2").email().required(),
   company: yup.object().shape({
     value: yup.string().required("Please select company"),
     label: yup.string().required("Please select company"),
@@ -533,8 +626,20 @@ export const CompanyDraftSchema = yup.object().shape({
     value: yup.string().required("Please select company name"),
     label: yup.string().required("Please select company name"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").required(),
-  keyResponsibility: yup.string().label("Please enter key responsibility").required(),
+  companyWebsite: yup.string().label("Please enter company website").matches(
+    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+    'Enter correct url!'
+  ).required(),
+  keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   aboutCompany: yup.string().label("Please enter about company").required(),
   companyAddress: yup.string().label("Please enter company address").required(),
   // receiveUpdateOnEmail: yup.array()
@@ -624,15 +729,24 @@ export const ResponseDraftSchema = yup.object().shape({
     .min(2, 'Pick at least two industry')
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
-  jobDescription: yup.string().label("Please enter job description").required(),
+  jobDescription: yup.string().label("Please enter job description").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
 
   videoProfile: yup.boolean().default(false),
   includeWalkInDetails: yup.boolean().default(false),
   hideCompanyRating: yup.boolean().default(false),
   notifyMeAbout: yup.boolean().default(false),
-  notificationEmailAddress1: yup.string().label("Notification email address 1").required(),
-  notificationEmailAddress2: yup.string().label("Notification email address 2").required(),
+  notificationEmailAddress1: yup.string().label("Notification email address 1").email().required(),
+  notificationEmailAddress2: yup.string().label("Notification email address 2").email().required(),
   company: yup.object().shape({
     value: yup.string().required("Please select company"),
     label: yup.string().required("Please select company"),
@@ -641,8 +755,20 @@ export const ResponseDraftSchema = yup.object().shape({
     value: yup.string().required("Please select company name"),
     label: yup.string().required("Please select company name"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").required(),
-  keyResponsibility: yup.string().label("Please enter key responsibility").required(),
+  companyWebsite: yup.string().label("Please enter company website").matches(
+    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+    'Enter correct url!'
+  ).required(),
+  keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   aboutCompany: yup.string().label("Please enter about company").required(),
   companyAddress: yup.string().label("Please enter company address").required(),
 }).required();
@@ -659,7 +785,16 @@ export const JobDetailSaveSchema = yup.object().shape({
     label: yup.string().required("Please select salary"),
   }),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
-  jobDescription: yup.string().label("Please enter job description").required(),
+  jobDescription: yup.string().label("Please enter job description").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   numberSystem: yup.object().shape({
     value: yup.string().required("Please select number system"),
     label: yup.string().required("Please select number system"),
@@ -700,7 +835,16 @@ export const JobDetailSaveSchema = yup.object().shape({
     value: yup.string().required("Please select currency"),
     label: yup.string().required("Please select currency"),
   }),
-  keyResponsibility: yup.string().label("Please enter key responsibility").required(),
+  keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
 
 }).required();
 
@@ -784,9 +928,27 @@ export const RequirementSaveSchema = yup.object().shape({
     .min(2, 'Pick at least two industry')
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
-  jobDescription: yup.string().label("Please enter job description").required(),
+  jobDescription: yup.string().label("Please enter job description").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
-  keyResponsibility: yup.string().label("Please enter key responsibility").required(),
+  keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
 }).required();
 
 
@@ -866,7 +1028,16 @@ export const CompanySaveSchema = yup.object().shape({
     .min(2, 'Pick at least two industry')
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
-  jobDescription: yup.string().label("Please enter job description").required(),
+  jobDescription: yup.string().label("Please enter job description").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
   hideCompanyRating: yup.boolean().label("Please checked hide company rating").required(),
   company: yup.object().shape({
@@ -877,8 +1048,20 @@ export const CompanySaveSchema = yup.object().shape({
     value: yup.string().required("Please select company name"),
     label: yup.string().required("Please select company name"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").required(),
-  keyResponsibility: yup.string().label("Please enter key responsibility").required(),
+  companyWebsite: yup.string().label("Please enter company website").matches(
+    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+    'Enter correct url!'
+  ).required(),
+  keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
+    'len', 'Minimum 1000 characters are required',
+    (data) => {
+      if (data?.length < 1000) {
+        return false
+      } else {
+        return true
+      }
+    }
+  ),
   aboutCompany: yup.string().label("Please enter about company").required(),
   companyAddress: yup.string().label("Please enter company address").required(),
 }).required();
