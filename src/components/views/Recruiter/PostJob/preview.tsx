@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { IFormInputsPostAJob, IFormInputsResponse, PostJobUpdate } from '../../../../interface/employer';
 import JobLeftPanel from './JobLeftPanel';
 import { useAppDispatch, useAppSelector } from '../../../..';
@@ -8,17 +9,21 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { formData, postJobUpdate, postResponseDraft } from '../../../../store/reducers/jobs/postJobs';
 import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import { PostJobSchema, ResponseSchema } from '../../../../schema/postJob';
+import Toaster from '../../../commonComponents/Toaster';
+import Cookies from 'js-cookie';
 
 const Preview = () => {
 
   const dispatch = useAppDispatch();
   const { postId } = useParams();
   const navigate = useNavigate();
-  const [postBack, setPostBack] = useState({ postURL: '', backURL: '' })
+  const [postBack, setPostBack] = useState({ postURL: '', backURL: '', DiscardURL: '' })
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
   const [jobTitle, setJobTitle] = useState('');
   const [buttonClick, setButtonClick] = useState('');
+  const [userType, setUserType] = useState(Cookies.get('userType'));
+  const [userId, setUserId] = useState(Cookies.get('userId'));
   const [sectionURL, setSectionURL] = useState({ jobDetailsURL: "", requirementsURL: "", companyURL: "", recruiterURL: "", responseURL: "", previewURL: "" });
 
   const {
@@ -109,7 +114,7 @@ const Preview = () => {
 
   const onSubmit = (data: IFormInputsPostAJob) => {
 
-    if (buttonClick === 'Continue') {
+    if (buttonClick === 'Continue' && userType && userId) {
       const keySkills = jobDetailData?.jobsKeySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.keySkills?.value } }));
       const jobLocation = jobDetailData?.jobsLocation?.map((location: any) => ({ location: { id: location?.value } }));
       const jobEducation = jobDetailData?.jobEducation?.map((education: any) => ({ education: education?.value }));
@@ -122,7 +127,7 @@ const Preview = () => {
         title: jobDetailData?.title,
         payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
         jobsOpening: Number(jobDetailData?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
         jobDescription: jobDetailData?.jobDescription,
         company: jobDetailData?.company?.value,
@@ -136,7 +141,7 @@ const Preview = () => {
         jobsType: jobDetailData?.jobsType?.value,
         roleCategory: jobDetailData?.roleCategory?.value,
         jobEducation: jobEducation,
-        user: "1",
+        user: userId,
         isDraft: false,
         jobsKeySkills: keySkills,
         employmentType: jobDetailData?.employmentType?.value,
@@ -161,16 +166,20 @@ const Preview = () => {
         notifyMeAbout: jobDetailData?.notifyMeAbout,
         notificationEmailAddress1: jobDetailData?.notificationEmailAddress1,
         notificationEmailAddress2: jobDetailData?.notificationEmailAddress2,
-      }));
+      })).then(() => {
+        toast.success("Job posted successfully!!");
+      });
     }
 
-    if (buttonClick === 'Draft' || buttonClick === 'Save') {
+    if ((buttonClick === 'Draft' || buttonClick === 'Save') && userType && userId) {
 
       let draft = true;
       let jobStatus = false;
+      let successMessage = "Job drafted successfully !!";
       if (buttonClick === 'Save') {
         draft = false;
         jobStatus = true;
+        successMessage = "Job saved successfully !!";
       }
       const keySkills = jobDetailData?.jobsKeySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.keySkills?.value } }));
       const jobLocation = jobDetailData?.jobsLocation?.map((location: any) => ({ location: { id: location?.value } }));
@@ -195,7 +204,7 @@ const Preview = () => {
         title: jobDetailData?.title,
         payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
         jobsOpening: Number(jobDetailData?.jobsOpening),
-        userType: "employer",
+        userType: userType,
         payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
         jobDescription: jobDetailData?.jobDescription,
         numberSystem: jobDetailData?.numberSystem?.value,
@@ -205,7 +214,7 @@ const Preview = () => {
         jobsRole: jobDetailData?.jobsRole?.value,
         department: jobDetailData?.department?.value,
         roleCategory: jobDetailData?.roleCategory?.value,
-        user: "1",
+        user: userId,
         employmentType: jobDetailData?.employmentType?.value,
         workMode: jobDetailData?.workMode?.value,
         candidateRelocate: jobDetailData?.candidateRelocate,
@@ -222,18 +231,20 @@ const Preview = () => {
         notifyMeAbout: jobDetailData?.notifyMeAbout,
         notificationEmailAddress1: jobDetailData?.notificationEmailAddress1,
         notificationEmailAddress2: jobDetailData?.notificationEmailAddress2,
-      }));
+      })).then(() => {
+        toast.success(successMessage)
+      });
     }
   }
 
   useEffect(() => {
     if (Number(postId)) {
-      setPostBack({ postURL: `/postJob/preview/${postId}`, backURL: `/postJob/recruiter/${postId}` });
+      setPostBack({ postURL: `/postJob/preview/${postId}`, backURL: `/postJob/recruiter/${postId}`, DiscardURL: `/postJob/jobDetails` });
       setJobTitle(jobDetail?.title);
       setSectionURL({ jobDetailsURL: `/postJob/jobDetails/${postId}`, requirementsURL: `/postJob/requirements/${postId}`, companyURL: `/postJob/company/${postId}`, recruiterURL: `/postJob/recruiter/${postId}`, responseURL: `/postJob/response/${postId}`, previewURL: `/postJob/preview/${postId}` })
     } else {
       setJobTitle(jobDetailData?.title);
-      setPostBack({ postURL: '/postJob/preview', backURL: '/postJob/recruiter' })
+      setPostBack({ postURL: '/postJob/preview', backURL: '/postJob/recruiter', DiscardURL: `/postJob/jobDetails` })
     }
   }, []);
 
@@ -248,13 +259,14 @@ const Preview = () => {
       dispatch(clearGetJobDetailSlice());
   }, [dispatch, jobDetailSuccess]);
 
+  useEffect(() => {
+    setUserType(Cookies.get('userType'));
+    setUserId(Cookies.get('userId'));
+  }, [Cookies])
+
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
-  console.log(jobDetailData);
-
-  console.log(errors);
-
 
   return (
     <>
@@ -306,10 +318,10 @@ const Preview = () => {
                     <div className="self-stretch h-[0px] border border-indigo-100"></div>
                     <div className="self-stretch justify-start items-center gap-5 inline-flex">
                       <div className="justify-start items-center gap-3 flex">
-                        <div className="w-[85px] px-3 py-2 bg-green-50 rounded justify-center items-center gap-2.5 flex">
+                        <div className="w-full px-3 py-2 bg-green-50 rounded justify-center items-center gap-2.5 flex">
                           <div className="text-green-600 text-sm font-normal leading-[16.80px] tracking-tight">{jobDetailData?.employmentType?.label}</div>
                         </div>
-                        <div className="w-[77px] px-3 py-2 bg-orange-50 rounded justify-center items-center gap-2.5 flex">
+                        <div className="w-full px-3 py-2 bg-orange-50 rounded justify-center items-center gap-2.5 flex">
                           <div className="text-orange-600 text-sm font-normal leading-[16.80px] tracking-tight">{jobDetailData?.workMode?.label}</div>
                         </div>
                       </div>
@@ -366,11 +378,9 @@ const Preview = () => {
                       <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Education</div>
                       <div className="self-stretch justify-start  gap-3 inline-flex">
                         {jobDetailData?.jobEducation?.map((item: any) =>
-                          <div className="w-[225px] px-3 py-2 bg-slate-50 rounded-lg justify-center items-center gap-2.5 flex">
+                          <div className="w-full px-3 py-2 bg-slate-50 rounded-lg justify-center items-center gap-2.5 flex">
                             <div className="text-black text-base font-normal leading-snug tracking-tight">{item?.label}</div>
                           </div>)}
-
-
                       </div>
                     </div>
                     <div className="self-stretch h-[0px] border border-indigo-100"></div>
@@ -412,7 +422,6 @@ const Preview = () => {
                         </div>
                       </div>
                     </div>
-
                     <div className="self-stretch h-[0px] border border-indigo-100"></div>
                     <div className="self-stretch h-auto flex-col justify-start  gap-2 flex">
                       <div className="grow shrink text-slate-500 text-base font-normal leading-snug tracking-tight">Candidate Industry</div>
@@ -422,7 +431,6 @@ const Preview = () => {
                         </div>)}
                       </div>
                     </div>
-
                     <div className="self-stretch h-[0px] border border-indigo-100"></div>
                     <div className="self-stretch h-auto flex-col justify-start  gap-2 flex">
                       <div className="grow shrink text-slate-500 text-base font-normal leading-snug tracking-tight">Locality</div>
@@ -432,8 +440,6 @@ const Preview = () => {
                         </div>)}
                       </div>
                     </div>
-
-
                   </div>
                   <div className="self-stretch h-auto p-7 bg-white rounded-xl border border-indigo-100 flex-col justify-start  gap-7 flex">
                     <div className="self-stretch justify-start items-center gap-3 inline-flex">
@@ -453,7 +459,6 @@ const Preview = () => {
                         {!Number.isNaN(Number(postId)) && <div className="text-right text-slate-600 text-sm font-medium leading-[16.80px] tracking-tight cursor-pointer" onClick={() => returnBack(sectionURL.companyURL)}>Edit</div>}
                       </div>
                     </div>
-
                     <div className="self-stretch h-[0px] border border-indigo-100"></div>
                     <div className="justify-start  gap-5 inline-flex">
                       <div className="justify-start items-center gap-1 flex">
@@ -499,13 +504,11 @@ const Preview = () => {
                         {!Number.isNaN(Number(postId)) && <div className="text-right text-slate-600 text-sm font-medium leading-[16.80px] tracking-tight cursor-pointer" onClick={() => returnBack(sectionURL.responseURL)}>Edit</div>}
                       </div>
                     </div>
-
                     <div className="self-stretch h-[0px] border border-indigo-100"></div>
                     <div className="h-auto flex-col justify-start  gap-2 flex">
                       <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Responders</div>
                       <div className="self-stretch h-auto flex-col justify-start  gap-5 flex">
                         <div className="self-stretch justify-start  gap-5 inline-flex">
-
                           <div className="grow shrink basis-0 h-10 justify-start items-center gap-5 flex">
                             <div className="grow shrink basis-0 h-10 justify-start items-center gap-2 flex">
                               <div className="w-10 h-10 bg-green-600 rounded-[60px] justify-center items-center flex">
@@ -570,16 +573,16 @@ const Preview = () => {
                 </div>
                 <div className="w-full justify-start  gap-5 inline-flex">
                   <div className=" px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex">
-                    <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight">Discard</div>
+                    <div className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" onClick={() => returnBack(postBack.DiscardURL)}>Discard</div>
                   </div>
                   {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                    <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
+                    <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
                   </div>}
                   {isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                    <input className="text-indigo-900 text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
+                    <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
                   </div>}
                   <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                    <button className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" onClick={() => setButtonClick('Continue')}>Post a Job</button>
+                    <button className="text-white font-medium leading-normal tracking-tight cursor-pointer" type="submit" onClick={() => setButtonClick('Continue')}>Post a Job</button>
                   </div>
                 </div>
               </div>
@@ -587,6 +590,7 @@ const Preview = () => {
           </div>
         </div>
       </div>
+      <Toaster />
     </>
   )
 }
