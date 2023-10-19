@@ -31,13 +31,14 @@ const JobListItem = ({ jobItem , onClickJobItem}: any) => {
           <span className="ml-1">{jobItem?.totalExpYearEnd?.title}</span>
         </div> : <span className="ml-2">{jobItem?.totalExpYearEnd?.title}</span>}
       </div>
-      {!jobItem?.hideSalaryDetails && <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+      {!jobItem?.hideSalaryDetails   ? <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
         <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">{
           jobItem?.payScaleLowerRange?.title[0] ? <Fragment>
             <span>{jobItem?.payScaleLowerRange?.title[0]} -</span>
             <span className="ml-1">{jobItem?.payScaleUpperRange?.title[0]}</span>
-          </Fragment> : <span className="ml-1"> {jobItem?.payScaleUpperRange?.title[0]} </span>} LPA</span>
-      </div>}
+          </Fragment> : <span className="ml-1"> {jobItem?.payScaleUpperRange?.title[0]} </span>} {jobItem?.numberSystem
+            ?.title} <span>{jobItem?.recurrence?.title }</span></span>
+      </div> : <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">Not Disclosed.</div>}
       <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
         <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" />
         {jobItem?.jobsLocation?.map((jobLocation:any) =>

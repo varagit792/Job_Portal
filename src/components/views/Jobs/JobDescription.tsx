@@ -4,7 +4,7 @@ import ShortJobCard from '../../commonComponents/ShortJobCard';
 import { useAppDispatch, useAppSelector } from '../../..';
 import { getJobDetail } from '../../../store/reducers/jobs/GetJobDetails';
 import { formatDistanceToNow, parseISO } from 'date-fns';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import companyLogo from '../../../assets/png/company_logo.png';
 import experienceIcon from '../../../assets/svg/ExperienceIcon.svg';
 import moneyIcon from '../../../assets/svg/MoneyIcon.svg';
@@ -35,6 +35,8 @@ const JobDescription = () => {
       setLastUpdatedTimestamp(parsedDate);
     }
   }, [jobDetail]);
+
+  const locationCount = jobDetail?.company?.location?.length;
 
   return (
     <Fragment>
@@ -73,7 +75,7 @@ const JobDescription = () => {
                       {jobDetail?.payScaleLowerRange?.title} -
                     </span>
                     {jobDetail?.payScaleUpperRange &&
-                      <span className=" text-slate-500 text-base font-medium leading-snug tracking-tight"> {jobDetail?.payScaleUpperRange?.title} LPA
+                      <span className=" text-slate-500 text-base font-medium leading-snug tracking-tight"> {jobDetail?.payScaleUpperRange?.title}  {jobDetail?.numberSystem?.title } {jobDetail?.recurrence?.title}
                       </span>}
                   </div>}
                   <div className="justify-start items-center gap-2 flex">
@@ -119,8 +121,8 @@ const JobDescription = () => {
             <div className="self-stretch flex-col justify-start items-start gap-5 flex">
               <div className="self-stretch text-slate-900 text-base font-bold  leading-snug tracking-tight">
                 Key Responsibilities</div>
-              <span className="self-stretch text-slate-500 text-base font-medium leading-snug tracking-tight">
-                Translate complex ideas into design that is compelling, consistent & scalable, including but not limited to workflows, user flows, wireframes, mockups, high fidelity UI/UX, prototypes.Carry out UI/UX branding projects for our customers from start to finish.Present product designs & concepts to internal and external stakeholders.Utilize & contribute to an existing design system to ensure cohesion across designs.Provide design QA.Prepare and maintain relevant documentation on each project.Handle multiple tasks and meet deadlines. When necessary, organize workload around changing prioritiesInspire and share ideas with other design members across the organization.Display strong organizational skills, liaise confidently with stakeholders to obtain relevant input on projects.Flexibility in working hours when required on urgent projects.Accurately report time spent on projects.Actively participate in ideation sessions & design reviews across design and product disciplines.
+              <span className="w-full break-words text-slate-500 text-base font-medium leading-snug tracking-tight">
+               {jobDetail?.keyResponsibility}
               </span>
             </div>
             <div className="self-stretch h-px border border-indigo-100 my-5"></div>
@@ -154,12 +156,15 @@ const JobDescription = () => {
             <div className="justify-start items-start gap-5 inline-flex mt-2">
               <div className="justify-start items-center gap-2 flex">
                 <img src={locationIcon} alt="location" />
-                <div className="text-slate-500 text-base font-medium leading-snug tracking-tight"></div>
+                {jobDetail?.company?.location?.map((loc,index) =>
+                  (index < locationCount) ? <span className="ml-1 text-base font-medium">{loc?.title}, </span>
+                    : <span className="ml-1 text-base font-medium">{loc?.title}. </span>
+              )}
               </div>
               <div className=" border-l border-indigo-100 h-4"></div>
               <div className="justify-start items-center gap-2 flex">
                 <img src={peopleIcon} alt="people" />
-                <div className="text-slate-500 text-base font-medium leading-snug tracking-tight">500+ employees</div>
+                <div className="text-slate-500 text-base font-medium leading-snug tracking-tight">{jobDetail?.company?.employeeCount }</div>
               </div>
             </div>
             <div className="px-2 py-1.5  w-44 bg-indigo-50 rounded-lg justify-center items-center text-center mt-2">
@@ -170,14 +175,15 @@ const JobDescription = () => {
         <div className="col-start-8 col-end-13">
           <div className="flex flex-row justify-between items-center mb-5">
             <span className="font-bold text-xl">Similar Jobs</span>
-            <div className="flex flex-row items-center gap-3">
-              <span className="flex justify-center items-center text-lg font text-indigo-900 text-center">
-                All Jobs
-              </span>
-              <button className="flex justify-center items-center">
+            <Link to="/allJobs" className="flex justify-center items-center">
+              <div className="flex flex-row items-center">
+                <span className="flex justify-center items-center text-lg font text-indigo-900 text-center mr-1">
+                  All Jobs
+                </span>
                 <img src={rightArrow} alt="rightArrow" width="w-full" className="text-indigo-900" />
-              </button>
-            </div>
+              </div>
+            </Link>
+            
           </div>
           <div className="mb-4"><ShortJobCard /></div>
           <div className=" mb-3"><ShortJobCard /></div>
