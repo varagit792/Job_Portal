@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { PostJobUpdate } from '../../../interface/employer';
+import { PostCompanyDraft, PostCompanySave, PostJobDetailDraft, PostJobDetailSave, PostJobUpdate, PostRequirementDraft, PostRequirementSave, PostResponseDraft } from '../../../interface/employer';
 
 export interface registerUserState {
   loading: boolean;
@@ -20,6 +20,139 @@ const initialState: registerUserState = {
   formData: {},
   errorMessage: undefined,
 }
+
+export const postResponseDraft = createAsyncThunk(
+  "postJob", async (data: PostResponseDraft) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
+        data,
+        {
+          headers: {
+            'Authorization': `Bearer ${Cookies.get('token')}`
+          }
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        return response.data;
+      }
+    } catch (error) {
+      throw error;
+    }
+  });
+
+export const postCompanyDraft = createAsyncThunk(
+  "postJob", async (data: PostCompanyDraft) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
+        data,
+        {
+          headers: {
+            'Authorization': `Bearer ${Cookies.get('token')}`
+          }
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        return response.data;
+      }
+    } catch (error) {
+      throw error;
+    }
+  });
+
+export const postCompanySave = createAsyncThunk(
+  "postJob", async (data: PostCompanySave) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
+        data,
+        {
+          headers: {
+            'Authorization': `Bearer ${Cookies.get('token')}`
+          }
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        return response.data;
+      }
+    } catch (error) {
+      throw error;
+    }
+  });
+
+export const postRequirementDraft = createAsyncThunk(
+  "postJob", async (data: PostRequirementDraft) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
+        data,
+        {
+          headers: {
+            'Authorization': `Bearer ${Cookies.get('token')}`
+          }
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        return response.data;
+      }
+    } catch (error) {
+      throw error;
+    }
+  });
+
+export const postRequirementSave = createAsyncThunk(
+  "postJob", async (data: PostRequirementSave) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
+        data,
+        {
+          headers: {
+            'Authorization': `Bearer ${Cookies.get('token')}`
+          }
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        return response.data;
+      }
+    } catch (error) {
+      throw error;
+    }
+  });
+
+export const postJobDetailSave = createAsyncThunk(
+  "postJob", async (data: PostJobDetailSave) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
+        data,
+        {
+          headers: {
+            'Authorization': `Bearer ${Cookies.get('token')}`
+          }
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        return response.data;
+      }
+    } catch (error) {
+      throw error;
+    }
+  });
+
+export const postJobDetailDraft = createAsyncThunk(
+  "postJob", async (data: PostJobDetailDraft) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
+        data,
+        {
+          headers: {
+            'Authorization': `Bearer ${Cookies.get('token')}`
+          }
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        return response.data;
+      }
+    } catch (error) {
+      throw error;
+    }
+  });
 
 export const postJobUpdate = createAsyncThunk(
   "postJob", async (data: PostJobUpdate) => {

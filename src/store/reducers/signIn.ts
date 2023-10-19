@@ -32,10 +32,11 @@ export const signInUser = createAsyncThunk(
           email: data.email,
         }
       );
-      if (response.status >= 200 && response.status < 300) {        
-        Cookies.set("token", response.data.token)
-        Cookies.set("name", response.data.data.name)
-        //localStorage.setItem('Name', response.data.data.name);
+      if (response.status >= 200 && response.status < 300) {
+        Cookies.set("token", response.data.token);
+        Cookies.set("name", response.data.data.name);
+        Cookies.set("userId", response.data.data.id);
+        Cookies.set("userType", response.data.data.userType);
         return response.data;
       }
     } catch (error) {

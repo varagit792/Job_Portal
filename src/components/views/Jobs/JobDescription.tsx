@@ -86,11 +86,11 @@ const JobDescription = () => {
 
                 </div>
                 <div className="justify-start items-center gap-5 inline-flex">
-                  <div className="w-20 px-3 py-2 bg-orange-50 rounded justify-center items-center gap-2.5 flex">
+                  <div className=" px-3 py-2 bg-orange-50 rounded justify-center items-center gap-2.5 flex">
                     <div className="text-orange-600 text-sm font-normal leading-none tracking-tight">{ jobDetail?.workMode?.title}</div>
                   </div>
-                  <div className="w-20 px-3 py-2 bg-green-50 rounded justify-center items-center gap-2.5 flex">
-                    <div className="text-green-600 text-sm font-normal leading-none tracking-tight">Full-time</div>
+                  <div className=" px-3 py-2 bg-green-50 rounded justify-center items-center gap-2.5 flex">
+                    <div className="text-green-600 text-sm font-normal leading-none tracking-tight">{jobDetail?.employmentType?.title }</div>
                   </div>
                 </div>
               </div>

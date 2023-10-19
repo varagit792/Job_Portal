@@ -8,7 +8,7 @@ interface User {
     email: string,
     mobileNumber: string,
     userType: string,
-    workStatus: boolean
+    workStatus?: boolean
 }
 export interface registerUserState {
     loading: boolean;
@@ -45,6 +45,8 @@ export const registerUser = createAsyncThunk(
             if (response.status >= 200 && response.status < 300) {
                 Cookies.set("name", response.data.data.name);
                 Cookies.set("token", response.data.token);
+                Cookies.set("userId", response.data.data.id);
+                Cookies.set("userType", response.data.data.userType);
                 return response.data;
             }
         } catch (error: any) {

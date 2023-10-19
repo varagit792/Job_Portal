@@ -1,23 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import JobLeftPanel from './JobLeftPanel'
-import { IFormInputsCompany } from '../../../../interface/employer';
+import { IFormInputsCompany, IFormInputsCompanyDraft, IFormInputsCompanySave } from '../../../../interface/employer';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
+import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import star from '../../../../assets/svg/star.svg';
 import { getCompanyList } from '../../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../../..';
-import { useNavigate } from 'react-router-dom';
-import { CompanySchema } from '../../../../schema/postJob';
+import { useNavigate, useParams } from 'react-router-dom';
+import { CompanyDraftSchema, CompanySaveSchema, CompanySchema } from '../../../../schema/postJob';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { formData } from '../../../../store/reducers/jobs/postJobs';
+import { formData, postCompanyDraft, postCompanySave } from '../../../../store/reducers/jobs/postJobs';
 import { getAllCompanies } from '../../../../store/reducers/companies/getAllCompanies';
+import { toast } from 'react-toastify';
+import Toaster from '../../../commonComponents/Toaster';
+import Cookies from 'js-cookie';
 
 const Company = () => {
   const dispatch = useAppDispatch();
+  const { postId } = useParams();
   const navigate = useNavigate();
   const [company, setCompany] = useState<any>([]);
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
+  const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
+  const [jobTitle, setJobTitle] = useState('');
+  const [buttonClick, setButtonClick] = useState('');
+  const [userType, setUserType] = useState(Cookies.get('userType'));
+  const [userId, setUserId] = useState(Cookies.get('userId'));
   const { success, allCompanies } = useAppSelector((state) => state.getAllCompanies);
 
   const {
@@ -27,13 +37,13 @@ const Company = () => {
     watch,
     setValue,
     formState: { errors }
-  } = useForm<IFormInputsCompany>({
-    resolver: yupResolver(CompanySchema),
+  } = useForm<IFormInputsCompany | IFormInputsCompanyDraft | IFormInputsCompanySave>({
+    resolver: yupResolver(CompanySchema || CompanyDraftSchema || CompanySaveSchema),
   });
 
   useEffect(() => {
 
-    if (Object.keys(jobDetail).length !== 0 && jobDetail.constructor !== Object) {
+    if (Object.keys(jobDetail).length !== 0) {
       jobDetail?.company && setValue('companyName', { label: jobDetail?.company?.title, value: jobDetail?.company?.id?.toString() });
       jobDetail?.companyWebsite && setValue('companyWebsite', jobDetail?.companyWebsite);
       jobDetail?.aboutCompany && setValue('aboutCompany', jobDetail?.aboutCompany);
@@ -48,26 +58,175 @@ const Company = () => {
     }
   }, [setValue, jobDetail, jobDetailData]);
 
-  const onSubmit = (data: IFormInputsCompany) => {
+  const onSubmit = (data: IFormInputsCompany | IFormInputsCompanyDraft | IFormInputsCompanySave) => {
 
-    dispatch(formData({
-      company: data.companyName,
-      hideCompanyRating: data?.hideCompanyRating,
-      companyWebsite: data?.companyWebsite,
-      aboutCompany: data?.aboutCompany,
-      companyAddress: data?.companyAddress,
+    const updatePostId = postId ? Number(postId) : null;
 
-    }));
-    navigate('/postJob/recruiter');
+    if (buttonClick === 'Continue') {
+      dispatch(formData({
+        company: data.companyName,
+        hideCompanyRating: data?.hideCompanyRating,
+        companyWebsite: data?.companyWebsite,
+        aboutCompany: data?.aboutCompany,
+        companyAddress: data?.companyAddress,
+
+      }));
+      navigate(postBack?.postURL);
+    }
+    if (buttonClick === 'Draft' && userType && userId) {
+      let draft = true;
+      let jobStatus = false;
+
+
+      const jobEducation = jobDetailData?.education?.map((education: any) => ({ education: education?.value }));
+      const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
+      const jobLocation = jobDetailData?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
+      const jobCandidateIndustry = jobDetailData?.candidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.value } }));
+      const keySkills = jobDetailData?.keySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.value } }));
+
+      dispatch(postCompanyDraft({
+        totalExpYearStart: jobDetailData?.totalExpYearStart?.value,
+        totalExpYearEnd: jobDetailData?.totalExpYearEnd?.value,
+        jobsKeySkills: keySkills,
+        status: jobStatus,
+        jobLocality: jobLocality,
+        jobEducation: jobEducation,
+        companyType: jobDetailData?.companyType?.value,
+        premiumBTech: jobDetailData?.premiumBTech,
+        premiumMBAAll: jobDetailData?.premiumMBAAll,
+        jobCandidateIndustry: jobCandidateIndustry,
+        diversityHiring: jobDetailData?.diversityHiring,
+        id: updatePostId,
+        title: jobDetailData?.title,
+        payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
+        jobsOpening: Number(jobDetailData?.jobsOpening),
+        userType: userType,
+        payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
+        jobDescription: jobDetailData?.jobDescription,
+        numberSystem: jobDetailData?.numberSystem?.value,
+        recurrence: jobDetailData?.recurrence?.value,
+        jobsLocation: jobLocation,
+        jobsType: jobDetailData?.jobsType?.value,
+        jobsRole: jobDetailData?.jobsRole?.value,
+        department: jobDetailData?.department?.value,
+        roleCategory: jobDetailData?.roleCategory?.value,
+        user: userId,
+        employmentType: jobDetailData?.employmentType?.value,
+        workMode: jobDetailData?.workMode?.value,
+        candidateRelocate: jobDetailData?.candidateRelocate,
+        currency: jobDetailData?.currency?.value,
+        keyResponsibility: jobDetailData?.keyResponsibility,
+        hideSalaryDetails: false,
+        isDraft: draft,
+        videoProfile: false,
+        includeWalkInDetails: false,
+        notifyMeAbout: false,
+        notificationEmailAddress1: '',
+        notificationEmailAddress2: '',
+
+        company: data.companyName?.value,
+        hideCompanyRating: data?.hideCompanyRating,
+        companyWebsite: data?.companyWebsite,
+        aboutCompany: data?.aboutCompany,
+        companyAddress: data?.companyAddress,
+      })).then(() => {
+        toast.success("Job drafted successfully !!")
+      });
+    }
+
+    if (buttonClick === 'Save' && userType && userId) {
+      let draft = false;
+      let jobStatus = true;
+
+
+      const jobEducation = jobDetailData?.education?.map((education: any) => ({ education: education?.value }));
+      const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
+      const jobLocation = jobDetailData?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
+      const jobCandidateIndustry = jobDetailData?.candidateIndustry?.map((industry: any) => ({ candidateIndustry: { id: industry?.value } }));
+      const keySkills = jobDetailData?.keySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.value } }));
+
+      dispatch(postCompanySave({
+        totalExpYearStart: jobDetailData?.totalExpYearStart?.value,
+        totalExpYearEnd: jobDetailData?.totalExpYearEnd?.value,
+        jobsKeySkills: keySkills,
+        status: jobStatus,
+        jobLocality: jobLocality,
+        jobEducation: jobEducation,
+        companyType: jobDetailData?.companyType?.value,
+        premiumBTech: jobDetailData?.premiumBTech,
+        premiumMBAAll: jobDetailData?.premiumMBAAll,
+        jobCandidateIndustry: jobCandidateIndustry,
+        diversityHiring: jobDetailData?.diversityHiring,
+        id: updatePostId,
+        title: jobDetailData?.title,
+        payScaleLowerRange: jobDetailData?.payScaleLowerRange?.value,
+        jobsOpening: Number(jobDetailData?.jobsOpening),
+        userType: userType,
+        payScaleUpperRange: jobDetailData?.payScaleUpperRange?.value,
+        jobDescription: jobDetailData?.jobDescription,
+        numberSystem: jobDetailData?.numberSystem?.value,
+        recurrence: jobDetailData?.recurrence?.value,
+        jobsLocation: jobLocation,
+        jobsType: jobDetailData?.jobsType?.value,
+        jobsRole: jobDetailData?.jobsRole?.value,
+        department: jobDetailData?.department?.value,
+        roleCategory: jobDetailData?.roleCategory?.value,
+        user: userId,
+        employmentType: jobDetailData?.employmentType?.value,
+        workMode: jobDetailData?.workMode?.value,
+        candidateRelocate: jobDetailData?.candidateRelocate,
+        currency: jobDetailData?.currency?.value,
+        keyResponsibility: jobDetailData?.keyResponsibility,
+        isDraft: draft,
+        company: data.companyName?.value,
+        hideCompanyRating: data?.hideCompanyRating,
+        companyWebsite: data?.companyWebsite,
+        aboutCompany: data?.aboutCompany,
+        companyAddress: data?.companyAddress,
+      })).then(() => {
+        toast.success("Job saved successfully !!")
+      });
+    }
   }
 
   useEffect(() => {
-    dispatch(getAllCompanies({ } as any));
+    if (Number(postId)) {
+      dispatch(getJobDetail(postId));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (jobDetailSuccess)
+      dispatch(clearGetJobDetailSlice());
+  }, [dispatch, jobDetailSuccess]);
+
+  useEffect(() => {
+    (async () => {
+      const companyList = await getCompanyList()
+      if (Object.keys(companyList)?.length) {
+        setCompany(companyList as any)
+      }
+    })();
+
+    if (Number(postId)) {
+      setPostBack({ postURL: `/postJob/recruiter/${postId}`, backURL: `/postJob/requirements/${postId}` });
+      setJobTitle(jobDetail?.title);
+    } else {
+      setPostBack({ postURL: '/postJob/recruiter', backURL: '/postJob/requirements' })
+    }
+  }, []);
+  useEffect(() => {
+    dispatch(getAllCompanies({} as any));
   }, [dispatch])
-  
+
   useEffect(() => {
     setCompany(allCompanies as any)
   }, [success])
+
+  useEffect(() => {
+    setUserType(Cookies.get('userType'));
+    setUserId(Cookies.get('userId'));
+  }, [Cookies])
 
   const watchKeyAboutCompany = watch('aboutCompany')?.length;
   const watchCompanyAddress = watch('companyAddress')?.length;
@@ -82,7 +241,7 @@ const Company = () => {
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
         <div className="grid grid-cols-9 gap-4">
           <div className="col-start-1 col-end-4">
-            <JobLeftPanel />
+            <JobLeftPanel jobTitle={jobTitle} />
           </div>
           <div className="col-start-4 col-end-11">
             <div id="jobDetails" className="scroll-mt-24 scroll-smooth">
@@ -125,7 +284,7 @@ const Company = () => {
                               placeholder={"Select company"}
                               defaultValue={watch("companyName")}
                             />
-                            {errors?.companyName && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyName?.label?.message}</p>}
+                            {errors?.companyName && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyName?.message}</p>}
                           </div>
                         </div>
                         <div className="w-full grow shrink basis-0  flex-col justify-start  gap-2 inline-flex">
@@ -192,12 +351,18 @@ const Company = () => {
                     </div>
                   </div>
                   <div className="self-stretch justify-start  gap-5 inline-flex">
-                    <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack('/postJob/requirements')}>
+                    <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack.backURL)}>
                       <div className="w-6 h-6 justify-center items-center flex"></div>
-                      <div className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight">Back</div>
+                      <div className="text-indigo-900 font-medium  leading-normal tracking-tight">Back</div>
                     </div>
+                    {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
+                    </div>}
+                    {isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
+                    </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                      <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} />
+                      <input className="text-white font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} onClick={() => setButtonClick('Continue')} />
                     </div>
                   </div>
                 </div>
@@ -205,7 +370,8 @@ const Company = () => {
             </div>
           </div>
         </div>
-      </div >
+      </div>
+      <Toaster />
     </>
   )
 }

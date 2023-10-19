@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { IFormInputsJobDetail, IFormInputsPostAJob } from '../../../../interface/employer';
+import { IFormInputsJobDetail, IFormInputsJobDetailDraft, IFormInputsJobDetailSave, IFormInputsPostAJob } from '../../../../interface/employer';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
-import { formData } from '../../../../store/reducers/jobs/postJobs';
+import { formData, postJobDetailDraft, postJobDetailSave } from '../../../../store/reducers/jobs/postJobs';
 import { getCurrencyList, getDepartmentList, getEmployeeTypeList, getJobRoleList, getJobTypeList, getLocationList, getNumberSystemList, getRecurrenceList, getRoleCategoryList, getSalaryRangeList, getWorkModeList } from '../../../utils/utils';
+import { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { PostJobDetailSchema } from '../../../../schema/postJob';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { JobDetailDraftSchema, JobDetailSaveSchema, PostJobDetailSchema, PostJobSchema } from '../../../../schema/postJob';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import JobLeftPanel from './JobLeftPanel';
+import { toast } from 'react-toastify';
+import Toaster from '../../../commonComponents/Toaster';
+import Cookies from 'js-cookie';
 
 const JobDetails = () => {
   const { postId } = useParams();
@@ -26,7 +30,11 @@ const JobDetails = () => {
   const [numberSystem, setNumberSystem] = useState<any>([]);
   const [recurrence, setRecurrence] = useState<any>([]);
   const [jobType, setJobType] = useState<any>([]);
-
+  const [postBack, setPostBack] = useState({ postURL: '' });
+  const [jobTitle, setJobTitle] = useState('');
+  const [buttonClick, setButtonClick] = useState('');
+  const [userType, setUserType] = useState(Cookies.get('userType'));
+  const [userId, setUserId] = useState(Cookies.get('userId'));
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
 
@@ -36,18 +44,19 @@ const JobDetails = () => {
     control,
     watch,
     setValue,
+    reset,
     formState: { errors }
-  } = useForm<IFormInputsJobDetail>({
-    resolver: yupResolver(PostJobDetailSchema),
+  } = useForm<IFormInputsJobDetail | IFormInputsJobDetailDraft | IFormInputsJobDetailSave>({
+    resolver: yupResolver(PostJobDetailSchema || JobDetailDraftSchema || JobDetailSaveSchema),
   });
   const selectedJobsKeySkills: any = [];
   const selectedJobsLocation: any = [];
   const selectedJobLocality: any = [];
   const selectedCandidateIndustry: any = [];
 
-  if (Object.keys(jobDetail).length !== 0 && jobDetail.constructor !== Object) {
+  if (Object.keys(jobDetail).length !== 0) {
     jobDetail?.jobsKeySkills?.filter((item: any) => item && selectedJobsKeySkills.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }));
-    jobDetail?.jobsLocation && jobDetail?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ value: item?.id, label: item?.title }));
+    jobDetail?.jobsLocation && jobDetail?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ value: item?.location?.id, label: item?.location?.title }));
     jobDetail?.jobLocality?.filter((item: any) => item && selectedJobLocality.push({ value: item?.locality?.id, label: item?.locality?.title }));
     jobDetail?.jobCandidateIndustry?.filter((item: any) => item && selectedCandidateIndustry.push({ value: item?.candidateIndustry?.id, label: item?.candidateIndustry?.title }));
   } else {
@@ -59,7 +68,7 @@ const JobDetails = () => {
   }
 
   useEffect(() => {
-    if (Object.keys(jobDetail).length !== 0 && jobDetail.constructor !== Object) {
+    if (Object.keys(jobDetail).length !== 0) {
       jobDetail?.title && setValue('title', jobDetail?.title);
       jobDetail?.department && setValue('department', { label: jobDetail?.department?.title, value: jobDetail?.department?.id?.toString() });
       jobDetail?.roleCategory && setValue('roleCategory', { label: jobDetail?.roleCategory?.title, value: jobDetail?.roleCategory?.id?.toString() });
@@ -99,35 +108,139 @@ const JobDetails = () => {
     }
   }, [setValue, jobDetail, jobDetailData]);
 
-  const onSubmit = (data: IFormInputsJobDetail) => {
-    const jobLocation = data?.jobLocation?.map((location: any) => location);
+  const onSubmit = (data: IFormInputsJobDetail | IFormInputsJobDetailDraft | IFormInputsJobDetailSave) => {
+
+
     const updatePostId = postId ? Number(postId) : null;
 
-    dispatch(formData({
-      id: updatePostId,
-      title: data?.title,
-      payScaleLowerRange: data?.fromSalaryRange,
-      jobsOpening: Number(data?.jobsOpening),
-      userType: "employer",
-      payScaleUpperRange: data?.toSalaryRange,
-      jobDescription: data?.jobDescription,
-      numberSystem: data?.numberSystem,
-      recurrence: data?.recurrence,
-      jobsLocation: jobLocation,
-      jobsType: data?.jobsType,
-      jobsRole: data?.jobsRole,
-      department: data?.department,
-      roleCategory: data?.roleCategory,
-      user: "1",
-      status: true,
-      employmentType: data?.employmentType,
-      workMode: data?.workMode,
-      candidateRelocate: data?.candidateRelocate,
-      currency: data?.currency,
-      keyResponsibility: data?.keyResponsibility,
-    }));
-    navigate('/postJob/requirements');
+    if (buttonClick === 'Continue' && userType && userId) {
+      const jobLocation = data?.jobLocation?.map((location: any) => location);
+      dispatch(formData({
+        id: updatePostId,
+        title: data?.title,
+        payScaleLowerRange: data?.fromSalaryRange,
+        jobsOpening: Number(data?.jobsOpening),
+        userType: userType,
+        payScaleUpperRange: data?.toSalaryRange,
+        jobDescription: data?.jobDescription,
+        numberSystem: data?.numberSystem,
+        recurrence: data?.recurrence,
+        jobsLocation: jobLocation,
+        jobsType: data?.jobsType,
+        jobsRole: data?.jobsRole,
+        department: data?.department,
+        roleCategory: data?.roleCategory,
+        user: userId,
+        status: true,
+        employmentType: data?.employmentType,
+        workMode: data?.workMode,
+        candidateRelocate: data?.candidateRelocate,
+        currency: data?.currency,
+        keyResponsibility: data?.keyResponsibility,
+      }));
+      navigate(postBack.postURL);
+    }
+
+    if (buttonClick === 'Draft' && userType && userId) {
+
+      const jobLocation = data?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
+      let draft = true;
+      let jobStatus = false;
+
+      dispatch(postJobDetailDraft({
+        id: updatePostId,
+        title: data?.title,
+        payScaleLowerRange: data?.fromSalaryRange?.value,
+        jobsOpening: Number(data?.jobsOpening),
+        userType: userType,
+        payScaleUpperRange: data?.toSalaryRange?.value,
+        jobDescription: data?.jobDescription,
+        numberSystem: data?.numberSystem?.value,
+        recurrence: data?.recurrence?.value,
+        jobsLocation: jobLocation,
+        jobsType: data?.jobsType?.value,
+        jobsRole: data?.jobsRole?.value,
+        department: data?.department?.value,
+        roleCategory: data?.roleCategory?.value,
+        user: userId,
+        status: jobStatus,
+        isDraft: draft,
+        employmentType: data?.employmentType?.value,
+        workMode: data?.workMode?.value,
+        candidateRelocate: data?.candidateRelocate,
+        currency: data?.currency?.value,
+        keyResponsibility: data?.keyResponsibility,
+        jobsKeySkills: [],
+        jobLocality: [],
+        totalExpYearStart: null,
+        totalExpYearEnd: null,
+        hideSalaryDetails: false,
+        companyType: null,
+        jobEducation: [],
+        premiumBTech: false,
+        hideCompanyRating: false,
+        premiumMBAAll: false,
+        jobCandidateIndustry: [],
+        diversityHiring: false,
+        videoProfile: false,
+        includeWalkInDetails: false,
+        notifyMeAbout: false,
+        notificationEmailAddress1: '',
+        notificationEmailAddress2: '',
+        company: null,
+        companyWebsite: '',
+        aboutCompany: '',
+        companyAddress: ''
+      })).then(() => {
+        toast.success("Job drafted successfully !!")
+      });
+    }
+
+    if (buttonClick === 'Save' && userType && userId) {
+      const jobLocation = data?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
+      let draft = false;
+      let jobStatus = true;
+
+      dispatch(postJobDetailSave({
+        id: updatePostId,
+        title: data?.title,
+        payScaleLowerRange: data?.fromSalaryRange?.value,
+        payScaleUpperRange: data?.toSalaryRange?.value,
+        jobsOpening: Number(data?.jobsOpening),
+        userType: userType,
+        jobDescription: data?.jobDescription,
+        numberSystem: data?.numberSystem?.value,
+        recurrence: data?.recurrence?.value,
+        jobsLocation: jobLocation,
+        jobsType: data?.jobsType?.value,
+        jobsRole: data?.jobsRole?.value,
+        department: data?.department?.value,
+        roleCategory: data?.roleCategory?.value,
+        user: userId,
+        status: jobStatus,
+        isDraft: draft,
+        employmentType: data?.employmentType?.value,
+        workMode: data?.workMode?.value,
+        candidateRelocate: data?.candidateRelocate,
+        currency: data?.currency?.value,
+        keyResponsibility: data?.keyResponsibility,
+
+      })).then(() => {
+        toast.success("Job save successfully !!")
+      });
+    }
   }
+
+  useEffect(() => {
+    if (Number(postId)) {
+      dispatch(getJobDetail(postId));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (jobDetailSuccess)
+      dispatch(clearGetJobDetailSlice());
+  }, [dispatch, jobDetailSuccess]);
 
   useEffect(() => {
     (async () => {
@@ -185,10 +298,25 @@ const JobDetails = () => {
       if (Object.keys(jobTypeList)?.length) {
         setJobType(jobTypeList as any)
       }
-
     })();
-  }, [])
 
+    if (Number(postId)) {
+      setPostBack({ postURL: `/postJob/requirements/${postId}` });
+      setJobTitle(jobDetail?.title);
+    } else {
+      setPostBack({ postURL: '/postJob/requirements' })
+    }
+
+  }, [jobDetail]);
+
+  useEffect(() => {
+    setUserType(Cookies.get('userType'));
+    setUserId(Cookies.get('userId'));
+  }, [Cookies])
+
+  const changeTitle = (value: any) => {
+    setJobTitle(value);
+  }
   const watchKeyResponsibility = watch('keyResponsibility')?.length;
   const watchJobDescription = watch('jobDescription')?.length;
 
@@ -198,7 +326,7 @@ const JobDetails = () => {
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
         <div className="grid grid-cols-9 gap-4">
           <div className="col-start-1 col-end-4">
-            <JobLeftPanel />
+            <JobLeftPanel jobTitle={jobTitle} />
           </div>
           <div className="col-start-4 col-end-11">
             <div id="jobDetails" className="scroll-mt-24 scroll-smooth">
@@ -214,7 +342,9 @@ const JobDetails = () => {
                           <input defaultValue={''}
                             className="w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5"
                             placeholder={"Job Title / Designation"}
-                            {...register("title")} />
+                            {...register("title", {
+                              onChange: (e) => { changeTitle(e.currentTarget.value) },
+                            })} />
                           {errors?.title && <p className="font-normal text-xs text-red-500 absolute">{errors?.title?.message}</p>}
                         </div>
                       </div>
@@ -419,8 +549,8 @@ const JobDetails = () => {
                           <textarea defaultValue={''}
                             className='w-full border border-gray-200 h-[75px] focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter job description"}
-                            {...register("jobDescription")} ></textarea>
-
+                            {...register("jobDescription")}>
+                          </textarea>
                           {errors?.jobDescription && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobDescription?.message}</p>}
                         </div>
                         <div className="w-full text-xs font-light text-gray-600 text-right float-right">
@@ -445,10 +575,16 @@ const JobDetails = () => {
                   </div>
                   <div className="w-full self-stretch justify-start  gap-5 inline-flex">
                     <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                      <div className="text-indigo-900 text-xl font-medium leading-normal tracking-tight ">Cancel</div>
+                      <div className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" onClick={() => reset()}>Cancel</div>
                     </div>
+                    {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                      <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
+                    </div>}
+                    {isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex ">
+                      <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
+                    </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                      <input className="text-white text-xl font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} />
+                      <input className="text-white font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='Continue' onClick={() => setButtonClick('Continue')} value={'Continue'} />
                     </div>
                   </div>
                 </form >
@@ -457,6 +593,7 @@ const JobDetails = () => {
           </div>
         </div>
       </div>
+      <Toaster />
     </>
   )
 }
