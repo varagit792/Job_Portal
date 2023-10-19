@@ -8,8 +8,6 @@ import { useAppSelector } from '../../../';
 import { googleAuthSignUp } from '../../../store/reducers/googleAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
-import briefcase from '../../../assets/svg/briefcase.svg';
-import schoolbag from '../../../assets/svg/schoolbag.svg';
 import img from '../../../assets/png/signup_logo.png';
 import backBtn from '../../../assets/svg/backButton.svg';
 import experienced from '../../../assets/svg/experienced.svg';
@@ -54,7 +52,7 @@ const SignUpSchema = yup
 const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const [userType, setUserType] = useState("jobSeeker")
+    const [isContinueWithEmail, setIsContinueWithEmail] = useState(false);
     const { success, errorMessage } = useAppSelector((state) => state.register);
 
     const {
@@ -75,16 +73,15 @@ const SignUp = () => {
 
     useEffect(() => {
         if (success) {
+            dispatch(clearRegisterSlice());
             if (Cookies.get('userType') === 'jobSeeker')
                 navigate('/homePage');
             if (Cookies.get('userType') === 'employer')
                 navigate('/employerProfile');
-            dispatch(clearRegisterSlice());
         }
     }, [success, navigate, dispatch])
 
     const onSubmit = (data: IFormInputs) => {
-        console.log("Hello");
 
         dispatch(registerUser({
             name: data?.name,
@@ -106,68 +103,79 @@ const SignUp = () => {
     return (
         <>
             <div className="w-full h-screen grid grid-cols-12">
-                <div className="h-full overflow-hidden col-start-1 col-end-8">
-                    <img src={img} height="100%" width="100%" alt="signup logo" className="" />
+                <div className="overflow-hidden col-start-1 col-end-8">
+                    <img src={img} height="100%" width="100%" alt="signUp logo" />
                 </div>
-                <div className=" bg-[#F8FAFC] h-full py-10 px-20 grid grid-cols-1 gap-3 col-start-8 col-end-13">
-
-                    <div className=" flex justify-center items-center relative">
-                        <Link to="/" className="absolute left-0 top-1/2 -translate-y-1/2 font-bold text-base text-[#0F172A] flex items-center justify-start cursor-pointer">
-                            <img src={backBtn} alt="backButton" className="mr-4" />
-                            <span className=" leading-none">
-                                Home
-                            </span>
-                        </Link>
-                        <h1 className="font-bold text-2xl text-[#0F172A]">Sign up</h1>
-                    </div>
+                <div className="bg-[#F8FAFC] h-full px-20 grid grid-cols-1 gap-3 col-start-8 col-end-13">
                     <div>
+                        <div className="flex justify-center items-center py-8 relative">
+                            {!isContinueWithEmail && <Link to="/" className="absolute left-0 top-1/2 -translate-y-1/2 font-bold text-base text-[#0F172A] flex items-center justify-start cursor-pointer">
+                                <img src={backBtn} alt="backButton" className="mr-4" />
+                                <span className=" leading-none">
+                                    Home
+                                </span>
+                            </Link>}
+                            {isContinueWithEmail && <div onClick={() => setIsContinueWithEmail(false)} className="absolute left-0 top-1/2 -translate-y-1/2 font-bold text-base text-[#0F172A] flex items-center justify-start cursor-pointer">
+                                <img src={backBtn} alt="backButton" className="mr-4" />
+                                <span className=" leading-none">
+                                    Back
+                                </span>
+                            </div>}
+                            <h1 className="font-bold text-2xl text-[#0F172A]">Sign up</h1>
+                        </div>
 
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className={watch("role") === "jobSeeker" ? `grid grid-cols-1 gap-5 mt-10` : `grid grid-cols-1 gap-5`}>
-                                <div>
-                                    <div className=" w-2/3 flex justify-between items-center">
-                                        <label className="mr-3">
-                                            Job Seeker
-                                            <Controller
-                                                name="role"
-                                                control={control}
-                                                defaultValue=""
-                                                render={({ field }) => (
-                                                    <input
-                                                        type="radio"
-                                                        className="ml-5"
-                                                        {...field}
-                                                        checked={getValues("role") === "jobSeeker"}
-                                                        onChange={() => {
-                                                            setValue("role", "jobSeeker");
-                                                        }}
-                                                    />
-                                                )}
-                                            />
-                                        </label>
-                                        <label className="mr-3">
-                                            Employer
-                                            <Controller
-                                                name="role"
-                                                control={control}
-                                                defaultValue=""
-                                                render={({ field }) => (
-                                                    <input
-                                                        type="radio"
-                                                        className="ml-5"
-                                                        {...field}
-                                                        checked={getValues("role") === "employer"}
-                                                        onChange={() => {
-                                                            setValue("role", "employer");
-                                                        }}
-                                                    />
-                                                )}
-                                            />
-                                        </label>
-
+                            <div className="grid grid-cols-1 gap-5">
+                                <div className="w-full flex-col justify-start items-start gap-2 flex">
+                                    <div className="self-stretch justify-start items-start gap-5 inline-flex">
+                                        <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
+                                            <div className="w-6 h-6 justify-center items-center flex">
+                                                <Controller
+                                                    name="role"
+                                                    control={control}
+                                                    defaultValue=""
+                                                    render={({ field }) => (
+                                                        <input
+                                                            type="radio"
+                                                            className="ml-5"
+                                                            {...field}
+                                                            checked={getValues("role") === "jobSeeker"}
+                                                            onChange={() => {
+                                                                setValue("role", "jobSeeker");
+                                                            }}
+                                                        />
+                                                    )}
+                                                /> </div>
+                                            <div className="flex-col justify-start items-start gap-1 inline-flex">
+                                                <div className="text-black text-base font-normal  leading-snug tracking-tight">  Job Seeker</div>
+                                            </div>
+                                        </div>
+                                        <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
+                                            <div className="w-6 h-6 justify-center items-center flex">
+                                                <Controller
+                                                    name="role"
+                                                    control={control}
+                                                    defaultValue=""
+                                                    render={({ field }) => (
+                                                        <input
+                                                            type="radio"
+                                                            className="ml-5"
+                                                            {...field}
+                                                            checked={getValues("role") === "employer"}
+                                                            onChange={() => {
+                                                                setValue("role", "employer");
+                                                                setIsContinueWithEmail(false);
+                                                            }}
+                                                        />
+                                                    )}
+                                                /> </div>
+                                            <div className="flex-col justify-start items-start gap-1 inline-flex">
+                                                <div className="text-black text-base font-normal  leading-snug tracking-tight">  Employer</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div>
+                                {((isContinueWithEmail && watch("role") === "jobSeeker") || watch("role") === "employer") && (<> <div>
                                     <label className="block text-sm font-semibold mb-2">
                                         Full name
                                     </label>
@@ -179,53 +187,53 @@ const SignUp = () => {
                                     />
                                     {errors?.name && <p className="font-normal text-xs text-red-500">{errors?.name?.message}</p>}
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-semibold mb-2">
-                                        Email
-                                    </label>
-                                    <input className="shadow-sm appearance-none border rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        type="email"
-                                        placeholder="Tell us your Email ID"
-                                        {...register("email")}
-                                        required
-                                    />
-                                    {errors?.email && <p className="font-normal text-xs text-red-500">{errors?.email?.message}</p>}
-                                    {!errors?.email && <span className="font-normal text-xs text-gray-500">We'll send you relevant jobs in your mail</span>}
-                                </div>
-                                <div className="grid grid-cols-2 gap-5">
-                                    <div className="">
+                                    <div>
                                         <label className="block text-sm font-semibold mb-2">
-                                            Password
+                                            Email
                                         </label>
                                         <input className="shadow-sm appearance-none border rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            type="password"
-                                            placeholder="Create a password for your account"
-                                            {...register("password")}
+                                            type="email"
+                                            placeholder="Tell us your Email ID"
+                                            {...register("email")}
                                             required
                                         />
-                                        {errors?.password && <p className="font-normal text-xs text-red-500">{errors?.password?.message}</p>}
-                                        {!errors?.password && <span className="font-normal text-xs text-gray-500">Minimum 6 characters required</span>}
+                                        {errors?.email && <p className="font-normal text-xs text-red-500">{errors?.email?.message}</p>}
+                                        {!errors?.email && <span className="font-normal text-xs text-gray-500">We'll send you relevant jobs in your mail</span>}
                                     </div>
-                                    <div className="">
-                                        <label className="block text-sm font-semibold mb-2">
-                                            Mobile number
-                                        </label>
-                                        <div className="relative">
-                                            <input className="shadow-sm appearance-none border rounded-xl w-full py-3 pl-10 pr-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                type="number"
-                                                placeholder="Mobile Number"
-                                                {...register("mobileNumber")}
+                                    <div className="grid grid-cols-2 gap-5">
+                                        <div className="">
+                                            <label className="block text-sm font-semibold mb-2">
+                                                Password
+                                            </label>
+                                            <input className="shadow-sm appearance-none border rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                type="password"
+                                                placeholder="Create a password for your account"
+                                                {...register("password")}
                                                 required
                                             />
-                                            <span className="absolute top-3 left-1">+91</span>
+                                            {errors?.password && <p className="font-normal text-xs text-red-500">{errors?.password?.message}</p>}
+                                            {!errors?.password && <span className="font-normal text-xs text-gray-500">Minimum 6 characters required</span>}
                                         </div>
-                                        {errors?.mobileNumber && <p className="font-normal text-xs text-red-500">{errors?.mobileNumber?.message}</p>}
-                                        {!errors?.mobileNumber && <span className="font-normal text-xs text-gray-500">Recruiters will call on this number</span>}
+                                        <div className="">
+                                            <label className="block text-sm font-semibold mb-2">
+                                                Mobile number
+                                            </label>
+                                            <div className="relative">
+                                                <input className="shadow-sm appearance-none border rounded-xl w-full py-3 pl-10 pr-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                    type="number"
+                                                    placeholder="Mobile Number"
+                                                    {...register("mobileNumber")}
+                                                    required
+                                                />
+                                                <span className="absolute top-3 left-1">+91</span>
+                                            </div>
+                                            {errors?.mobileNumber && <p className="font-normal text-xs text-red-500">{errors?.mobileNumber?.message}</p>}
+                                            {!errors?.mobileNumber && <span className="font-normal text-xs text-gray-500">Recruiters will call on this number</span>}
+                                        </div>
                                     </div>
-                                </div>
-
+                                </>)}
                                 {
-                                    watch("role") === "jobSeeker" &&
+                                    isContinueWithEmail && watch("role") === "jobSeeker" &&
                                     <div>
                                         <span className="block text-sm font-semibold mb-2">
                                             Work status
@@ -282,7 +290,7 @@ const SignUp = () => {
                                     </div>
                                 }
 
-                                <div>
+                                {((isContinueWithEmail && watch("role") === "jobSeeker") || watch("role") === "employer") && <div>
                                     <button className="bg-indigo-600 text-white font-bold px-3 py-2 rounded-lg w-full" type="submit">Register now</button>
                                     <div className="flex justify-center items-center text-sm">
                                         <span className=" text-[#94A3B8] mr-1">
@@ -290,19 +298,14 @@ const SignUp = () => {
                                         </span>
                                         <Link to='/login' className=" underline"> Login</Link>
                                     </div>
-                                </div>
+                                </div>}
                             </div>
                         </form>
-                        <div className="grid grid-cols-1 gap-5">
-                            {
-                                watch("role") === "jobSeeker" && <div className="text-sm font-semibold flex flex-col gap-2 justify-center">
+                        {
+                            !isContinueWithEmail && watch("role") === "jobSeeker" && <div className="grid grid-cols-1 mt-10 gap-5">
+                                <div className="text-sm font-semibold flex flex-col gap-2 justify-center">
 
                                     <div className=" grid grid-cols-1 gap-5">
-                                        <div className="flex justify-between items-center">
-                                            <hr className=" w-2/5" />
-                                            <span className=" py-3">OR</span>
-                                            <hr className=" w-2/5" />
-                                        </div>
                                         <div>
                                             <button className=" bg-white flex justify-center items-center drop-shadow-lg rounded-lg w-full h-14"
                                                 onClick={googleAuth}
@@ -311,11 +314,23 @@ const SignUp = () => {
                                                 <span className="ml-1">Sign up with Google</span>
                                             </button>
                                         </div>
-
-
+                                        <div className="flex justify-between items-center">
+                                            <hr className=" w-2/5" />
+                                            <span className=" py-3">OR</span>
+                                            <hr className=" w-2/5" />
+                                        </div>
+                                        <div>
+                                            <button className="bg-indigo-600 text-white font-bold px-3 py-2 rounded-lg w-full" type="button" onClick={() => setIsContinueWithEmail(true)}>Continue with email</button>
+                                            <div className="flex justify-center items-center text-sm">
+                                                <span className=" text-[#94A3B8] mr-1">
+                                                    Already have an account?
+                                                </span>
+                                                <Link to='/login' className=" underline"> Login</Link>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>}
-                        </div>
+                                </div>
+                            </div>}
                     </div>
                 </div >
             </div >

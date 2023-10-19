@@ -1,17 +1,9 @@
-import { Fragment, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { BiSearch } from 'react-icons/bi';
-import { Menu, Transition } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { getFirstLetterOfName } from '../../utils/filterArray';
 import { useAppSelector } from '../../..';
 import { clearLogOutSlice, logOutUser } from '../../../store/reducers/logout';
 import { useDispatch } from 'react-redux';
-import PopoverHover from '../../commonComponents/PopoverHover';
-import JobCategory from './JobCategory';
-import ellipse32 from '../../../assets/svg/ellipse32.svg';
-import bell_Icons from '../../../assets/svg/bellIcons.svg';
 import JobSeekerHeader from './JobSeekerHeader';
 import EmployerHeader from './EmployerHeader';
 
@@ -30,7 +22,6 @@ const Header = () => {
     const token = Cookies.get('token');
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    console.log(userTypes);
 
     useEffect(() => {
         if (logOutSuccess) {

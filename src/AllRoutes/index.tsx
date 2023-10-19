@@ -23,7 +23,6 @@ import EmployerDashboard from '../components/views/Recruiter/Dashboard/EmployerD
 
 const AllRoutes = () => {
 
-    // const postId =
     return (
         <Routes>
             <Route path="/" element={<PublicRoute />}>
@@ -35,10 +34,10 @@ const AllRoutes = () => {
             <Route path="/allCompanies" element={<AllCompanies />} />
             <Route path="/allJobs/jobDescription/:id" element={<JobDescription />} />
             <Route path="/allCompanies/companyDescription/:id" element={<CompanyDescription />} />
-            {/* <Route path="/logout" element={<SignOut />} /> */}
             <Route path="/" element={<ProtectedRoute />}>
                 <Route path="/homePage" element={<HomePage />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/employerProfile" element={<EmployerDashboard />} />
                 <Route path="/postJob">
                     <Route path="jobDetails?/:postId" element={<JobDetails />} />
                     <Route path="requirements/:postId?" element={<Requirements />} />
@@ -47,7 +46,6 @@ const AllRoutes = () => {
                     <Route path="response/:postId?" element={<Response />} />
                     <Route path="preview/:postId?" element={<Preview />} />
                 </Route>
-                <Route path="/employerProfile" element={<EmployerDashboard />} />
             </Route>
             <Route path="*" element={<NoMatch />} />
         </Routes>
