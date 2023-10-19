@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Carousel from "react-multi-carousel";
 import ArrowRight from '../../../assets/svg/ArrowRight.svg';
 import { FiChevronLeft } from 'react-icons/fi';
 import { BiChevronRight } from 'react-icons/bi';
 import JobListItem from '../../commonComponents/JobListItem';
 import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../..';
+import { getFilterJobs } from '../../../store/reducers/jobs/GetFilterJobs';
 
 const responsive = {
   superLargeDesktop: {
@@ -42,6 +44,17 @@ const ButtonGroup = ({ next, previous, goToSlide, ...rest }: any) => {
 };
 const JobRecommendations = () => {
 
+  const [page, setPage] = useState(1);
+  const dispatch = useAppDispatch();
+  const { allJobs } = useAppSelector((state) => state.getFilterJobs);
+
+  useEffect(() => {
+    dispatch(getFilterJobs({ page }));
+  }, [page, dispatch]);
+
+  const onClickJobItem = (jobId: any) => {
+    window.open(`/allJobs/jobDescription/${jobId}`,'_blank')
+  }
 
   return (
     <div>
@@ -65,14 +78,12 @@ const JobRecommendations = () => {
         renderButtonGroupOutside={true}
         customButtonGroup={<ButtonGroup />}
       >
-        <JobListItem />
-        <JobListItem />
-        <JobListItem />
-        <JobListItem />
-        <JobListItem />
-        <JobListItem />
-        <JobListItem />
-        <JobListItem />
+        {allJobs?.slice(0,8).map((job,index) => index<=7 &&
+          <JobListItem
+          jobItem={job}
+          onClickJobItem={onClickJobItem}
+          />
+        )}
       </Carousel>
     </div>
   )

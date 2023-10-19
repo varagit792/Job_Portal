@@ -71,10 +71,16 @@ interface KeySkills {
     title: string,
     status: boolean
 }
+interface EmploymentType {
+    id: number,
+    title: string,
+    status: boolean
+}
 interface JobsKeySkills {
     id: number,
     preferred: boolean,
     keySkills: KeySkills
+
 }
 interface AllJobs {
     id: number,
@@ -101,7 +107,8 @@ interface AllJobs {
     roleCategory: RoleCategory,
     education: Education,
     user: null,
-    jobsKeySkills: Array<JobsKeySkills>
+    jobsKeySkills: Array<JobsKeySkills>,
+    employmentType:EmploymentType
 }
 interface AllJobsState {
     loading: boolean;
