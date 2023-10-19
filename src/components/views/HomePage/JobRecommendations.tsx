@@ -6,7 +6,7 @@ import { BiChevronRight } from 'react-icons/bi';
 import JobListItem from '../../commonComponents/JobListItem';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../..';
-import { getFilterJobs } from '../../../store/reducers/jobs/GetFilterJobs';
+import { clearGetFilterJobsSlice, getFilterJobs } from '../../../store/reducers/jobs/GetFilterJobs';
 
 const responsive = {
   superLargeDesktop: {
@@ -46,7 +46,7 @@ const JobRecommendations = () => {
 
   const [page, setPage] = useState(1);
   const dispatch = useAppDispatch();
-  const { allJobs } = useAppSelector((state) => state.getFilterJobs);
+  const { allJobs,success } = useAppSelector((state) => state.getFilterJobs);
 
   useEffect(() => {
     dispatch(getFilterJobs({ page }));
@@ -56,35 +56,44 @@ const JobRecommendations = () => {
     window.open(`/allJobs/jobDescription/${jobId}`,'_blank')
   }
 
+  useEffect(() => {
+    if (success) {
+      dispatch(clearGetFilterJobsSlice());
+    }
+  }, [success, dispatch]);
+
+  
   return (
     <div>
-      <div className="flex justify-between items-center mb-10 font-bold">
-        <h1 className="text-xl">Job recommendations</h1>
-        <Link to="/allJobs" className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">All Jobs</span><img src={ArrowRight} alt="ArrowRight" /></Link>
-      </div>
-      <Carousel
-        swipeable={false}
-        draggable={false}
-        showDots={false}
-        responsive={responsive}
-        ssr={true} // means to render carousel on server-side.
-        infinite={true}
-        autoPlay={true}
-        autoPlaySpeed={4000}
-        keyBoardControl={true}
-        customTransition="all .5"
-        transitionDuration={500}
-        arrows={false}
-        renderButtonGroupOutside={true}
-        customButtonGroup={<ButtonGroup />}
-      >
-        {allJobs?.slice(0,8).map((job,index) => index<=7 &&
-          <JobListItem
-          jobItem={job}
-          onClickJobItem={onClickJobItem}
-          />
-        )}
-      </Carousel>
+      {allJobs?.length > 0 && <div>
+        <div className="flex justify-between items-center mb-10 font-bold">
+          <h1 className="text-xl">Job recommendations</h1>
+          <Link to="/allJobs" className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">All Jobs</span><img src={ArrowRight} alt="ArrowRight" /></Link>
+        </div>
+        <Carousel
+          swipeable={false}
+          draggable={false}
+          showDots={false}
+          responsive={responsive}
+          ssr={true} // means to render carousel on server-side.
+          infinite={true}
+          autoPlay={true}
+          autoPlaySpeed={4000}
+          keyBoardControl={true}
+          customTransition="all .5"
+          transitionDuration={500}
+          arrows={false}
+          renderButtonGroupOutside={true}
+          customButtonGroup={<ButtonGroup />}
+        >
+          {allJobs?.slice(0, 8).map((job, index) => index <= 7 &&
+            <JobListItem
+              jobItem={job}
+              onClickJobItem={onClickJobItem}
+            />
+          )}
+        </Carousel>
+      </div>} 
     </div>
   )
 }

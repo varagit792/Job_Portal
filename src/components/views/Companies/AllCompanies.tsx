@@ -13,16 +13,18 @@ import DominousIcon from '../../../assets/svg/DominousIcon.svg';
 import GoproIcon from '../../../assets/svg/GoproIcon.svg';
 import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
 import { BiSearch } from 'react-icons/bi';
-import { getAllCompanies, clearGetAllCompaniesSlice, setDepartment, setFilterDepartment, setFilterLocation, setLocation } from '../../../store/reducers/companies/getAllCompanies';
-import { CompanyDepartmentFilter } from './CompanyDepartmentFilter';
+import { getAllCompanies, clearGetAllCompaniesSlice, setDepartment, setFilterDepartment, setFilterLocation, setLocation, setCompanyType, setFilterCompanyType, setIndustry, setFilterIndustry } from '../../../store/reducers/companies/getAllCompanies';
+import { CompanyDepartmentFilter } from './FilterByCompanyDepartment';
 import { scrollToTop } from '../../utils/utils';
 import FiltersModal from '../Companies/FiltersModal';
-import { CompanyLocationFilter } from './CompanyLocationFilter';
+import { CompanyTypeFilter } from './FilterByCompanyType';
+import { CompanyLocationFilter } from './FilterByCompanyLocation';
+import { IndustryFilter } from './FilterByIndustry';
 
 const AllCompanies = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { success, allCompanies, loading, department, filtersData, location } = useAppSelector((state) => state.getAllCompanies);
+    const { success, allCompanies, loading, department, filtersData, location, companyType, industry } = useAppSelector((state) => state.getAllCompanies);
     // const { success:filteredSuccess,
     //     allCompanies:allFilteredCompanies,
     //     loading:filteredLoading,
@@ -53,7 +55,7 @@ const AllCompanies = () => {
 
     useEffect(() => {
         if (toggleDispach) {
-            if ((filtersData?.department !== undefined && filtersData?.department?.length !== 0) || (filtersData?.location !== undefined && filtersData?.location?.length !== 0)) {
+            if ((filtersData?.department !== undefined && filtersData?.department?.length !== 0) || (filtersData?.location !== undefined && filtersData?.location?.length !== 0) || (filtersData?.companyType !== undefined && filtersData?.companyType?.length !== 0) || (filtersData?.industry !== undefined && filtersData?.industry?.length !== 0)) {
                 dispatch(getAllCompanies({ page, data: filtersData }));
                 setCompanyCard([]);
                 setPage(1);
@@ -131,15 +133,58 @@ const AllCompanies = () => {
         }
     };
 
-    return (
+    const handleCompanyTypeCheckbox = (data: any) => {
+        scrollToTop();
+        setToggleDispach(true);
+        setCompanyCard([]);
+        dispatch(setCompanyType(
+            companyType?.map((item: any) =>
+                item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
+            )
+        ))
+        if (data?.isChecked === undefined || data?.isChecked === false) {
+            dispatch(setFilterCompanyType(data?.id));
+        } else {
+            dispatch(setFilterCompanyType({ filterCompanyType: data?.id }));
+        }
+    };
+
+    const handleIndustryCheckbox = (data: any) => {
+        scrollToTop();
+        setToggleDispach(true);
+        setCompanyCard([]);
+        dispatch(setIndustry(
+            industry?.map((item: any) =>
+                item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
+            )
+        ))
+        if (data?.isChecked === undefined || data?.isChecked === false) {
+            dispatch(setFilterIndustry(data?.id));
+        } else {
+            dispatch(setFilterIndustry({ filterIndustry: data?.id }));
+        }
+    };
+
+return (
         <>
             <div className="h-[10%] w-full"></div>
             <div className="grid grid-cols-12 gap-10 px-32 bg-[#F8FAFC] py-6">
                 <div className="col-start-1 col-end-4">
                     <div className="bg-[#FFF] rounded-xl p-4 sticky top-[13%]">
                         <h1 className="flex justify-between items-center leading-none"><span className="text-[#475569] font-bold">Filters</span><span className="bg-[#F8FAFC] rounded px-2 py-1 text-[#4F46E5]">4</span></h1>
+                        <hr className="bg-[#E0E7FF] my-5" />                        
+                        <CompanyTypeFilter
+                            handleCompanyTypeCheckbox={handleCompanyTypeCheckbox}
+                            setIsOpen={setIsOpen}
+                        />
+                        
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <div className="w-full">
+                        <CompanyLocationFilter
+                            handleLocationCheckbox={handleLocationCheckbox}
+                            setIsOpen={setIsOpen}
+                        />
+                    <hr className="bg-[#E0E7FF] my-5" />
+                    {/* <div className="w-full">
                             <Disclosure>
                                 {({ open }) => (
                                     <>
@@ -176,104 +221,17 @@ const AllCompanies = () => {
                                     </>
                                 )}
                             </Disclosure>
-                        </div>
-                        <hr className="bg-[#E0E7FF] my-5" />
-                        <div className="w-full">
-                            <Disclosure>
-                                {({ open }) => (
-                                    <>
-                                        <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-semibold">Company Type</label>
-                                            <ChevronUpIcon
-                                                className={`${open ? 'rotate-180 transform' : ''
-                                                    } h-5 w-5 text-gray-600`}
-                                            />
-                                        </Disclosure.Button>
-                                        <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Engineering</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">IT and Information</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={true} />
-                                                <label className="ml-2">Consulting</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Marketing</label>
-                                            </div>
-                                            <div className="text-[#475569]">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Sales</label>
-                                            </div>
-                                        </Disclosure.Panel>
-                                    </>
-                                )}
-                            </Disclosure>
-                        </div>
-                        <hr className="bg-[#E0E7FF] my-5" />
-                        {/* <div className="w-full">
-                            <Disclosure>
-                                {({ open }) => (
-                                    <>
-                                        <Disclosure.Button className="flex w-full justify-between items-center">
-                                            <label className="text-[#475569] font-semibold">Nature Of Business</label>
-                                            <ChevronUpIcon
-                                                className={`${open ? 'rotate-180 transform' : ''
-                                                    } h-5 w-5 text-gray-600`}
-                                            />
-                                        </Disclosure.Button>
-                                        <Disclosure.Panel>
-                                            <div className="relative flex items-center w-full py-1.5 border border-[#E0E7FF] rounded-lg overflow-hidden my-5">
-                                                <div className="grid place-items-center h-full w-12 text-gray-300">
-                                                    <BiSearch className="h-5 w-5" />
-                                                </div>
-                                                <input
-                                                    className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
-                                                    type="text"
-                                                    id="search"
-                                                    placeholder="Search something.." />
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">New Delhi</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Bangalore</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={true} />
-                                                <label className="ml-2">Hyderabad</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Noida</label>
-                                            </div>
-                                            <div className="text-[#475569] mb-3">
-                                                <input type="checkbox" defaultChecked={false} />
-                                                <label className="ml-2">Mumbai</label>
-                                            </div>
-                                            <button className="text-[#4F46E5]">View all...</button>
-                                        </Disclosure.Panel>
-                                    </>
-                                )}
-                            </Disclosure>
-                        </div> */}
-                        <CompanyLocationFilter
-                            handleLocationCheckbox={handleLocationCheckbox}
-                            setIsOpen={setIsOpen}
-                        />
-                        <hr className="bg-[#E0E7FF] my-5" />
+                    </div> */}
+                    <IndustryFilter
+                        handleIndustryCheckbox={handleIndustryCheckbox}
+                        setIsOpen={setIsOpen}
+                    />
+                    <hr className="bg-[#E0E7FF] my-5" />
                         <CompanyDepartmentFilter
                             handleDepartmentCheckbox={handleDepartmentCheckbox}
                             setIsOpen={setIsOpen}
                         />
-                        <hr className="bg-[#E0E7FF] my-5" />
+                    <hr className="bg-[#E0E7FF] my-5" />
                         <div className="w-full">
                             <Disclosure>
                                 {({ open }) => (
