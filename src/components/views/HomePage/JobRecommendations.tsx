@@ -6,7 +6,7 @@ import { BiChevronRight } from 'react-icons/bi';
 import JobListItem from '../../commonComponents/JobListItem';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../..';
-import { getFilterJobs } from '../../../store/reducers/jobs/GetFilterJobs';
+import { clearGetFilterJobsSlice, getFilterJobs } from '../../../store/reducers/jobs/GetFilterJobs';
 
 const responsive = {
   superLargeDesktop: {
@@ -46,7 +46,7 @@ const JobRecommendations = () => {
 
   const [page, setPage] = useState(1);
   const dispatch = useAppDispatch();
-  const { allJobs } = useAppSelector((state) => state.getFilterJobs);
+  const { allJobs,success } = useAppSelector((state) => state.getFilterJobs);
 
   useEffect(() => {
     dispatch(getFilterJobs({ page }));
@@ -56,6 +56,13 @@ const JobRecommendations = () => {
     window.open(`/allJobs/jobDescription/${jobId}`,'_blank')
   }
 
+  useEffect(() => {
+    if (success) {
+      dispatch(clearGetFilterJobsSlice());
+    }
+  }, [success, dispatch]);
+
+  
   return (
     <div>
       <div className="flex justify-between items-center mb-10 font-bold">
