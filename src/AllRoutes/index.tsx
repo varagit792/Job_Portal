@@ -24,7 +24,6 @@ import RecruiterJobList from '../components/views/Recruiter/Jobs/RecruiterJobLis
 
 const AllRoutes = () => {
 
-    // const postId =
     return (
         <Routes>
             <Route path="/" element={<PublicRoute />}>
@@ -36,11 +35,10 @@ const AllRoutes = () => {
             <Route path="/allCompanies" element={<AllCompanies />} />
             <Route path="/allJobs/jobDescription/:id" element={<JobDescription />} />
             <Route path="/allCompanies/companyDescription/:id" element={<CompanyDescription />} />
-            {/* <Route path="/logout" element={<SignOut />} /> */}
             <Route path="/" element={<ProtectedRoute />}>
                 <Route path="/homePage" element={<HomePage />} />
                 <Route path="/profile" element={<Profile />} />
-                {/* <Route path="/postAJob?/:postId" element={<PostAJob />} /> */}
+                <Route path="/employerProfile" element={<EmployerDashboard />} />
                 <Route path="/recruiterJobList" element={<RecruiterJobList />} />
                 <Route path="/postJob" >
                     <Route path="jobDetails?/:postId" element={<JobDetails />} />
@@ -50,7 +48,6 @@ const AllRoutes = () => {
                     <Route path="response/:postId?" element={<Response />} />
                     <Route path="preview/:postId?" element={<Preview />} />
                 </Route>
-                <Route path="/employerProfile" element={<EmployerDashboard />} />
             </Route>
             <Route path="*" element={<NoMatch />} />
         </Routes>

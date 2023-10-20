@@ -1,22 +1,26 @@
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { RxCross1 } from 'react-icons/rx';
-import FiltersDepartment from './CompanyDepartmentFilter';
+import FiltersDepartment from './FilterByCompanyDepartment';
 import { useAppDispatch, useAppSelector } from '../../../';
 import {
     bulkFilter,
     setNavigateFilterOption,
     setDepartment,
     setLocation,
+    setCompanyType,
+    setIndustry,
     //setWorkMode
 } from '../../../store/reducers/companies/getAllCompanies';
-import FiltersLocation from './CompanyLocationFilter';
+import FiltersLocation from './FilterByCompanyLocation';
+import FiltersCompanyType from './FilterByCompanyType';
+import FiltersIndustry from './FilterByIndustry';
 //import FiltersWorkMode from './FiltersWorkMode';
 //import FiltersExperience from './FiltersExperience';
 
 const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
     const dispatch = useAppDispatch();
-    const { navigateFilterOption, checkItems, departmentIds, locationIds,
+    const { navigateFilterOption, checkItems, departmentIds, locationIds, companyTypeIds, industryIds,
         //workModeIds, maxExpYearId
     } = useAppSelector((state) => state.getAllCompanies);
 
@@ -31,11 +35,15 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
         dispatch(bulkFilter({
             department: departmentIds,
             location: locationIds,
+            companyType: companyTypeIds,
+            industry: industryIds,
             //workMode: workModeIds,
             //expYear: maxExpYearId
         }));
         dispatch(setDepartment(checkItems?.department));
         dispatch(setLocation(checkItems?.location));
+        dispatch(setCompanyType(checkItems?.companyType));
+        dispatch(setIndustry(checkItems?.industry));
         //dispatch(setWorkMode(checkItems?.workMode));
         setIsOpen(false);
     }
@@ -79,23 +87,16 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                 </Dialog.Title>
                                 <div className="grid grid-cols-12 border-y border-[#E0E7FF]">
                                     <div className="col-start-1 col-end-4 border-r border-[#E0E7FF]">
-                                        <ul>
+                                        <ul>                                            
                                             <li
-                                                className={navigateFilterOption !== "Experience" ?
+                                                className={navigateFilterOption !== "CompanyType" ?
                                                     "px-5 py-2 cursor-pointer flex justify-between items-center"
                                                     : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
-                                                onClick={() => dispatch(setNavigateFilterOption("Experience"))}>
-                                                Experience
-                                            </li>
-                                            <li
-                                                className={navigateFilterOption !== "Department" ?
-                                                    "px-5 py-2 cursor-pointer flex justify-between items-center"
-                                                    : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
-                                                onClick={() => dispatch(setNavigateFilterOption("Department"))}>
-                                                <span>Department</span>
-                                                {departmentIds?.length !== 0 &&
+                                                onClick={() => dispatch(setNavigateFilterOption("CompanyType"))}>
+                                                <span>Company Type</span>
+                                                {companyTypeIds?.length !== 0 &&
                                                     <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
-                                                        {departmentIds?.length}
+                                                        {companyTypeIds?.length}
                                                     </span>}
                                             </li>
                                             <li
@@ -109,31 +110,35 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                                         {locationIds?.length}
                                                     </span>}
                                             </li>
-                                            {/* <li
-                                                className={navigateFilterOption !== "Work mode" ?
+                                            <li
+                                                className={navigateFilterOption !== "Industry" ?
                                                     "px-5 py-2 cursor-pointer flex justify-between items-center"
                                                     : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
-                                                onClick={() => dispatch(setNavigateFilterOption("Work mode"))}>
-                                                <span>Work mode</span>
-                                                {workModeIds?.length !== 0 &&
+                                                onClick={() => dispatch(setNavigateFilterOption("Industry"))}>
+                                                <span>Industry</span>
+                                                {industryIds?.length !== 0 &&
                                                     <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
-                                                        {workModeIds?.length}
+                                                        {industryIds?.length}
                                                     </span>}
-                                            </li> */}
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Salary"))}>Salary</li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Company type"))}>Company type</li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Role category"))}>Role category</li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Posted by"))}>Posted by</li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Industry"))}>Industry</li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Top companies"))}>Top companies</li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Posting date"))}>Posting date</li>
+                                            </li>
+                                            <li
+                                                className={navigateFilterOption !== "Department" ?
+                                                    "px-5 py-2 cursor-pointer flex justify-between items-center"
+                                                    : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
+                                                onClick={() => dispatch(setNavigateFilterOption("Department"))}>
+                                                <span>Department</span>
+                                                {departmentIds?.length !== 0 &&
+                                                    <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
+                                                        {departmentIds?.length}
+                                                    </span>}
+                                            </li>
                                         </ul>
                                     </div>
                                     <div className="col-start-4 col-end-13">
-                                        {/* {navigateFilterOption === "Experience" && <FiltersExperience />} */}
                                         {navigateFilterOption === "Department" && <FiltersDepartment />}
                                         {navigateFilterOption === "Location" && <FiltersLocation />}
-                                        {/* {navigateFilterOption === "Work mode" && <FiltersWorkMode />} */}
+                                        {navigateFilterOption === "CompanyType" && <FiltersCompanyType />}
+                                        {navigateFilterOption === "Industry" && <FiltersIndustry />}
                                     </div>
                                 </div>
                                 <div className="p-5 float-right">

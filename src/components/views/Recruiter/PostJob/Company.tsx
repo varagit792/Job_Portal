@@ -292,7 +292,7 @@ const Company = () => {
                           <div className='w-full'>
                             <input defaultValue={''}
                               className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
-                              placeholder={"Please enter company website"}
+                              placeholder={"Please enter company website (eg http://www.google.com)"}
                               {...register("companyWebsite")} />
                             {errors?.companyWebsite && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyWebsite?.message}</p>}
                           </div>
@@ -302,8 +302,10 @@ const Company = () => {
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">About Company</div>
                         <div className='w-full'>
                           <textarea defaultValue={''}
+                            maxLength={1000}
                             className='w-full h-[75px] border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter about company"}
+
                             {...register("aboutCompany")} ></textarea>
 
                           {errors?.aboutCompany && <p className="font-normal text-xs text-red-500 absolute">{errors?.aboutCompany?.message}</p>}
@@ -316,8 +318,10 @@ const Company = () => {
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Company Address</div>
                         <div className='w-full'>
                           <textarea defaultValue={''}
+                            maxLength={1000}
                             className='w-full border h-[75px] border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter company address"}
+
                             {...register("companyAddress")} ></textarea>
                           {errors?.companyAddress && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyAddress?.message}</p>}
                         </div>

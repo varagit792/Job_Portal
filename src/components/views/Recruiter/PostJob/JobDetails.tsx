@@ -549,6 +549,7 @@ const JobDetails = () => {
                           <textarea defaultValue={''}
                             className='w-full border border-gray-200 h-[75px] focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter job description"}
+                            maxLength={1000}
                             {...register("jobDescription")}>
                           </textarea>
                           {errors?.jobDescription && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobDescription?.message}</p>}
@@ -561,6 +562,7 @@ const JobDetails = () => {
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Key Responsibility</div>
                         <div className='w-full'>
                           <textarea defaultValue={''}
+                            maxLength={1000}
                             className='w-full border border-gray-200 h-[75px] focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter job description"}
                             {...register("keyResponsibility")} ></textarea>

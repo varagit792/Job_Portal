@@ -2,8 +2,15 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface Company {
+    employeeCount: any;
+    location: Array<Location>;
     reviews: any;
     rating: any;
+    id: number,
+    title: string,
+    status: boolean
+}
+interface Location {
     id: number,
     title: string,
     status: boolean

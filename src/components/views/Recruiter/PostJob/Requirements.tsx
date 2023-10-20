@@ -91,7 +91,6 @@ const Requirements = () => {
 
     if (buttonClick === 'Continue') {
       const keySkills = data?.keySkills?.map((skills: any) => ({ preferred: true, keySkills: skills }));
-
       const jobEducation = data?.education?.map((education: any) => education);
       const jobLocality = data?.jobLocality?.map((local: any) => local);
       const jobLocation = jobDetailData?.jobLocation?.map((location: any) => location);
@@ -275,6 +274,7 @@ const Requirements = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
+  console.log(jobDetailData);
 
   return (
     <>
