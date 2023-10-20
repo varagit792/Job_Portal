@@ -62,7 +62,7 @@ const RecruiterJobList = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {currentItems?.map((post: any, index) => (
+                                                {currentItems?.length !== 0 ? currentItems?.map((post: any, index) => (
                                                     <>
                                                         <tr className={currentItems?.length - 1 !== index ? "border-b-2 border-[#F1F5F9]" : ""}>
                                                             <td className="py-3 px-6 text-left whitespace-nowrap">
@@ -131,7 +131,14 @@ const RecruiterJobList = () => {
                                                                     </td>
                                                                 </tr> */}
                                                     </>
-                                                ))}
+                                                ))
+                                                    :
+                                                    <tr>
+                                                        <td colSpan={5} className="py-3 px-6">
+                                                            <h1 className="text-center">No record</h1>
+                                                        </td>
+                                                    </tr>
+                                                }
                                             </tbody>
                                         </table>
                                     </div>
