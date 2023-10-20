@@ -11,6 +11,7 @@ import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../..
 import { PostJobSchema, ResponseSchema } from '../../../../schema/postJob';
 import Toaster from '../../../commonComponents/Toaster';
 import Cookies from 'js-cookie';
+import wrap from 'word-wrap';
 
 const Preview = () => {
 
@@ -167,7 +168,7 @@ const Preview = () => {
         notificationEmailAddress1: jobDetailData?.notificationEmailAddress1,
         notificationEmailAddress2: jobDetailData?.notificationEmailAddress2,
       })).then(() => {
-        toast.success("Job posted successfully!!");
+        navigate("/recruiterJobList");
       });
     }
 
@@ -277,8 +278,6 @@ const Preview = () => {
             <JobLeftPanel jobTitle={jobTitle} />
           </div>
           <div className="col-start-4 col-end-11">
-
-
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="w-full h-auto flex-col justify-start  gap-10 inline-flex">
                 <div className="h-auto flex-col justify-start  gap-7 flex">
@@ -333,7 +332,7 @@ const Preview = () => {
                       </div>
                       <div className="justify-start items-center gap-1 flex">
                         <div className="w-6 h-6 rounded-[20px] justify-center items-center flex"></div>
-                        <div className="text-slate-700 text-base font-normal leading-snug tracking-tight">{jobDetailData?.currency?.label}({jobDetailData?.payScaleLowerRange?.label}-{jobDetailData?.payScaleUpperRange?.label}) {jobDetailData?.numberSystem?.label}{jobDetailData?.recurrence?.label}</div>
+                        <div className="text-slate-700 text-base font-normal leading-snug tracking-tight">{jobDetailData?.currency?.label}({jobDetailData?.payScaleLowerRange?.label}-{jobDetailData?.payScaleUpperRange?.label}) {jobDetailData?.numberSystem?.label} {jobDetailData?.recurrence?.label}</div>
                       </div>
                       <div className="justify-start items-center gap-1 flex">
                         <div className="w-6 h-6 flex-col justify-center items-center inline-flex"></div>
@@ -348,12 +347,12 @@ const Preview = () => {
                     <div className="self-stretch h-[0px] border border-indigo-100"></div>
                     <div className="self-stretch h-auto flex-col justify-start  gap-2 flex">
                       <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Job Description</div>
-                      <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{jobDetailData?.jobDescription}</div>
+                      <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{wrap(jobDetailData?.jobDescription, { width: 110, cut: true })}</div>
                     </div>
                     <div className="self-stretch h-[0px] border border-indigo-100"></div>
                     <div className="self-stretch h-auto flex-col justify-start  gap-2 flex">
                       <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Key Responsibility</div>
-                      <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{jobDetailData?.keyResponsibility}</div>
+                      <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{wrap(jobDetailData?.keyResponsibility, { width: 110, cut: true })}</div>
                     </div>
                   </div>
 
@@ -479,12 +478,12 @@ const Preview = () => {
                     <div className="self-stretch h-[0px] border border-indigo-100"></div>
                     <div className="self-stretch h-auto flex-col justify-start  gap-2 flex">
                       <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Company Details</div>
-                      <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{jobDetailData?.aboutCompany}</div>
+                      <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{wrap(jobDetailData?.aboutCompany, { width: 110, cut: true })}</div>
                     </div>
                     <div className="self-stretch h-[0px] border border-indigo-100"></div>
                     <div className="self-stretch h-auto flex-col justify-start  gap-2 flex">
                       <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Company Address</div>
-                      <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{jobDetailData?.companyAddress}</div>
+                      <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{wrap(jobDetailData?.companyAddress, { width: 110, cut: true })}</div>
                     </div>
                   </div>
                   <div className="self-stretch h-auto p-7 bg-white rounded-xl border border-indigo-100 flex-col justify-start  gap-7 flex">
