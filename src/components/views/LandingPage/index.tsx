@@ -184,13 +184,29 @@ const LandingPage = () => {
             <div className="h-[65%] bg-[#F1F5F9] px-32 flex flex-col justify-center">
                 <TopCompaniesHiring title="Top companies hiring" viewLabel="View all" />
             </div>
-            <div className="h-[65%] bg-[#F8FAFC] px-32 flex flex-col justify-center">
+            {allJobs && allJobs?.[0] && Object.keys(allJobs?.[0]?.jobsLocation)?.length &&  <div className="h-[65%] bg-[#F8FAFC] px-32 flex flex-col justify-center">
                 <div className="flex justify-between items-center mb-10 font-bold">
                     <h1 className="text-xl">Featured cities</h1>
                     <button className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">All Cities</span><img src={ArrowRight} alt="ArrowRight" /></button>
                 </div>
                 <div className="grid grid-cols-4 gap-4 mb-4">
-                    <div className="p-4 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg flex flex-col justify-center items-start">
+                    {allJobs?.slice(0, 8)?.map((job, index) =>
+                        <div className="p-4 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg flex flex-col justify-center items-start">
+                            <div className="flex justify-between items-center mb-3 text-sm font-semibold w-full">
+                                <span>
+                                {Object.keys(job?.jobsLocation).length ? job?.jobsLocation?.map((loc: any) => <span>{loc?.location?.title}, </span>) : <span>Not disclosed</span>}
+                                    {/* {job?.jobsLocation as any} */}
+                                </span>
+                                <button><img src={ArrowRight} alt="ArrowRight" width="8rem" height="8rem" /></button>
+                            </div>
+                            <button className="px-2 py-1 bg-gray-200 rounded-md text-xs">
+                                {job?.jobsOpening}
+                            </button>
+                        </div>
+                    )}
+</div>
+
+                    {/* <div className="p-4 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg flex flex-col justify-center items-start">
                         <div className="flex justify-between items-center mb-3 text-sm font-semibold w-full">
                             <span>Hyderabad, India</span>
                             <button><img src={ArrowRight} alt="ArrowRight" width="8rem" height="8rem" /></button>
@@ -255,8 +271,8 @@ const LandingPage = () => {
                             130 jobs
                         </button>
                     </div>
-                </div>
-            </div>
+                </div> */}
+            </div>}
         </>
     )
 }
