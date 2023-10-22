@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { BiSearch } from 'react-icons/bi';
 import { Menu, Transition } from '@headlessui/react';
 import { getFirstLetterOfName } from '../../utils/filterArray';
@@ -9,8 +9,6 @@ import EmployerJobLink from './EmployerJobLink';
 import EmployerPopoverHover from '../../commonComponents/EmployerPopoverHover';
 
 const EmployerHeader = ({ auth, name, logout }: any) => {
-
-
 
   return (
     <>
@@ -38,65 +36,16 @@ const EmployerHeader = ({ auth, name, logout }: any) => {
               id="search"
               placeholder="Search something.." />
           </div>
-          {/* <div>
-                    <Menu as="div" className="relative inline-block text-left">
-                        <div>
-                            <Menu.Button className="inline-flex w-full justify-center items-center text-[#312E81] m-0 p-0.5">
-                                Employee
-                                <ChevronDownIcon
-                                    className="ml-1 mr-1 h-5 w-5"
-                                    aria-hidden="true"
-                                />
-                            </Menu.Button>
-                        </div>
-                        <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                        >
-                            <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                <div className="px-1 py-1 ">
-                                    <Menu.Item>
-                                        {({ active }) => (
-                                            <button
-                                                className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                                                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                            >
-                                                Employer
-                                            </button>
-                                        )}
-                                    </Menu.Item>
-                                    <Menu.Item>
-                                        {({ active }) => (
-                                            <button
-                                                className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                                                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                            >
-                                                Admin
-                                            </button>
-                                        )}
-                                    </Menu.Item>
-                                </div>
-                            </Menu.Items>
-                        </Transition>
-                    </Menu>
-                </div> */}
           <div className="border border-gray-200 h-8"></div>
           {auth && <div className='float-left'>
             <img className='float-right' src={ellipse32} alt="image" />
             <img src={bell_Icons} alt="image" />
           </div>}
           <div className="text-[#312E81]">
-
             {auth ?
               <>
                 <Menu as="div" className="relative inline-block text-left">
                   <div>
-
                     <Menu.Button className="inline-flex w-full justify-center items-center text-[#312E81] m-0 p-0.5">
                       <div className="w-9 h-9 bg-green-600 text-lg text-white rounded-full pt-1">{getFirstLetterOfName(name)}</div>
                     </Menu.Button>
@@ -123,13 +72,10 @@ const EmployerHeader = ({ auth, name, logout }: any) => {
                             </button>
                           )}
                         </Menu.Item>
-
                       </div>
                     </Menu.Items>
                   </Transition>
                 </Menu>
-
-
               </> : <>
                 <Link to="/login" className="rounded-lg py-2 px-3">Employer LogIn</Link>
                 <Link to="/login" className="rounded-lg py-2 px-3 mx-3">Employee Login</Link>

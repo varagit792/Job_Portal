@@ -158,10 +158,10 @@ const Recruiter = () => {
 
   useEffect(() => {
     if (Number(postId)) {
-      setPostBack({ postURL: `/postJob/response/${postId}`, backURL: `/postJob/company/${postId}` });
+      setPostBack({ postURL: `/postJob/questionnaire/${postId}`, backURL: `/postJob/company/${postId}` });
       setJobTitle(jobDetail?.title);
     } else {
-      setPostBack({ postURL: '/postJob/response', backURL: '/postJob/company' })
+      setPostBack({ postURL: '/postJob/questionnaire', backURL: '/postJob/company' })
     }
   }, []);
 
