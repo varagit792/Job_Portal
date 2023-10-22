@@ -98,7 +98,7 @@ interface AllJobs {
     totalExpYearEnd: TotalExpYearEnd,
     numberSystem: NumberSystem,
     recurrence: Recurrence,
-    jobsLocation: JobsLocation,
+    jobsLocation: JobsLocation[],
     jobsRole: JobsRole,
     industryType: industryType,
     department: Department,
