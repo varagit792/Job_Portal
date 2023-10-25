@@ -25,11 +25,13 @@ import { CompanyFilter } from './FilterByCompany';
 const AllCompanies = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { success, allCompanies, loading, department, filtersData, location, companyType, industry, company } = useAppSelector((state) => state.getAllCompanies);
+    const { success, allCompanies, loading, department, filtersData, location, companyType, industry, company, allFilterIds } = useAppSelector((state) => state.getAllCompanies);
     const [page, setPage] = useState(1);
     const [toggleDispach, setToggleDispach] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
     const [companyCard, setCompanyCard] = useState<any>([]);
+    
+    console.log("allFilterIds-->", allFilterIds);
     
     useEffect(() => {
         window.addEventListener("scroll", handelInfiniteScroll);
