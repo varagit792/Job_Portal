@@ -142,7 +142,7 @@ const JobDescription = () => {
             <div className="self-stretch justify-start items-center gap-3 flex mt-2">
               <img className="w-14 h-14 rounded-lg" src={companyLogo} alt="companyLogo" />
               <div className="grow shrink basis-0 flex-col justify-start items-start gap-1 inline-flex">
-                <div className="self-stretch text-slate-900 text-2xl font-bold leading-7 tracking-tight">{jobDetail?.company?.title}</div>
+                <div className="self-stretch text-slate-900 text-2xl font-bold leading-7 tracking-tight overflow-hidden whitespace-nowrap text-ellipsis w-96">{jobDetail?.company?.title}</div>
                 <div className="w-40 justify-start items-center gap-2 inline-flex">
                   <div className="justify-start items-center gap-1 flex">
                     <AiFillStar color="yellow" />

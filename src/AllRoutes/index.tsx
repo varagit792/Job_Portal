@@ -7,7 +7,6 @@ import PublicRoute from './PublicRoute';
 import HomePage from '../components/views/HomePage';
 import Profile from '../components/views/Profile/Profile';
 import SignIn from '../components/views/SignIn/SignIn';
-import SignOut from '../components/views/SignIn/SignOut';
 import AllJobs from '../components/views/Jobs/AllJobs';
 import JobDescription from '../components/views/Jobs/JobDescription';
 import AllCompanies from '../components/views/Companies/AllCompanies';
@@ -21,6 +20,7 @@ import NoMatch from '../components/views/NoMatch';
 import Preview from '../components/views/Recruiter/PostJob/preview';
 import EmployerDashboard from '../components/views/Recruiter/Dashboard/EmployerDashboard';
 import RecruiterJobList from '../components/views/Recruiter/Jobs/RecruiterJobList';
+import Questionnaire from '../components/views/Recruiter/PostJob/Questionnaire';
 
 const AllRoutes = () => {
 
@@ -45,6 +45,7 @@ const AllRoutes = () => {
                     <Route path="requirements/:postId?" element={<Requirements />} />
                     <Route path="company/:postId?" element={<Company />} />
                     <Route path="recruiter/:postId?" element={<Recruiter />} />
+                    <Route path="questionnaire/:postId?" element={<Questionnaire />} />
                     <Route path="response/:postId?" element={<Response />} />
                     <Route path="preview/:postId?" element={<Preview />} />
                 </Route>

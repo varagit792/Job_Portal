@@ -22,7 +22,7 @@ const JobListItem = ({ jobItem , onClickJobItem}: any) => {
         </div>
       </div>
       <h1 className="text-base font-bold">{jobItem?.title}</h1>
-      <span className="text-[#94A3B8] text-sm">{jobItem?.company?.title}</span>
+      {jobItem?.company?.title ? <h2 className="text-[#94A3B8] text-sm  text-ellipsis w-56 overflow-hidden whitespace-nowrap">{jobItem?.company?.title}</h2> : <h2 className="text-[#94A3B8] text-sm  text-ellipsis w-56 overflow-hidden whitespace-nowrap">Not Disclosed.</h2>}
       <hr className="my-5" />
       <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
         <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" />
@@ -31,7 +31,7 @@ const JobListItem = ({ jobItem , onClickJobItem}: any) => {
           <span className="ml-1">{jobItem?.totalExpYearEnd?.title}</span>
         </div> : <span className="ml-2">{jobItem?.totalExpYearEnd?.title}</span>}
       </div>
-      {!jobItem?.hideSalaryDetails   ? <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+      {!jobItem?.hideSalaryDetails ? <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
         <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">{
           jobItem?.payScaleLowerRange?.title[0] ? <Fragment>
             <span>{jobItem?.payScaleLowerRange?.title[0]} -</span>
@@ -41,12 +41,12 @@ const JobListItem = ({ jobItem , onClickJobItem}: any) => {
       </div> : <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">Not Disclosed.</div>}
       <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
         <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" />
-        {jobItem?.jobsLocation?.map((jobLocation:any) =>
-          <span className="ml-2">{ jobLocation?.location?.title}</span>)}
+        {Object.keys(jobItem?.jobsLocation).length ? jobItem?.jobsLocation?.map((jobLocation:any) =>
+          <span className="ml-2">{jobLocation?.location?.title},</span>) : <span className="ml-2">Not Disclosed.</span>}
       </div>
       <div className="flex">
-        {<span className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">{jobItem?.workMode?.title }</span>}
-        <span className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">{jobItem?.employmentType?.title}</span>
+        {jobItem?.workMode ? <span className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">{jobItem?.workMode?.title}</span> : <span className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">Not Disclosed.</span>}
+        {jobItem?.employmentType ? <span className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">{jobItem?.employmentType?.title}</span> : <span className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">Not Disclosed</span>}
       </div>
     </div>
   )

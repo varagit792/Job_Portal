@@ -10,21 +10,21 @@ import {
     setLocation,
     setCompanyType,
     setIndustry,
+    setCompany,
     //setWorkMode
 } from '../../../store/reducers/companies/getAllCompanies';
 import FiltersLocation from './FilterByCompanyLocation';
 import FiltersCompanyType from './FilterByCompanyType';
 import FiltersIndustry from './FilterByIndustry';
+import FiltersCompany from './FilterByCompany';
 //import FiltersWorkMode from './FiltersWorkMode';
 //import FiltersExperience from './FiltersExperience';
 
 const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
     const dispatch = useAppDispatch();
-    const { navigateFilterOption, checkItems, departmentIds, locationIds, companyTypeIds, industryIds,
+    const { navigateFilterOption, checkItems, departmentIds, locationIds, companyTypeIds, industryIds, companyIds,
         //workModeIds, maxExpYearId
     } = useAppSelector((state) => state.getAllCompanies);
-
-    console.log("locationIds --- >", locationIds);
     
     const closeDialog = () => {
         setIsOpen(false);
@@ -37,6 +37,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
             location: locationIds,
             companyType: companyTypeIds,
             industry: industryIds,
+            company: companyIds,
             //workMode: workModeIds,
             //expYear: maxExpYearId
         }));
@@ -44,6 +45,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
         dispatch(setLocation(checkItems?.location));
         dispatch(setCompanyType(checkItems?.companyType));
         dispatch(setIndustry(checkItems?.industry));
+        dispatch(setCompany(checkItems?.company));
         //dispatch(setWorkMode(checkItems?.workMode));
         setIsOpen(false);
     }
@@ -132,6 +134,17 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                                         {departmentIds?.length}
                                                     </span>}
                                             </li>
+                                            <li
+                                                className={navigateFilterOption !== "Company" ?
+                                                    "px-5 py-2 cursor-pointer flex justify-between items-center"
+                                                    : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
+                                                onClick={() => dispatch(setNavigateFilterOption("Company"))}>
+                                                <span>Companies</span>
+                                                {companyIds?.length !== 0 &&
+                                                    <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
+                                                        {companyIds?.length}
+                                                    </span>}
+                                            </li>
                                         </ul>
                                     </div>
                                     <div className="col-start-4 col-end-13">
@@ -139,6 +152,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         {navigateFilterOption === "Location" && <FiltersLocation />}
                                         {navigateFilterOption === "CompanyType" && <FiltersCompanyType />}
                                         {navigateFilterOption === "Industry" && <FiltersIndustry />}
+                                        {navigateFilterOption === "Company" && <FiltersCompany />}
                                     </div>
                                 </div>
                                 <div className="p-5 float-right">
