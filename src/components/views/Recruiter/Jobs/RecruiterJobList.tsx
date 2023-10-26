@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tab } from '@headlessui/react';
 import ReactPaginateItems from '../../../commonComponents/ReactPaginate';
+import { useAppDispatch, useAppSelector } from '../../../../';
+import { getEmployerCompanyList } from "../../../../store/reducers/companies/employerCompanyList";
+import { formatDistanceToNow } from 'date-fns';
 
 function classNames(...classes: any) {
     return classes.filter(Boolean).join(' ')
 }
 
 const RecruiterJobList = () => {
-    let [categories] = useState({
-        All: [{}],
-        Open: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-        Paused: [],
+    const dispatch = useAppDispatch();
+    const { success,
+        companyDetails
+    } = useAppSelector((state) => state.getEmployerCompanyList);
+    const [page, setPage] = useState(1);
+    let [categories, setCategories] = useState({
+        All: [],
+        Open: [],
         Drafts: [],
         Closed: [],
     });
@@ -18,6 +25,22 @@ const RecruiterJobList = () => {
     const [itemOffset, setItemOffset] = useState(0);
     const itemsPerPage: number = 5;
     const endOffset = itemOffset + itemsPerPage;
+
+    useEffect(() => {
+        dispatch(getEmployerCompanyList({ page, data: { user: { id: 2 } } }));
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (success) {
+            console.log(companyDetails);
+            setCategories((preValue: any) => {
+                return {
+                    ...preValue,
+                    All: companyDetails[0]?.jobs
+                }
+            })
+        }
+    }, [success]);
 
     return (
         <>
@@ -66,7 +89,7 @@ const RecruiterJobList = () => {
                                                     <>
                                                         <tr className={currentItems?.length - 1 !== index ? "border-b-2 border-[#F1F5F9]" : ""}>
                                                             <td className="py-3 px-6 text-left whitespace-nowrap">
-                                                                <div>Product Designer</div>
+                                                                <div>{post?.title}</div>
                                                                 <div className="text-[#64748B] text-xs">
                                                                     <span>Full-time</span>
                                                                     <span className=" border-l border-[#E0E7FF] h-1 mx-2"></span>
@@ -77,7 +100,7 @@ const RecruiterJobList = () => {
                                                                 17-Dec-23
                                                             </td>
                                                             <td className="py-3 px-6 text-left text-[#64748B]">
-                                                                6-Oct-23
+                                                                {formatDistanceToNow(new Date(post?.updatedAt), { addSuffix: true })}
                                                             </td>
                                                             <td className="py-3 px-6 text-left">
                                                                 53

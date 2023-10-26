@@ -44,6 +44,7 @@ import getCompanyDetailsReducer from './companies/getCompanyDetails';
 import updatePostJobUpdateSlice from './jobs/postJobs';
 import sendOtpReducer from './user/sendUserOtp';
 import verifyMobileOtpReducer from './user/verifyMobileOtp';
+import getEmployerCompanyListSlice from './companies/employerCompanyList';
 
 export const reducer = combineReducers({
     // Register
@@ -89,5 +90,6 @@ export const reducer = combineReducers({
     getCompanyDetails: getCompanyDetailsReducer,
     updatePostJobUpdate: updatePostJobUpdateSlice,
     jobSeekerSendOtp: sendOtpReducer,
-    jobSeekerVerifyMobile: verifyMobileOtpReducer
+    jobSeekerVerifyMobile: verifyMobileOtpReducer,
+    getEmployerCompanyList: getEmployerCompanyListSlice,
 });
