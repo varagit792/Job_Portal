@@ -232,7 +232,8 @@ return (
                     <hr className="bg-[#E0E7FF] my-5" />
                         <CompanyFilter
                             handleCompanyCheckbox={handleCompanyCheckbox}
-                            setIsOpen={setIsOpen}
+                        setIsOpen={setIsOpen}
+                        isOpen={isOpen}
                         />
                     {/* <hr className="bg-[#E0E7FF] my-5" />
                         <div className="w-full">

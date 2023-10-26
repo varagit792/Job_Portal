@@ -6,7 +6,7 @@ import { setDepartment, setNavigateFilterOption, setDepartmentIds, setCheckItems
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { BiSearch } from 'react-icons/bi';
 
-export const CompanyFilter = ({ handleCompanyCheckbox, setIsOpen }: any) => {
+export const CompanyFilter = ({ handleCompanyCheckbox, setIsOpen, isOpen }: any) => {
     const dispatch = useAppDispatch();
     const { success, company, allCompanies } = useAppSelector((state) => state.getAllCompanies);
     // useEffect(() => {
@@ -19,11 +19,11 @@ export const CompanyFilter = ({ handleCompanyCheckbox, setIsOpen }: any) => {
     // }, []);
 
     useEffect(() => {
-        dispatch(getAllCompanies({}));
-      }, [dispatch])
+        isOpen && dispatch(getAllCompanies({}));
+      }, [dispatch, isOpen])
       
     useEffect(() => {         
-        !company?.length && dispatch(setCompany(allCompanies));
+        dispatch(setCompany(allCompanies));
       },[success])
 
     const handleViewAll = () => {
