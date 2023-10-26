@@ -13,6 +13,9 @@ import backBtn from '../../../assets/svg/backButton.svg';
 import experienced from '../../../assets/svg/experienced.svg';
 import fresher from '../../../assets/svg/fresher.svg';
 import Cookies from 'js-cookie';
+import { getCompanyList } from '../../utils/utils';
+import Select from 'react-select';
+import { filterArray } from '../../utils/filterArray';
 
 interface IFormInputs {
     name: string;
@@ -21,6 +24,7 @@ interface IFormInputs {
     mobileNumber: string;
     workStatus: boolean;
     role: string;
+    companies:any
 }
 
 const SignUpSchema = yup
@@ -45,7 +49,13 @@ const SignUpSchema = yup
             .required('Mobile number is required')
             .matches(/^[0-9]{10}$/, 'Mobile number must be a valid 10-digit number'),
         workStatus: yup.boolean().label("Work Status").default(false).required(),
-        role: yup.string().label("Experience Type").required(),
+        role: yup.string().label("User Type").required(),
+        companies: yup.object().when(
+            'role', {
+                is: 'employer',
+            then: (schema) => schema.required("Please select current company"),
+            otherwise: (schema) => schema.notRequired(),
+        }),
     })
     .required();
 
@@ -54,6 +64,7 @@ const SignUp = () => {
     const dispatch = useAppDispatch();
     const [isContinueWithEmail, setIsContinueWithEmail] = useState(false);
     const { success, errorMessage } = useAppSelector((state) => state.register);
+    const [companyList, setCompanyList] = useState<any>([]);
 
     const {
         register,
@@ -72,6 +83,13 @@ const SignUp = () => {
     }, [])
 
     useEffect(() => {
+        (async () => {
+            const company = await getCompanyList();
+            setCompanyList(company);
+        })();
+    }, []);
+
+    useEffect(() => {
         if (success) {
             dispatch(clearRegisterSlice());
             if (Cookies.get('userType') === 'jobSeeker')
@@ -82,6 +100,8 @@ const SignUp = () => {
     }, [success, navigate, dispatch])
 
     const onSubmit = (data: IFormInputs) => {
+        const companyArray = filterArray(companyList, parseInt(data?.companies?.value));
+
 
         dispatch(registerUser({
             name: data?.name,
@@ -89,7 +109,8 @@ const SignUp = () => {
             email: data?.email,
             mobileNumber: data?.mobileNumber,
             workStatus: data?.workStatus && data?.workStatus,
-            userType: data?.role && data?.role
+            userType: data?.role && data?.role,
+            companies: data?.companies && companyArray[0]
         }));
         if (errorMessage) {
             alert(`Error occured ${errorMessage}`);
@@ -198,8 +219,30 @@ const SignUp = () => {
                                             required
                                         />
                                         {errors?.email && <p className="font-normal text-xs text-red-500">{errors?.email?.message}</p>}
-                                        {!errors?.email && <span className="font-normal text-xs text-gray-500">We'll send you relevant jobs in your mail</span>}
+                                        {/* {!errors?.email && <span className="font-normal text-xs text-gray-500">We'll send you relevant jobs in your mail</span>} */}
                                     </div>
+                                    {watch("role") === "employer" && <div>
+                                        <label className="block text-sm font-semibold mb-2">
+                                           Company
+                                        </label>
+                                        <div className="appearance-none border rounded-xl w-full text-gray-700 leading-tight shadow-sm">
+                                            <Controller
+                                                control={control}
+                                                name="companies"
+                                                render={({ field }) => (
+                                                    <Select className="shadow-sm appearance-none border rounded-xl w-full  text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                        {...field}
+                                                        isClearable
+                                                        placeholder=""
+                                                        options={companyList?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                                                        defaultValue={watch("companies")}
+                                                    />
+                                                )}
+                                            />
+                                        </div>
+                                        {errors?.companies && <p className="font-normal text-xs text-red-500">Please select your Company</p>}
+                                        {/* {!errors?.email && <span className="font-normal text-xs text-gray-500">We'll send you relevant jobs in your mail</span>} */}
+                                    </div> }
                                     <div className="grid grid-cols-2 gap-5">
                                         <div className="">
                                             <label className="block text-sm font-semibold mb-2">
@@ -228,10 +271,11 @@ const SignUp = () => {
                                                 <span className="absolute top-3 left-1">+91</span>
                                             </div>
                                             {errors?.mobileNumber && <p className="font-normal text-xs text-red-500">{errors?.mobileNumber?.message}</p>}
-                                            {!errors?.mobileNumber && <span className="font-normal text-xs text-gray-500">Recruiters will call on this number</span>}
+                                            {/* {!errors?.mobileNumber && <span className="font-normal text-xs text-gray-500">Recruiters will call on this number</span>} */}
                                         </div>
                                     </div>
                                 </>)}
+
                                 {
                                     isContinueWithEmail && watch("role") === "jobSeeker" &&
                                     <div>
