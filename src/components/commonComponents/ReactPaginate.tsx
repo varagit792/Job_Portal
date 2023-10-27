@@ -24,7 +24,7 @@ const ReactPaginateItems = ({ itemsPerPage, setItemOffset, items }: any) => {
             pageCount={pageCount}
             renderOnZeroPageCount={null}
             breakLinkClassName="relative block py-2 px-3 -ml-0.5 leading-tight text-black bg-white border border-[#dee2e6] hover:cursor-pointer hover:bg-[#dee2e6]"
-            containerClassName="flex justify-end pl-0 list-none pt-5 rounded-sm"
+            containerClassName="flex justify-center pl-0 list-none pt-5 rounded-sm"
             pageClassName="[&.active>a]:bg-blue-300"
             pageLinkClassName="relative block py-2 px-3 -ml-0.5 leading-tight text-black bg-white border border-[#dee2e6] hover:cursor-pointer hover:bg-[#dee2e6]"
             previousClassName="[&.active>a]:bg-blue-300"

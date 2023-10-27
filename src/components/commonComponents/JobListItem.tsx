@@ -6,10 +6,10 @@ import MoneyIcon from '../../assets/svg/MoneyIcon.svg';
 import ExperienceIcon from '../../assets/svg/ExperienceIcon.svg';
 import { Fragment } from 'react';
 
-const JobListItem = ({ jobItem , onClickJobItem}: any) => {
-  
+const JobListItem = ({ jobItem, onClickJobItem }: any) => {
+
   return (
-    <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5 cursor-pointer" key={jobItem.id} onClick={()=>onClickJobItem(jobItem.id)}>
+    <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5 cursor-pointer" key={jobItem.id} onClick={() => onClickJobItem(jobItem.id)}>
       <div className="flex items-start justify-between mb-3">
         <img src={companyBrand} alt="companyBrand" />
         <div>
@@ -31,22 +31,31 @@ const JobListItem = ({ jobItem , onClickJobItem}: any) => {
           <span className="ml-1">{jobItem?.totalExpYearEnd?.title}</span>
         </div> : <span className="ml-2">{jobItem?.totalExpYearEnd?.title}</span>}
       </div>
-      {!jobItem?.hideSalaryDetails ? <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
-        <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">{
-          jobItem?.payScaleLowerRange?.title[0] ? <Fragment>
-            <span>{jobItem?.payScaleLowerRange?.title[0]} -</span>
-            <span className="ml-1">{jobItem?.payScaleUpperRange?.title[0]}</span>
-          </Fragment> : <span className="ml-1"> {jobItem?.payScaleUpperRange?.title[0]} </span>} {jobItem?.numberSystem
-            ?.title} <span>{jobItem?.recurrence?.title }</span></span>
-      </div> : <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">Not Disclosed.</div>}
+      {
+        !(jobItem?.hideSalaryDetails)
+          ? <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">
+            <img src={MoneyIcon} alt="MoneyIcon" width="15rem" height="15rem" /><span className="ml-2">
+              {
+                jobItem?.payScaleLowerRange?.title
+                  ? <Fragment>
+                    <span>{jobItem?.payScaleLowerRange?.title} -</span>
+                    <span className="ml-1 mr-1">{jobItem?.payScaleUpperRange?.title}</span>
+                  </Fragment>
+                  : <span className="ml-1 mr-1"> {jobItem?.payScaleUpperRange?.title} </span>
+              }
+              {jobItem?.numberSystem
+                ?.title} <span>{jobItem?.recurrence?.title}</span></span>
+          </div>
+          : <div className="mb-3 text-[#475569] text-xs flex justify-start items-center">Not Disclosed.</div>
+      }
       <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
         <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" />
-        {Object.keys(jobItem?.jobsLocation).length ? jobItem?.jobsLocation?.map((jobLocation:any) =>
+        {Object.keys(jobItem?.jobsLocation).length ? jobItem?.jobsLocation?.map((jobLocation: any) =>
           <span className="ml-2">{jobLocation?.location?.title},</span>) : <span className="ml-2">Not Disclosed.</span>}
       </div>
       <div className="flex">
-        {jobItem?.workMode ? <span className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">{jobItem?.workMode?.title}</span> : <span className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">Not Disclosed.</span>}
-        {jobItem?.employmentType ? <span className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">{jobItem?.employmentType?.title}</span> : <span className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">Not Disclosed</span>}
+        {jobItem?.workMode && <span className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">{jobItem?.workMode?.title}</span>}
+        {jobItem?.employmentType && <span className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">{jobItem?.employmentType?.title}</span>}
       </div>
     </div>
   )

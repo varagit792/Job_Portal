@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const EmployerJobLink = () => {
 
@@ -15,7 +15,9 @@ const EmployerJobLink = () => {
         <li className="text-sm mb-3 cursor-pointer">Post a Classified</li>
         <li className="text-sm mb-3 cursor-pointer">Post an Internship</li >
         <li className="text-sm mb-3 cursor-pointer">Post a Private Job</li >
-        <li className="text-sm mb-3 cursor-pointer">Manage Jobs</li >
+        <li className="text-sm mb-3 cursor-pointer">
+          <Link to="recruiterJobList"> Manage Jobs</Link>
+        </li >
       </ul>
     </div>
   )
