@@ -38,7 +38,7 @@ const AllRoutes = () => {
             <Route path="/" element={<ProtectedRoute />}>
                 <Route path="/homePage" element={<HomePage />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/employerProfile" element={<EmployerDashboard />} />
+                <Route path="/employerDashboard" element={<EmployerDashboard />} />
                 <Route path="/recruiterJobList" element={<RecruiterJobList />} />
                 <Route path="/postJob" >
                     <Route path="jobDetails?/:postId" element={<JobDetails />} />

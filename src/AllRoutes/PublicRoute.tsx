@@ -6,7 +6,7 @@ const PublicRoute = () => {
     const userType = Cookies.get("userType");
 
     return (user_token !== undefined && user_token !== null)
-        ? (userType === "jobSeeker" ? <Navigate to="/homePage" /> : <Navigate to="/employerProfile" />)
+        ? (userType === "jobSeeker" ? <Navigate to="/homePage" /> : <Navigate to="/employerDashboard" />)
         : <Outlet />
 }
 
