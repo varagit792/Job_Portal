@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { RxCross1 } from 'react-icons/rx';
 import FiltersDepartment from './FilterByCompanyDepartment';
@@ -21,6 +21,8 @@ import FiltersCompany from './FilterByCompany';
 //import FiltersExperience from './FiltersExperience';
 
 const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
+    const [allFilters, setAllFilters] = useState<any>([])
+
     const dispatch = useAppDispatch();
     const { navigateFilterOption, checkItems, departmentIds, locationIds, companyTypeIds, industryIds, companyIds,
         //workModeIds, maxExpYearId
@@ -50,6 +52,10 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
         setIsOpen(false);
     }
 
+    useEffect(() => {
+        setAllFilters(departmentIds?.length +  companyTypeIds?.length + locationIds?.length + companyIds?.length + industryIds?.length)
+    }, [departmentIds, companyTypeIds, locationIds, companyIds, industryIds ])
+    
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={closeDialog}>
@@ -78,7 +84,8 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                         >
                             <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title className="text-lg font-medium text-gray-900 text-right flex justify-between items-center p-5">
-                                    <h1 className="font-bold leading-none">Filters</h1>
+                                    <h1 className="font-bold leading-none">Filters
+                                        <span className=" m-2">{ allFilters }</span></h1>
                                     <button
                                         onClick={closeDialog}
                                         type="button"

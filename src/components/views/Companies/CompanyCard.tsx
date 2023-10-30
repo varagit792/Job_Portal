@@ -72,7 +72,7 @@ const CompanyCard = ({ onClickCompanyCard, companyCard, loading }: any) => {
                             </div>
 
                             {item?.jobs && <button className="px-3 py-2 bg-gray-200 rounded-2xl text-xs">
-                                {item?.jobs} Jobs
+                                {item?.jobs?.length} Jobs
                             </button>}
                         </div>
                     </div >

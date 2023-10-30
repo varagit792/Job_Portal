@@ -134,6 +134,7 @@ interface AllCompaniesState {
     companyTypeIds: number[];
     industryIds: number[];
     companyIds: number[];
+    allFilterIds: any[];
 }
 const initialState: AllCompaniesState = {
     loading: false,
@@ -166,7 +167,8 @@ const initialState: AllCompaniesState = {
     locationIds: [],
     companyTypeIds: [],
     industryIds: [],
-    companyIds:[]
+    companyIds: [],
+    allFilterIds: []
 }
 
 export const getAllCompanies = createAsyncThunk(
@@ -213,22 +215,27 @@ const getAllCompaniesSlice = createSlice({
         setDepartment: (state, action) => {
             state.department = action.payload;
             state.checkItems.department = action.payload;
+            //state.allFilterIds = [...state.allFilterIds, action.payload]
         },
         setLocation: (state, action) => {
             state.location = action.payload;
             state.checkItems.location = action.payload;
+            //state.allFilterIds = [...state.allFilterIds, action.payload]
         },
         setCompanyType: (state, action) => {
             state.companyType = action.payload;
             state.checkItems.companyType = action.payload;
+            //state.allFilterIds = [...state.allFilterIds, action.payload]
         },
         setIndustry: (state, action) => {
             state.industry = action.payload;
             state.checkItems.industry = action.payload;
+            //state.allFilterIds = [...state.allFilterIds, action.payload]
         },
         setCompany: (state, action) => {
             state.company = action.payload;
             state.checkItems.company = action.payload;
+            //state.allFilterIds = [...state.allFilterIds, action.payload]
         },
         setNavigateFilterOption: (state, action) => {
             state.navigateFilterOption = action?.payload;
@@ -307,41 +314,51 @@ const getAllCompaniesSlice = createSlice({
             if (action?.payload?.filter) {
                 const departmentFilter = state?.departmentIds?.filter((item: any) => item !== action?.payload?.filter);
                 state.departmentIds = departmentFilter;
+                state.allFilterIds = [...state.allFilterIds, departmentFilter]
             } else {
                 state.departmentIds?.push(action.payload);
             }
+            //state.allFilterIds = [...state.allFilterIds, action.payload]
         },
         setLocationIds: (state, action) => {
             if (action?.payload?.filter) {
                 const locationFilter = state?.locationIds?.filter((item: any) => item !== action?.payload?.filter);
                 state.locationIds = locationFilter;
+                state.allFilterIds = [...state.allFilterIds, locationFilter]
             } else {
                 state.locationIds?.push(action.payload);
             }
+            //state.allFilterIds = [...state.allFilterIds, action.payload]
         },
         setCompanyTypeIds: (state, action) => {
             if (action?.payload?.filter) {
                 const companyTypeFilter = state?.companyTypeIds?.filter((item: any) => item !== action?.payload?.filter);
                 state.companyTypeIds = companyTypeFilter;
+                state.allFilterIds = [...state.allFilterIds, companyTypeFilter]
             } else {
                 state.companyTypeIds?.push(action.payload);
             }
+            //state.allFilterIds = [...state.allFilterIds, action.payload]
         },
         setIndustryIds: (state, action) => {
             if (action?.payload?.filter) {
                 const industryFilter = state?.industryIds?.filter((item: any) => item !== action?.payload?.filter);
                 state.industryIds = industryFilter;
+                state.allFilterIds = [...state.allFilterIds, industryFilter]
             } else {
                 state.industryIds?.push(action.payload);
             }
+            //state.allFilterIds = [...state.allFilterIds, action.payload]
         },
         setCompanyIds: (state, action) => {
             if (action?.payload?.filter) {
                 const companyFilter = state?.companyIds?.filter((item: any) => item !== action?.payload?.filter);
                 state.companyIds = companyFilter;
+                state.allFilterIds = [...state.allFilterIds, companyFilter]
             } else {
                 state.companyIds?.push(action.payload);
             }
+            //state.allFilterIds = [...state.allFilterIds, action.payload]
         },
         bulkFilter: (state, action) => {
             state.filtersData.department = action?.payload?.department;
