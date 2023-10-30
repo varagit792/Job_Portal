@@ -14,24 +14,24 @@ const CompanyListItem = ({ item }: any) => {
               <div className="flex items-start justify-between mb-3">
                 <img src={companyBrand} alt="companyBrand" />
                 <button className="px-3 py-2 bg-gray-200 rounded-md text-xs">
-                  {item?.jobs} Jobs
+                  {item?.jobs ? item?.jobs?.length : 0 } Jobs
                 </button>
               </div>
-              <h1 className="text-base font-bold mb-1">{item?.title}</h1>
+              <h1 className="text-base font-bold mb-1 overflow-hidden whitespace-nowrap text-ellipsis">{item?.title}</h1>
               <div className="text-[#475569] text-xs flex justify-start items-center">
-                {Object.keys(item?.location).length ? <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" /> : <></>}
+                <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" />
                 <div className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">
-                  {item?.location?.map((loc: any) => <span>{loc?.title}, </span>)}
+                  {Object.keys(item?.location).length ? item?.location?.map((loc: any) => <span>{loc?.title}, </span>) : <span>Not disclosed</span>}
                 </div>
               </div>
               <hr className="my-4" />
               <div className="flex justify-start items-center text-xs">
                 <div className="flex justify-start items-center">
                   <img src={StarIcon} alt="StarIcon" width="15rem" height="15rem" />
-                  <span className="ml-1">{item?.rating}</span>
+                  <span className="ml-1 text-[#64748B]">{item?.rating ? item?.rating : 'NA'}</span>
                 </div>
                 <span className="border border-gray-300 h-5 mx-2"></span>
-                <span className="text-[#64748B]">{item?.reviews} Reviews</span>
+                <span className="text-[#64748B]">{item?.reviews ? `${item?.reviews} Reviews`  : 'NA'}</span>
               </div>
             </div>
           </>

@@ -274,8 +274,7 @@ const Requirements = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
-  console.log(jobDetailData);
-
+  
   return (
     <>
       <div className="h-[10%] w-full"></div>

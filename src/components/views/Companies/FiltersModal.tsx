@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { RxCross1 } from 'react-icons/rx';
 import FiltersDepartment from './FilterByCompanyDepartment';
@@ -10,21 +10,23 @@ import {
     setLocation,
     setCompanyType,
     setIndustry,
+    setCompany,
     //setWorkMode
 } from '../../../store/reducers/companies/getAllCompanies';
 import FiltersLocation from './FilterByCompanyLocation';
 import FiltersCompanyType from './FilterByCompanyType';
 import FiltersIndustry from './FilterByIndustry';
+import FiltersCompany from './FilterByCompany';
 //import FiltersWorkMode from './FiltersWorkMode';
 //import FiltersExperience from './FiltersExperience';
 
 const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
+    const [allFilters, setAllFilters] = useState<any>([])
+
     const dispatch = useAppDispatch();
-    const { navigateFilterOption, checkItems, departmentIds, locationIds, companyTypeIds, industryIds,
+    const { navigateFilterOption, checkItems, departmentIds, locationIds, companyTypeIds, industryIds, companyIds,
         //workModeIds, maxExpYearId
     } = useAppSelector((state) => state.getAllCompanies);
-
-    console.log("locationIds --- >", locationIds);
     
     const closeDialog = () => {
         setIsOpen(false);
@@ -37,6 +39,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
             location: locationIds,
             companyType: companyTypeIds,
             industry: industryIds,
+            company: companyIds,
             //workMode: workModeIds,
             //expYear: maxExpYearId
         }));
@@ -44,10 +47,15 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
         dispatch(setLocation(checkItems?.location));
         dispatch(setCompanyType(checkItems?.companyType));
         dispatch(setIndustry(checkItems?.industry));
+        dispatch(setCompany(checkItems?.company));
         //dispatch(setWorkMode(checkItems?.workMode));
         setIsOpen(false);
     }
 
+    useEffect(() => {
+        setAllFilters(departmentIds?.length +  companyTypeIds?.length + locationIds?.length + companyIds?.length + industryIds?.length)
+    }, [departmentIds, companyTypeIds, locationIds, companyIds, industryIds ])
+    
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={closeDialog}>
@@ -76,7 +84,8 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                         >
                             <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title className="text-lg font-medium text-gray-900 text-right flex justify-between items-center p-5">
-                                    <h1 className="font-bold leading-none">Filters</h1>
+                                    <h1 className="font-bold leading-none">Filters
+                                        <span className=" m-2">{ allFilters }</span></h1>
                                     <button
                                         onClick={closeDialog}
                                         type="button"
@@ -132,6 +141,17 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                                         {departmentIds?.length}
                                                     </span>}
                                             </li>
+                                            <li
+                                                className={navigateFilterOption !== "Company" ?
+                                                    "px-5 py-2 cursor-pointer flex justify-between items-center"
+                                                    : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
+                                                onClick={() => dispatch(setNavigateFilterOption("Company"))}>
+                                                <span>Companies</span>
+                                                {companyIds?.length !== 0 &&
+                                                    <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
+                                                        {companyIds?.length}
+                                                    </span>}
+                                            </li>
                                         </ul>
                                     </div>
                                     <div className="col-start-4 col-end-13">
@@ -139,6 +159,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         {navigateFilterOption === "Location" && <FiltersLocation />}
                                         {navigateFilterOption === "CompanyType" && <FiltersCompanyType />}
                                         {navigateFilterOption === "Industry" && <FiltersIndustry />}
+                                        {navigateFilterOption === "Company" && <FiltersCompany />}
                                     </div>
                                 </div>
                                 <div className="p-5 float-right">

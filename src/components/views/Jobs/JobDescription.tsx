@@ -75,25 +75,24 @@ const JobDescription = () => {
                       {jobDetail?.payScaleLowerRange?.title} -
                     </span>
                     {jobDetail?.payScaleUpperRange &&
-                      <span className=" text-slate-500 text-base font-medium leading-snug tracking-tight"> {jobDetail?.payScaleUpperRange?.title}  {jobDetail?.numberSystem?.title } {jobDetail?.recurrence?.title}
+                      <span className=" text-slate-500 text-base font-medium leading-snug tracking-tight"> {jobDetail?.payScaleUpperRange?.title}  {jobDetail?.numberSystem?.title} {jobDetail?.recurrence?.title}
                       </span>}
                   </div>}
                   <div className="justify-start items-center gap-2 flex">
                     <img src={locationIcon} alt="location" />
                     {jobDetail?.jobsLocation?.map((loc: any) =>
-                      <div className="text-slate-500 text-base font-medium leading-snug tracking-tight">
-                        {loc?.location?.title}
-                      </div>)}
+                      <span className="text-slate-500 text-base font-medium leading-snug tracking-tight">
+                        {loc?.location?.title},
+                      </span>)}
                   </div>
-
                 </div>
                 <div className="justify-start items-center gap-5 inline-flex">
-                  <div className=" px-3 py-2 bg-orange-50 rounded justify-center items-center gap-2.5 flex">
-                    <div className="text-orange-600 text-sm font-normal leading-none tracking-tight">{ jobDetail?.workMode?.title}</div>
-                  </div>
-                  <div className=" px-3 py-2 bg-green-50 rounded justify-center items-center gap-2.5 flex">
-                    <div className="text-green-600 text-sm font-normal leading-none tracking-tight">{jobDetail?.employmentType?.title }</div>
-                  </div>
+                  {jobDetail?.workMode?.title && <div className=" px-3 py-2 bg-orange-50 rounded justify-center items-center gap-2.5 flex">
+                    <div className="text-orange-600 text-sm font-normal leading-none tracking-tight">{jobDetail?.workMode?.title}</div>
+                  </div>}
+                  {jobDetail?.employmentType?.title && <div className=" px-3 py-2 bg-green-50 rounded justify-center items-center gap-2.5 flex">
+                    <div className="text-green-600 text-sm font-normal leading-none tracking-tight">{jobDetail?.employmentType?.title}</div>
+                  </div>}
                 </div>
               </div>
             </div>
@@ -122,7 +121,7 @@ const JobDescription = () => {
               <div className="self-stretch text-slate-900 text-base font-bold  leading-snug tracking-tight">
                 Key Responsibilities</div>
               <span className="w-full break-words text-slate-500 text-base font-medium leading-snug tracking-tight">
-               {jobDetail?.keyResponsibility}
+                {jobDetail?.keyResponsibility}
               </span>
             </div>
             <div className="self-stretch h-px border border-indigo-100 my-5"></div>
@@ -142,30 +141,35 @@ const JobDescription = () => {
             <div className="self-stretch justify-start items-center gap-3 flex mt-2">
               <img className="w-14 h-14 rounded-lg" src={companyLogo} alt="companyLogo" />
               <div className="grow shrink basis-0 flex-col justify-start items-start gap-1 inline-flex">
-                <div className="self-stretch text-slate-900 text-2xl font-bold leading-7 tracking-tight">{jobDetail?.company?.title}</div>
+                <div className="self-stretch text-slate-900 text-2xl font-bold leading-7 tracking-tight overflow-hidden whitespace-nowrap text-ellipsis w-96">{jobDetail?.company?.title}</div>
                 <div className="w-40 justify-start items-center gap-2 inline-flex">
                   <div className="justify-start items-center gap-1 flex">
                     <AiFillStar color="yellow" />
-                    <div className="text-black text-sm font-normal leading-none tracking-tight">{jobDetail?.company?.rating }</div>
+                    {jobDetail?.company?.rating ? <div className="text-black text-sm font-normal leading-none tracking-tight">{jobDetail?.company?.rating}</div> : <div >N.A</div>}
                   </div>
-                  <div className=" border-l border-indigo-100 h-4"></div>
-                  <div className="text-slate-500 text-sm font-normal leading-none tracking-tight">{jobDetail?.company?.reviews }</div>
+                  {jobDetail?.company?.reviews && <Fragment>
+                    <div className=" border-l border-indigo-100 h-4"></div>
+                    <div className="text-slate-500 text-sm font-normal leading-none tracking-tight">{jobDetail?.company?.reviews}
+                    </div>
+                  </Fragment>}
                 </div>
               </div>
             </div>
             <div className="justify-start items-start gap-5 inline-flex mt-2">
               <div className="justify-start items-center gap-2 flex">
                 <img src={locationIcon} alt="location" />
-                {jobDetail?.company?.location?.map((loc,index) =>
-                  (index < locationCount) ? <span className="ml-1 text-base font-medium">{loc?.title}, </span>
-                    : <span className="ml-1 text-base font-medium">{loc?.title}. </span>
-              )}
+                {jobDetail?.company?.location?.length > 0 ? jobDetail?.company?.location?.map((loc, index) =>
+                  (index < locationCount) ? <span className="ml-1 text-slate-500 text-base font-medium">{loc?.title}, </span>
+                    : <span className="ml-1 text-base font-medium text-slate-500">{loc?.title}. </span>
+                ) : <span className="ml-1 text-slate-500 text-base font-medium">N.A</span>}
               </div>
               <div className=" border-l border-indigo-100 h-4"></div>
-              <div className="justify-start items-center gap-2 flex">
+              {jobDetail?.company?.employeeCount && <div className="justify-start items-center gap-2 flex">
                 <img src={peopleIcon} alt="people" />
-                <div className="text-slate-500 text-base font-medium leading-snug tracking-tight">{jobDetail?.company?.employeeCount }</div>
+                <div className="text-slate-500 text-base font-medium leading-snug tracking-tight">{jobDetail?.company?.employeeCount}
+                </div>
               </div>
+              }
             </div>
             <div className="px-2 py-1.5  w-44 bg-indigo-50 rounded-lg justify-center items-center text-center mt-2">
               <button className="text-indigo-900 text-base font-medium  leading-snug tracking-tight ">More open positions</button>
@@ -183,7 +187,7 @@ const JobDescription = () => {
                 <img src={rightArrow} alt="rightArrow" width="w-full" className="text-indigo-900" />
               </div>
             </Link>
-            
+
           </div>
           <div className="mb-4"><ShortJobCard /></div>
           <div className=" mb-3"><ShortJobCard /></div>
