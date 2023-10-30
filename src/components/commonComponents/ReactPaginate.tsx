@@ -1,10 +1,10 @@
 import ReactPaginate from 'react-paginate';
 
 const ReactPaginateItems = ({ itemsPerPage, setItemOffset, items }: any) => {
-    const pageCount = Math.ceil(items.length / itemsPerPage);
+    const pageCount = Math.ceil(items?.length / itemsPerPage);
     // Invoke when user click to request another page.
     const handlePageClick = (event: any) => {
-        const newOffset = (event.selected * itemsPerPage) % items.length;
+        const newOffset = (event.selected * itemsPerPage) % items?.length;
         console.log(
             `User requested page number ${event.selected}, which is offset ${newOffset}`
         );
