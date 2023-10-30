@@ -95,7 +95,7 @@ const SignUp = () => {
             if (Cookies.get('userType') === 'jobSeeker')
                 navigate('/homePage');
             if (Cookies.get('userType') === 'employer')
-                navigate('/employerProfile');
+                navigate('/employerDashboard');
         }
     }, [success, navigate, dispatch])
 
