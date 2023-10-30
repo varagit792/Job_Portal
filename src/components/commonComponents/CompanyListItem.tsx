@@ -14,7 +14,7 @@ const CompanyListItem = ({ item }: any) => {
               <div className="flex items-start justify-between mb-3">
                 <img src={companyBrand} alt="companyBrand" />
                 <button className="px-3 py-2 bg-gray-200 rounded-md text-xs">
-                  {item?.jobs ? item?.jobs : 0 } Jobs
+                  {item?.jobs ? item?.jobs?.length : 0 } Jobs
                 </button>
               </div>
               <h1 className="text-base font-bold mb-1 overflow-hidden whitespace-nowrap text-ellipsis">{item?.title}</h1>

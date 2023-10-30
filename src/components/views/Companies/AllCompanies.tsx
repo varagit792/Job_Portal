@@ -25,11 +25,13 @@ import { CompanyFilter } from './FilterByCompany';
 const AllCompanies = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { success, allCompanies, loading, department, filtersData, location, companyType, industry, company } = useAppSelector((state) => state.getAllCompanies);
+    const { success, allCompanies, loading, department, filtersData, location, companyType, industry, company, allFilterIds } = useAppSelector((state) => state.getAllCompanies);
     const [page, setPage] = useState(1);
     const [toggleDispach, setToggleDispach] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
     const [companyCard, setCompanyCard] = useState<any>([]);
+    
+    console.log("allFilterIds-->", allFilterIds);
     
     useEffect(() => {
         window.addEventListener("scroll", handelInfiniteScroll);
@@ -230,7 +232,8 @@ return (
                     <hr className="bg-[#E0E7FF] my-5" />
                         <CompanyFilter
                             handleCompanyCheckbox={handleCompanyCheckbox}
-                            setIsOpen={setIsOpen}
+                        setIsOpen={setIsOpen}
+                        isOpen={isOpen}
                         />
                     {/* <hr className="bg-[#E0E7FF] my-5" />
                         <div className="w-full">

@@ -4,6 +4,8 @@ import ReactPaginateItems from '../../../commonComponents/ReactPaginate';
 import { useAppDispatch, useAppSelector } from '../../../../';
 import { getEmployerCompanyList } from "../../../../store/reducers/companies/employerCompanyList";
 import { formatDistanceToNow } from 'date-fns';
+import NoRecords from "../../../commonComponents/NoRecords";
+import Cookies from "js-cookie";
 
 function classNames(...classes: any) {
     return classes.filter(Boolean).join(' ')
@@ -25,9 +27,10 @@ const RecruiterJobList = () => {
     const [itemOffset, setItemOffset] = useState(0);
     const itemsPerPage: number = 5;
     const endOffset = itemOffset + itemsPerPage;
+    const userId = Cookies.get('userId');
 
     useEffect(() => {
-        dispatch(getEmployerCompanyList({ page, data: { user: { id: 2 } } }));
+        dispatch(getEmployerCompanyList({ page, data: { user: { id: userId } } }));
     }, [dispatch]);
 
     useEffect(() => {
@@ -61,7 +64,9 @@ const RecruiterJobList = () => {
                     </Tab.List>
                     <Tab.Panels className="w-full">
                         {Object.values(categories).map((posts, idx) => {
-                            const currentItems = posts.slice(itemOffset, endOffset);
+                            const currentItems = posts?.slice(itemOffset, endOffset);
+                            console.log("currentItems-->", currentItems, currentItems?.length);
+                            
                             return (
                                 <Tab.Panel key={idx}>
                                     <div className="flex justify-between items-center mt-8 mb-8">
@@ -73,8 +78,10 @@ const RecruiterJobList = () => {
                                             <button className=" text-white bg-[#4F46E5] rounded-lg px-6 py-2 font-semibold">Post a Job</button>
                                         </div>
                                     </div>
-                                    <div className="bg-white rounded-xl overflow-hidden w-full border border-[#E0E7FF]">
-                                        <table className="w-full table-auto">
+                                    {currentItems !== undefined && currentItems?.length !== 0 ? 
+                                        <>
+                                            <div className="bg-white rounded-xl overflow-hidden w-full border border-[#E0E7FF]">
+                                       <table className="w-full table-auto">
                                             <thead>
                                                 <tr className="leading-normal border-b border-[#E0E7FF]">
                                                     <th className="py-3 px-6 text-left">Job title</th>
@@ -164,8 +171,12 @@ const RecruiterJobList = () => {
                                                 }
                                             </tbody>
                                         </table>
+                                            
                                     </div>
-                                    <ReactPaginateItems itemsPerPage={itemsPerPage} items={posts} itemOffset={itemOffset} setItemOffset={setItemOffset} />
+                                            <ReactPaginateItems itemsPerPage={itemsPerPage} items={posts} itemOffset={itemOffset} setItemOffset={setItemOffset} />
+                                            </>
+                                    : <NoRecords/>
+                                        }
                                 </Tab.Panel>
                             )
                         })}
