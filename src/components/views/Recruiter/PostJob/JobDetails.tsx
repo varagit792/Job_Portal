@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { IFormInputsJobDetail, IFormInputsJobDetailDraft, IFormInputsJobDetailSave, IFormInputsPostAJob } from '../../../../interface/employer';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
 import { formData, postJobDetailDraft, postJobDetailSave } from '../../../../store/reducers/jobs/postJobs';
-import { getCurrencyList, getDepartmentList, getEmployeeTypeList, getJobRoleList, getJobTypeList, getLocationList, getNumberSystemList, getRecurrenceList, getRoleCategoryList, getSalaryRangeList, getWorkModeList } from '../../../utils/utils';
+import { getCurrencyList, getDepartmentList, getEmployeeTypeList, getJobExpiryList, getJobRoleList, getJobStatusList, getJobTypeList, getLocationList, getNumberSystemList, getRecurrenceList, getRoleCategoryList, getSalaryRangeList, getWorkModeList } from '../../../utils/utils';
 import { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { JobDetailDraftSchema, JobDetailSaveSchema, PostJobDetailSchema, PostJobSchema } from '../../../../schema/postJob';
@@ -30,6 +30,8 @@ const JobDetails = () => {
   const [numberSystem, setNumberSystem] = useState<any>([]);
   const [recurrence, setRecurrence] = useState<any>([]);
   const [jobType, setJobType] = useState<any>([]);
+  const [jobExpiry, setJobExpiry] = useState<any>([]);
+  const [jobStatus, setJobStatus] = useState<any>([]);
   const [postBack, setPostBack] = useState({ postURL: '' });
   const [jobTitle, setJobTitle] = useState('');
   const [buttonClick, setButtonClick] = useState('');
@@ -83,6 +85,8 @@ const JobDetails = () => {
       jobDetail?.payScaleUpperRange && setValue('toSalaryRange', { label: jobDetail?.payScaleUpperRange?.title, value: jobDetail?.payScaleUpperRange?.id?.toString() });
       jobDetail?.numberSystem && setValue('numberSystem', { label: jobDetail?.numberSystem?.title, value: jobDetail?.numberSystem?.id?.toString() });
       jobDetail?.recurrence && setValue('recurrence', { label: jobDetail?.recurrence?.title, value: jobDetail?.recurrence?.id?.toString() });
+      jobDetail?.jobExpiry && setValue('jobExpiry', { label: jobDetail?.jobExpiry?.title, value: jobDetail?.jobExpiry?.numberOfDays });
+      jobDetail?.jobStatus && setValue('jobStatus', { label: jobDetail?.jobStatus?.title, value: jobDetail?.jobStatus?.statusValue });
       jobDetail?.jobDescription && setValue('jobDescription', jobDetail?.jobDescription);
       jobDetail?.jobsOpening && setValue('jobsOpening', jobDetail?.jobsOpening);
       jobDetail?.keyResponsibility && setValue('keyResponsibility', jobDetail?.keyResponsibility);
@@ -102,6 +106,8 @@ const JobDetails = () => {
       jobDetailData?.payScaleUpperRange && setValue('toSalaryRange', jobDetailData?.payScaleUpperRange);
       jobDetailData?.numberSystem && setValue('numberSystem', jobDetailData?.numberSystem);
       jobDetailData?.recurrence && setValue('recurrence', jobDetailData?.recurrence);
+      jobDetailData?.jobExpiry && setValue('jobExpiry', jobDetailData?.jobExpiry);
+      jobDetailData?.jobStatus && setValue('jobStatus', jobDetailData?.jobStatus);
       jobDetailData?.jobDescription && setValue('jobDescription', jobDetailData?.jobDescription);
       jobDetailData?.jobsOpening && setValue('jobsOpening', jobDetailData?.jobsOpening);
       jobDetailData?.keyResponsibility && setValue('keyResponsibility', jobDetailData?.keyResponsibility);
@@ -131,7 +137,8 @@ const JobDetails = () => {
         department: data?.department,
         roleCategory: data?.roleCategory,
         user: userId,
-        status: true,
+        jobStatus: data?.jobStatus,
+        jobExpiry: data?.jobExpiry,
         employmentType: data?.employmentType,
         workMode: data?.workMode,
         candidateRelocate: data?.candidateRelocate,
@@ -145,7 +152,6 @@ const JobDetails = () => {
 
       const jobLocation = data?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
       let draft = true;
-      let jobStatus = false;
 
       dispatch(postJobDetailDraft({
         id: updatePostId,
@@ -163,7 +169,8 @@ const JobDetails = () => {
         department: data?.department?.value,
         roleCategory: data?.roleCategory?.value,
         user: userId,
-        status: jobStatus,
+        jobStatus: data?.jobStatus?.value,
+        jobExpiry: data?.jobExpiry?.value,
         isDraft: draft,
         employmentType: data?.employmentType?.value,
         workMode: data?.workMode?.value,
@@ -199,7 +206,6 @@ const JobDetails = () => {
     if (buttonClick === 'Save' && userType && userId) {
       const jobLocation = data?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
       let draft = false;
-      let jobStatus = true;
 
       dispatch(postJobDetailSave({
         id: updatePostId,
@@ -217,7 +223,8 @@ const JobDetails = () => {
         department: data?.department?.value,
         roleCategory: data?.roleCategory?.value,
         user: userId,
-        status: jobStatus,
+        jobStatus: data?.jobStatus?.value,
+        jobExpiry: data?.jobExpiry?.value,
         isDraft: draft,
         employmentType: data?.employmentType?.value,
         workMode: data?.workMode?.value,
@@ -298,6 +305,17 @@ const JobDetails = () => {
       if (Object.keys(jobTypeList)?.length) {
         setJobType(jobTypeList as any)
       }
+
+      const jobExpiryList = await getJobExpiryList()
+      if (Object.keys(jobExpiryList)?.length) {
+        setJobExpiry(jobExpiryList as any)
+      }
+
+      const jobStatusList = await getJobStatusList()
+      if (Object.keys(jobStatusList)?.length) {
+        setJobStatus(jobStatusList as any)
+      }
+
     })();
 
     if (Number(postId)) {
@@ -543,6 +561,38 @@ const JobDetails = () => {
                           </div>
                         </div>
                       </div>
+
+                      <div className="w-full grid grid-cols-2 items-start gap-5 inline-flex">
+                        <div className=" flex-col justify-start  gap-2 inline-flex">
+                          <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Job Expiry</div>
+                          <div className='w-full'>
+                            <AutocompleteBox
+                              control={control}
+                              isClearable={true}
+                              fieldName={"jobExpiry"}
+                              dropdownData={jobExpiry?.map(({ numberOfDays, title }: any) => ({ value: numberOfDays, label: title }))}
+                              default={watch("jobExpiry")}
+                              placeholder={"Select job expiry"}
+                            />
+                            {errors?.jobExpiry && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobExpiry?.label?.message}</p>}
+                          </div>
+                        </div>
+                        <div className=" flex-col justify-start items-start gap-2 inline-flex">
+                          <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Job Status</div>
+                          <div className='w-full'>
+                            <AutocompleteBox
+                              control={control}
+                              isClearable={true}
+                              fieldName={"jobStatus"}
+                              dropdownData={jobStatus?.map(({ statusValue, title }: any) => ({ value: statusValue, label: title }))}
+                              default={watch("jobStatus")}
+                              placeholder={"Select job expiry"}
+                            />
+                            {errors?.jobStatus && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobStatus?.label?.message}</p>}
+                          </div>
+                        </div>
+                      </div>
+
                       <div className="w-full h-auto flex-col justify-start items-start gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Job description</div>
                         <div className='w-full'>

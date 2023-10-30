@@ -76,6 +76,8 @@ const Preview = () => {
       jobDetailData?.payScaleUpperRange && setValue('toSalaryRange', jobDetailData?.payScaleUpperRange);
       jobDetailData?.numberSystem && setValue('numberSystem', jobDetailData?.numberSystem);
       jobDetailData?.recurrence && setValue('recurrence', jobDetailData?.recurrence);
+      jobDetailData?.jobExpiry && setValue('jobExpiry', jobDetailData?.jobExpiry);
+      jobDetailData?.jobStatus && setValue('jobStatus', jobDetailData?.jobStatus);
       jobDetailData?.companyType && setValue('companyType', jobDetailData?.companyType);
       jobDetailData?.jobEducation && setValue('highestQualification', selectedJobEducation);
       jobDetailData?.premiumBTech && setValue('premiumBTech', jobDetailData?.premiumBTech);
@@ -146,7 +148,8 @@ const Preview = () => {
         isDraft: false,
         jobsKeySkills: keySkills,
         employmentType: jobDetailData?.employmentType?.value,
-        status: true,
+        jobStatus: jobDetailData?.jobStatus?.value,
+        jobExpiry: jobDetailData?.jobExpiry?.value,
         workMode: jobDetailData?.workMode?.value,
         candidateRelocate: data?.candidateRelocate,
         jobLocality: jobLocality,
@@ -175,11 +178,9 @@ const Preview = () => {
     if ((buttonClick === 'Draft' || buttonClick === 'Save') && userType && userId) {
 
       let draft = true;
-      let jobStatus = false;
       let successMessage = "Job drafted successfully !!";
       if (buttonClick === 'Save') {
         draft = false;
-        jobStatus = true;
         successMessage = "Job saved successfully !!";
       }
       const keySkills = jobDetailData?.jobsKeySkills?.map((skills: any) => ({ preferred: true, keySkills: { id: skills?.keySkills?.value } }));
@@ -192,7 +193,8 @@ const Preview = () => {
         totalExpYearStart: jobDetailData?.totalExpYearStart?.value,
         totalExpYearEnd: jobDetailData?.totalExpYearEnd?.value,
         jobsKeySkills: keySkills,
-        status: jobStatus,
+        jobStatus: jobDetailData?.jobStatus?.value,
+        jobExpiry: jobDetailData?.jobExpiry?.value,
         isDraft: draft,
         jobLocality: jobLocality,
         jobEducation: jobEducation,
@@ -268,6 +270,7 @@ const Preview = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
+  console.log(errors);
 
   return (
     <>
@@ -314,6 +317,21 @@ const Preview = () => {
                         </div>
                       </div>
                     </div>
+
+                    <div className="self-stretch h-[52px] flex-col justify-start  gap-7 flex">
+                      <div className="self-stretch justify-start  gap-7 inline-flex">
+                        <div className="grow shrink basis-0 flex-col justify-start  gap-2 inline-flex">
+                          <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Job Expiry</div>
+                          <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{jobDetailData?.jobExpiry?.label}</div>
+                        </div>
+                        <div className="grow shrink basis-0 flex-col justify-start  gap-2 inline-flex">
+                          <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Job Status</div>
+                          <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{jobDetailData?.jobStatus?.label}</div>
+                        </div>
+                      </div>
+                    </div>
+
+
                     <div className="self-stretch h-[0px] border border-indigo-100"></div>
                     <div className="self-stretch justify-start items-center gap-5 inline-flex">
                       <div className="justify-start items-center gap-3 flex">
