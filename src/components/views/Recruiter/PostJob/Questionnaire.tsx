@@ -172,6 +172,7 @@ const Questionnaire = () => {
         setIsOpen={setIsQuestionnaireOpen}
         modalBody={
           <QuestionnaireForm closeDialog={closeProfilePictureDialog}
+            setIsQuestionnaireOpen={setIsQuestionnaireOpen}
           />
         }
       />

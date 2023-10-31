@@ -42,6 +42,14 @@ export const PostJobDetailSchema = yup.object().shape({
     value: yup.string().required("Recurrence"),
     label: yup.string().required("Recurrence"),
   }),
+  jobExpiry: yup.object().shape({
+    value: yup.number().required("Please select job expiry"),
+    label: yup.string().required("Please select job expiry"),
+  }),
+  jobStatus: yup.object().shape({
+    value: yup.number().required("Please select job status"),
+    label: yup.string().required("Please select job status"),
+  }),
   roleCategory: yup.object().shape({
     value: yup.string().required("Please select role category"),
     label: yup.string().required("Please select role category"),
@@ -185,6 +193,14 @@ export const PostJobSchema = yup.object().shape({
   fromWorkExperience: yup.object().shape({
     value: yup.string().required("Please select experience"),
     label: yup.string().required("Please select experience"),
+  }),
+  jobExpiry: yup.object().shape({
+    value: yup.number().required("Please select job expiry"),
+    label: yup.string().required("Please select job expiry"),
+  }),
+  jobStatus: yup.object().shape({
+    value: yup.number().required("Please select job status"),
+    label: yup.string().required("Please select job status"),
   }),
   toWorkExperience: yup.object().shape({
     value: yup.string().required("Please select experience"),
@@ -403,6 +419,14 @@ export const JobDetailDraftSchema = yup.object().shape({
   employmentType: yup.object().shape({
     value: yup.string().required("Please select employment type"),
     label: yup.string().required("Please select employment type"),
+  }),
+  jobExpiry: yup.object().shape({
+    value: yup.number().required("Please select job expiry"),
+    label: yup.string().required("Please select job expiry"),
+  }),
+  jobStatus: yup.object().shape({
+    value: yup.number().required("Please select job status"),
+    label: yup.string().required("Please select job status"),
   }),
   keySkills: yup.array()
     .min(2, 'Pick at least two keySkills')
@@ -785,6 +809,14 @@ export const JobDetailSaveSchema = yup.object().shape({
     label: yup.string().required("Please select salary"),
   }),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
+  jobExpiry: yup.object().shape({
+    value: yup.number().required("Please select job expiry"),
+    label: yup.string().required("Please select job expiry"),
+  }),
+  jobStatus: yup.object().shape({
+    value: yup.number().required("Please select job status"),
+    label: yup.string().required("Please select job status"),
+  }),
   jobDescription: yup.string().label("Please enter job description").required().test(
     'len', 'Minimum 1000 characters are required',
     (data) => {

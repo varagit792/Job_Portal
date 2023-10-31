@@ -45,7 +45,6 @@ const Recruiter = () => {
     }
     if (buttonClick === 'Draft' && userType && userId) {
       let draft = true;
-      let jobStatus = false;
       const jobEducation = jobDetailData?.education?.map((education: any) => ({ education: education?.value }));
       const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
       const jobLocation = jobDetailData?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
@@ -56,7 +55,8 @@ const Recruiter = () => {
         totalExpYearStart: jobDetailData?.totalExpYearStart?.value,
         totalExpYearEnd: jobDetailData?.totalExpYearEnd?.value,
         jobsKeySkills: keySkills,
-        status: jobStatus,
+        jobStatus: jobDetailData?.jobStatus?.value,
+        jobExpiry: jobDetailData?.jobExpiry?.value,
         isDraft: draft,
         jobLocality: jobLocality,
         jobEducation: jobEducation,
@@ -103,7 +103,6 @@ const Recruiter = () => {
     }
     if (buttonClick === 'Save' && userType && userId) {
       let draft = false;
-      let jobStatus = true;
 
 
       const jobEducation = jobDetailData?.education?.map((education: any) => ({ education: education?.value }));
@@ -116,7 +115,8 @@ const Recruiter = () => {
         totalExpYearStart: jobDetailData?.totalExpYearStart?.value,
         totalExpYearEnd: jobDetailData?.totalExpYearEnd?.value,
         jobsKeySkills: keySkills,
-        status: jobStatus,
+        jobStatus: jobDetailData?.jobStatus?.value,
+        jobExpiry: jobDetailData?.jobExpiry?.value,
         jobLocality: jobLocality,
         jobEducation: jobEducation,
         companyType: jobDetailData?.companyType?.value,
