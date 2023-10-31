@@ -116,6 +116,20 @@ interface WorkMode {
     title: string,
     status: boolean
 }
+
+interface JobStatus {
+    id: number,
+    title: string,
+    statusValue: number,
+    status: boolean
+}
+
+interface JobExpiry {
+    id: number,
+    title: string,
+    numberOfDays: number,
+    status: boolean
+}
 interface GetJob {
     id: number,
     title: string,
@@ -126,7 +140,8 @@ interface GetJob {
     jobDescription: string,
     createdAt: string,
     updatedAt: string,
-    status: boolean,
+    jobStatus: JobStatus,
+    jobExpiry: JobExpiry,
     company: Company,
     totalExpYearStart: TotalExpYearStart,
     totalExpYearEnd: TotalExpYearEnd,

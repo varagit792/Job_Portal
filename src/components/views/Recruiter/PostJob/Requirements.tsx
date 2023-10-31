@@ -112,7 +112,6 @@ const Requirements = () => {
     }
     if (buttonClick === 'Draft' && userType && userId) {
       let draft = true;
-      let jobStatus = false;
 
       const jobEducation = data?.education?.map((education: any) => ({ education: education?.value }));
       const jobLocality = data?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
@@ -124,7 +123,8 @@ const Requirements = () => {
         totalExpYearStart: data?.fromWorkExperience?.value,
         totalExpYearEnd: data?.toWorkExperience?.value,
         jobsKeySkills: keySkills,
-        status: jobStatus,
+        jobStatus: jobDetailData?.jobStatus?.value,
+        jobExpiry: jobDetailData?.jobExpiry?.value,
         jobLocality: jobLocality,
         jobEducation: jobEducation,
         companyType: data?.companyType?.value,
@@ -171,7 +171,6 @@ const Requirements = () => {
 
     if (buttonClick === 'Save' && userType && userId) {
       let draft = false;
-      let jobStatus = true;
 
       const jobEducation = data?.education?.map((education: any) => ({ education: education?.value }));
       const jobLocality = data?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
@@ -183,7 +182,8 @@ const Requirements = () => {
         totalExpYearStart: data?.fromWorkExperience?.value,
         totalExpYearEnd: data?.toWorkExperience?.value,
         jobsKeySkills: keySkills,
-        status: jobStatus,
+        jobStatus: jobDetailData?.jobStatus?.value,
+        jobExpiry: jobDetailData?.jobExpiry?.value,
         jobLocality: jobLocality,
         jobEducation: jobEducation,
         companyType: data?.companyType?.value,

@@ -8,11 +8,13 @@ import JobRecommendations from "./JobRecommendations";
 import TopCompaniesHiring from "./TopCompaniesHiring";
 import FeaturedCity from "./FeaturedCity";
 import ProfileBanner from "./ProfileBanner";
+import { clearGetFilterJobsSlice, getFilterJobs } from "../../../store/reducers/jobs/GetFilterJobs";
 
 const HomePage = () => {
 
     const dispatch = useAppDispatch();
     const { success, profileDashboard } = useAppSelector((state) => state.getProfileDashboard);
+    const { allJobs, success:jobsSuccess } = useAppSelector((state) => state.getFilterJobs);
 
     useEffect(() => {
         dispatch(profileDashboardGet());
@@ -23,6 +25,16 @@ const HomePage = () => {
             dispatch(clearGetProfileDashboardSlice());
         }
     }, [dispatch, success]);
+
+    useEffect(() => {
+        dispatch(getFilterJobs({ }));
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (jobsSuccess) {
+            dispatch(clearGetFilterJobsSlice());
+        }
+    }, [jobsSuccess, dispatch]);
 
     return (
         <>
@@ -37,7 +49,7 @@ const HomePage = () => {
                     <hr className="my-10" />
                     <TopCompaniesHiring title="Top companies hiring" viewLabel="View all"/>
                     <hr className="my-10" />
-                    <FeaturedCity />
+                    <FeaturedCity allJobs={allJobs} />
                 </div>
             </div >
         </>

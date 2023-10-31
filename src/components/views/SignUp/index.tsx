@@ -95,7 +95,7 @@ const SignUp = () => {
             if (Cookies.get('userType') === 'jobSeeker')
                 navigate('/homePage');
             if (Cookies.get('userType') === 'employer')
-                navigate('/employerProfile');
+                navigate('/employerDashboard');
         }
     }, [success, navigate, dispatch])
 
@@ -225,15 +225,15 @@ const SignUp = () => {
                                         <label className="block text-sm font-semibold mb-2">
                                            Company
                                         </label>
-                                        <div className="appearance-none border rounded-xl w-full text-gray-700 leading-tight shadow-sm">
+                                        <div className="appearance-none border rounded-xl w-full text-gray-600 leading-tight shadow-sm">
                                             <Controller
                                                 control={control}
                                                 name="companies"
                                                 render={({ field }) => (
-                                                    <Select className="shadow-sm appearance-none border rounded-xl w-full  text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                    <Select className="shadow-sm appearance-none border rounded-xl w-full  text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
                                                         {...field}
                                                         isClearable
-                                                        placeholder=""
+                                                        placeholder="Select company"
                                                         options={companyList?.map(({ id, title }: any) => ({ value: id, label: title }))}
                                                         defaultValue={watch("companies")}
                                                     />

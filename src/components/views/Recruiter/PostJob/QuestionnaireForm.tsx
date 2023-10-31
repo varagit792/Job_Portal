@@ -5,15 +5,12 @@ import AutocompleteBox from '../../../commonComponents/AutocompleteBox'
 import ShortAnswer from './ShortAnswer';
 import MultipleChoice from './MultipleChoice';
 import SingleChoice from './SingleChoice';
+import QuestionType from './QuestionType';
 
-const QuestionnaireForm = ({ closeDialog }: any) => {
+const QuestionnaireForm = ({ closeDialog, setIsQuestionnaireOpen }: any) => {
 
   const [question, setQuestion] = useState('')
-  const options = [
-    { value: 'shortAnswer', label: 'Short Answer' },
-    { value: 'multipleChoice', label: 'Multiple Choice' },
-    { value: 'singleChoice', label: 'Single Choice' }
-  ];
+
 
   const {
     register,
@@ -25,15 +22,10 @@ const QuestionnaireForm = ({ closeDialog }: any) => {
     // resolver: yupResolver(CompanySchema || CompanyDraftSchema || CompanySaveSchema),
   });
   const onSubmit = (data: any) => {
-
   }
 
-
-
-
-
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col">
       <div className="flex items-center justify-between mb-3">
         <h1 className="text-lg font-medium text-gray-900">Add question</h1>
       </div>
@@ -41,42 +33,31 @@ const QuestionnaireForm = ({ closeDialog }: any) => {
         These question will be asked at the time of posting the post by jobSeeker.
       </span>
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-4">
-          <div className="block text-sm font-medium leading-6 text-gray-900 ">Question type</div>
-          <div className="mt-1">
-            <Select
-              // defaultValue={options[0]}
-              {...register}
-              isClearable={true} // enable isClearable to demonstrate extra error handling
-              isSearchable={true}
-              className="text-sm"
-              options={options}
-              onChange={(event) => setQuestion(event.value)}
-              defaultValue={watch("questionType")}
-              placeholder={"Select question Type"}
 
-            />
-          </div>
-        </div>
+        <QuestionType register={register} setQuestion={setQuestion} watch={watch} />
+
         {question === "shortAnswer" && <ShortAnswer />}
 
         {question === "multipleChoice" && <MultipleChoice />}
 
         {question === "singleChoice" && <SingleChoice />}
 
-        <div className="mt-5 flex justify-end items-center">
+        <div className="w-[30%] grow shrink basis-0 border-rounded rounded-full border-2 border-indigo-500 h-14 px-6 py-3 bg-white-600 shadow justify-left justify-center items-center gap-3 flex">
+          <button className="text-slate-500 font-medium leading-normal tracking-tight cursor-pointer" onClick={() => setIsQuestionnaireOpen(true)}>+ Add more questions</button>
+        </div>
+
+        <div className="mt-5 flex  items-center">
           <div>
             <button
               type="button"
-              className="mr-3"
-              onClick={closeDialog}
+              className="rounded-3xl bg-blue-500 mr-3 text-white px-5 py-1.5"
             >
-              Cancel
+              Save as template
             </button>
             <button
               type="submit"
               className="rounded-3xl bg-blue-500 text-white px-5 py-1.5" >
-              Save
+              Attach Question
             </button>
           </div>
         </div>

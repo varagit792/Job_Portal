@@ -12,6 +12,8 @@ export interface IFormInputsJobDetail {
   fromSalaryRange: { value: string; label: string; }
   numberSystem: { value: string; label: string; }
   recurrence: { value: string; label: string; }
+  jobExpiry: { value: number; label: string; }
+  jobStatus: { value: number; label: string; }
   roleCategory: { value: string; label: string; }
   jobDescription: string
   jobsOpening: number
@@ -109,7 +111,8 @@ export interface IFormInputsPostAJob {
   companyWebsite: string
   aboutCompany: string
   companyAddress: string
-  // receiveUpdateOnEmail: string[]
+  jobExpiry: { value: number; label: string; }
+  jobStatus: { value: number; label: string; }
 
 }
 
@@ -153,7 +156,8 @@ export interface IFormInputsRequirementDraft {
   companyWebsite: string
   aboutCompany: string
   companyAddress: string
-  // receiveUpdateOnEmail: string[]
+  jobExpiry: { value: number; label: string; }
+  jobStatus: { value: number; label: string; }
 
 }
 
@@ -209,7 +213,8 @@ export interface PostJobUpdate {
   aboutCompany: string
   companyAddress: string
   user: string
-  status: boolean
+  jobExpiry: number
+  jobStatus: number
 
 }
 
@@ -234,6 +239,8 @@ export interface IFormInputsJobDetailDraft {
   fromSalaryRange: { value: string; label: string; }
   numberSystem: { value: string; label: string; }
   recurrence: { value: string; label: string; }
+  jobExpiry: { value: number; label: string; }
+  jobStatus: { value: number; label: string; }
   hideSalaryDetails: boolean
   companyType: { value: string; label: string; }
   highestQualification: string[]
@@ -310,7 +317,8 @@ export interface PostJobDetailDraft {
   aboutCompany: string
   companyAddress: string
   user: string
-  status: boolean
+  jobExpiry: number
+  jobStatus: number
 
 }
 
@@ -364,7 +372,8 @@ export interface PostRequirementDraft {
   aboutCompany: string
   companyAddress: string
   user: string
-  status: boolean
+  jobExpiry: number
+  jobStatus: number
 
 }
 
@@ -419,7 +428,8 @@ export interface PostCompanyDraft {
   aboutCompany: string
   companyAddress: string
   user: string
-  status: boolean
+  jobExpiry: number
+  jobStatus: number
 
 }
 
@@ -445,6 +455,8 @@ export interface IFormInputsCompanyDraft {
   fromSalaryRange: { value: string; label: string; }
   numberSystem: { value: string; label: string; }
   recurrence: { value: string; label: string; }
+  jobExpiry: { value: string; label: string; }
+  jobStatus: { value: string; label: string; }
   hideSalaryDetails: boolean
   companyType: { value: string; label: string; }
   company: string
@@ -521,7 +533,8 @@ export interface PostResponseDraft {
   aboutCompany: string
   companyAddress: string
   user: string
-  status: boolean
+  jobExpiry: number
+  jobStatus: number
 
 }
 
@@ -545,6 +558,8 @@ export interface IFormInputsResponseDraft {
   fromSalaryRange: { value: string; label: string; }
   numberSystem: { value: string; label: string; }
   recurrence: { value: string; label: string; }
+  jobExpiry: { value: string; label: string; }
+  jobStatus: { value: string; label: string; }
   hideSalaryDetails: boolean
   companyType: { value: string; label: string; }
   company: string
@@ -582,6 +597,8 @@ export interface IFormInputsJobDetailSave {
   recurrence: { value: string; label: string; }
   jobLocation: string[]
   jobsType: { value: string; label: string; }
+  jobExpiry: { value: number; label: string; }
+  jobStatus: { value: number; label: string; }
   jobsRole: { value: string; label: string; }
   department: { value: string; label: string; }
   roleCategory: { value: string; label: string; }
@@ -609,7 +626,8 @@ export interface PostJobDetailSave {
   department: string;
   roleCategory: string;
   user: string
-  status: boolean
+  jobExpiry: number
+  jobStatus: number
   isDraft: boolean
   employmentType: string
   workMode: string;
@@ -641,6 +659,8 @@ export interface PostRequirementSave {
   totalExpYearEnd: string | null;
   numberSystem: string;
   recurrence: string;
+  jobExpiry: number
+  jobStatus: number
   currency: string;
   keyResponsibility: string
   employmentType: string
@@ -657,7 +677,6 @@ export interface PostRequirementSave {
   userType: string
   isDraft: boolean
   user: string
-  status: boolean
 
 }
 
@@ -682,6 +701,8 @@ export interface IFormInputsRequirementSave {
   fromSalaryRange: { value: string; label: string; }
   numberSystem: { value: string; label: string; }
   recurrence: { value: string; label: string; }
+  jobExpiry: { value: string; label: string; }
+  jobStatus: { value: string; label: string; }
   companyType: { value: string; label: string; }
   highestQualification: string[]
   premiumBTech: boolean
@@ -739,7 +760,8 @@ export interface PostCompanySave {
   aboutCompany: string
   companyAddress: string
   user: string
-  status: boolean
+  jobExpiry: string
+  jobStatus: string
 
 }
 

@@ -132,6 +132,13 @@ export const getJobTypeList = async () => {
   return await axios.get(`${process.env.REACT_APP_API_PATH}/jobType/get`).then((res: any) => res.data.data)
 }
 
+export const getJobExpiryList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/jobExpiry/get`).then((res: any) => res.data.data)
+}
+
+export const getJobStatusList = async () => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/jobStatus/get`).then((res: any) => res.data.data)
+}
 
 export const calculateWorkedTime = (startYear: any, startMonth: any) => {
   const months: any = [
