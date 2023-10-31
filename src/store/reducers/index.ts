@@ -45,6 +45,7 @@ import updatePostJobUpdateSlice from './jobs/postJobs';
 import sendOtpReducer from './user/sendUserOtp';
 import verifyMobileOtpReducer from './user/verifyMobileOtp';
 import getEmployerCompanyListSlice from './companies/employerCompanyList';
+import verifyEmailReducer from './user/verifyEmail';
 
 export const reducer = combineReducers({
     // Register
@@ -92,4 +93,5 @@ export const reducer = combineReducers({
     jobSeekerSendOtp: sendOtpReducer,
     jobSeekerVerifyMobile: verifyMobileOtpReducer,
     getEmployerCompanyList: getEmployerCompanyListSlice,
+    verifyUserEmail:verifyEmailReducer
 });
