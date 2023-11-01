@@ -12,6 +12,7 @@ interface User {
     accountId: string
     mobileNumber: string
     userType: string
+
 }
 
 const emptyUserData = (): User => ({
@@ -42,10 +43,11 @@ const initialState: getUserState = {
     errorMessage: undefined,
 }
 
-export const getUserData = createAsyncThunk(
-    "getUserData", async () => {
+export const verifyEmail = createAsyncThunk(
+    "verifyEmail", async (data:any) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_PATH}/user/getDetails`,
+            const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobSeekerProfile/emailVerification`,
+            data,
                 {
                     headers: {
                         'Authorization': `Bearer ${Cookies.get('token')}`
@@ -55,26 +57,27 @@ export const getUserData = createAsyncThunk(
             if (response.status >= 200 && response.status < 300) {
                 return response.data.data;
             }
-        } catch (error) {
-            throw error;
+        } catch (error: any) {
+            console.log('error ', error)
+            throw error?.response?.data?.message;
         }
     });
 
-const getUserDataSlice = createSlice({
-    name: 'getUserData',
+const verifyEmailSlice = createSlice({
+    name: 'verifyEmail',
     initialState,
     extraReducers: (builder) => {
-        builder.addCase(getUserData.pending, (state) => {
+        builder.addCase(verifyEmail.pending, (state) => {
             state.loading = true;
             state.success = false;
             state.error = false;
         });
-        builder.addCase(getUserData.fulfilled, (state, action: PayloadAction<User>) => {
+        builder.addCase(verifyEmail.fulfilled, (state, action: PayloadAction<User>) => {
             state.loading = false;
             state.success = true;
             state.userData = action.payload;
         });
-        builder.addCase(getUserData.rejected, (state, action) => {
+        builder.addCase(verifyEmail.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
             state.error = true;
@@ -83,7 +86,7 @@ const getUserDataSlice = createSlice({
         });
     },
     reducers: {
-        clearGetUserDataSlice: (state) => {
+        clearVerifyEmailSlice: (state) => {
             state.loading = false;
             state.error = false;
             state.success = false;
@@ -91,5 +94,5 @@ const getUserDataSlice = createSlice({
         },
     }
 });
-export default getUserDataSlice.reducer;
-export const { clearGetUserDataSlice } = getUserDataSlice.actions;
+export default verifyEmailSlice.reducer;
+export const { clearVerifyEmailSlice } = verifyEmailSlice.actions;

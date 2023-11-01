@@ -18,6 +18,7 @@ import LocationIcon from '../../../../assets/svg/LocationIcon.svg';
 import { clearUploadState } from "../../../../store/reducers/jobSeekerProfile/uploadResume";
 import VerifyOtpForm from "./VerifyOtpForm";
 import greenTickIcon from '../../../../assets/svg/greenTickIcon.svg';
+import EmailVerifyForm from './EmailVerifyForm';
 
 
 const ProfileBasicDetails = () => {
@@ -28,6 +29,8 @@ const ProfileBasicDetails = () => {
   const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isVerifyOtpOpen, setIsVerifyOtpOpen] = useState<boolean>(false);
+  const [isVerifyEmailOpen, setIsVerifyEmailOpen] = useState<boolean>(false);
+
   useEffect(() => {
     dispatch(getUserData());
   }, [dispatch]);
@@ -62,6 +65,14 @@ const ProfileBasicDetails = () => {
   };
   const closeOtpDialog = () => {
     setIsVerifyOtpOpen(false);
+  }
+
+  const openEmailVerifyModel = () => {
+    setIsVerifyEmailOpen(true);
+  };
+
+  const closeEmailVerifyDialog = () => {
+    setIsVerifyEmailOpen(false);
   }
 
   const parsedDate = parseISO(profileDashboard?.profileLastUpdated)
@@ -125,7 +136,13 @@ const ProfileBasicDetails = () => {
         <div className="text-sm text-[#64748B]">
           <div className="flex justify-start items-center mb-3">
             <img src={EmailIcon} alt="EmailIcon" width="12rem" height="12rem" />
-            <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{userData?.email}</span>
+            <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis mr-1">{userData?.email}</span>
+            {userData.isEmailVerified ? <img src={greenTickIcon} alt="VerifyIcon" width="12rem" height="12rem" /> :
+              <button className=" ml-1 text-blue-600 text-sm, font-medium" onClick={openEmailVerifyModel}>Verify</button>
+            }
+          </div>
+          <div className="flex flex-row">
+           
           </div>
           <div className="flex justify-start items-center">
             {userData.mobileNumber ? <div className="flex justify-start items-center mr-2">
@@ -160,8 +177,8 @@ const ProfileBasicDetails = () => {
       />}
       {isVerifyOtpOpen &&
         <Modal
-        isOpen={isVerifyOtpOpen}
-        setIsOpen={setIsVerifyOtpOpen}
+          isOpen={isVerifyOtpOpen}
+          setIsOpen={setIsVerifyOtpOpen}
           modalBody={
             <VerifyOtpForm
               closeOtpDialog={closeOtpDialog}
@@ -170,6 +187,19 @@ const ProfileBasicDetails = () => {
           }
         />
       }
+
+      {isVerifyEmailOpen && 
+        <Modal
+        isOpen={isVerifyEmailOpen}
+        setIsOpen={setIsVerifyEmailOpen}
+        modalBody={
+          <EmailVerifyForm
+            closeEmailVerifyDialog={closeEmailVerifyDialog}
+            email={userData?.email}
+          />
+          
+       }
+        />}
     </>
   )
 }
