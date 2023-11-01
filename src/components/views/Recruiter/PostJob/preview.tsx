@@ -270,7 +270,6 @@ const Preview = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
-  console.log(errors);
 
   return (
     <>
