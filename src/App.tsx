@@ -14,9 +14,9 @@ const App = () => {
 
   return (
     <div className="h-screen">
-      {location?.pathname !== "/registration" && <Header />}
+      {(location?.pathname !== "/registration" && location?.pathname !== "/login") && <Header />}
       <AllRoutes />
-      {location?.pathname !== "/registration" && <Footer />}
+      {(location?.pathname !== "/registration" && location?.pathname !== "/login") && <Footer />}
     </div>
   );
 }
