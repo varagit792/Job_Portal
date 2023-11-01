@@ -76,11 +76,14 @@ const EmployerHeader = ({ auth, name, logout }: any) => {
                     </Menu.Items>
                   </Transition>
                 </Menu>
-              </> : <>
-                <Link to="/login" className="rounded-lg py-2 px-3">Employer LogIn</Link>
-                <Link to="/login" className="rounded-lg py-2 px-3 mx-3">Employee Login</Link>
-                <Link to="/registration" className="rounded-lg bg-[#EEF2FF] py-2 px-3">Sign Up</Link>
-              </>
+              </> : <div className="justify-start items-start flex">
+              <div className="w-[72px] p-3 rounded-lg justify-center items-center gap-3 flex">
+                    <Link to="/login" className="text-indigo-900 text-base font-medium leading-snug tracking-tight">Log In</Link>
+                  </div>
+                  <div className="w-[86px] p-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex">
+                    <Link to="/registration" className="text-indigo-900 text-base font-medium leading-snug tracking-tight">Sign Up</Link>
+                  </div>
+              </div>
             }
           </div>
         </div>
