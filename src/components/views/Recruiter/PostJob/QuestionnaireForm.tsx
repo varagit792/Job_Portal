@@ -89,7 +89,7 @@ const QuestionnaireForm = () => {
                 <div className=" flex-col justify-start items-start gap-2 ">
                   <div className='w-full'>
                     <input defaultValue={watch("question")}
-                      className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                      className='w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                       placeholder={"Please enter question"}
                       {...register("question")}
                       onChange={e => handlesChange(index, e, e.target.value)} />
@@ -168,7 +168,7 @@ const QuestionnaireForm = () => {
         </div>
         <div className="self-stretch h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-2 inline-flex">
           <div className="grow shrink basis-0 h-[22px] justify-start items-center gap-2 flex">
-            <div className="grow shrink basis-0 text-slate-400 text-base font-normal  leading-snug tracking-tight">Use a previously posted question</div>
+            <div className="grow shrink basis-0 text-slate-400 text-sm font-normal  leading-snug tracking-tight">Use a previously posted question</div>
           </div>
           <div className="w-6 h-6 justify-center items-center flex"></div>
         </div>

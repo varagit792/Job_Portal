@@ -60,9 +60,9 @@ export const PostJobDetailSchema = yup.object().shape({
     label: yup.string().required("Currency"),
   }),
   jobDescription: yup.string().label("Please enter job description").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -70,9 +70,9 @@ export const PostJobDetailSchema = yup.object().shape({
     }
   ),
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
