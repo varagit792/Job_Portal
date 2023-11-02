@@ -6,6 +6,7 @@ import { getEmployerCompanyList } from "../../../../store/reducers/companies/emp
 import { formatDistanceToNow, format, add, differenceInMilliseconds, parseISO, differenceInDays, isAfter, getMonth } from 'date-fns';
 import NoRecords from "../../../commonComponents/NoRecords";
 import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 
 function classNames(...classes: any) {
     return classes.filter(Boolean).join(' ')
@@ -16,10 +17,10 @@ const RecruiterJobList = () => {
     const { success,
         companyDetails
     } = useAppSelector((state) => state.getEmployerCompanyList);
-    const [page, setPage] = useState(1);
     let [categories, setCategories] = useState({
         All: [],
         Open: [],
+        Pending: [],
         Drafts: [],
         Closed: [],
     });
@@ -30,7 +31,7 @@ const RecruiterJobList = () => {
     const userId = Cookies.get('userId');
 
     useEffect(() => {
-        dispatch(getEmployerCompanyList({ page, data: { user: { id: userId } } }));
+        dispatch(getEmployerCompanyList({ data: { user: { id: userId } } }));
     }, [dispatch]);
 
     useEffect(() => {
@@ -38,9 +39,13 @@ const RecruiterJobList = () => {
             setCategories((preValue: any) => {
                 return {
                     ...preValue,
-                    All: companyDetails[0]?.jobs
+                    All: companyDetails[0]?.jobs,
+                    Open: companyDetails[0]?.jobs?.filter((item: any) => item?.jobStatus?.title === "Open"),
+                    Pending: companyDetails[0]?.jobs?.filter((item: any) => item?.jobStatus?.title === "Pending"),
+                    Closed: companyDetails[0]?.jobs?.filter((item: any) => item?.jobStatus?.title === "Close"),
+                    Drafts: companyDetails[0]?.jobs?.filter((item: any) => item?.isDraft)
                 }
-            })
+            });
         }
     }, [success]);
 
@@ -72,7 +77,7 @@ const RecruiterJobList = () => {
                                             <p className="text-[#64748B]">Showing list of all the jobs posted</p>
                                         </div>
                                         <div>
-                                            <button className=" text-white bg-[#4F46E5] rounded-lg px-6 py-2 font-semibold">Post a Job</button>
+                                            <Link to="/postJob/jobDetails" className=" text-white bg-[#4F46E5] rounded-lg px-6 py-2 font-semibold">Post a Job</Link>
                                         </div>
                                     </div>
                                     {currentItems !== undefined && currentItems?.length !== 0 ?

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const initialState: any = {
     loading: false,
@@ -12,7 +13,15 @@ const initialState: any = {
 export const getEmployerCompanyList = createAsyncThunk(
     "getCompanyDetails", async (data: any) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_PATH}/companies/employerCompanyList`, { params: data });
+            const response = await axios.get(`${process.env.REACT_APP_API_PATH}/companies/employerCompanyList`,
+                {
+                    params: data,
+                    headers: {
+                        'Authorization': `Bearer ${Cookies.get('token')}`
+                    }
+                }
+
+            );
             if (response.status >= 200 && response.status < 300) {
                 return response.data.data;
             }
