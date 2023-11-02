@@ -7,38 +7,34 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { verifyMobileOtp, clearVerifyMobileOtpSlice } from '../../../../store/reducers/user/verifyMobileOtp';
 import { getUserData } from '../../../../store/reducers/user/getUserDetails';
 
-
 type Parameters = {
   closeOtpDialog: () => void;
   mobileNumber: any
 }
 
 interface IFormInputs {
-  mobileOtp: string
+  mobileOtp1: string
+  mobileOtp2: string
+  mobileOtp3: string
+  mobileOtp4: string
 }
-const digitsOnly = (value: string) => /^\d+$/.test(value);
 
 const verifySchema = yup.object({
-  mobileOtp: yup.string().required()
-    .test('len', 'Otp should be of 6 digits',
-    (data) => {
-      if (data.length !== 6 ) {
-        return false;
-      } else {
-        return true;
-      }
-    }).test('Digits Only',' Otp should be digits only',digitsOnly)
+  mobileOtp1: yup.string().required(),
+  mobileOtp2: yup.string().required(),
+  mobileOtp3: yup.string().required(),
+  mobileOtp4: yup.string().required(),
 });
 
 const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
 
   const [counter, setCounter] = useState(60);
   const dispatch = useAppDispatch();
-  const { success: successSendOtp, userData } = useAppSelector((state) => state.jobSeekerSendOtp);
-  const { success: successVerifyOtp,errorMessage } = useAppSelector((state) => state.jobSeekerVerifyMobile);
+  const { success: successSendOtp } = useAppSelector((state) => state.jobSeekerSendOtp);
+  const { success: successVerifyOtp, errorMessage } = useAppSelector((state) => state.jobSeekerVerifyMobile);
 
   useEffect(() => {
-    dispatch(sendUserOtp());
+   dispatch(sendUserOtp())
   }, [dispatch]);
 
   useEffect(() => {
@@ -56,7 +52,7 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
   }, [dispatch, successVerifyOtp])
 
   //react hook form controls
-  const { control, formState: { errors }, handleSubmit, watch, setValue, getValues } = useForm<IFormInputs>({
+  const { control, formState: { errors }, handleSubmit, watch, setValue, getValues,  } = useForm<IFormInputs>({
     resolver: yupResolver(verifySchema)
   });
 
@@ -72,59 +68,191 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
 
   }, [counter]);
 
-  const onSubmit = (data: IFormInputs) => {
-    dispatch(verifyMobileOtp(data));
+  console.log('message ', errorMessage);
+  const onSubmit = (data:IFormInputs) => {
+    const mobileOtp = data.mobileOtp1 + data.mobileOtp2 + data.mobileOtp3 + data.mobileOtp4;
+    const dataObj = {
+      mobileOtp:mobileOtp
+    }
+    dispatch(verifyMobileOtp(dataObj));
   };
 
   const handleResendOtp = (event: any) => {
-    // event.preventDefault();
     dispatch(sendUserOtp());
     setCounter(60);
   };
 
   useEffect(() => {
-    setValue('mobileOtp', '');
-    
+    setValue('mobileOtp1', '');
+    setValue('mobileOtp2', '');
+    setValue('mobileOtp3', '');
+    setValue('mobileOtp4', '');
+
   }, [setValue]);
 
+  // useEffect(() => {
+  //   toast.error(errorMessage);
+  //   dispatch(clearVerifyMobileOtpSlice());
+  // },[errorMessage]);
   return (
     <Fragment>
-      <h1 className="text-xl font-semibold mx-2">
-        Verify mobile number
-        <h2 className="mx-2 mt-1 text-xs text-gray-400">{`Enter the OTP sent to mobile number ${mobileNumber}`}</h2>
-      </h1>
-      <form className="mx-2" id="my-form" onSubmit={handleSubmit(onSubmit)}>
-        <div className=" mt-12 ">
-          <Controller
-            name="mobileOtp"
-            control={control}
-            render={({ field }) => (
-              <input
-                {...field}
-                readOnly={false}
-                type="text"
-                value={watch("mobileOtp")}
-                className="w-full border border-gray-300 outline-none rounded-xl focus:border-blue-500 px-2 py-2"
-                placeholder="Enter OTP"
+      <div className="flex flex-col items-center justify-center mt-24">
+        <h1 className="text-black text-xl ">  Enter the code sent on +91 {mobileNumber}</h1>
+        <div className="flex flex-row ">
+          <span className="text-slate-400">Expires in </span>
+          <span className="ml-1">{counter}</span>
+          <span className="ml-1 text-slate-400">secs</span>
+        </div>
+      </div>
+      <form id="my-form" className="mx-2"  onSubmit={handleSubmit(onSubmit)}>
+        <div className=" mt-8 flex items-center justify-center flex-col ">
+          <div className="flex flex-row gap-4 items-center justify-center w-12">     
+            <span>
+              <Controller
+                name="mobileOtp1"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <input
+                    id="mobileOtp1"
+                    {...field}
+                    readOnly={false}
+                    type="text"
+                    value={watch("mobileOtp1")}
+                    maxLength={1}
+                    pattern="\d"
+                    className={`w-8 border  outline-none rounded-lg focus:border-blue-500 p-2 ${fieldState.error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"}`}
+                    placeholder=" "
+                    onInput={(e) => {
+                      const target = e.target as HTMLInputElement;
+                      const currentId = target.id;
+                      if (target.value.length === 1) {
+                        const currentDigit = parseInt(currentId[currentId.length - 1]);
+                        if (currentDigit >= 1 && currentDigit < 4) {
+                          const nextDigit = currentDigit + 1;
+                          const nextId = `mobileOtp${nextDigit}`;
+                          const nextInput = document.getElementById(nextId) as HTMLInputElement; // Use HTMLInputElement here
+                          if (nextInput) {
+                            nextInput.focus();
+                          }
+                        }
+                      }
+                    }}
+                  />
+                )}
               />
-            )}
-          />
-          {errors.mobileOtp && <p className="font-normal text-xs text-red-500">{errors.mobileOtp.message}</p>}
-          {counter > 0 ? <span className="text-xs text-gray-400"> {`Your OTP should arrive in ${counter} Seconds`}</span> :
-            <div>
-              <span className="text-xs text-gray-400"> Didn't receive an OTP?</span>
-              <button className="text-sm text-blue-600 ml-1 font-medium" onClick={handleResendOtp}> Resend code</button>
-            </div>
-          }
-          <div className="flex justify-end items-center mt-3 ">
-            <button form="my-form" type="submit" className={watch("mobileOtp")?.length === 0 || watch("mobileOtp") === null ? " rounded-xl bg-blue-100 text-white justify-end px-5 py-1.5" : "rounded-xl bg-blue-500 text-white px-5 py-1.5"}
-              disabled={watch("mobileOtp")?.length === 0 || watch("mobileOtp") === null}
-            >
-              Save</button>
+            </span>
+            <span>
+              <Controller
+                name="mobileOtp2"
+                control={control}
+                render={({ field ,fieldState}) => (
+                  <input
+                    id="mobileOtp2"
+                    {...field}
+                    readOnly={false}
+                    type="text"
+                    value={watch("mobileOtp2")}
+                    maxLength={1}
+                    pattern="\d"
+                    className={`w-8 border  outline-none rounded-lg focus:border-blue-500 p-2 ${fieldState.error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"}`}
+                    placeholder=" "
+                    onInput={(e) => {
+                      const target = e.target as HTMLInputElement;
+                      const currentId = target.id;
+                      if (target.value.length === 1) {
+                        const currentDigit = parseInt(currentId[currentId.length - 1]);
+                        if (currentDigit >= 1 && currentDigit < 4) {
+                          const nextDigit = currentDigit + 1;
+                          const nextId = `mobileOtp${nextDigit}`;
+                          const nextInput = document.getElementById(nextId)
+                          if (nextInput) {
+                            nextInput.focus();
+                          }
+                        }
+                      }
+                    }}
+                  />
+                )}
+              />
+            </span>
+            <span>
+              <Controller
+                name="mobileOtp3"
+                control={control}
+                render={({ field,fieldState }) => (
+                  <input
+                    id="mobileOtp3"
+                    {...field}
+                    readOnly={false}
+                    type="text"
+                    value={watch("mobileOtp3")}
+                    maxLength={1}
+                    pattern="\d"
+                    className={`w-8 border  outline-none rounded-lg focus:border-blue-500 p-2 ${fieldState.error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"}`}
+                    placeholder=" "
+                    onInput={(e) => {
+                      const target = e.target as HTMLInputElement;
+                      const currentId = target.id;
+                      if (target.value.length === 1) {
+                        const currentDigit = parseInt(currentId[currentId.length - 1]);
+                        if (currentDigit >= 1 && currentDigit < 4) {
+                          const nextDigit = currentDigit + 1;
+                          const nextId = `mobileOtp${nextDigit}`;
+                          const nextInput = document.getElementById(nextId)
+                          if (nextInput) {
+                            nextInput.focus();
+                          }
+                        }
+                      }
+                    }}
+                  />
+                )}
+              />
+            </span>
+            <span>
+              <Controller
+                name="mobileOtp4"
+                control={control}
+                render={({ field,fieldState }) => (
+                  <input
+                    id="mobileOtp4"
+                    {...field}
+                    readOnly={false}
+                    type="text"
+                    value={watch("mobileOtp4")}
+                    maxLength={1}
+                    pattern="\d"
+                    className={`w-8 border  outline-none rounded-lg focus:border-blue-500 p-2 ${fieldState.error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"}`}
+                    placeholder=" "
+                    onInput={(e) => {
+                      const target = e.target as HTMLInputElement;
+                      const currentId = target.id;
+                      if (target.value.length === 1) {
+                        const currentDigit = parseInt(currentId[currentId.length - 1]);
+                        if (currentDigit >= 1 && currentDigit < 4) {
+                          const nextDigit = currentDigit + 1;
+                          const nextId = `mobileOtp${nextDigit}`;
+                          const nextInput = document.getElementById(nextId)
+                          if (nextInput) {
+                            nextInput.focus();
+                          }
+                        }
+                      }
+                    }}
+                  />  
+                )}
+              />
+            </span>
           </div>
+          <button form="my-form" className={(watch("mobileOtp1")?.length === 0 || watch("mobileOtp2") === null || watch("mobileOtp2")?.length === 0 || watch("mobileOtp2") === null || watch("mobileOtp3")?.length === 0 || watch("mobileOtp3") === null || watch("mobileOtp4")?.length === 0 || watch("mobileOtp4") === null ) ? " px-20 py-3 rounded-lg bg-blue-100 text-white mt-8" : " px-20 py-3 rounded-lg bg-indigo-600 text-white mt-8"}   
+          >Verify
+          </button>                    
         </div>
       </form>
-
+      <div className="flex justify-center items-center">
+        <span className="text-sm text-gray-400"> Didn’t receive OTP?</span>
+        <button className="text-sm text-slate-600 ml-1 font-medium underline" onClick={handleResendOtp}>Send again</button>
+      </div>
     </Fragment>
   )
 }

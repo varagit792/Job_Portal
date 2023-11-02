@@ -27,7 +27,6 @@ const EmailVerifyForm: FC<Parameters> = ({ closeEmailVerifyDialog, email }) => {
     if (success) {
       dispatch((clearVerifyEmailSlice()));
       dispatch(getUserData());
-      closeEmailVerifyDialog();
     }
   }, [success,dispatch]);
 
