@@ -142,7 +142,10 @@ const Questionnaire = () => {
                     <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
                   </div>}
                   <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                    <input className="text-white font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'} onClick={() => setButtonClick('Continue')} />
+                    <input className="text-white font-medium leading-normal tracking-tight cursor-pointer" type="submit" value={'Continue'}
+                      //onClick={() => setButtonClick('Continue')}
+                      onClick={() => navigate(postBack?.postURL)}
+                    />
                   </div>
                 </div>
               </div>
