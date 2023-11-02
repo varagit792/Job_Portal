@@ -553,7 +553,7 @@ const JobDetails = () => {
                           <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">No. of vacancies</div>
                           <div className='w-full'>
                             <input defaultValue={''}
-                              className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                              className='w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                               placeholder={"Please enter jobs opening"}
                               {...register("jobsOpening")} />
 
@@ -597,7 +597,7 @@ const JobDetails = () => {
                         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Job description</div>
                         <div className='w-full'>
                           <textarea defaultValue={''}
-                            className='w-full border border-gray-200 h-[75px] focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                            className='w-full border text-sm border-gray-200 h-[75px] focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter job description"}
                             maxLength={1000}
                             {...register("jobDescription")}>
@@ -613,7 +613,7 @@ const JobDetails = () => {
                         <div className='w-full'>
                           <textarea defaultValue={''}
                             maxLength={1000}
-                            className='w-full border border-gray-200 h-[75px] focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                            className='w-full border text-sm border-gray-200 h-[75px] focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter job description"}
                             {...register("keyResponsibility")} ></textarea>
 
@@ -626,18 +626,30 @@ const JobDetails = () => {
                     </div>
                   </div>
                   <div className="w-full self-stretch justify-start  gap-5 inline-flex">
-                    <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                    {/* <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
                       <div className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" onClick={() => reset()}>Cancel</div>
-                    </div>
-                    {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
+                    </div> */}
+                    <button name='Cancel' className="text-indigo-900 font-medium leading-normal tracking-tight grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => reset()}>Cancel</button>
+                    {/* {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
                       <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
                     </div>}
                     {isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex ">
                       <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
-                    </div>}
-                    <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
+                    </div>} */}
+
+                    {!isNaN(Number(postId)) &&
+                      <button name='Save' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex" onClick={() => setButtonClick('Save')}>Save</button>
+                    }
+
+                    {isNaN(Number(postId)) &&
+                      <button name='SaveAsDraft' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex " onClick={() => setButtonClick('Draft')}>Save as Draft</button>
+                    }
+
+                    <button name='Continue' className="text-white font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex" onClick={() => setButtonClick('Continue')}>Continue</button>
+
+                    {/* <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
                       <input className="text-white font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='Continue' onClick={() => setButtonClick('Continue')} value={'Continue'} />
-                    </div>
+                    </div> */}
                   </div>
                 </form >
               </div >

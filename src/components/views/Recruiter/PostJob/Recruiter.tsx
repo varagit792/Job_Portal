@@ -219,7 +219,7 @@ const Recruiter = () => {
                       <div className="h-[73px] flex-col justify-start  gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Full name</div>
                         <input defaultValue={''}
-                          className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                          className='w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                           placeholder={"Please enter full name"}
                           value={'Company Name'}
                           readOnly />
@@ -227,7 +227,7 @@ const Recruiter = () => {
                       <div className="h-[73px] flex-col justify-start  gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Designation</div>
                         <input defaultValue={''}
-                          className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                          className='w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                           placeholder={"Please enter designation"}
                           value={'Designation'}
                           readOnly />

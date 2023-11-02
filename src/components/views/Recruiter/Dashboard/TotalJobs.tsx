@@ -5,10 +5,9 @@ import { BsBriefcase } from 'react-icons/bs';
 import { BiSolidToggleLeft, BiSolidToggleRight } from 'react-icons/bi';
 
 const TotalJobs = () => {
-
     return (
         <div className="w-full mb-10">
-            <Disclosure>
+            <Disclosure defaultOpen={true}>
                 {({ open }) => (
                     <>
                         <Disclosure.Button className="flex w-full justify-start items-center font-bold">

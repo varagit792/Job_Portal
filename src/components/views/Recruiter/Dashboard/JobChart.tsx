@@ -36,6 +36,20 @@ const data = [
     }
 ];
 
+const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active) {
+        return (
+            <div className="bg-[#312E81] shadow-md rounded p-2 flex justify-start items-center">
+                <p className="text-sm text-[#A5B4FC] mr-2">{label}</p>
+                <p className="text-sm text-white">{payload[0].value}</p>
+            </div>
+        );
+    }
+
+    return null;
+};
+
+
 const JobChart = () => {
     return (
         <div className="mb-16 p-10 bg-[#EEF2FF] rounded-xl flex justify-center items-center flex-col">
@@ -50,19 +64,13 @@ const JobChart = () => {
                 width={800}
                 height={300}
                 data={data}
-                margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5
-                }}
                 barSize={18}
+                margin={{ top: 0, right: 20, bottom: 0, left: 0 }}
             >
-                <XAxis dataKey="name" tick={{ fontSize: 12 }} scale="point" padding={{ left: 30, right: 30 }} />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <CartesianGrid strokeDasharray="1 1" />
+                <XAxis dataKey="name" tick={{ fontSize: 12 }} scale="point" padding={{ left: 80, right: 80 }} />
+                <YAxis axisLine={false} tickLine={false} domain={[0, 320]} />
+                <Tooltip content={<CustomTooltip />} />
+                <CartesianGrid vertical={false} style={{ stroke: "#E2E8F0" }} />
                 <Bar
                     dataKey="pv"
                     fill="#9646E5"
