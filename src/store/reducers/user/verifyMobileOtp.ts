@@ -85,6 +85,7 @@ const verifyMobileOtpSlice = createSlice({
             state.loading = false;
             state.error = false;
             state.success = false;
+            state.errorMessage = undefined;
             return state;
         },
     }
