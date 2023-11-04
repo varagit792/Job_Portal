@@ -201,12 +201,12 @@ const ProfileBasicDetails = () => {
         <Modal
         isOpen={isVerifyEmailOpen}
         setIsOpen={setIsVerifyEmailOpen}
+        width="max-w-xl"
         modalBody={
           <EmailVerifyForm
             closeEmailVerifyDialog={closeEmailVerifyDialog}
             email={userData?.email}
-          />
-          
+          />   
        }
         />}
       <Toaster/>

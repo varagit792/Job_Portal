@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { clearVerifyEmailSlice, verifyEmail } from '../../../../store/reducers/user/verifyEmail';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { getUserData } from '../../../../store/reducers/user/getUserDetails';
+import greenTickIcon from '../../../../assets/svg/greenTickIcon.svg';
 
 type Parameters = {
   closeEmailVerifyDialog: () => void;
@@ -13,14 +14,16 @@ const EmailVerifyForm: FC<Parameters> = ({ closeEmailVerifyDialog, email }) => {
   const dispatch = useAppDispatch()
   const {success} = useAppSelector((state)=>state.verifyUserEmail)
   
-  const [buttonText, setButtonText] = useState('Request verification email');
+  const [buttonText, setButtonText] = useState('Verify email ');
+  const [emailSent, setEmailSent] = useState(false);
+
   const handleSubmit = () => {
-   
     const data = {
       email
     }
     dispatch(verifyEmail(data));
-    setButtonText('Resend verification link')
+    setButtonText('Verify email sent to ');
+    setEmailSent(true);
   }
 
   useEffect(() => {
@@ -33,26 +36,71 @@ const EmailVerifyForm: FC<Parameters> = ({ closeEmailVerifyDialog, email }) => {
   return (
     <Fragment>
       <form id="id-form">
-        <h1 className="flex items-center justify-center font-bold text-xl mt-2">To Verify your email - {email}</h1>
-        <h4 className="flex items-center text-gray-500 font-normal justify-center text-sm">Verification is intended to confirm that the email entered in your resume is authentic</h4>
-        <div className="flex items-center justify-center mt-5">
-          <img src={verifyEmailIcon} alt="verifyIcon" width="64rem" height="64rem"  />
+        {emailSent && <div className="flex justify-center items-center mb-4 mt-8">
+          <img src={greenTickIcon} alt="greenTickIcon" width="22rem" />
+        </div>}
+        <h1 className="flex items-center justify-center font-bold text-xl  ">{buttonText} {email}</h1>
+        <div className="flex items-center justify-center mt-6 ">
+         {!emailSent? <button type="button" onClick={handleSubmit} className="bg-blue-600 text-white text-xl font-medium px-6 py-2 rounded-lg shadow">
+            Request Verification Link
+          </button> :
+            <div className="flex flex-col">
+              {/* <div className="flex justify-center items-center mb-4">
+                <img src={greenTickIcon}  alt="greenTickIcon" width="22rem" />
+             </div> */}
+              <div className="flex flex-row items-center justify-center">
+
+                <span className="text-slate-400 text-sm font-normal">
+                  Didn’t receive link?
+                </span>
+                <button type="button" onClick={handleSubmit} className="ml-2 text-right text-slate-600 text-sm font-medium underline">
+                  Send again
+                </button>
+              </div>
+           </div>
+          }
+        </div>      
+        <div className="w-full h-px border border-indigo-100 mt-8"></div>
+        <h4 className="flex justify-center font-medium  text-slate-400 text-sm  mt-6">How email verification can help?
+        </h4>
+        <div className="flex flex-row gap-6 mt-2 mb-8">
+          {/* <span className="flex flex-col items-center justify-center">
+            <span className=" rounded-3xl border border-indigo-600 w-10 h-10 text-center flex flex-col items-center justify-center">
+              <span className="text-xl text-indigo-600 text-center">
+               1
+             </span>
+            </span>
+            <h1 className="text-sm text-black">
+              Recruiters trust candidates 
+            </h1>
+            <h1 className="text-sm text-black">
+              with verified Email IDs
+            </h1>
+          </span> */}
+          
+          
+          <div className=" flex-col justify-center items-center gap-2 inline-flex">
+            <div className="w-10 h-10 rounded-3xl border border-indigo-600 flex-col justify-center items-center flex">
+              
+              <div className="text-center text-indigo-600 text-xl font-medium  leading-normal tracking-tight">1</div>
+            </div>
+            <div className="self-stretch text-center text-black text-sm font-normal  leading-none tracking-tight">Recruiters trust candidates with verified Email IDs</div>
+          </div>
+          <div className=" flex-col justify-center items-center gap-2 inline-flex">
+            <div className="w-10 h-10 rounded-3xl border border-indigo-600 flex-col justify-center items-center flex">
+
+              <div className="text-center text-indigo-600 text-xl font-medium  leading-normal tracking-tight">1</div>
+            </div>
+            <div className="self-stretch text-center text-black text-sm font-normal  leading-none tracking-tight">Recruiters trust candidates with verified Email IDs</div>
+          </div>
+          <div className=" flex-col justify-center items-center gap-2 inline-flex ">
+            <div className="w-10 h-10 rounded-3xl border border-indigo-600 flex-col justify-center items-center flex">
+
+              <div className="text-center text-indigo-600 text-xl font-medium  leading-normal tracking-tight">1</div>
+            </div>
+            <div className="self-stretch text-center text-black text-sm font-normal  leading-none tracking-tight">Recruiters trust candidates with verified Email IDs</div>
+          </div>
         </div>
-        <div className="flex items-center justify-center mt-5">
-          <button type="button" onClick={handleSubmit} className="bg-blue-700 text-white text-lg font-medium px-5 py-1.5 rounded-2xl">
-            {buttonText}
-          </button>
-        </div>
-        <h4 className="flex justify-center text-gray-400 text-sm mt-8">You will receive an email from Job portal in your mail account. Click on the link given in mail to verify</h4>
-        <h4 className="flex justify-center text-gray-400 text-sm ">your email address.</h4>
-        <hr className=" mt-5" />
-        <h4 className="flex justify-center font-medium text-sm  mt-6">A verified Email ID helps your job search. Here's how:</h4>
-        <h4 className="flex justify-center text-sm text-gray-400 mt-2">1. Recruiters prefer sending jobs as email only to candidates with verified Email ID
-        </h4>
-        <h4 className="flex justify-center text-sm text-gray-400">2. You now can apply to jobs in your inbox with just a single click. Know more
-        </h4>
-        <h4 className="flex justify-center text-sm text-gray-400 mb-4">3. By having a verified Email ID you can increase chances of the right job finding you
-        </h4>
       </form>
     </Fragment>
   )
