@@ -45,9 +45,6 @@ const EmailVerifyForm: FC<Parameters> = ({ closeEmailVerifyDialog, email }) => {
             Request Verification Link
           </button> :
             <div className="flex flex-col">
-              {/* <div className="flex justify-center items-center mb-4">
-                <img src={greenTickIcon}  alt="greenTickIcon" width="22rem" />
-             </div> */}
               <div className="flex flex-row items-center justify-center">
 
                 <span className="text-slate-400 text-sm font-normal">
@@ -64,21 +61,6 @@ const EmailVerifyForm: FC<Parameters> = ({ closeEmailVerifyDialog, email }) => {
         <h4 className="flex justify-center font-medium  text-slate-400 text-sm  mt-6">How email verification can help?
         </h4>
         <div className="flex flex-row gap-6 mt-2 mb-8">
-          {/* <span className="flex flex-col items-center justify-center">
-            <span className=" rounded-3xl border border-indigo-600 w-10 h-10 text-center flex flex-col items-center justify-center">
-              <span className="text-xl text-indigo-600 text-center">
-               1
-             </span>
-            </span>
-            <h1 className="text-sm text-black">
-              Recruiters trust candidates 
-            </h1>
-            <h1 className="text-sm text-black">
-              with verified Email IDs
-            </h1>
-          </span> */}
-          
-          
           <div className=" flex-col justify-center items-center gap-2 inline-flex">
             <div className="w-10 h-10 rounded-3xl border border-indigo-600 flex-col justify-center items-center flex">
               
