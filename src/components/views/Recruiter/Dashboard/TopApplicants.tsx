@@ -57,7 +57,7 @@ const TopApplicants = () => {
                 autoPlay={true}
                 autoPlaySpeed={4000}
                 keyBoardControl={true}
-                customTransition="all .5"
+                customTransition="all .5s ease-in-out"
                 transitionDuration={500}
                 arrows={false}
                 renderButtonGroupOutside={true}
