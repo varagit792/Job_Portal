@@ -108,7 +108,7 @@ interface AllJobs {
     education: Education,
     user: null,
     jobsKeySkills: Array<JobsKeySkills>,
-    employmentType:EmploymentType
+    employmentType: EmploymentType
 }
 interface AllJobsState {
     loading: boolean;
@@ -293,7 +293,10 @@ const getFilterJobsSlice = createSlice({
                 }
             })
             state.filtersData.expYear = action.payload !== 0 ? experienceYearsData?.[0]?.id : 0;
-            state.maxExpYearId = action.payload !== 0 ? experienceYearsData?.[0]?.id : 0;
+            let data = experienceYearsData?.[0]?.title?.split('');
+            let splitVal = data?.slice(0, data.length - 5);
+            let joinedVal = parseInt(splitVal?.join(''));
+            state.maxExpYearId = action.payload !== 0 ? joinedVal : 0;
         },
         setFilterSalary: (state, action) => {
             const salaryRangeListData = state?.salary?.filter((item: any) => parseInt(item?.title) === action.payload);
@@ -301,7 +304,15 @@ const getFilterJobsSlice = createSlice({
             state.maxSalaryId = action.payload !== 0 ? salaryRangeListData?.[0]?.id : 0;
         },
         bulkFilter: (state, action) => {
-            state.filtersData.expYear = action?.payload?.expYear;
+            const experienceYearsData = state?.expYear?.filter((item: any) => {
+                let data = item?.title?.split('');
+                let splitVal = data?.slice(0, data.length - 5);
+                let joinedVal = parseInt(splitVal?.join(''));
+                if (joinedVal === action?.payload?.expYear) {
+                    return item
+                }
+            })
+            state.filtersData.expYear = action?.payload?.expYear !== 0 ? experienceYearsData?.[0]?.id : 0;
             state.filtersData.department = action?.payload?.department;
             state.filtersData.location = action?.payload?.location;
             state.filtersData.workMode = action?.payload?.workMode;
@@ -364,6 +375,9 @@ const getFilterJobsSlice = createSlice({
             state.maxSalaryId = action.payload;
         },
         resetCheckItem: (state) => {
+            state.maxExpYearId = state?.filtersData?.expYear;
+            state.maxSalaryId = state?.filtersData?.salary;
+
             state.checkItems.department = state?.department;
             const department = JSON.stringify(state?.department?.filter((item: any) => item?.isChecked));
             state.departmentIds = JSON.parse(department).map((item: any) => item.id);
@@ -378,7 +392,10 @@ const getFilterJobsSlice = createSlice({
 
             state.checkItems.companyType = state?.companyType;
             const companyType = JSON.stringify(state?.companyType?.filter((item: any) => item?.isChecked));
-            state.companyType = JSON.parse(companyType).map((item: any) => item.id);
+            state.companyTypeIds = JSON.parse(companyType).map((item: any) => item.id);
+        },
+        clearAll: (state) => {
+
         }
     }
 });

@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { RxCross1 } from 'react-icons/rx';
+import { RxCross1, RxCross2 } from 'react-icons/rx';
 import FiltersDepartment from './FiltersDepartment';
 import { useAppDispatch, useAppSelector } from '../../../';
 import {
@@ -20,7 +20,7 @@ import FiltersCompanyType from './FiltersCompanyType';
 
 const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
     const dispatch = useAppDispatch();
-    const { navigateFilterOption, checkItems, departmentIds, locationIds, workModeIds, companyTypeIds, maxExpYearId, maxSalaryId } = useAppSelector((state) => state.getFilterJobs);
+    const { navigateFilterOption, checkItems, departmentIds, locationIds, workModeIds, companyTypeIds, maxExpYearId, maxSalaryId, expYear, department, location, workMode, salary, companyType, roleCategory } = useAppSelector((state) => state.getFilterJobs);
 
     const closeDialog = () => {
         setIsOpen(false);
@@ -74,6 +74,88 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         <RxCross1 />
                                     </button>
                                 </Dialog.Title>
+                                <div className="mb-5 flex flex-wrap justify-start items-center gap-2 mx-5">
+                                    {expYear?.map((item: any) => {
+                                        let data = item?.title?.split('');
+                                        let splitVal = data?.slice(0, data.length - 5);
+                                        let joinedVal = parseInt(splitVal?.join(''));
+                                        if (joinedVal === maxExpYearId) {
+                                            return (
+                                                < span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs" >
+                                                    <span className="mr-1">0 - {item?.title}</span>
+                                                    <span className="cursor-pointer"><RxCross2 /></span>
+                                                </span>
+                                            )
+                                        }
+                                    })}
+                                    {maxExpYearId === undefined &&
+                                        <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                            <span className="mr-1">30+ Year</span>
+                                            <span className="cursor-pointer"><RxCross2 /></span>
+                                        </span>
+                                    }
+                                    {departmentIds?.map((item: any) => {
+                                        const departmentFilter = department?.filter((departmentItem: any) => departmentItem?.id === item);
+                                        return (
+                                            <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                                <span className="mr-1">{departmentFilter[0]?.title}</span>
+                                                <span className="cursor-pointer">
+                                                    <RxCross2 />
+                                                </span>
+                                            </span>
+                                        )
+                                    })}
+                                    {locationIds?.map((item: any) => {
+                                        const locationFilter = location?.filter((locationItem: any) => locationItem?.id === item);
+                                        return (
+                                            <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                                <span className="mr-1">{locationFilter[0]?.title}</span>
+                                                <span className="cursor-pointer">
+                                                    <RxCross2 />
+                                                </span>
+                                            </span>
+                                        )
+                                    })}
+                                    {workModeIds?.map((item: any) => {
+                                        const workModeFilter = workMode?.filter((workModeItem: any) => workModeItem?.id === item);
+                                        return (
+                                            <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                                <span className="mr-1">{workModeFilter[0]?.title}</span>
+                                                <span className="cursor-pointer">
+                                                    <RxCross2 />
+                                                </span>
+                                            </span>
+                                        )
+                                    })}
+                                    {/* {maxSalaryId !== null && salary?.map((item: any) => item?.id == maxSalaryId &&
+                                            <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                                <span className="mr-1">0 - {item?.title} LPA</span>
+                                                <span className="cursor-pointer"><RxCross2 /></span>
+                                            </span>
+                                        )} */}
+                                    {companyTypeIds?.map((item: any) => {
+                                        const companyTypeFilter = companyType?.filter((companyTypeItem: any) => companyTypeItem?.id === item);
+                                        return (
+                                            <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                                <span className="mr-1">{companyTypeFilter[0]?.title}</span>
+                                                <span className="cursor-pointer">
+                                                    <RxCross2 />
+                                                </span>
+                                            </span>
+                                        )
+                                    })}
+                                    {/* {filtersData?.roleCategory?.map((item: any) => {
+                                            const roleCategoryFilter = roleCategory?.filter((roleCategoryItem: any) => roleCategoryItem?.id === item);
+                                            return (
+                                                <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                                    <span className="mr-1">{roleCategoryFilter[0]?.title}</span>
+                                                    <span className="cursor-pointer">
+                                                        <RxCross2 />
+                                                    </span>
+                                                </span>
+                                            )
+                                        })} */}
+                                </div>
                                 <div className="grid grid-cols-12 border-y border-[#E0E7FF]">
                                     <div className="col-start-1 col-end-4 border-r border-[#E0E7FF]">
                                         <ul>

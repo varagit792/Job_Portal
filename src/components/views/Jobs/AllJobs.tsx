@@ -16,6 +16,7 @@ import {
     setFilterRoleCategory,
     setFilterExpYear,
     setFilterSalary,
+    setNavigateFilterOption
 } from '../../../store/reducers/jobs/GetFilterJobs';
 import { scrollToTop } from '../../utils/utils';
 import JobCard from './JobCard';
@@ -36,6 +37,7 @@ import BelleIcon from '../../../assets/svg/BelleIcon.svg';
 import DominousIcon from '../../../assets/svg/DominousIcon.svg';
 import GoproIcon from '../../../assets/svg/GoproIcon.svg';
 import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
+import { RxCross2 } from 'react-icons/rx';
 
 const AllJobs = () => {
     const dispatch = useAppDispatch();
@@ -47,6 +49,8 @@ const AllJobs = () => {
         workMode,
         roleCategory,
         companyType,
+        salary,
+        expYear,
         filtersData } = useAppSelector((state) => state.getFilterJobs);
     const [jobCard, setJobCard] = useState<any>([]);
     const [page, setPage] = useState(1);
@@ -199,13 +203,113 @@ const AllJobs = () => {
         window.open(`/allJobs/jobDescription/${jobId}`, '_blank');
     }
 
+    const handleViewAll = () => {
+        setIsOpen(true);
+        dispatch(setNavigateFilterOption("Experience"));
+    }
+
+    const handleClearAll = () => {
+        window.location.reload();
+    }
+    console.log(filtersData?.salary);
     return (
         <>
             <div className="h-[10%] w-full"></div>
             <div className="grid grid-cols-12 gap-10 px-32 bg-[#F8FAFC] py-6">
                 <div className="col-start-1 col-end-4">
                     <div className="bg-[#FFF] rounded-xl p-4 sticky top-[13%]">
-                        <h1 className="flex justify-between items-center leading-none"><span className="text-[#475569] font-bold">Filters</span><span className="bg-[#F8FAFC] rounded px-2 py-1 text-[#4F46E5]">4</span></h1>
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <span className="text-[#475569] font-bold mr-2">Filters</span>
+                                <span>12</span>
+                            </div>
+                            <button className=" border-b border-[#475569] text-[#475569]" onClick={handleClearAll}>Clear all</button>
+                        </div>
+                        <div className="mt-5 flex flex-wrap justify-start items-center gap-2">
+                            {filtersData?.expYear !== null && expYear?.map((item: any) => item?.id == filtersData?.expYear &&
+                                <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                    <span className="mr-1">0 - {item?.title}</span>
+                                    <span className="cursor-pointer"><RxCross2 /></span>
+                                </span>
+                            )}
+                            {filtersData?.expYear === undefined &&
+                                <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                    <span className="mr-1">30+ Year</span>
+                                    <span className="cursor-pointer"><RxCross2 /></span>
+                                </span>
+                            }
+                            {filtersData?.department?.map((item: any) => {
+                                const departmentFilter = department?.filter((departmentItem: any) => departmentItem?.id === item);
+                                return (
+                                    <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                        <span className="mr-1">{departmentFilter[0]?.title}</span>
+                                        <span className="cursor-pointer">
+                                            <RxCross2 />
+                                        </span>
+                                    </span>
+                                )
+                            })}
+                            {filtersData?.location?.map((item: any) => {
+                                const locationFilter = location?.filter((locationItem: any) => locationItem?.id === item);
+                                return (
+                                    <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                        <span className="mr-1">{locationFilter[0]?.title}</span>
+                                        <span className="cursor-pointer">
+                                            <RxCross2 />
+                                        </span>
+                                    </span>
+                                )
+                            })}
+                            {filtersData?.workMode?.map((item: any) => {
+                                const workModeFilter = workMode?.filter((workModeItem: any) => workModeItem?.id === item);
+                                return (
+                                    <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                        <span className="mr-1">{workModeFilter[0]?.title}</span>
+                                        <span className="cursor-pointer">
+                                            <RxCross2 />
+                                        </span>
+                                    </span>
+                                )
+                            })}
+                            {/* {filtersData?.salary !== null && salary?.map((item: any) => item?.id == filtersData?.salary &&
+                                <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                    <span className="mr-1">0 - {item?.title} LPA</span>
+                                    <span className="cursor-pointer"><RxCross2 /></span>
+                                </span>
+                            )} */}
+                            {filtersData?.companyType?.map((item: any) => {
+                                const companyTypeFilter = companyType?.filter((companyTypeItem: any) => companyTypeItem?.id === item);
+                                return (
+                                    <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                        <span className="mr-1">{companyTypeFilter[0]?.title}</span>
+                                        <span className="cursor-pointer">
+                                            <RxCross2 />
+                                        </span>
+                                    </span>
+                                )
+                            })}
+                            {filtersData?.roleCategory?.map((item: any) => {
+                                const roleCategoryFilter = roleCategory?.filter((roleCategoryItem: any) => roleCategoryItem?.id === item);
+                                return (
+                                    <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                        <span className="mr-1">{roleCategoryFilter[0]?.title}</span>
+                                        <span className="cursor-pointer">
+                                            <RxCross2 />
+                                        </span>
+                                    </span>
+                                )
+                            })}
+                            {(filtersData?.expYear !== null
+                                || (filtersData?.department !== undefined && filtersData?.department?.length !== 0)
+                                || (filtersData?.location !== undefined && filtersData?.location?.length !== 0)
+                                || (filtersData?.workMode !== undefined && filtersData?.workMode?.length !== 0)
+                                || filtersData?.salary !== null
+                                || (filtersData?.companyType !== undefined && filtersData?.companyType?.length !== 0)
+                                || (filtersData?.roleCategory !== undefined && filtersData?.roleCategory?.length !== 0)
+                            ) &&
+                                <button className=" border-b border-[#475569] text-[#475569] text-xs" onClick={handleViewAll}>All</button>
+                            }
+                        </div>
                         <hr className="bg-[#E0E7FF] my-5" />
                         <ExperienceBasedFilter handleTotalExpYearChange={handleTotalExpYearChange} isOpen={isOpen} />
                         <hr className="bg-[#E0E7FF] my-5" />
