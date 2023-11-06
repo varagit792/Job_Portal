@@ -125,7 +125,7 @@ const LandingPage = () => {
                     autoPlay={true}
                     autoPlaySpeed={4000}
                     keyBoardControl={true}
-                    customTransition="all .5"
+                    customTransition="all .5s ease-in-out"
                     transitionDuration={500}
                     arrows={false}
                     renderButtonGroupOutside={true}
@@ -194,7 +194,9 @@ const LandingPage = () => {
                         <div className="p-4 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg flex flex-col justify-center items-start">
                             <div className="flex justify-between items-center mb-3 text-sm font-semibold w-full">
                                 <span>
-                                    {Object.keys(job?.jobsLocation).length ? job?.jobsLocation?.map((loc: any) => <span>{loc?.location?.title}, India</span>) : <span>Not disclosed</span>}
+                                    {Object.keys(job?.jobsLocation).length && job?.jobsLocation?.map((loc: any) => <span>{loc?.location?.title}, India</span>)
+                                        // : <span>Not disclosed</span>
+                                    }
                                     {/* {job?.jobsLocation as any} */}
                                 </span>
                                 <button><img src={ArrowRight} alt="ArrowRight" width="8rem" height="8rem" /></button>

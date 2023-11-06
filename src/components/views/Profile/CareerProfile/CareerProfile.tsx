@@ -65,7 +65,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
       <div className="grid grid-cols-2 gap-4">
 
         <div>
-          <div className="text-gray-500">Current industry</div>
+          <div className="text-gray-500 text-sm">Current industry</div>
           {profileDashboard?.careerProfile?.industry?.title &&
             <div className="text-sm font-bold text-gray-500">{profileDashboard?.careerProfile?.industry?.title}</div>
           }
@@ -76,7 +76,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
 
 
         <div>
-          <div className="text-gray-500">Department</div>
+          <div className="text-gray-500 text-sm">Department</div>
           {profileDashboard?.careerProfile?.department?.title &&
             <div className="text-sm font-bold text-gray-500">{profileDashboard?.careerProfile?.department?.title}</div>
           }
@@ -87,7 +87,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
 
 
         <div>
-          <div className="text-gray-500">Role category</div>
+          <div className="text-gray-500 text-sm">Role category</div>
           {profileDashboard?.careerProfile?.roleCategory?.title &&
             <div className="font-bold text-gray-500">{profileDashboard?.careerProfile?.roleCategory?.title}</div>
           }
@@ -99,7 +99,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
 
 
         <div>
-          <div className="text-gray-500">Job role</div>
+          <div className="text-gray-500 text-sm">Job role</div>
           {profileDashboard?.careerProfile?.jobRole?.title &&
             <div className="font-bold text-gray-500">{profileDashboard?.careerProfile?.jobRole?.title}</div>
           }
@@ -110,7 +110,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
         </div>
 
         <div>
-          <div className="text-gray-500">Desired job type</div>
+          <div className="text-gray-500 text-sm">Desired job type</div>
           <div className="text-sm">
             {profileDashboard?.careerProfile?.careerProfileJobType.map((item:any, key:any) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.jobType?.title},</div>)}
             {!profileDashboard?.careerProfile?.careerProfileJobType &&
@@ -119,7 +119,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
           </div>
         </div>
         <div>
-          <div className="text-gray-500">Desired employment type</div>
+          <div className="text-gray-500 text-sm">Desired employment type</div>
           <div className="text-sm">
             {profileDashboard?.careerProfile?.careerProfileEmployeeType.map((item:any, key:any) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.employeeType?.title},</div>)}
             {!profileDashboard?.careerProfile?.careerProfileEmployeeType &&
@@ -127,7 +127,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
             }
           </div>
         </div>
-        <div><div className="text-gray-500">Preferred shift</div>
+        <div><div className="text-gray-500 text-sm">Preferred shift</div>
           <div className="text-sm">
             {profileDashboard?.careerProfile?.careerProfilePreferredShift.map((item:any, key:any) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.preferredShift?.title},</div>)}
             {!profileDashboard?.careerProfile?.careerProfilePreferredShift &&
@@ -136,7 +136,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
           </div>
         </div>
         <div >
-          <div className="text-gray-500">Preferred work location</div>
+          <div className="text-gray-500 text-sm">Preferred work location</div>
           <div className="text-sm">
             {profileDashboard?.careerProfile?.careerProfilePreferredLocations.map((item:any, key:any) => <div className="float-left font-bold text-gray-500 mr-2" key={key}>{item?.location?.title},</div>)}
             {!profileDashboard?.careerProfile?.careerProfilePreferredLocations &&
@@ -146,7 +146,7 @@ const CareerProfile = ({ profileDashboard }: any) => {
         </div>
         {profileDashboard?.careerProfile?.expectedSalary &&
           <div>
-            <div className="text-gray-500">Expected salary</div>
+            <div className="text-gray-500 text-sm">Expected salary</div>
             <div className="text-sm font-bold text-gray-500">{profileDashboard?.careerProfile?.currency?.title}{profileDashboard?.careerProfile?.expectedSalary}</div>
             {!profileDashboard?.careerProfile?.expectedSalary &&
               <button className="text-blue-600 text-sm font-semibold" onClick={openModal}>Add expected salary</button>
