@@ -97,15 +97,15 @@ const JobDescription = () => {
               </div>
             </div>
             <div className="justify-start items-center gap-5 inline-flex mt-4">
-              <div className="w-48  px-6 py-1.5 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                <button className="text-white text-xl font-medium  leading-normal tracking-tight">Apply</button>
-              </div>
-              <div className="w-28 pl-6 pr-3 py-1.5 bg-indigo-50 rounded-lg justify-center items-center  gap-3 flex">
-                <button className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight ">Save</button>
-                <button>
+              <button className="w-48  px-6 py-1.5 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
+                <span className="text-white text-xl font-medium  leading-normal tracking-tight">Apply</span>
+              </button>
+              <button className="w-28 pl-6 pr-3 py-1.5 bg-indigo-50 rounded-lg justify-center items-center  gap-3 flex">
+                <span className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight ">Save</span>
+                <span>
                   <img src={bookMarkIcon} alt="bookMark" />
-                </button>
-              </div>
+                </span>
+              </button>
             </div>
           </div>
           <div className="border border-[#E0E7FF] rounded-xl p-5 mt-4 bg-white " >
