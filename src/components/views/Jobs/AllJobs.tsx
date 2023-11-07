@@ -16,7 +16,8 @@ import {
     setFilterRoleCategory,
     setFilterExpYear,
     setFilterSalary,
-    setNavigateFilterOption
+    setNavigateFilterOption,
+    clearAll
 } from '../../../store/reducers/jobs/GetFilterJobs';
 import { scrollToTop } from '../../utils/utils';
 import JobCard from './JobCard';
@@ -209,9 +210,10 @@ const AllJobs = () => {
     }
 
     const handleClearAll = () => {
-        window.location.reload();
+        dispatch(clearAll());
+        dispatch(getFilterJobs({ page }));
     }
-    console.log(filtersData?.salary);
+
     return (
         <>
             <div className="h-[10%] w-full"></div>
@@ -271,12 +273,18 @@ const AllJobs = () => {
                                     </span>
                                 )
                             })}
-                            {/* {filtersData?.salary !== null && salary?.map((item: any) => item?.id == filtersData?.salary &&
+                            {filtersData?.salary !== null && salary?.map((item: any) => item?.id == filtersData?.salary &&
                                 <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
                                     <span className="mr-1">0 - {item?.title} LPA</span>
                                     <span className="cursor-pointer"><RxCross2 /></span>
                                 </span>
-                            )} */}
+                            )}
+                            {filtersData?.salary === undefined &&
+                                <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                    <span className="mr-1">50+ LPA</span>
+                                    <span className="cursor-pointer"><RxCross2 /></span>
+                                </span>
+                            }
                             {filtersData?.companyType?.map((item: any) => {
                                 const companyTypeFilter = companyType?.filter((companyTypeItem: any) => companyTypeItem?.id === item);
                                 return (

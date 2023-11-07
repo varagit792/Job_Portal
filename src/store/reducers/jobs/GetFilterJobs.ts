@@ -293,15 +293,23 @@ const getFilterJobsSlice = createSlice({
                 }
             })
             state.filtersData.expYear = action.payload !== 0 ? experienceYearsData?.[0]?.id : 0;
-            let data = experienceYearsData?.[0]?.title?.split('');
-            let splitVal = data?.slice(0, data.length - 5);
-            let joinedVal = parseInt(splitVal?.join(''));
-            state.maxExpYearId = action.payload !== 0 ? joinedVal : 0;
+            if (experienceYearsData?.[0]?.title !== undefined) {
+                let data = experienceYearsData?.[0]?.title?.split('');
+                let splitVal = data?.slice(0, data.length - 5);
+                let joinedVal = parseInt(splitVal?.join(''));
+                state.maxExpYearId = action.payload !== 0 ? joinedVal : 0;
+            } else {
+                state.maxExpYearId = action.payload !== 0 ? action.payload : 0;
+            }
         },
         setFilterSalary: (state, action) => {
             const salaryRangeListData = state?.salary?.filter((item: any) => parseInt(item?.title) === action.payload);
             state.filtersData.salary = action.payload !== 0 ? salaryRangeListData?.[0]?.id : 0;
-            state.maxSalaryId = action.payload !== 0 ? salaryRangeListData?.[0]?.id : 0;
+            if (salaryRangeListData?.[0]?.title !== undefined) {
+                state.maxSalaryId = action.payload !== 0 ? salaryRangeListData?.[0]?.title : 0;
+            } else {
+                state.maxSalaryId = action.payload !== 0 ? action.payload : 0;
+            }
         },
         bulkFilter: (state, action) => {
             const experienceYearsData = state?.expYear?.filter((item: any) => {
@@ -312,12 +320,18 @@ const getFilterJobsSlice = createSlice({
                     return item
                 }
             })
-            state.filtersData.expYear = action?.payload?.expYear !== 0 ? experienceYearsData?.[0]?.id : 0;
+            if (action?.payload?.expYear) {
+                state.filtersData.expYear = experienceYearsData?.[0]?.id;
+            }
+            const salaryRangeListData = state?.salary?.filter((item: any) => parseInt(item?.title) === action?.payload?.salary);
+            if (action?.payload?.salary) {
+                state.filtersData.salary = salaryRangeListData?.[0]?.id;
+            }
+
             state.filtersData.department = action?.payload?.department;
             state.filtersData.location = action?.payload?.location;
             state.filtersData.workMode = action?.payload?.workMode;
             state.filtersData.companyType = action?.payload?.companyType;
-            state.filtersData.salary = action?.payload?.salary;
         },
         setNavigateFilterOption: (state, action) => {
             state.navigateFilterOption = action?.payload;
@@ -375,8 +389,12 @@ const getFilterJobsSlice = createSlice({
             state.maxSalaryId = action.payload;
         },
         resetCheckItem: (state) => {
-            state.maxExpYearId = state?.filtersData?.expYear;
-            state.maxSalaryId = state?.filtersData?.salary;
+            const experienceYearsData = state?.expYear?.filter((item: any) => parseInt(item?.id) === state?.filtersData?.expYear);
+            const experienceData = experienceYearsData[0]?.title?.split('');
+            state.maxExpYearId = parseInt(experienceData?.slice(0, experienceData.length - 5).join(''));
+
+            const salaryRangeListData = state?.salary?.filter((item: any) => parseInt(item?.id) === state?.filtersData?.salary);
+            state.maxSalaryId = parseInt(salaryRangeListData?.[0]?.title);
 
             state.checkItems.department = state?.department;
             const department = JSON.stringify(state?.department?.filter((item: any) => item?.isChecked));
@@ -395,7 +413,39 @@ const getFilterJobsSlice = createSlice({
             state.companyTypeIds = JSON.parse(companyType).map((item: any) => item.id);
         },
         clearAll: (state) => {
-
+            state.filtersData.expYear = null;
+            state.filtersData.department = [];
+            state.filtersData.location = [];
+            state.filtersData.workMode = [];
+            state.filtersData.salary = null;
+            state.filtersData.companyType = [];
+            state.filtersData.roleCategory = [];
+            state.departmentIds = [];
+            state.locationIds = [];
+            state.workModeIds = [];
+            state.companyTypeIds = [];
+            state.maxExpYearId = null;
+            state.maxSalaryId = null;
+            state.department = state?.department?.map((item: any) => { return { ...item, isChecked: false } });
+            state.location = state?.location?.map((item: any) => { return { ...item, isChecked: false } });
+            state.workMode = state?.workMode?.map((item: any) => { return { ...item, isChecked: false } });
+            state.companyType = state?.companyType?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.department = state?.department?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.location = state?.location?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.workMode = state?.workMode?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.companyType = state?.companyType?.map((item: any) => { return { ...item, isChecked: false } });
+        },
+        modalReset: (state) => {
+            state.departmentIds = []
+            state.locationIds = [];
+            state.workModeIds = [];
+            state.companyTypeIds = [];
+            state.maxExpYearId = null;
+            state.maxSalaryId = null;
+            state.checkItems.department = state?.department?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.location = state?.location?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.workMode = state?.workMode?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.companyType = state?.companyType?.map((item: any) => { return { ...item, isChecked: false } });
         }
     }
 });
@@ -424,4 +474,6 @@ export const { clearGetFilterJobsSlice,
     setCompanyTypeIds,
     setMaxExpYearId,
     setMaxSalaryId,
-    resetCheckItem } = getFilterJobsSlice.actions;
+    resetCheckItem,
+    clearAll,
+    modalReset } = getFilterJobsSlice.actions;

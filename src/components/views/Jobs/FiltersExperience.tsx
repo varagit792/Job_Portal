@@ -27,8 +27,10 @@ export const ExperienceBasedFilter = ({ handleTotalExpYearChange, isOpen }: any)
             } else {
                 setTotalExpYear(31);
             }
+        } else {
+            setTotalExpYear(0);
         }
-    }, [!isOpen]);
+    }, [!isOpen, filtersData]);
     return (
         <div className="w-full">
             <Disclosure>
@@ -73,10 +75,12 @@ const FiltersExperience = () => {
 
     useEffect(() => {
         setExpYearMaster(expYear?.map(({ id, title }: any) => ({ value: id, label: title })));
-        if (maxExpYearId !== null && maxExpYearId !== 0) {
+        if (maxExpYearId) {
             setTotalExpYear(maxExpYearId);
+        } else {
+            setTotalExpYear(0);
         }
-    }, []);
+    }, [maxExpYearId]);
 
     const handleTotalExpYearChange = (totalExpYear: number) => {
         dispatch(setMaxExpYearId(totalExpYear));
