@@ -136,6 +136,7 @@ const Response = () => {
         notifyMeAbout: data?.notifyMeAbout,
         notificationEmailAddress1: data?.notificationEmailAddress1,
         notificationEmailAddress2: data?.notificationEmailAddress2,
+        questionnaire: []
       })).then(() => {
         toast.success(successMessage)
       });
@@ -176,7 +177,9 @@ const Response = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
+  console.log(errors);
 
+  console.log(jobDetailData);
   return (
     <>
       <div className="h-[10%] w-full"></div>

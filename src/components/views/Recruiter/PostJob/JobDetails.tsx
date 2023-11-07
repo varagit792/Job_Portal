@@ -56,7 +56,7 @@ const JobDetails = () => {
   const selectedJobLocality: any = [];
   const selectedCandidateIndustry: any = [];
 
-  if (Object.keys(jobDetail).length !== 0) {
+  if (jobDetail !== undefined && jobDetail !== null && Object?.keys(jobDetail)?.length !== 0) {
     jobDetail?.jobsKeySkills?.filter((item: any) => item && selectedJobsKeySkills.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }));
     jobDetail?.jobsLocation && jobDetail?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ value: item?.location?.id, label: item?.location?.title }));
     jobDetail?.jobLocality?.filter((item: any) => item && selectedJobLocality.push({ value: item?.locality?.id, label: item?.locality?.title }));
@@ -70,7 +70,7 @@ const JobDetails = () => {
   }
 
   useEffect(() => {
-    if (Object.keys(jobDetail).length !== 0) {
+    if (jobDetail !== undefined && jobDetail !== null && Object.keys(jobDetail).length !== 0) {
       jobDetail?.title && setValue('title', jobDetail?.title);
       jobDetail?.department && setValue('department', { label: jobDetail?.department?.title, value: jobDetail?.department?.id?.toString() });
       jobDetail?.roleCategory && setValue('roleCategory', { label: jobDetail?.roleCategory?.title, value: jobDetail?.roleCategory?.id?.toString() });

@@ -100,20 +100,21 @@ const JobLeftPanel = ({ jobTitle }: any) => {
               {!Number.isNaN(Number(postId)) && <u className="text-[#475569]" onClick={() => returnBack(postBack.recruiterURL)} >Edit</u>}
             </div>
           </li>
-          <li className="flex items-center  mb-8">
-            <TickRecruiter tickNumber="5" tickStatus={pageStatus.questionnaire} />
-            <div className="text-sm w-full flex justify-between">
-              <span className="font-semibold">Questionnaire</span></div>
-            <div className="text-sm justify-between cursor-pointer">
-              {!Number.isNaN(Number(postId)) && <u className="text-[#475569]" onClick={() => returnBack(postBack.questionnaireURL)} >Edit</u>}
-            </div>
-          </li>
+
           <li className="flex items-center  mb-8">
             <TickRecruiter tickNumber="6" tickStatus={pageStatus.response} />
             <div className="text-sm w-full flex justify-between">
               <span className="font-semibold">Response</span></div>
             <div className="text-sm justify-between cursor-pointer">
               {!Number.isNaN(Number(postId)) && <u className="text-[#475569]" onClick={() => returnBack(postBack.responseURL)} >Edit</u>}
+            </div>
+          </li>
+          <li className="flex items-center  mb-8">
+            <TickRecruiter tickNumber="5" tickStatus={pageStatus.questionnaire} />
+            <div className="text-sm w-full flex justify-between">
+              <span className="font-semibold">Questionnaire</span></div>
+            <div className="text-sm justify-between cursor-pointer">
+              {!Number.isNaN(Number(postId)) && <u className="text-[#475569]" onClick={() => returnBack(postBack.questionnaireURL)} >Edit</u>}
             </div>
           </li>
         </ul>
