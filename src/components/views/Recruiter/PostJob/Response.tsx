@@ -204,14 +204,14 @@ const Response = () => {
                             <div className="grow shrink basis-0 self-stretch pr-6 justify-start items-center gap-2 flex">
                               <div className="grow shrink basis-0 h-6 justify-start items-center gap-2 flex">
                                 <img className="w-6 h-6 rounded-[40px]" src={user} />
-                                <div className="grow shrink basis-0 text-black text-base font-normal  leading-snug tracking-tight">Swapnil Bansal</div>
+                                <div className="grow shrink basis-0 text-black text-sm font-normal  leading-snug tracking-tight">Swapnil Bansal</div>
                               </div>
                               <div className="w-[0px] self-stretch justify-start items-center gap-3 flex">
                                 <div className="w-7 h-[0px] origin-top-left rotate-90 border border-slate-200"></div>
                               </div>
                               <div className="grow shrink basis-0 h-6 justify-start items-center gap-2 flex">
                                 <div className="w-6 h-6 justify-center items-center flex"><img src={envelop} alt='envalop' /></div>
-                                <div className="grow shrink basis-0 text-black text-base font-normal  leading-snug tracking-tight">swapnil.bansal@ratnaglobaltech.com</div>
+                                <div className="grow shrink basis-0 text-black text-sm font-normal  leading-snug tracking-tight">swapnil.bansal@ratnaglobaltech.com</div>
                               </div>
                             </div>
                             <div className="w-6 h-6 bg-slate-100 rounded justify-center items-center flex">
@@ -226,11 +226,11 @@ const Response = () => {
                                 <div className="w-6 h-6 flex-col justify-center items-center inline-flex">
                                   <img src={user_icon} alt='user_icon' />
                                 </div>
-                                <div className="grow shrink basis-0 text-slate-400 text-base font-normal  leading-snug tracking-tight">Employee name</div>
+                                <div className="grow shrink basis-0 text-slate-400 text-sm font-normal  leading-snug tracking-tight">Employee name</div>
                               </div>
                               <div className="grow shrink basis-0 h-6 justify-start items-center gap-2 flex">
                                 <div className="w-6 h-6 justify-center items-center flex"><img src={envelop} alt='envalop' /></div>
-                                <div className="grow shrink basis-0 text-slate-400 text-base font-normal  leading-snug tracking-tight">example@gmail.com</div>
+                                <div className="grow shrink basis-0 text-slate-400 text-sm font-normal  leading-snug tracking-tight">example@gmail.com</div>
                               </div>
                             </div>
                           </div>
@@ -271,7 +271,7 @@ const Response = () => {
                               />
                               {errors?.hideSalaryDetails && <p className="font-normal text-xs text-red-500 absolute">{errors?.hideSalaryDetails?.message}</p>}</div>
                             <div className="flex-col justify-start items-start gap-1 inline-flex">
-                              <div className="text-black text-base font-normal  leading-snug tracking-tight"> Hide salary details from candidates</div>
+                              <div className="text-black text-sm font-normal  leading-snug tracking-tight"> Hide salary details from candidates</div>
                             </div>
                           </div>
                           <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
@@ -285,7 +285,7 @@ const Response = () => {
                               {errors?.videoProfile && <p className="font-normal text-xs text-red-500 absolute">{errors?.videoProfile?.message}</p>}
                             </div>
                             <div className="flex-col justify-start items-start gap-1 inline-flex">
-                              <div className="text-black text-base font-normal  leading-snug tracking-tight">Request candidate for video profile</div>
+                              <div className="text-black text-sm font-normal  leading-snug tracking-tight">Request candidate for video profile</div>
                             </div>
                           </div>
                         </div>
@@ -302,7 +302,7 @@ const Response = () => {
                               />
                               {errors?.includeWalkInDetails && <p className="font-normal text-xs text-red-500 absolute">{errors?.includeWalkInDetails?.message}</p>}</div>
                             <div className="flex-col justify-start items-start gap-1 inline-flex">
-                              <div className="text-black text-base font-normal  leading-snug tracking-tight">  Include walk-in details</div>
+                              <div className="text-black text-sm font-normal  leading-snug tracking-tight">  Include walk-in details</div>
                             </div>
                           </div>
                           <div className="grow shrink basis-0 h-12 p-3 bg-white rounded-lg border border-slate-200 justify-start items-center gap-3 flex">
@@ -316,7 +316,7 @@ const Response = () => {
                               {errors?.notifyMeAbout && <p className="font-normal text-xs text-red-500 absolute">{errors?.notifyMeAbout?.message}</p>}
                             </div>
                             <div className="flex-col justify-start items-start gap-1 inline-flex">
-                              <div className="text-black text-base font-normal  leading-snug tracking-tight"> Notify me about</div>
+                              <div className="text-black text-sm font-normal  leading-snug tracking-tight"> Notify me about</div>
                             </div>
                           </div>
                         </div>
@@ -324,7 +324,7 @@ const Response = () => {
                     </div>
                   </div>
                   <div className="self-stretch justify-start items-start gap-5 inline-flex">
-                    <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack?.backURL)}>
+                    {/* <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack?.backURL)}>
                       <div className="w-6 h-6 justify-center items-center flex"></div>
                       <div className="text-indigo-900 font-medium  leading-normal tracking-tight">Back</div>
                     </div>
@@ -336,7 +336,21 @@ const Response = () => {
                     </div>}
                     <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
                       <button className="text-white font-medium leading-normal tracking-tight cursor-pointer" type="submit" onClick={() => setButtonClick('Continue')} >Continue</button>
-                    </div>
+                    </div> */}
+
+                    <button name='Back' className="text-indigo-900 font-medium leading-normal tracking-tight grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack.backURL)}>Back</button>
+
+                  {!isNaN(Number(postId)) &&
+                    <button name='Save' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex" onClick={() => setButtonClick('Save')}>Save</button>
+                  }
+
+                  {isNaN(Number(postId)) &&
+                    <button name='SaveAsDraft' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex " onClick={() => setButtonClick('Draft')}>Save as Draft</button>
+                  }
+
+                  <button type="submit" name='Continue' className="text-white font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex"
+                    onClick={() => setButtonClick('Continue')}>Continue</button>
+                    
                   </div>
                 </div>
               </form>

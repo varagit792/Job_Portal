@@ -60,9 +60,9 @@ export const PostJobDetailSchema = yup.object().shape({
     label: yup.string().required("Currency"),
   }),
   jobDescription: yup.string().label("Please enter job description").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -70,9 +70,9 @@ export const PostJobDetailSchema = yup.object().shape({
     }
   ),
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -241,9 +241,9 @@ export const PostJobSchema = yup.object().shape({
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
   jobDescription: yup.string().label("Please enter job description").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -266,9 +266,9 @@ export const PostJobSchema = yup.object().shape({
     'Enter correct url!'
   ).required(),
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -405,9 +405,9 @@ export const RequirementDraftSchema = yup.object().shape({
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
   jobDescription: yup.string().label("Please enter job description").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -431,9 +431,9 @@ export const RequirementDraftSchema = yup.object().shape({
     'Enter correct url!'
   ).required(),
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -537,9 +537,9 @@ export const JobDetailDraftSchema = yup.object().shape({
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
   jobDescription: yup.string().label("Please enter job description").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -563,9 +563,9 @@ export const JobDetailDraftSchema = yup.object().shape({
     'Enter correct url!'
   ).required(),
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -663,9 +663,9 @@ export const CompanyDraftSchema = yup.object().shape({
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
   jobDescription: yup.string().label("Please enter job description").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -693,9 +693,9 @@ export const CompanyDraftSchema = yup.object().shape({
     'Enter correct url!'
   ).required(),
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -792,9 +792,9 @@ export const ResponseDraftSchema = yup.object().shape({
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
   jobDescription: yup.string().label("Please enter job description").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -822,9 +822,9 @@ export const ResponseDraftSchema = yup.object().shape({
     'Enter correct url!'
   ).required(),
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -856,9 +856,9 @@ export const JobDetailSaveSchema = yup.object().shape({
     label: yup.string().required("Please select job status"),
   }),
   jobDescription: yup.string().label("Please enter job description").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -906,9 +906,9 @@ export const JobDetailSaveSchema = yup.object().shape({
     label: yup.string().required("Please select currency"),
   }),
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -999,9 +999,9 @@ export const RequirementSaveSchema = yup.object().shape({
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
   jobDescription: yup.string().label("Please enter job description").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -1010,9 +1010,9 @@ export const RequirementSaveSchema = yup.object().shape({
   ),
   jobsOpening: yup.number().label("Please enter jobs opening").required(),
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -1099,9 +1099,9 @@ export const CompanySaveSchema = yup.object().shape({
     .max(10, 'Pick at most ten industry').required("Please select industry"),
   diversityHiring: yup.boolean().default(false),
   jobDescription: yup.string().label("Please enter job description").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true
@@ -1123,9 +1123,9 @@ export const CompanySaveSchema = yup.object().shape({
     'Enter correct url!'
   ).required(),
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
-    'len', 'Minimum 1000 characters are required',
+    'len', 'Minimum 200 characters are required',
     (data) => {
-      if (data?.length < 1000) {
+      if (data?.length < 200) {
         return false
       } else {
         return true

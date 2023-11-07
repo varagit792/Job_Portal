@@ -6,7 +6,6 @@ import ProtectedRoute from './ProtectedRoute';
 import PublicRoute from './PublicRoute';
 import HomePage from '../components/views/HomePage';
 import Profile from '../components/views/Profile/Profile';
-import SignIn from '../components/views/SignIn/SignIn';
 import AllJobs from '../components/views/Jobs/AllJobs';
 import JobDescription from '../components/views/Jobs/JobDescription';
 import AllCompanies from '../components/views/Companies/AllCompanies';
@@ -21,6 +20,7 @@ import Preview from '../components/views/Recruiter/PostJob/preview';
 import EmployerDashboard from '../components/views/Recruiter/Dashboard/EmployerDashboard';
 import RecruiterJobList from '../components/views/Recruiter/Jobs/RecruiterJobList';
 import Questionnaire from '../components/views/Recruiter/PostJob/Questionnaire';
+import SignIn from '../components/views/SignIn';
 
 const AllRoutes = () => {
 

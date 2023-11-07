@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { useAppDispatch } from '../../../';
-import { useAppSelector } from '../../../';
+import { useAppDispatch } from '../../..';
+import { useAppSelector } from '../../..';
 import { googleAuthSignUp } from '../../../store/reducers/googleAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
@@ -28,7 +28,7 @@ const SignUpSchema = yup
   })
   .required();
 
-const SignIn = () => {
+const SignInBackup = () => {
 
   const [loginState, setLoginState] = useState('');
   const navigate = useNavigate();
@@ -136,4 +136,4 @@ const SignIn = () => {
   )
 }
 
-export default SignIn;
+export default SignInBackup;

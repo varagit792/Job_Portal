@@ -19,7 +19,9 @@ import { clearUploadState } from "../../../../store/reducers/jobSeekerProfile/up
 import VerifyOtpForm from "./VerifyOtpForm";
 import greenTickIcon from '../../../../assets/svg/greenTickIcon.svg';
 import EmailVerifyForm from './EmailVerifyForm';
-
+import Toaster from "../../../commonComponents/Toaster";
+import { toast } from "react-toastify"
+import { clearVerifyMobileOtpSlice } from "../../../../store/reducers/user/verifyMobileOtp"
 
 const ProfileBasicDetails = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +32,7 @@ const ProfileBasicDetails = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isVerifyOtpOpen, setIsVerifyOtpOpen] = useState<boolean>(false);
   const [isVerifyEmailOpen, setIsVerifyEmailOpen] = useState<boolean>(false);
+  const{errorMessage} = useAppSelector((state)=>state.jobSeekerVerifyMobile)
 
   useEffect(() => {
     dispatch(getUserData());
@@ -41,7 +44,6 @@ const ProfileBasicDetails = () => {
       dispatch(clearUploadState)
     }
   }, [dispatch, success]);
-
 
   useEffect(() => {
     if (successBasicDetails) {
@@ -82,6 +84,12 @@ const ProfileBasicDetails = () => {
     }
   }, [profileDashboard])
 
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(clearVerifyMobileOtpSlice());
+   }
+  },[errorMessage])
   return (
     <>
       {/* <div className="col-start-2 col-end-6">
@@ -137,7 +145,7 @@ const ProfileBasicDetails = () => {
           <div className="flex justify-start items-center mb-3">
             <img src={EmailIcon} alt="EmailIcon" width="12rem" height="12rem" />
             <span className="ml-1 overflow-hidden inline-block whitespace-nowrap text-ellipsis mr-1">{userData?.email}</span>
-            {userData.isEmailVerified ? <img src={greenTickIcon} alt="VerifyIcon" width="12rem" height="12rem" /> :
+            {userData.isEmailVerified ? <img src={greenTickIcon} alt="VerifyIcon" width="14rem" height="14rem" /> :
               <button className=" ml-1 text-blue-600 text-sm, font-medium" onClick={openEmailVerifyModel}>Verify</button>
             }
           </div>
@@ -178,7 +186,8 @@ const ProfileBasicDetails = () => {
       {isVerifyOtpOpen &&
         <Modal
           isOpen={isVerifyOtpOpen}
-          setIsOpen={setIsVerifyOtpOpen}
+        setIsOpen={setIsVerifyOtpOpen}
+        width="max-w-xl"
           modalBody={
             <VerifyOtpForm
               closeOtpDialog={closeOtpDialog}
@@ -192,14 +201,15 @@ const ProfileBasicDetails = () => {
         <Modal
         isOpen={isVerifyEmailOpen}
         setIsOpen={setIsVerifyEmailOpen}
+        width="max-w-xl"
         modalBody={
           <EmailVerifyForm
             closeEmailVerifyDialog={closeEmailVerifyDialog}
             email={userData?.email}
-          />
-          
+          />   
        }
         />}
+      <Toaster/>
     </>
   )
 }

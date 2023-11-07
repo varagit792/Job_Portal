@@ -28,10 +28,7 @@ const Preview = () => {
   const [sectionURL, setSectionURL] = useState({ jobDetailsURL: "", requirementsURL: "", companyURL: "", recruiterURL: "", responseURL: "", previewURL: "" });
 
   const {
-    register,
     handleSubmit,
-    control,
-    watch,
     setValue,
     formState: { errors }
   } = useForm<IFormInputsPostAJob>({
@@ -681,7 +678,7 @@ const Preview = () => {
 
                 </div>
                 <div className="w-full justify-start  gap-5 inline-flex">
-                  <div className=" px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex">
+                  {/* <div className=" px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex">
                     <div className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" onClick={() => returnBack(postBack.DiscardURL)}>Discard</div>
                   </div>
                   {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
@@ -692,7 +689,20 @@ const Preview = () => {
                   </div>}
                   <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
                     <button className="text-white font-medium leading-normal tracking-tight cursor-pointer" type="submit" onClick={() => setButtonClick('Continue')}>Post a Job</button>
-                  </div>
+                  </div> */}
+
+                  <button name='Discard' className="text-indigo-900 font-medium leading-normal tracking-tight grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack.DiscardURL)}>Discard</button>
+
+{!isNaN(Number(postId)) &&
+  <button name='Save' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex" onClick={() => setButtonClick('Save')}>Save</button>
+}
+
+{isNaN(Number(postId)) &&
+  <button name='SaveAsDraft' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex " onClick={() => setButtonClick('Draft')}>Save as Draft</button>
+}
+
+<button type="submit" name='Continue' className="text-white font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex"
+                    onClick={() => setButtonClick('Continue')}>Post a Job</button>                  
                 </div>
               </div>
             </form>

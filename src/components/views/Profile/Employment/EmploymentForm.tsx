@@ -164,8 +164,18 @@ export default function ({ closeDialog, selectedEmployment }: any) {
       },
       then: () => yup.object().when("employmentType", {
         is: 'Internship',
-        then: (schema) => schema.required("Please select worked from year"),
-        otherwise: (schema) => schema.notRequired(),
+        //then: (schema) => schema.required("Please select worked from year"),
+        //otherwise: (schema) => schema.notRequired(),
+        then: (schema) => schema.test(
+          'len', 'Working from year cant be less than worked till year',
+        (data) => {
+            if (parseInt(Object(data)?.label) >= parseInt(watch('workedTillYear')?.label)) {                
+              return false
+            } else {
+              return true
+            }
+        }
+      ).required("Please select worked from year"),
       }),
       otherwise: (schema) => schema.notRequired(),
     }),
@@ -281,7 +291,16 @@ export default function ({ closeDialog, selectedEmployment }: any) {
       },
       then: () => yup.object().when("employmentType", {
         is: 'Full Time',
-        then: (schema) => schema.required("Please select joining date year"),
+        then: (schema) => schema.test(
+            'len', 'Joining year cant be less than worked till year',
+          (data) => {
+              if (parseInt(Object(data)?.label) >= parseInt(watch('workedTillYear')?.label)) {                
+                return false
+              } else {
+                return true
+              }
+          }
+        ).required("Please select joining date year"),
         otherwise: (schema) => schema.notRequired(),
       }),
       otherwise: (schema) => schema.notRequired(),
@@ -295,6 +314,17 @@ export default function ({ closeDialog, selectedEmployment }: any) {
         is: 'Full Time',
         then: (schema) => schema.required("Please select joining date month"),
         otherwise: (schema) => schema.notRequired(),
+      //   then: (schema) => schema.test(
+      //     'len', 'Joining month cant be less than worked till year',
+      //     (data) => {          
+      //     if (parseInt(watch('workedTillYear')?.label) === parseInt(watch('joiningDateYear')?.label) &&
+      //       parseInt(Object(data)?.label)) {                
+      //         return false
+      //       } else {
+      //         return true
+      //       }
+      //   }
+      // ).required("Please select joining date year"),
       }),
       otherwise: (schema) => schema.notRequired(),
     }),
@@ -569,7 +599,7 @@ export default function ({ closeDialog, selectedEmployment }: any) {
         <h1 className="mb-2 text-lg font-medium text-gray-900">Add Employment</h1>
         <div className="col-span-full mb-4">
           <label htmlFor="currentEmployment" className="block text-sm font-medium leading-6 text-gray-900">Is this your current employment?</label>
-          <div className="grid grid-cols-4 gap-4 mt-2 mt-2 flex justify-between items-center">
+          <div className="grid grid-cols-4 gap-4 mt-2 justify-between items-center">
             {
               currentEmployment.map((option) => (
                 <div key={option}>
