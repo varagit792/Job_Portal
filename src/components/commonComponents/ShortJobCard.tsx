@@ -9,7 +9,7 @@ const ShortJobCard = () => {
           <div className="flex justify-between w-full">
             <div className="self-stretch text-slate-900 text-base font-bold  leading-snug tracking-tight">Global Head of Supply Chain Finance
             </div>
-            <span><img src={bookMarkIcon} alt="bookMark" /></span>
+            <button><img src={bookMarkIcon} alt="bookMark" /></button>
           </div>
           <div className="justify-start items-center gap-3 ">
             <span className="text-slate-500 text-sm font-normal leading-snug tracking-tight">TATA Consultancy Services
