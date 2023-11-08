@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { RxCross1, RxCross2 } from 'react-icons/rx';
 import FiltersDepartment from './FiltersDepartment';
@@ -12,7 +12,8 @@ import {
     setCompanyType,
     resetCheckItem,
     modalReset,
-    clearAll
+    clearAll,
+    modalResetIndividual
 } from '../../../store/reducers/jobs/GetFilterJobs';
 import FiltersLocation from './FiltersLocation';
 import FiltersWorkMode from './FiltersWorkMode';
@@ -24,6 +25,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
     const dispatch = useAppDispatch();
     const { navigateFilterOption, checkItems, departmentIds, locationIds, workModeIds, companyTypeIds, maxExpYearId, maxSalaryId, expYear, department, location, workMode, salary, companyType } = useAppSelector((state) => state.getFilterJobs);
     const [clearAllToggle, setClearAllToggle] = useState(false);
+    const [filtersCount, setFiltersCount] = useState(0);
 
     const closeDialog = () => {
         setIsOpen(false);
@@ -43,6 +45,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
             setClearAllToggle(false);
         }
     }
+
     const handleReset = () => {
         dispatch(modalReset());
         setClearAllToggle(true);
@@ -78,6 +81,9 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                 <Dialog.Title className="text-lg font-medium text-gray-900 text-right flex justify-between items-center p-5">
                                     <div className="flex justify-start items-center">
                                         <h1 className="font-bold leading-none mr-2">Filters</h1>
+                                        <span className="bg-[#F1F5F9] text-sm mr-2 w-6 h-6 rounded-full flex justify-center items-center">
+                                            {filtersCount}
+                                        </span>
                                         <button className=" border-b border-[#475569] text-[#475569] text-sm" onClick={handleReset}>Reset</button>
                                     </div>
                                     <button
@@ -89,7 +95,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                     </button>
                                 </Dialog.Title>
                                 <div className="mb-5 flex flex-wrap justify-start items-center gap-2 mx-5">
-                                    {maxExpYearId !== 31 && expYear?.map((item: any) => {
+                                    {maxExpYearId !== 0 && expYear?.map((item: any) => {
                                         let data = item?.title?.split('');
                                         let splitVal = data?.slice(0, data.length - 5);
                                         let joinedVal = parseInt(splitVal?.join(''));
@@ -97,7 +103,12 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                             return (
                                                 < span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs" >
                                                     <span className="mr-1">0 - {item?.title}</span>
-                                                    <span className="cursor-pointer"><RxCross2 /></span>
+                                                    <span className="cursor-pointer"
+                                                        onClick={() => {
+                                                            dispatch(modalResetIndividual({ expYear: item?.id }))
+                                                        }}>
+                                                        <RxCross2 />
+                                                    </span>
                                                 </span>
                                             )
                                         }
@@ -113,7 +124,12 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                             return (
                                                 <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
                                                     <span className="mr-1">0 - {item?.title} LPA</span>
-                                                    <span className="cursor-pointer"><RxCross2 /></span>
+                                                    <span className="cursor-pointer"
+                                                        onClick={() => {
+                                                            dispatch(modalResetIndividual({ salary: item?.id }))
+                                                        }}>
+                                                        <RxCross2 />
+                                                    </span>
                                                 </span>
                                             )
                                         }
@@ -130,7 +146,10 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         return (
                                             <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
                                                 <span className="mr-1">{departmentFilter[0]?.title}</span>
-                                                <span className="cursor-pointer">
+                                                <span className="cursor-pointer"
+                                                    onClick={() => {
+                                                        dispatch(modalResetIndividual({ department: departmentFilter[0]?.id }))
+                                                    }}>
                                                     <RxCross2 />
                                                 </span>
                                             </span>
@@ -141,7 +160,10 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         return (
                                             <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
                                                 <span className="mr-1">{locationFilter[0]?.title}</span>
-                                                <span className="cursor-pointer">
+                                                <span className="cursor-pointer"
+                                                    onClick={() => {
+                                                        dispatch(modalResetIndividual({ location: locationFilter[0]?.id }))
+                                                    }}>
                                                     <RxCross2 />
                                                 </span>
                                             </span>
@@ -152,7 +174,10 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         return (
                                             <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
                                                 <span className="mr-1">{workModeFilter[0]?.title}</span>
-                                                <span className="cursor-pointer">
+                                                <span className="cursor-pointer"
+                                                    onClick={() => {
+                                                        dispatch(modalResetIndividual({ workMode: workModeFilter[0]?.id }))
+                                                    }}>
                                                     <RxCross2 />
                                                 </span>
                                             </span>
@@ -163,23 +188,15 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         return (
                                             <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
                                                 <span className="mr-1">{companyTypeFilter[0]?.title}</span>
-                                                <span className="cursor-pointer">
+                                                <span className="cursor-pointer"
+                                                    onClick={() => {
+                                                        dispatch(modalResetIndividual({ companyType: companyTypeFilter[0]?.id }))
+                                                    }}>
                                                     <RxCross2 />
                                                 </span>
                                             </span>
                                         )
                                     })}
-                                    {/* {filtersData?.roleCategory?.map((item: any) => {
-                                            const roleCategoryFilter = roleCategory?.filter((roleCategoryItem: any) => roleCategoryItem?.id === item);
-                                            return (
-                                                <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
-                                                    <span className="mr-1">{roleCategoryFilter[0]?.title}</span>
-                                                    <span className="cursor-pointer">
-                                                        <RxCross2 />
-                                                    </span>
-                                                </span>
-                                            )
-                                        })} */}
                                 </div>
                                 <div className="grid grid-cols-12 border-y border-[#E0E7FF]">
                                     <div className="col-start-1 col-end-4 border-r border-[#E0E7FF]">

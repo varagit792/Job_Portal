@@ -322,10 +322,14 @@ const getFilterJobsSlice = createSlice({
             })
             if (action?.payload?.expYear) {
                 state.filtersData.expYear = experienceYearsData?.[0]?.id;
+            } else {
+                state.filtersData.expYear = null;
             }
             const salaryRangeListData = state?.salary?.filter((item: any) => parseInt(item?.title) === action?.payload?.salary);
             if (action?.payload?.salary) {
                 state.filtersData.salary = salaryRangeListData?.[0]?.id;
+            } else {
+                state.filtersData.salary = null;
             }
 
             state.filtersData.department = action?.payload?.department;
@@ -446,6 +450,128 @@ const getFilterJobsSlice = createSlice({
             state.checkItems.location = state?.location?.map((item: any) => { return { ...item, isChecked: false } });
             state.checkItems.workMode = state?.workMode?.map((item: any) => { return { ...item, isChecked: false } });
             state.checkItems.companyType = state?.companyType?.map((item: any) => { return { ...item, isChecked: false } });
+        },
+        clearIndividual: (state, action) => {
+            if (action?.payload?.expYear) {
+                state.filtersData.expYear = null;
+                state.maxExpYearId = null;
+            }
+            if (action?.payload?.department) {
+                const filterData = state?.filtersData?.department?.filter((item: any) => item !== action?.payload?.department);
+                state.filtersData.department = filterData;
+                state.departmentIds = filterData;
+                const mapData = state?.department?.map((item: any) => {
+                    if (item?.id !== action?.payload?.department) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                // state.department = mapData;
+                state.checkItems.department = mapData;
+            }
+            if (action?.payload?.location) {
+                const filterData = state?.filtersData?.location?.filter((item: any) => item !== action?.payload?.location);
+                state.filtersData.location = filterData;
+                state.locationIds = filterData;
+                const mapData = state?.location?.map((item: any) => {
+                    if (item?.id !== action?.payload?.location) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.location = mapData;
+                state.checkItems.location = mapData;
+            }
+            if (action?.payload?.workMode) {
+                const filterData = state?.filtersData?.workMode?.filter((item: any) => item !== action?.payload?.workMode);
+                state.filtersData.workMode = filterData;
+                state.workModeIds = filterData;
+                const mapData = state?.workMode?.map((item: any) => {
+                    if (item?.id !== action?.payload?.workMode) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.workMode = mapData;
+                state.checkItems.workMode = mapData;
+            }
+            if (action?.payload?.salary) {
+                state.filtersData.salary = null;
+                state.maxSalaryId = null;
+            }
+            if (action?.payload?.companyType) {
+                const filterData = state?.filtersData?.companyType?.filter((item: any) => item !== action?.payload?.companyType);
+                state.filtersData.companyType = filterData;
+                state.companyTypeIds = filterData;
+                const mapData = state?.companyType?.map((item: any) => {
+                    if (item?.id !== action?.payload?.companyType) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.companyType = mapData;
+                state.checkItems.companyType = mapData;
+            }
+        },
+        modalResetIndividual: (state, action) => {
+            if (action?.payload?.expYear) {
+                state.maxExpYearId = null;
+            }
+            if (action?.payload?.department) {
+                const filterData = state.departmentIds?.filter((item: any) => item !== action?.payload?.department);
+                state.departmentIds = filterData;
+                const mapData = state?.checkItems?.department?.map((item: any) => {
+                    if (item?.id !== action?.payload?.department) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.department = mapData;
+            }
+            if (action?.payload?.location) {
+                const filterData = state.locationIds?.filter((item: any) => item !== action?.payload?.location);
+                state.locationIds = filterData;
+                const mapData = state?.checkItems?.location?.map((item: any) => {
+                    if (item?.id !== action?.payload?.location) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.location = mapData;
+            }
+            if (action?.payload?.workMode) {
+                const filterData = state.workModeIds?.filter((item: any) => item !== action?.payload?.workMode);
+                state.workModeIds = filterData;
+                const mapData = state?.checkItems?.workMode?.map((item: any) => {
+                    if (item?.id !== action?.payload?.workMode) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.workMode = mapData;
+            }
+            if (action?.payload?.salary) {
+                state.maxSalaryId = null;
+            }
+            if (action?.payload?.companyType) {
+                const filterData = state.companyTypeIds?.filter((item: any) => item !== action?.payload?.companyType);
+                state.companyTypeIds = filterData;
+                const mapData = state?.checkItems?.companyType?.map((item: any) => {
+                    if (item?.id !== action?.payload?.companyType) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.companyType = mapData;
+            }
         }
     }
 });
@@ -476,4 +602,6 @@ export const { clearGetFilterJobsSlice,
     setMaxSalaryId,
     resetCheckItem,
     clearAll,
-    modalReset } = getFilterJobsSlice.actions;
+    modalReset,
+    clearIndividual,
+    modalResetIndividual } = getFilterJobsSlice.actions;
