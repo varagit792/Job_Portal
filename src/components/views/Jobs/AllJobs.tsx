@@ -17,7 +17,8 @@ import {
     setFilterExpYear,
     setFilterSalary,
     setNavigateFilterOption,
-    clearAll
+    clearAll,
+    clearIndividual
 } from '../../../store/reducers/jobs/GetFilterJobs';
 import { scrollToTop } from '../../utils/utils';
 import JobCard from './JobCard';
@@ -211,7 +212,11 @@ const AllJobs = () => {
 
     const handleClearAll = () => {
         dispatch(clearAll());
-        dispatch(getFilterJobs({ page }));
+        setToggleDispach(true);
+    }
+
+    const handleClearIndividual = (item: any) => {
+        console.log(item);
     }
 
     return (
@@ -231,7 +236,13 @@ const AllJobs = () => {
                             {filtersData?.expYear !== null && expYear?.map((item: any) => item?.id == filtersData?.expYear &&
                                 <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
                                     <span className="mr-1">0 - {item?.title}</span>
-                                    <span className="cursor-pointer"><RxCross2 /></span>
+                                    <span className="cursor-pointer"
+                                        onClick={() => {
+                                            dispatch(clearIndividual({ expYear: item?.id }))
+                                            setToggleDispach(true)
+                                        }}>
+                                        <RxCross2 />
+                                    </span>
                                 </span>
                             )}
                             {filtersData?.expYear === undefined &&
@@ -245,7 +256,11 @@ const AllJobs = () => {
                                 return (
                                     <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
                                         <span className="mr-1">{departmentFilter[0]?.title}</span>
-                                        <span className="cursor-pointer">
+                                        <span className="cursor-pointer"
+                                            onClick={() => {
+                                                dispatch(clearIndividual({ department: departmentFilter[0]?.id }))
+                                                setToggleDispach(true)
+                                            }}>
                                             <RxCross2 />
                                         </span>
                                     </span>
@@ -256,7 +271,11 @@ const AllJobs = () => {
                                 return (
                                     <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
                                         <span className="mr-1">{locationFilter[0]?.title}</span>
-                                        <span className="cursor-pointer">
+                                        <span className="cursor-pointer"
+                                            onClick={() => {
+                                                dispatch(clearIndividual({ location: locationFilter[0]?.id }))
+                                                setToggleDispach(true)
+                                            }}>
                                             <RxCross2 />
                                         </span>
                                     </span>
@@ -267,7 +286,11 @@ const AllJobs = () => {
                                 return (
                                     <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
                                         <span className="mr-1">{workModeFilter[0]?.title}</span>
-                                        <span className="cursor-pointer">
+                                        <span className="cursor-pointer"
+                                            onClick={() => {
+                                                dispatch(clearIndividual({ workMode: workModeFilter[0]?.id }))
+                                                setToggleDispach(true)
+                                            }}>
                                             <RxCross2 />
                                         </span>
                                     </span>
@@ -276,7 +299,13 @@ const AllJobs = () => {
                             {filtersData?.salary !== null && salary?.map((item: any) => item?.id == filtersData?.salary &&
                                 <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
                                     <span className="mr-1">0 - {item?.title} LPA</span>
-                                    <span className="cursor-pointer"><RxCross2 /></span>
+                                    <span className="cursor-pointer"
+                                        onClick={() => {
+                                            dispatch(clearIndividual({ salary: item?.id }))
+                                            setToggleDispach(true)
+                                        }}>
+                                        <RxCross2 />
+                                    </span>
                                 </span>
                             )}
                             {filtersData?.salary === undefined &&
@@ -290,28 +319,21 @@ const AllJobs = () => {
                                 return (
                                     <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
                                         <span className="mr-1">{companyTypeFilter[0]?.title}</span>
-                                        <span className="cursor-pointer">
+                                        <span className="cursor-pointer"
+                                            onClick={() => {
+                                                dispatch(clearIndividual({ companyType: companyTypeFilter[0]?.id }))
+                                                setToggleDispach(true)
+                                            }}>
                                             <RxCross2 />
                                         </span>
                                     </span>
                                 )
                             })}
-                            {filtersData?.roleCategory?.map((item: any) => {
-                                const roleCategoryFilter = roleCategory?.filter((roleCategoryItem: any) => roleCategoryItem?.id === item);
-                                return (
-                                    <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
-                                        <span className="mr-1">{roleCategoryFilter[0]?.title}</span>
-                                        <span className="cursor-pointer">
-                                            <RxCross2 />
-                                        </span>
-                                    </span>
-                                )
-                            })}
-                            {(filtersData?.expYear !== null
+                            {((filtersData?.expYear !== null && filtersData?.expYear !== 0)
                                 || (filtersData?.department !== undefined && filtersData?.department?.length !== 0)
                                 || (filtersData?.location !== undefined && filtersData?.location?.length !== 0)
                                 || (filtersData?.workMode !== undefined && filtersData?.workMode?.length !== 0)
-                                || filtersData?.salary !== null
+                                || (filtersData?.salary !== null && filtersData?.expYear !== 0)
                                 || (filtersData?.companyType !== undefined && filtersData?.companyType?.length !== 0)
                                 || (filtersData?.roleCategory !== undefined && filtersData?.roleCategory?.length !== 0)
                             ) &&

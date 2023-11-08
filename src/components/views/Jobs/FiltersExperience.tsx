@@ -27,10 +27,12 @@ export const ExperienceBasedFilter = ({ handleTotalExpYearChange, isOpen }: any)
             } else {
                 setTotalExpYear(31);
             }
-        } else {
+        }
+        else {
             setTotalExpYear(0);
         }
     }, [!isOpen, filtersData]);
+
     return (
         <div className="w-full">
             <Disclosure>
