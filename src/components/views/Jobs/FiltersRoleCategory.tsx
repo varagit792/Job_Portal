@@ -32,9 +32,9 @@ const FiltersRoleCategory = ({ handleRoleCategoryCheckbox }: any) => {
                         <Disclosure.Panel className="mt-5">
                             {roleCategory?.slice(0, 5)?.map((item: any) => <div className="text-[#475569] mb-2 flex justify-start items-center">
                                 <input type="checkbox" defaultChecked={false} checked={item?.isChecked !== undefined && item?.isChecked} onChange={() => handleRoleCategoryCheckbox(item)} />
-                                <label className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
+                                <label className="ml-2 text-sm overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
                             </div>)}
-                            <button className="text-[#4F46E5]">
+                            <button className="text-[#4F46E5] text-sm">
                                 View all...
                             </button>
                         </Disclosure.Panel>

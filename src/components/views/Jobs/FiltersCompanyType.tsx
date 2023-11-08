@@ -30,7 +30,7 @@ export const CompanyTypeBasedFilter = ({ handleCompanyTypeCheckbox, setIsOpen }:
                         <Disclosure.Panel className="mt-5">
                             {companyType?.map((item: any) => <div className="text-[#475569] mb-2 flex justify-start items-center">
                                 <input type="checkbox" defaultChecked={false} checked={item?.isChecked !== undefined && item?.isChecked} onChange={() => handleCompanyTypeCheckbox(item)} />
-                                <label className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
+                                <label className="ml-2 text-sm overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
                             </div>)}
                         </Disclosure.Panel>
                     </>}

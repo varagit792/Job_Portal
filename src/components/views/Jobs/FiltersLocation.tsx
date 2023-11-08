@@ -37,9 +37,9 @@ export const LocationBasedFilter = ({ handleLocationCheckbox, setIsOpen }: any) 
                         <Disclosure.Panel className="mt-5">
                             {location?.slice(0, 5)?.map((item: any) => <div className="text-[#475569] mb-2 flex justify-start items-center">
                                 <input type="checkbox" defaultChecked={false} checked={item?.isChecked} onChange={() => handleLocationCheckbox(item)} />
-                                <label className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
+                                <label className="ml-2 text-sm overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
                             </div>)}
-                            <button className="text-[#4F46E5]" onClick={handleViewAll}>View all...</button>
+                            <button className="text-[#4F46E5] text-sm" onClick={handleViewAll}>View all...</button>
                         </Disclosure.Panel>
                     </>}
             </Disclosure>
@@ -92,7 +92,7 @@ const FiltersLocation = () => {
                     {filteredItems?.map((item: any) =>
                         <div className="text-[#475569] flex justify-start items-center mt-1 text-sm w-1/4">
                             <input type="checkbox" defaultChecked={false} checked={item?.isChecked !== undefined && item?.isChecked} onChange={() => handleLocationCheckbox(item)} />
-                            <label className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
+                            <label className="ml-2 text-sm overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
                         </div>
                     )}
                 </div>
