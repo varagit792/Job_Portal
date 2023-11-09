@@ -16,6 +16,9 @@ import {
     setFilterRoleCategory,
     setFilterExpYear,
     setFilterSalary,
+    setNavigateFilterOption,
+    clearAll,
+    clearIndividual
 } from '../../../store/reducers/jobs/GetFilterJobs';
 import { scrollToTop } from '../../utils/utils';
 import JobCard from './JobCard';
@@ -36,6 +39,7 @@ import BelleIcon from '../../../assets/svg/BelleIcon.svg';
 import DominousIcon from '../../../assets/svg/DominousIcon.svg';
 import GoproIcon from '../../../assets/svg/GoproIcon.svg';
 import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
+import { RxCross2 } from 'react-icons/rx';
 
 const AllJobs = () => {
     const dispatch = useAppDispatch();
@@ -47,11 +51,37 @@ const AllJobs = () => {
         workMode,
         roleCategory,
         companyType,
+        salary,
+        expYear,
         filtersData } = useAppSelector((state) => state.getFilterJobs);
     const [jobCard, setJobCard] = useState<any>([]);
     const [page, setPage] = useState(1);
     const [toggleDispach, setToggleDispach] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
+    const [filtersCount, setFiltersCount] = useState(0);
+
+    useEffect(() => {
+        let filtersCount = 0;
+        if (filtersData?.expYear) {
+            filtersCount += 1
+        }
+        if (filtersData?.department?.length) {
+            filtersCount += filtersData?.department?.length
+        }
+        if (filtersData?.location?.length) {
+            filtersCount += filtersData?.location?.length
+        }
+        if (filtersData?.workMode?.length) {
+            filtersCount += filtersData?.workMode?.length
+        }
+        if (filtersData?.salary) {
+            filtersCount += 1
+        }
+        if (filtersData?.companyType?.length) {
+            filtersCount += filtersData?.companyType?.length
+        }
+        setFiltersCount(filtersCount);
+    }, [filtersData]);
 
     useEffect(() => {
         window.addEventListener("scroll", handelInfiniteScroll);
@@ -199,13 +229,121 @@ const AllJobs = () => {
         window.open(`/allJobs/jobDescription/${jobId}`, '_blank');
     }
 
+    const handleViewAll = () => {
+        setIsOpen(true);
+        dispatch(setNavigateFilterOption("Experience"));
+    }
+
+    const handleClearAll = () => {
+        dispatch(clearAll());
+        setToggleDispach(true);
+    }
+
     return (
         <>
             <div className="h-[10%] w-full"></div>
             <div className="grid grid-cols-12 gap-10 px-32 bg-[#F8FAFC] py-6">
                 <div className="col-start-1 col-end-4">
                     <div className="bg-[#FFF] rounded-xl p-4 sticky top-[13%]">
-                        <h1 className="flex justify-between items-center leading-none"><span className="text-[#475569] font-bold">Filters</span><span className="bg-[#F8FAFC] rounded px-2 py-1 text-[#4F46E5]">4</span></h1>
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <span className="text-[#475569] font-bold mr-2">Filters</span>
+                                <span>{filtersCount !== 0 && filtersCount}</span>
+                            </div>
+                            {
+                                filtersCount !== 0 &&
+                                <button className=" border-b border-[#475569] text-[#475569]" onClick={handleClearAll}>Clear all</button>
+                            }
+                        </div>
+                        <div className="mt-5 flex flex-wrap justify-start items-center gap-2">
+                            {filtersData?.expYear !== null && expYear?.map((item: any) => item?.id == filtersData?.expYear &&
+                                <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                    <span className="mr-1">0 - {item?.title}</span>
+                                    <span className="cursor-pointer"
+                                        onClick={() => {
+                                            dispatch(clearIndividual({ expYear: item?.id }))
+                                            setToggleDispach(true)
+                                        }}>
+                                        <RxCross2 />
+                                    </span>
+                                </span>
+                            )}
+                            {filtersData?.department?.map((item: any) => {
+                                const departmentFilter = department?.filter((departmentItem: any) => departmentItem?.id === item);
+                                return (
+                                    <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                        <span className="mr-1">{departmentFilter[0]?.title}</span>
+                                        <span className="cursor-pointer"
+                                            onClick={() => {
+                                                dispatch(clearIndividual({ department: departmentFilter[0]?.id }))
+                                                setToggleDispach(true)
+                                            }}>
+                                            <RxCross2 />
+                                        </span>
+                                    </span>
+                                )
+                            })}
+                            {filtersData?.location?.map((item: any) => {
+                                const locationFilter = location?.filter((locationItem: any) => locationItem?.id === item);
+                                return (
+                                    <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                        <span className="mr-1">{locationFilter[0]?.title}</span>
+                                        <span className="cursor-pointer"
+                                            onClick={() => {
+                                                dispatch(clearIndividual({ location: locationFilter[0]?.id }))
+                                                setToggleDispach(true)
+                                            }}>
+                                            <RxCross2 />
+                                        </span>
+                                    </span>
+                                )
+                            })}
+                            {filtersData?.workMode?.map((item: any) => {
+                                const workModeFilter = workMode?.filter((workModeItem: any) => workModeItem?.id === item);
+                                return (
+                                    <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                        <span className="mr-1">{workModeFilter[0]?.title}</span>
+                                        <span className="cursor-pointer"
+                                            onClick={() => {
+                                                dispatch(clearIndividual({ workMode: workModeFilter[0]?.id }))
+                                                setToggleDispach(true)
+                                            }}>
+                                            <RxCross2 />
+                                        </span>
+                                    </span>
+                                )
+                            })}
+                            {filtersData?.salary !== null && salary?.map((item: any) => item?.id == filtersData?.salary &&
+                                <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                    <span className="mr-1">0 - {item?.title} LPA</span>
+                                    <span className="cursor-pointer"
+                                        onClick={() => {
+                                            dispatch(clearIndividual({ salary: item?.id }))
+                                            setToggleDispach(true)
+                                        }}>
+                                        <RxCross2 />
+                                    </span>
+                                </span>
+                            )}
+                            {filtersData?.companyType?.map((item: any) => {
+                                const companyTypeFilter = companyType?.filter((companyTypeItem: any) => companyTypeItem?.id === item);
+                                return (
+                                    <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                        <span className="mr-1">{companyTypeFilter[0]?.title}</span>
+                                        <span className="cursor-pointer"
+                                            onClick={() => {
+                                                dispatch(clearIndividual({ companyType: companyTypeFilter[0]?.id }))
+                                                setToggleDispach(true)
+                                            }}>
+                                            <RxCross2 />
+                                        </span>
+                                    </span>
+                                )
+                            })}
+                            {filtersCount >= 4 &&
+                                <button className=" border-b border-[#475569] text-[#475569] text-xs" onClick={handleViewAll}>All</button>
+                            }
+                        </div>
                         <hr className="bg-[#E0E7FF] my-5" />
                         <ExperienceBasedFilter handleTotalExpYearChange={handleTotalExpYearChange} isOpen={isOpen} />
                         <hr className="bg-[#E0E7FF] my-5" />
@@ -246,23 +384,23 @@ const AllJobs = () => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Engineering</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">IT and Information</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={true} />
                                                 <label className="ml-2">Consulting</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Marketing</label>
                                             </div>
-                                            <div className="text-[#475569]">
+                                            <div className="text-[#475569] text-sm">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Sales</label>
                                             </div>
@@ -284,23 +422,23 @@ const AllJobs = () => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Engineering</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">IT and Information</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={true} />
                                                 <label className="ml-2">Consulting</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Marketing</label>
                                             </div>
-                                            <div className="text-[#475569]">
+                                            <div className="text-[#475569] text-sm">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Sales</label>
                                             </div>
@@ -322,23 +460,23 @@ const AllJobs = () => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Engineering</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">IT and Information</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={true} />
                                                 <label className="ml-2">Consulting</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Marketing</label>
                                             </div>
-                                            <div className="text-[#475569]">
+                                            <div className="text-[#475569] text-sm">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Sales</label>
                                             </div>
@@ -360,23 +498,23 @@ const AllJobs = () => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Engineering</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">IT and Information</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={true} />
                                                 <label className="ml-2">Consulting</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Marketing</label>
                                             </div>
-                                            <div className="text-[#475569]">
+                                            <div className="text-[#475569] text-sm">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Sales</label>
                                             </div>
@@ -398,23 +536,23 @@ const AllJobs = () => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Engineering</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">IT and Information</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={true} />
                                                 <label className="ml-2">Consulting</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Marketing</label>
                                             </div>
-                                            <div className="text-[#475569]">
+                                            <div className="text-[#475569] text-sm">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Sales</label>
                                             </div>

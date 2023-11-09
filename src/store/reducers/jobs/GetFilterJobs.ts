@@ -108,7 +108,7 @@ interface AllJobs {
     education: Education,
     user: null,
     jobsKeySkills: Array<JobsKeySkills>,
-    employmentType:EmploymentType
+    employmentType: EmploymentType
 }
 interface AllJobsState {
     loading: boolean;
@@ -293,20 +293,49 @@ const getFilterJobsSlice = createSlice({
                 }
             })
             state.filtersData.expYear = action.payload !== 0 ? experienceYearsData?.[0]?.id : 0;
-            state.maxExpYearId = action.payload !== 0 ? experienceYearsData?.[0]?.id : 0;
+            if (experienceYearsData?.[0]?.title !== undefined) {
+                let data = experienceYearsData?.[0]?.title?.split('');
+                let splitVal = data?.slice(0, data.length - 5);
+                let joinedVal = parseInt(splitVal?.join(''));
+                state.maxExpYearId = action.payload !== 0 ? joinedVal : 0;
+            } else {
+                state.maxExpYearId = action.payload !== 0 ? action.payload : 0;
+            }
         },
         setFilterSalary: (state, action) => {
             const salaryRangeListData = state?.salary?.filter((item: any) => parseInt(item?.title) === action.payload);
             state.filtersData.salary = action.payload !== 0 ? salaryRangeListData?.[0]?.id : 0;
-            state.maxSalaryId = action.payload !== 0 ? salaryRangeListData?.[0]?.id : 0;
+            if (salaryRangeListData?.[0]?.title !== undefined) {
+                state.maxSalaryId = action.payload !== 0 ? salaryRangeListData?.[0]?.title : 0;
+            } else {
+                state.maxSalaryId = action.payload !== 0 ? action.payload : 0;
+            }
         },
         bulkFilter: (state, action) => {
-            state.filtersData.expYear = action?.payload?.expYear;
+            const experienceYearsData = state?.expYear?.filter((item: any) => {
+                let data = item?.title?.split('');
+                let splitVal = data?.slice(0, data.length - 5);
+                let joinedVal = parseInt(splitVal?.join(''));
+                if (joinedVal === action?.payload?.expYear) {
+                    return item
+                }
+            })
+            if (action?.payload?.expYear) {
+                state.filtersData.expYear = experienceYearsData?.[0]?.id;
+            } else {
+                state.filtersData.expYear = null;
+            }
+            const salaryRangeListData = state?.salary?.filter((item: any) => parseInt(item?.title) === action?.payload?.salary);
+            if (action?.payload?.salary) {
+                state.filtersData.salary = salaryRangeListData?.[0]?.id;
+            } else {
+                state.filtersData.salary = null;
+            }
+
             state.filtersData.department = action?.payload?.department;
             state.filtersData.location = action?.payload?.location;
             state.filtersData.workMode = action?.payload?.workMode;
             state.filtersData.companyType = action?.payload?.companyType;
-            state.filtersData.salary = action?.payload?.salary;
         },
         setNavigateFilterOption: (state, action) => {
             state.navigateFilterOption = action?.payload;
@@ -364,6 +393,13 @@ const getFilterJobsSlice = createSlice({
             state.maxSalaryId = action.payload;
         },
         resetCheckItem: (state) => {
+            const experienceYearsData = state?.expYear?.filter((item: any) => parseInt(item?.id) === state?.filtersData?.expYear);
+            const experienceData = experienceYearsData[0]?.title?.split('');
+            state.maxExpYearId = parseInt(experienceData?.slice(0, experienceData.length - 5).join(''));
+
+            const salaryRangeListData = state?.salary?.filter((item: any) => parseInt(item?.id) === state?.filtersData?.salary);
+            state.maxSalaryId = parseInt(salaryRangeListData?.[0]?.title);
+
             state.checkItems.department = state?.department;
             const department = JSON.stringify(state?.department?.filter((item: any) => item?.isChecked));
             state.departmentIds = JSON.parse(department).map((item: any) => item.id);
@@ -378,7 +414,164 @@ const getFilterJobsSlice = createSlice({
 
             state.checkItems.companyType = state?.companyType;
             const companyType = JSON.stringify(state?.companyType?.filter((item: any) => item?.isChecked));
-            state.companyType = JSON.parse(companyType).map((item: any) => item.id);
+            state.companyTypeIds = JSON.parse(companyType).map((item: any) => item.id);
+        },
+        clearAll: (state) => {
+            state.filtersData.expYear = null;
+            state.filtersData.department = [];
+            state.filtersData.location = [];
+            state.filtersData.workMode = [];
+            state.filtersData.salary = null;
+            state.filtersData.companyType = [];
+            state.filtersData.roleCategory = [];
+            state.departmentIds = [];
+            state.locationIds = [];
+            state.workModeIds = [];
+            state.companyTypeIds = [];
+            state.maxExpYearId = null;
+            state.maxSalaryId = null;
+            state.department = state?.department?.map((item: any) => { return { ...item, isChecked: false } });
+            state.location = state?.location?.map((item: any) => { return { ...item, isChecked: false } });
+            state.workMode = state?.workMode?.map((item: any) => { return { ...item, isChecked: false } });
+            state.companyType = state?.companyType?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.department = state?.department?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.location = state?.location?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.workMode = state?.workMode?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.companyType = state?.companyType?.map((item: any) => { return { ...item, isChecked: false } });
+        },
+        modalReset: (state) => {
+            state.departmentIds = []
+            state.locationIds = [];
+            state.workModeIds = [];
+            state.companyTypeIds = [];
+            state.maxExpYearId = null;
+            state.maxSalaryId = null;
+            state.checkItems.department = state?.department?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.location = state?.location?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.workMode = state?.workMode?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.companyType = state?.companyType?.map((item: any) => { return { ...item, isChecked: false } });
+        },
+        clearIndividual: (state, action) => {
+            if (action?.payload?.expYear) {
+                state.filtersData.expYear = null;
+                state.maxExpYearId = null;
+            }
+            if (action?.payload?.department) {
+                const filterData = state?.filtersData?.department?.filter((item: any) => item !== action?.payload?.department);
+                state.filtersData.department = filterData;
+                state.departmentIds = filterData;
+                const mapData = state?.department?.map((item: any) => {
+                    if (item?.id !== action?.payload?.department) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.department = mapData;
+                state.checkItems.department = mapData;
+            }
+            if (action?.payload?.location) {
+                const filterData = state?.filtersData?.location?.filter((item: any) => item !== action?.payload?.location);
+                state.filtersData.location = filterData;
+                state.locationIds = filterData;
+                const mapData = state?.location?.map((item: any) => {
+                    if (item?.id !== action?.payload?.location) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.location = mapData;
+                state.checkItems.location = mapData;
+            }
+            if (action?.payload?.workMode) {
+                const filterData = state?.filtersData?.workMode?.filter((item: any) => item !== action?.payload?.workMode);
+                state.filtersData.workMode = filterData;
+                state.workModeIds = filterData;
+                const mapData = state?.workMode?.map((item: any) => {
+                    if (item?.id !== action?.payload?.workMode) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.workMode = mapData;
+                state.checkItems.workMode = mapData;
+            }
+            if (action?.payload?.salary) {
+                state.filtersData.salary = null;
+                state.maxSalaryId = null;
+            }
+            if (action?.payload?.companyType) {
+                const filterData = state?.filtersData?.companyType?.filter((item: any) => item !== action?.payload?.companyType);
+                state.filtersData.companyType = filterData;
+                state.companyTypeIds = filterData;
+                const mapData = state?.companyType?.map((item: any) => {
+                    if (item?.id !== action?.payload?.companyType) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.companyType = mapData;
+                state.checkItems.companyType = mapData;
+            }
+        },
+        modalResetIndividual: (state, action) => {
+            if (action?.payload?.expYear) {
+                state.maxExpYearId = null;
+            }
+            if (action?.payload?.department) {
+                const filterData = state.departmentIds?.filter((item: any) => item !== action?.payload?.department);
+                state.departmentIds = filterData;
+                const mapData = state?.checkItems?.department?.map((item: any) => {
+                    if (item?.id !== action?.payload?.department) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.department = mapData;
+            }
+            if (action?.payload?.location) {
+                const filterData = state.locationIds?.filter((item: any) => item !== action?.payload?.location);
+                state.locationIds = filterData;
+                const mapData = state?.checkItems?.location?.map((item: any) => {
+                    if (item?.id !== action?.payload?.location) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.location = mapData;
+            }
+            if (action?.payload?.workMode) {
+                const filterData = state.workModeIds?.filter((item: any) => item !== action?.payload?.workMode);
+                state.workModeIds = filterData;
+                const mapData = state?.checkItems?.workMode?.map((item: any) => {
+                    if (item?.id !== action?.payload?.workMode) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.workMode = mapData;
+            }
+            if (action?.payload?.salary) {
+                state.maxSalaryId = null;
+            }
+            if (action?.payload?.companyType) {
+                const filterData = state.companyTypeIds?.filter((item: any) => item !== action?.payload?.companyType);
+                state.companyTypeIds = filterData;
+                const mapData = state?.checkItems?.companyType?.map((item: any) => {
+                    if (item?.id !== action?.payload?.companyType) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.companyType = mapData;
+            }
         }
     }
 });
@@ -407,4 +600,8 @@ export const { clearGetFilterJobsSlice,
     setCompanyTypeIds,
     setMaxExpYearId,
     setMaxSalaryId,
-    resetCheckItem } = getFilterJobsSlice.actions;
+    resetCheckItem,
+    clearAll,
+    modalReset,
+    clearIndividual,
+    modalResetIndividual } = getFilterJobsSlice.actions;

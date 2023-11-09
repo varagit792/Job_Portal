@@ -10,7 +10,7 @@ const CompanyListItem = ({ item }: any) => {
       {
         Object.keys(item)?.length ?
           <>
-            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 mb-5">
+            <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-3 mb-5 cursor-pointer" onClick={() => window.open(`/allCompanies/companyDescription/${item?.id}`,'_blank')}>
               <div className="flex items-start justify-between mb-3">
                 <img src={companyBrand} alt="companyBrand" />
                 <button className="px-3 py-2 bg-gray-200 rounded-md text-xs">
