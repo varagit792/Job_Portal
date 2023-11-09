@@ -46,7 +46,7 @@ const QuestionnaireForm = () => {
   } = useForm<IFormInputsQuestionnaire | IFormInputsQuestionnaireDraft | IFormInputsQuestionnaireSave>({
     resolver: yupResolver(QuestionnaireSchema || QuestionnaireDraftSchema || QuestionnaireSaveSchema) as any,
   });
-
+  
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
     control,
     name: "questionnaire",
@@ -61,20 +61,21 @@ const QuestionnaireForm = () => {
       characterLimit: item?.characterLimit,
       requiredCheck: item?.requiredCheck,
       rangeMax: item?.rangeMax,
-      singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle?.option && { option: itemSingle.option }),
-      multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple?.option && { option: itemMultiple.option })
+      singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle?.option !== ''),
+      multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple?.option !== '')
     }));
 
   } else {
-    if (formValues?.length >= jobDetailData?.questionnaire?.length) {
+    console.log("test-->", formValues?.length , jobDetailData?.questionnaire?.length)
+    if (!jobDetailData?.questionnaire || (formValues?.length >= jobDetailData?.questionnaire?.length)) {
       formValues?.filter((item: any) => item && selectedJobQuestionnaire.push({
         question: item?.question,
         questionType: { label: item?.questionType?.label, value: item?.questionType?.value },
         characterLimit: item?.characterLimit,
         requiredCheck: item?.requiredCheck,
         rangeMax: item?.rangeMax,
-        singleSelection: item?.singleSelection?.filter((itemSingle: any) => ({ option: itemSingle?.option })),
-        multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => ({ option: itemMultiple?.option }))
+        singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle?.option !== ''),
+        multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple?.option !== '')
       }));
     } else {
       jobDetailData?.questionnaire?.filter((item: any) => item && selectedJobQuestionnaire.push({
@@ -83,8 +84,8 @@ const QuestionnaireForm = () => {
         characterLimit: item?.characterLimit,
         requiredCheck: item?.requiredCheck,
         rangeMax: item?.rangeMax,
-        singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle?.option && { option: itemSingle?.option }),
-        multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple?.option && { option: itemMultiple?.option })
+        singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle?.option !== ''),
+        multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple?.option !== '')
       }));
     }
   }
@@ -93,7 +94,9 @@ const QuestionnaireForm = () => {
     if (jobDetail?.questionnaire && Object.keys(jobDetail?.questionnaire)?.length !== 0) {
       jobDetail?.questionnaire && setValue('questionnaire', selectedJobQuestionnaire);
     } else {
-      if (formValues?.length >= jobDetailData?.questionnaire?.length) {
+      console.log("in useEffect-->", selectedJobQuestionnaire);
+      
+      if (!jobDetailData?.questionnaire || (formValues?.length >= jobDetailData?.questionnaire?.length)) {
         formValues && setValue('questionnaire', selectedJobQuestionnaire);
       } else {
         jobDetailData?.questionnaire && setValue('questionnaire', selectedJobQuestionnaire);
@@ -279,6 +282,9 @@ const QuestionnaireForm = () => {
     if (fieldName === 'question') {
       newFormValues[i].question = val;
     }
+    if (fieldName === 'questionType') {
+      newFormValues[i].questionType = val;
+    }
     if (fieldName === 'requiredCheck') {
       newFormValues[i].requiredCheck = val;
     }
@@ -340,6 +346,8 @@ const QuestionnaireForm = () => {
   console.log("jobDetailData==", jobDetailData);
   console.log("errors==", errors);
   // console.log("watch==", watch());
+
+  console.log("singleSelection-->", watch("questionnaire"), selectedJobQuestionnaire);
 
   return (
     <>
