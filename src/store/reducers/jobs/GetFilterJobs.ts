@@ -467,7 +467,7 @@ const getFilterJobsSlice = createSlice({
                         return { ...item, isChecked: false }
                     }
                 });
-                // state.department = mapData;
+                state.department = mapData;
                 state.checkItems.department = mapData;
             }
             if (action?.payload?.location) {
