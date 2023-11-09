@@ -58,6 +58,30 @@ const AllJobs = () => {
     const [page, setPage] = useState(1);
     const [toggleDispach, setToggleDispach] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
+    const [filtersCount, setFiltersCount] = useState(0);
+
+    useEffect(() => {
+        let filtersCount = 0;
+        if (filtersData?.expYear) {
+            filtersCount += 1
+        }
+        if (filtersData?.department?.length) {
+            filtersCount += filtersData?.department?.length
+        }
+        if (filtersData?.location?.length) {
+            filtersCount += filtersData?.location?.length
+        }
+        if (filtersData?.workMode?.length) {
+            filtersCount += filtersData?.workMode?.length
+        }
+        if (filtersData?.salary) {
+            filtersCount += 1
+        }
+        if (filtersData?.companyType?.length) {
+            filtersCount += filtersData?.companyType?.length
+        }
+        setFiltersCount(filtersCount);
+    }, [filtersData]);
 
     useEffect(() => {
         window.addEventListener("scroll", handelInfiniteScroll);
@@ -215,10 +239,6 @@ const AllJobs = () => {
         setToggleDispach(true);
     }
 
-    const handleClearIndividual = (item: any) => {
-        console.log(item);
-    }
-
     return (
         <>
             <div className="h-[10%] w-full"></div>
@@ -228,9 +248,12 @@ const AllJobs = () => {
                         <div className="flex justify-between items-center">
                             <div>
                                 <span className="text-[#475569] font-bold mr-2">Filters</span>
-                                <span>12</span>
+                                <span>{filtersCount !== 0 && filtersCount}</span>
                             </div>
-                            <button className=" border-b border-[#475569] text-[#475569]" onClick={handleClearAll}>Clear all</button>
+                            {
+                                filtersCount !== 0 &&
+                                <button className=" border-b border-[#475569] text-[#475569]" onClick={handleClearAll}>Clear all</button>
+                            }
                         </div>
                         <div className="mt-5 flex flex-wrap justify-start items-center gap-2">
                             {filtersData?.expYear !== null && expYear?.map((item: any) => item?.id == filtersData?.expYear &&
@@ -245,12 +268,6 @@ const AllJobs = () => {
                                     </span>
                                 </span>
                             )}
-                            {filtersData?.expYear === undefined &&
-                                <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
-                                    <span className="mr-1">30+ Year</span>
-                                    <span className="cursor-pointer"><RxCross2 /></span>
-                                </span>
-                            }
                             {filtersData?.department?.map((item: any) => {
                                 const departmentFilter = department?.filter((departmentItem: any) => departmentItem?.id === item);
                                 return (
@@ -308,12 +325,6 @@ const AllJobs = () => {
                                     </span>
                                 </span>
                             )}
-                            {filtersData?.salary === undefined &&
-                                <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
-                                    <span className="mr-1">50+ LPA</span>
-                                    <span className="cursor-pointer"><RxCross2 /></span>
-                                </span>
-                            }
                             {filtersData?.companyType?.map((item: any) => {
                                 const companyTypeFilter = companyType?.filter((companyTypeItem: any) => companyTypeItem?.id === item);
                                 return (
@@ -329,14 +340,7 @@ const AllJobs = () => {
                                     </span>
                                 )
                             })}
-                            {((filtersData?.expYear !== null && filtersData?.expYear !== 0)
-                                || (filtersData?.department !== undefined && filtersData?.department?.length !== 0)
-                                || (filtersData?.location !== undefined && filtersData?.location?.length !== 0)
-                                || (filtersData?.workMode !== undefined && filtersData?.workMode?.length !== 0)
-                                || (filtersData?.salary !== null && filtersData?.expYear !== 0)
-                                || (filtersData?.companyType !== undefined && filtersData?.companyType?.length !== 0)
-                                || (filtersData?.roleCategory !== undefined && filtersData?.roleCategory?.length !== 0)
-                            ) &&
+                            {filtersCount >= 4 &&
                                 <button className=" border-b border-[#475569] text-[#475569] text-xs" onClick={handleViewAll}>All</button>
                             }
                         </div>
