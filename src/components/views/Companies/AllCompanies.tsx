@@ -13,7 +13,7 @@ import DominousIcon from '../../../assets/svg/DominousIcon.svg';
 import GoproIcon from '../../../assets/svg/GoproIcon.svg';
 import Rectangle_19 from '../../../assets/svg/Rectangle-19.svg';
 import { BiSearch } from 'react-icons/bi';
-import { getAllCompanies, clearGetAllCompaniesSlice, setDepartment, setFilterDepartment, setFilterLocation, setLocation, setCompanyType, setFilterCompanyType, setIndustry, setFilterIndustry, setCompany, setFilterCompany, clearIndividual, setNavigateFilterOption } from '../../../store/reducers/companies/getAllCompanies';
+import { getAllCompanies, clearGetAllCompaniesSlice, setDepartment, setFilterDepartment, setFilterLocation, setLocation, setCompanyType, setFilterCompanyType, setIndustry, setFilterIndustry, setCompany, setFilterCompany, clearIndividual, setNavigateFilterOption, clearAll } from '../../../store/reducers/companies/getAllCompanies';
 import { CompanyDepartmentFilter } from './FilterByCompanyDepartment';
 import { scrollToTop } from '../../utils/utils';
 import FiltersModal from '../Companies/FiltersModal';
@@ -30,6 +30,7 @@ const AllCompanies = () => {
     const [page, setPage] = useState(1);
     const [toggleDispach, setToggleDispach] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
+    const [filtersCount, setFiltersCount] = useState(0);
     const [companyCard, setCompanyCard] = useState<any>([]);
     
     console.log("allFilterIds-->", allFilterIds, filtersData);
@@ -44,6 +45,26 @@ const AllCompanies = () => {
             dispatch(getAllCompanies({page}));
         }
     }, [dispatch, page]);
+
+    useEffect(() => {
+        let filtersCount = 0;
+        if (filtersData?.department?.length) {
+            filtersCount += filtersData?.department?.length
+        }
+        if (filtersData?.location?.length) {
+            filtersCount += filtersData?.location?.length
+        }
+        if (filtersData?.industry?.length) {
+            filtersCount += filtersData?.industry?.length
+        }
+        if (filtersData?.companyType?.length) {
+            filtersCount += filtersData?.companyType?.length
+        }
+        if (filtersData?.company?.length) {
+            filtersCount += filtersData?.company?.length
+        }
+        setFiltersCount(filtersCount);
+    }, [filtersData]);
 
     useEffect(() => {
         if (toggleDispach) {
@@ -88,6 +109,11 @@ const AllCompanies = () => {
     const handleViewAll = () => {
         setIsOpen(true);
         dispatch(setNavigateFilterOption("CompanyType"));
+    }
+
+    const handleClearAll = () => {
+        dispatch(clearAll());
+        setToggleDispach(true);
     }
 
     const handleDepartmentCheckbox = (data: any) => { 
@@ -175,7 +201,16 @@ return (
             <div className="grid grid-cols-12 gap-10 px-32 bg-[#F8FAFC] py-6">
                 <div className="col-start-1 col-end-4">
                     <div className="bg-[#FFF] rounded-xl p-4 sticky top-[13%]">
-                    <h1 className="flex justify-between items-center leading-none"><span className="text-[#475569] font-bold">Filters</span><span className="bg-[#F8FAFC] rounded px-2 py-1 text-[#4F46E5]">4</span></h1>
+                    <div className="flex justify-between items-center">
+                            <div>
+                                <span className="text-[#475569] font-bold mr-2">Filters</span>
+                                <span>{filtersCount !== 0 && filtersCount}</span>
+                            </div>                            
+                            {
+                                filtersCount !== 0 &&
+                                <button className=" border-b border-[#475569] text-[#475569]" onClick={handleClearAll}>Clear all</button>
+                            }
+                        </div>
                     
                     <div className="mt-5 flex flex-wrap justify-start items-center gap-2">
                             {/* {filtersData?.companyType !== null && companyType?.map((item: any) => item?.id == filtersData?.companyType &&
@@ -265,12 +300,7 @@ return (
                                     </span>
                                 )
                             })}
-                            {((filtersData?.department !== undefined && filtersData?.department?.length !== 0)
-                                || (filtersData?.location !== undefined && filtersData?.location?.length !== 0)
-                                || (filtersData?.company !== undefined && filtersData?.company?.length !== 0)
-                                || (filtersData?.companyType !== undefined && filtersData?.companyType?.length !== 0)
-                                || (filtersData?.industry !== undefined && filtersData?.industry?.length !== 0)
-                            ) &&
+                            {filtersCount >= 4 &&
                                 <button className=" border-b border-[#475569] text-[#475569] text-xs" onClick={handleViewAll}>All</button>
                             }
                         </div>
