@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { RxCross1 } from 'react-icons/rx';
+import { RxCross1, RxCross2 } from 'react-icons/rx';
 import FiltersDepartment from './FilterByCompanyDepartment';
 import { useAppDispatch, useAppSelector } from '../../../';
 import {
@@ -11,6 +11,10 @@ import {
     setCompanyType,
     setIndustry,
     setCompany,
+    modalReset,
+    clearAll,
+    modalResetIndividual,
+    resetCheckItem,
     //setWorkMode
 } from '../../../store/reducers/companies/getAllCompanies';
 import FiltersLocation from './FilterByCompanyLocation';
@@ -21,16 +25,44 @@ import FiltersCompany from './FilterByCompany';
 //import FiltersExperience from './FiltersExperience';
 
 const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
-    const [allFilters, setAllFilters] = useState<any>([])
+    const [allFilters, setAllFilters] = useState<any>([]);
+    const [filtersCount, setFiltersCount] = useState(0);
+    const [clearAllToggle, setClearAllToggle] = useState(false);
 
     const dispatch = useAppDispatch();
-    const { navigateFilterOption, checkItems, departmentIds, locationIds, companyTypeIds, industryIds, companyIds,
+    const { navigateFilterOption, checkItems,department, location, companyType, industry, company, departmentIds, locationIds, companyTypeIds, industryIds, companyIds,
         //workModeIds, maxExpYearId
     } = useAppSelector((state) => state.getAllCompanies);
     
+    useEffect(() => {
+        let filtersCount = 0;
+        if (departmentIds?.length) {
+            filtersCount += departmentIds?.length
+        }
+        if (locationIds?.length) {
+            filtersCount += locationIds?.length
+        }
+        if (industryIds?.length) {
+            filtersCount += industryIds?.length
+        }
+        if (companyTypeIds?.length) {
+            filtersCount += companyTypeIds?.length
+        }
+        if (companyIds?.length) {
+            filtersCount += companyIds?.length
+        }
+        setFiltersCount(filtersCount);
+    }, [departmentIds, locationIds, industryIds, companyIds, companyTypeIds]);
+
     const closeDialog = () => {
         setIsOpen(false);
+        dispatch(resetCheckItem());
     };
+
+    const handleReset = () => {
+        dispatch(modalReset());
+        setClearAllToggle(true);
+    }
 
     const handleSubmit = () => {
         setToggleDispach(true);
@@ -50,6 +82,10 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
         dispatch(setCompany(checkItems?.company));
         //dispatch(setWorkMode(checkItems?.workMode));
         setIsOpen(false);
+        if (clearAllToggle) {
+            dispatch(clearAll());
+            setClearAllToggle(false);
+        }
     }
 
     useEffect(() => {
@@ -83,9 +119,18 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                             leaveTo="opacity-0 scale-95"
                         >
                             <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
-                                <Dialog.Title className="text-lg font-medium text-gray-900 text-right flex justify-between items-center p-5">
-                                    <h1 className="font-bold leading-none">Filters
-                                        <span className=" m-2">{ allFilters }</span></h1>
+                            <Dialog.Title className="text-lg font-medium text-gray-900 text-right flex justify-between items-center p-5">
+                                    <div className="flex justify-start items-center">
+                                        <h1 className="font-bold leading-none mr-2">Filters</h1>
+                                        {filtersCount !== 0 &&
+                                            <>
+                                                <span className="bg-[#F1F5F9] text-sm mr-2 w-6 h-6 rounded-full flex justify-center items-center">
+                                                    {filtersCount}
+                                                </span>
+                                                <button className=" border-b border-[#475569] text-[#475569] text-sm" onClick={handleReset}>Reset</button>
+                                            </>
+                                        }
+                                    </div>
                                     <button
                                         onClick={closeDialog}
                                         type="button"
@@ -94,6 +139,80 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         <RxCross1 />
                                     </button>
                                 </Dialog.Title>
+
+                                <div className="mb-5 flex flex-wrap justify-start items-center gap-2 mx-5"> 
+                                    {departmentIds?.map((item: any) => {
+                                        const departmentFilter = department?.filter((departmentItem: any) => departmentItem?.id === item);
+                                        return (
+                                            <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                                <span className="mr-1">{departmentFilter[0]?.title}</span>
+                                                <span className="cursor-pointer"
+                                                    onClick={() => {
+                                                        dispatch(modalResetIndividual({ department: departmentFilter[0]?.id }))
+                                                    }}>
+                                                    <RxCross2 />
+                                                </span>
+                                            </span>
+                                        )
+                                    })}
+                                    {locationIds?.map((item: any) => {
+                                        const locationFilter = location?.filter((locationItem: any) => locationItem?.id === item);
+                                        return (
+                                            <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                                <span className="mr-1">{locationFilter[0]?.title}</span>
+                                                <span className="cursor-pointer"
+                                                    onClick={() => {
+                                                        dispatch(modalResetIndividual({ location: locationFilter[0]?.id }))
+                                                    }}>
+                                                    <RxCross2 />
+                                                </span>
+                                            </span>
+                                        )
+                                    })}
+                                    {industryIds?.map((item: any) => {
+                                        const industryFilter = industry?.filter((industryItem: any) => industryItem?.id === item);
+                                        return (
+                                            <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                                <span className="mr-1">{industryFilter[0]?.title}</span>
+                                                <span className="cursor-pointer"
+                                                    onClick={() => {
+                                                        dispatch(modalResetIndividual({ industry: industryFilter[0]?.id }))
+                                                    }}>
+                                                    <RxCross2 />
+                                                </span>
+                                            </span>
+                                        )
+                                    })}
+                                    {companyTypeIds?.map((item: any) => {
+                                        const companyTypeFilter = companyType?.filter((companyTypeItem: any) => companyTypeItem?.id === item);
+                                        return (
+                                            <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                                <span className="mr-1">{companyTypeFilter[0]?.title}</span>
+                                                <span className="cursor-pointer"
+                                                    onClick={() => {
+                                                        dispatch(modalResetIndividual({ companyType: companyTypeFilter[0]?.id }))
+                                                    }}>
+                                                    <RxCross2 />
+                                                </span>
+                                            </span>
+                                        )
+                                    })}
+                                    {companyIds?.map((item: any) => {
+                                        const companyFilter = company?.filter((companyItem: any) => companyItem?.id === item);
+                                        return (
+                                            <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                                <span className="mr-1">{companyFilter[0]?.title}</span>
+                                                <span className="cursor-pointer"
+                                                    onClick={() => {
+                                                        dispatch(modalResetIndividual({ company: companyFilter[0]?.id }))
+                                                    }}>
+                                                    <RxCross2 />
+                                                </span>
+                                            </span>
+                                        )
+                                    })}
+                                </div>
+
                                 <div className="grid grid-cols-12 border-y border-[#E0E7FF]">
                                     <div className="col-start-1 col-end-4 border-r border-[#E0E7FF]">
                                         <ul>                                            

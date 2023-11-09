@@ -384,23 +384,23 @@ const AllJobs = () => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Engineering</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">IT and Information</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={true} />
                                                 <label className="ml-2">Consulting</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Marketing</label>
                                             </div>
-                                            <div className="text-[#475569]">
+                                            <div className="text-[#475569] text-sm">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Sales</label>
                                             </div>
@@ -422,23 +422,23 @@ const AllJobs = () => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Engineering</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">IT and Information</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={true} />
                                                 <label className="ml-2">Consulting</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Marketing</label>
                                             </div>
-                                            <div className="text-[#475569]">
+                                            <div className="text-[#475569] text-sm">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Sales</label>
                                             </div>
@@ -460,23 +460,23 @@ const AllJobs = () => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Engineering</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">IT and Information</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={true} />
                                                 <label className="ml-2">Consulting</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Marketing</label>
                                             </div>
-                                            <div className="text-[#475569]">
+                                            <div className="text-[#475569] text-sm">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Sales</label>
                                             </div>
@@ -498,23 +498,23 @@ const AllJobs = () => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Engineering</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">IT and Information</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={true} />
                                                 <label className="ml-2">Consulting</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Marketing</label>
                                             </div>
-                                            <div className="text-[#475569]">
+                                            <div className="text-[#475569] text-sm">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Sales</label>
                                             </div>
@@ -536,23 +536,23 @@ const AllJobs = () => {
                                             />
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="mt-5">
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Engineering</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">IT and Information</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={true} />
                                                 <label className="ml-2">Consulting</label>
                                             </div>
-                                            <div className="text-[#475569] mb-3">
+                                            <div className="text-[#475569] text-sm mb-3">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Marketing</label>
                                             </div>
-                                            <div className="text-[#475569]">
+                                            <div className="text-[#475569] text-sm">
                                                 <input type="checkbox" defaultChecked={false} />
                                                 <label className="ml-2">Sales</label>
                                             </div>

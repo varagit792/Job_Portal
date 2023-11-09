@@ -366,6 +366,196 @@ const getAllCompaniesSlice = createSlice({
             state.filtersData.companyType = action?.payload?.companyType;
             state.filtersData.industry = action?.payload?.industry;
             state.filtersData.company = action?.payload?.company;
+        },
+        resetCheckItem: (state) => {
+
+            state.checkItems.department = state?.department;
+            const department = JSON.stringify(state?.department?.filter((item: any) => item?.isChecked));
+            state.departmentIds = JSON.parse(department).map((item: any) => item.id);
+
+            state.checkItems.location = state?.location;
+            const location = JSON.stringify(state?.location?.filter((item: any) => item?.isChecked));
+            state.locationIds = JSON.parse(location).map((item: any) => item.id);
+
+            state.checkItems.industry = state?.industry;
+            const industry = JSON.stringify(state?.industry?.filter((item: any) => item?.isChecked));
+            state.industryIds = JSON.parse(industry).map((item: any) => item.id);
+
+            state.checkItems.companyType = state?.companyType;
+            const companyType = JSON.stringify(state?.companyType?.filter((item: any) => item?.isChecked));
+            state.companyTypeIds = JSON.parse(companyType).map((item: any) => item.id);
+
+            state.checkItems.company = state?.company;
+            const company = JSON.stringify(state?.company?.filter((item: any) => item?.isChecked));
+            state.companyIds = JSON.parse(company).map((item: any) => item.id);
+        },
+        clearAll: (state) => {
+            state.filtersData.department = [];
+            state.filtersData.location = [];
+            state.filtersData.industry = [];
+            state.filtersData.companyType = [];
+            state.filtersData.company = [];
+            state.departmentIds = [];
+            state.locationIds = [];
+            state.industryIds = [];
+            state.companyTypeIds = [];
+            state.companyIds = [];
+            state.department = state?.department?.map((item: any) => { return { ...item, isChecked: false } });
+            state.industry = state?.industry?.map((item: any) => { return { ...item, isChecked: false } });
+            state.location = state?.location?.map((item: any) => { return { ...item, isChecked: false } });
+            state.company = state?.company?.map((item: any) => { return { ...item, isChecked: false } });
+            state.companyType = state?.companyType?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.department = state?.department?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.industry = state?.industry?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.location = state?.location?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.company = state?.company?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.companyType = state?.companyType?.map((item: any) => { return { ...item, isChecked: false } });
+        },
+        modalReset: (state) => {
+            state.departmentIds = [];
+            state.industryIds = [];
+            state.locationIds = [];
+            state.companyIds = [];
+            state.companyTypeIds = [];
+            state.checkItems.department = state?.department?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.industry = state?.industry?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.location = state?.location?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.company = state?.company?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.companyType = state?.companyType?.map((item: any) => { return { ...item, isChecked: false } });
+        },
+        clearIndividual: (state, action) => {
+            if (action?.payload?.department) {
+                const filterData = state?.filtersData?.department?.filter((item: any) => item !== action?.payload?.department);
+                state.filtersData.department = filterData;
+                state.departmentIds = filterData;
+                const mapData = state?.department?.map((item: any) => {
+                    if (item?.id !== action?.payload?.department) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                // state.department = mapData;
+                state.checkItems.department = mapData;
+            }
+            if (action?.payload?.location) {
+                const filterData = state?.filtersData?.location?.filter((item: any) => item !== action?.payload?.location);
+                state.filtersData.location = filterData;
+                state.locationIds = filterData;
+                const mapData = state?.location?.map((item: any) => {
+                    if (item?.id !== action?.payload?.location) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.location = mapData;
+                state.checkItems.location = mapData;
+            }
+            if (action?.payload?.industry) {
+                const filterData = state?.filtersData?.industry?.filter((item: any) => item !== action?.payload?.industry);
+                state.filtersData.industry = filterData;
+                state.industryIds = filterData;
+                const mapData = state?.industry?.map((item: any) => {
+                    if (item?.id !== action?.payload?.industry) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.industry = mapData;
+                state.checkItems.industry = mapData;
+            }
+            if (action?.payload?.company) {
+                const filterData = state?.filtersData?.company?.filter((item: any) => item !== action?.payload?.company);
+                state.filtersData.company = filterData;
+                state.companyIds = filterData;
+                const mapData = state?.company?.map((item: any) => {
+                    if (item?.id !== action?.payload?.company) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.company = mapData;
+                state.checkItems.company = mapData;
+            }
+            if (action?.payload?.companyType) {
+                const filterData = state?.filtersData?.companyType?.filter((item: any) => item !== action?.payload?.companyType);
+                state.filtersData.companyType = filterData;
+                state.companyTypeIds = filterData;
+                const mapData = state?.companyType?.map((item: any) => {
+                    if (item?.id !== action?.payload?.companyType) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.companyType = mapData;
+                state.checkItems.companyType = mapData;
+            }
+        },
+        modalResetIndividual: (state, action) => {
+            if (action?.payload?.department) {
+                const filterData = state.departmentIds?.filter((item: any) => item !== action?.payload?.department);
+                state.departmentIds = filterData;
+                const mapData = state?.checkItems?.department?.map((item: any) => {
+                    if (item?.id !== action?.payload?.department) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.department = mapData;
+            }
+            if (action?.payload?.location) {
+                const filterData = state.locationIds?.filter((item: any) => item !== action?.payload?.location);
+                state.locationIds = filterData;
+                const mapData = state?.checkItems?.location?.map((item: any) => {
+                    if (item?.id !== action?.payload?.location) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.location = mapData;
+            }
+            if (action?.payload?.industry) {
+                const filterData = state.locationIds?.filter((item: any) => item !== action?.payload?.industry);
+                state.industryIds = filterData;
+                const mapData = state?.checkItems?.industry?.map((item: any) => {
+                    if (item?.id !== action?.payload?.industry) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.industry = mapData;
+            }
+            if (action?.payload?.company) {
+                const filterData = state.companyIds?.filter((item: any) => item !== action?.payload?.company);
+                state.companyIds = filterData;
+                const mapData = state?.checkItems?.company?.map((item: any) => {
+                    if (item?.id !== action?.payload?.company) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.company = mapData;
+            }
+            if (action?.payload?.companyType) {
+                const filterData = state.companyTypeIds?.filter((item: any) => item !== action?.payload?.companyType);
+                state.companyTypeIds = filterData;
+                const mapData = state?.checkItems?.companyType?.map((item: any) => {
+                    if (item?.id !== action?.payload?.companyType) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.companyType = mapData;
+            }
         }
     }
 });
@@ -389,5 +579,10 @@ export const {
     setCompanyTypeIds,
     setIndustryIds,
     setCompanyIds,
-    bulkFilter
+    bulkFilter,
+    resetCheckItem,
+    clearAll,
+    modalReset,
+    clearIndividual,
+    modalResetIndividual
 } = getAllCompaniesSlice.actions;
