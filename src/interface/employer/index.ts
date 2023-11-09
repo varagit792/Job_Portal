@@ -115,7 +115,7 @@ export interface IFormInputsPostAJob {
   jobStatus: { value: number; label: string; }
   questionnaire: {
     question?: string
-    questionType?: { label?: string | undefined, value?: string | undefined }
+    questionType?: string
     characterLimit?: string
     requiredCheck?: string
     rangeMax?: string | undefined
@@ -844,14 +844,14 @@ export interface IFormInputsQuestionnaire {
   questionnaire: {
     question?: string
     questionType?: { label?: string | undefined, value?: string | undefined }
-    characterLimit?: string
-    requiredCheck?: string
+    characterLimit?: string | undefined
+    requiredCheck?: string | undefined
     rangeMax?: string | undefined
     singleSelection?: {
-      option?: string,
+      option?: string | undefined,
     }[]
     multipleSelection?: {
-      option?: string,
+      option?: string | undefined,
     }[]
   }[]
 }
@@ -906,8 +906,8 @@ export interface IFormInputsQuestionnaireDraft {
     characterLimit?: string | undefined
     requiredCheck?: string | undefined
     rangeMax?: string | undefined
-    singleSelection?: { option: string }[]
-    multipleSelection?: { option: string }[]
+    singleSelection?: { option?: string | undefined }[]
+    multipleSelection?: { option?: string | undefined }[]
   }[]
 
 }
@@ -954,8 +954,8 @@ export interface IFormInputsQuestionnaireSave {
     characterLimit?: string
     requiredCheck?: string
     rangeMax?: string | undefined
-    singleSelection?: { option: string }[]
-    multipleSelection?: { option: string }[]
+    singleSelection?: { option?: string | undefined }[]
+    multipleSelection?: { option?: string | undefined }[]
   }[]
 
 }
@@ -1017,8 +1017,8 @@ export interface PostQuestionnaireSave {
     characterLimit?: string
     requiredCheck?: string
     rangeMax?: string | undefined
-    singleSelection?: { option: string }[]
-    multipleSelection?: { option: string }[]
+    singleSelection?: { option?: string | undefined }[]
+    multipleSelection?: { option?: string | undefined }[]
   }[]
 
 }
@@ -1075,12 +1075,12 @@ export interface PostQuestionnaireDraft {
   jobExpiry: number
   jobStatus: number
   questionnaire: {
-    question?: string
+    question?: string | undefined
     questionType?: string | undefined
-    characterLimit?: string
-    requiredCheck?: string
+    characterLimit?: string | undefined
+    requiredCheck?: string | undefined
     rangeMax?: string | undefined
-    singleSelection?: { option: string }[]
-    multipleSelection?: { option: string }[]
+    singleSelection?: { option?: string | undefined }[]
+    multipleSelection?: { option?: string | undefined }[]
   }[]
 }

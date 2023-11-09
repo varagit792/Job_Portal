@@ -9,6 +9,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { formData, postJobUpdate, postResponseDraft } from '../../../../store/reducers/jobs/postJobs';
 import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import { PostJobSchema, ResponseSchema } from '../../../../schema/postJob';
+import smallCircle from '../../../../assets/svg/smallCircle.svg';
+import checkbox from '../../../../assets/svg/checkbox.svg';
 import Toaster from '../../../commonComponents/Toaster';
 import Cookies from 'js-cookie';
 import wrap from 'word-wrap';
@@ -32,7 +34,7 @@ const Preview = () => {
     setValue,
     formState: { errors }
   } = useForm<IFormInputsPostAJob>({
-    //resolver: yupResolver(PostJobSchema),
+    resolver: yupResolver(PostJobSchema as any),
   });
 
   const selectedJobsKeySkills: any = [];
@@ -49,12 +51,12 @@ const Preview = () => {
   jobDetailData?.jobCandidateIndustry?.filter((item: any) => item && selectedCandidateIndustry.push({ value: item?.candidateIndustry?.id, label: item?.candidateIndustry?.title }));
   jobDetailData?.questionnaire?.filter((item: any) => item && selectedJobQuestionnaire.push({
     question: item?.question,
-    questionType: { label: item?.questionType?.label, value: item?.questionType?.value },
+    questionType: item?.questionType?.value,
     characterLimit: item?.characterLimit,
     requiredCheck: item?.requiredCheck,
     rangeMax: item?.rangeMax,
-    singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle && { option: itemSingle?.option }),
-    multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple && { option: itemMultiple?.option })
+    singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle?.option && { option: itemSingle?.option }),
+    multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple?.option && { option: itemMultiple?.option })
   }));
 
   useEffect(() => {
@@ -600,7 +602,7 @@ const Preview = () => {
 
 
 
-                  <div className="w-full h-auto p-7 bg-white rounded-xl border border-indigo-100 flex-col justify-start items-start gap-7 inline-flex">
+                  {<div className="w-full h-auto p-7 bg-white rounded-xl border border-indigo-100 flex-col justify-start items-start gap-7 inline-flex">
                     {jobDetailData?.questionnaire?.map(((itemQuestionnaire: any, indexQuestionnaire: any) => <div key={indexQuestionnaire}>
                       {itemQuestionnaire.questionType?.value === 'Descriptive' &&
                         <><div className="self-stretch h-[84px] flex-col justify-start items-start gap-2 flex">
@@ -610,9 +612,9 @@ const Preview = () => {
                               <div className="w-6 h-6 flex-col justify-center items-center inline-flex"></div>
                               <div className="grow shrink basis-0 text-black text-base font-normal leading-snug tracking-tight">{itemQuestionnaire?.question}</div>
                             </div>
-                            <div className="self-stretch justify-start items-center gap-2 inline-flex">
-                              <div className="grow shrink basis-0 text-black text-base font-normal leading-snug tracking-tight">Character limit : {itemQuestionnaire?.characterLimit}</div>
-                              <div className="grow shrink basis-0 text-black text-base font-normal leading-snug tracking-tight">Required check :  {itemQuestionnaire?.requiredCheck}</div>
+                            <div className="w-full self-stretch justify-start items-center gap-2 inline-flex">
+                              <div className="text-black text-base font-normal leading-snug tracking-tight">Character limit : {itemQuestionnaire?.characterLimit}</div>
+                              <div className="text-black text-base font-normal ">Required check :  {itemQuestionnaire?.requiredCheck}</div>
                             </div>
                           </div>
                         </div></>}
@@ -641,8 +643,9 @@ const Preview = () => {
                               <div className="grow shrink basis-0 text-black text-base font-normal leading-snug tracking-tight">{itemQuestionnaire?.question}</div>
                             </div>
                             <div className="self-stretch justify-start items-center gap-2 inline-flex">
-                              {indexQuestionnaire?.singleSelection?.map(((itemSingleSelection: any, indexSingleSelection: any) =>
-                                <div key={`${indexQuestionnaire}${indexSingleSelection}`} className="grow shrink basis-0 text-black text-base font-normal leading-snug tracking-tight">{itemSingleSelection?.option}</div>
+                              {itemQuestionnaire?.singleSelection?.map(((itemSingleSelection: any, indexSingleSelection: any) => itemSingleSelection?.option && <>
+                                <div className="w-6 h-6 justify-center items-center flex"><img src={smallCircle} /></div>
+                                <div key={`${indexQuestionnaire}${indexSingleSelection}`} className="grow shrink basis-0 text-black text-base font-normal leading-snug tracking-tight">{itemSingleSelection?.option}</div></>
                               ))}
                             </div>
                           </div>
@@ -661,8 +664,11 @@ const Preview = () => {
                             </div>
                             <div className="self-stretch justify-start items-center gap-2 inline-flex">
                               <div className="grow shrink basis-0 h-[22px] justify-start items-center gap-2 flex">
-                                {indexQuestionnaire?.multipleSelection?.map(((itemMultipleSelection: any, indexMultipleSelection: any) =>
-                                  <div key={`${indexQuestionnaire}${indexMultipleSelection}`} className="grow shrink basis-0 text-black text-base font-normal leading-snug tracking-tight">{itemMultipleSelection?.option}</div>
+                                {itemQuestionnaire?.multipleSelection?.map(((itemMultipleSelection: any, indexMultipleSelection: any) =>
+                                  itemMultipleSelection?.option && <>
+                                    <div className="w-6 h-6 relative"><img src={checkbox} /></div>
+                                    <div key={`${indexQuestionnaire}${indexMultipleSelection}`} className="grow shrink basis-0 text-black text-base font-normal leading-snug tracking-tight">{itemMultipleSelection?.option}</div>
+                                  </>
                                 ))}
 
                               </div>
@@ -673,36 +679,24 @@ const Preview = () => {
                       }
                     </div>
                     ))}
-                  </div>
+                  </div>}
 
 
                 </div>
                 <div className="w-full justify-start  gap-5 inline-flex">
-                  {/* <div className=" px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex">
-                    <div className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" onClick={() => returnBack(postBack.DiscardURL)}>Discard</div>
-                  </div>
-                  {!isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                    <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save'} onClick={() => setButtonClick('Save')} />
-                  </div>}
-                  {isNaN(Number(postId)) && <div className="grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer">
-                    <input className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer" type="submit" name='SaveAsDraft' value={'Save as Draft'} onClick={() => setButtonClick('Draft')} />
-                  </div>}
-                  <div className="grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
-                    <button className="text-white font-medium leading-normal tracking-tight cursor-pointer" type="submit" onClick={() => setButtonClick('Continue')}>Post a Job</button>
-                  </div> */}
 
                   <button name='Discard' className="text-indigo-900 font-medium leading-normal tracking-tight grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack.DiscardURL)}>Discard</button>
 
-{!isNaN(Number(postId)) &&
-  <button name='Save' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex" onClick={() => setButtonClick('Save')}>Save</button>
-}
+                  {!isNaN(Number(postId)) &&
+                    <button name='Save' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex" onClick={() => setButtonClick('Save')}>Save</button>
+                  }
 
-{isNaN(Number(postId)) &&
-  <button name='SaveAsDraft' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex " onClick={() => setButtonClick('Draft')}>Save as Draft</button>
-}
+                  {isNaN(Number(postId)) &&
+                    <button name='SaveAsDraft' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex " onClick={() => setButtonClick('Draft')}>Save as Draft</button>
+                  }
 
-<button type="submit" name='Continue' className="text-white font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex"
-                    onClick={() => setButtonClick('Continue')}>Post a Job</button>                  
+                  <button type="submit" name='Continue' className="text-white font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex"
+                    onClick={() => setButtonClick('Continue')}>Post a Job</button>
                 </div>
               </div>
             </form>

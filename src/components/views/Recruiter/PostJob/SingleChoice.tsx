@@ -12,7 +12,7 @@ function SingleChoice({ index, register, watch, handleDoneStatusChange, doneStat
         <div className="w-full flex-col justify-start items-start gap-3 flex">
 
           {formValues[index]?.singleSelection?.map((element: any, innerIndex: any) => (
-            <div className="w-full h-12 border-b border-slate-200 justify-start items-center inline-flex" key={innerIndex}>
+            element.option && <div className="w-full h-12 border-b border-slate-200 justify-start items-center inline-flex" key={innerIndex}>
               <div className="grow shrink basis-0 h-6 justify-start items-center gap-2 flex">
                 <div className="w-6 h-6 justify-center items-center flex"><img src={smallCircle} /></div>
                 <div className="text-black text-base font-normal leading-snug tracking-tight">{element.option}</div>
@@ -20,7 +20,8 @@ function SingleChoice({ index, register, watch, handleDoneStatusChange, doneStat
               <div className="justify-start items-center flex">
                 <div className="w-6 h-6 bg-slate-100 rounded justify-center items-center flex cursor-pointer" onClick={() => removeSubFormFields(index, innerIndex)}><img src={close} /></div>
               </div>
-            </div>))}
+            </div>
+          ))}
           <SingleChoiceField
             watch={watch}
             register={register}

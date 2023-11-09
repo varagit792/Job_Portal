@@ -11,7 +11,7 @@ const MultipleChoiceField = ({ index, watch, register, addFormMultipleFields }: 
             <input
               defaultValue={watch(`questionnaire.${index}.multipleSelection`)}
               className="w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5"
-              placeholder={"for e.g. Noida"}
+              placeholder={"Option"}
               {...register(`questionnaire.${index}.multipleSelection`)}
             />
           </div>

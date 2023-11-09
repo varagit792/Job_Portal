@@ -10,7 +10,7 @@ const MultipleChoice = ({ index, register, watch, handleDoneStatusChange, doneSt
         <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Response</div>
         <div className="w-full flex-col justify-start items-start gap-3 flex">
           {formValues[index]?.multipleSelection?.map((element: any, innerMultipleIndex: any) => (
-            <div className="w-full h-12 border-b border-slate-200 justify-start items-center inline-flex" key={innerMultipleIndex}>
+            element.option && <div className="w-full h-12 border-b border-slate-200 justify-start items-center inline-flex" key={innerMultipleIndex}>
               <div className="grow shrink basis-0 h-6 justify-start items-center gap-2 flex">
                 <div className="w-6 h-6 relative"><img src={checkbox} /></div>
                 <div className="text-black text-base font-normal leading-snug tracking-tight">{element.option}</div>

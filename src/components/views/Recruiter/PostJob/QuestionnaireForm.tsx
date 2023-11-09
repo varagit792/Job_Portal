@@ -42,7 +42,6 @@ const QuestionnaireForm = () => {
     watch,
     control,
     setValue,
-    getValues,
     formState: { errors }
   } = useForm<IFormInputsQuestionnaire | IFormInputsQuestionnaireDraft | IFormInputsQuestionnaireSave>({
     resolver: yupResolver(QuestionnaireSchema || QuestionnaireDraftSchema || QuestionnaireSaveSchema) as any,
@@ -62,8 +61,8 @@ const QuestionnaireForm = () => {
       characterLimit: item?.characterLimit,
       requiredCheck: item?.requiredCheck,
       rangeMax: item?.rangeMax,
-      singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle && { option: itemSingle.option }),
-      multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple && { option: itemMultiple.option })
+      singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle?.option && { option: itemSingle.option }),
+      multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple?.option && { option: itemMultiple.option })
     }));
 
   } else {
@@ -74,8 +73,8 @@ const QuestionnaireForm = () => {
         characterLimit: item?.characterLimit,
         requiredCheck: item?.requiredCheck,
         rangeMax: item?.rangeMax,
-        singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle && { option: itemSingle?.option }),
-        multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple && { option: itemMultiple?.option })
+        singleSelection: item?.singleSelection?.filter((itemSingle: any) => ({ option: itemSingle?.option })),
+        multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => ({ option: itemMultiple?.option }))
       }));
     } else {
       jobDetailData?.questionnaire?.filter((item: any) => item && selectedJobQuestionnaire.push({
@@ -84,12 +83,10 @@ const QuestionnaireForm = () => {
         characterLimit: item?.characterLimit,
         requiredCheck: item?.requiredCheck,
         rangeMax: item?.rangeMax,
-        singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle && { option: itemSingle?.option }),
-        multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple && { option: itemMultiple?.option })
+        singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle?.option && { option: itemSingle?.option }),
+        multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple?.option && { option: itemMultiple?.option })
       }));
-
     }
-
   }
 
   useEffect(() => {
@@ -111,18 +108,15 @@ const QuestionnaireForm = () => {
     const updatePostId = postId ? Number(postId) : null;
 
     if (buttonClick === 'Continue') {
-      const values = getValues();
-      console.log("data===", data);
+      console.log("data?.questionnaire", data?.questionnaire);
 
       dispatch(formData({
         questionnaire: data?.questionnaire
-
       }));
       navigate(postBack?.postURL);
     }
     if (buttonClick === 'Draft' && userType && userId) {
       let draft = true;
-
       const jobEducation = jobDetailData?.education?.map((education: any) => ({ education: education?.value }));
       const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
       const jobLocation = jobDetailData?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
@@ -169,15 +163,12 @@ const QuestionnaireForm = () => {
         notifyMeAbout: jobDetailData?.notifyMeAbout,
         notificationEmailAddress1: jobDetailData?.notificationEmailAddress1,
         notificationEmailAddress2: jobDetailData?.notificationEmailAddress2,
-
         company: jobDetailData?.companyName?.value,
         hideCompanyRating: jobDetailData?.hideCompanyRating,
         companyWebsite: jobDetailData?.companyWebsite,
         aboutCompany: jobDetailData?.aboutCompany,
         companyAddress: jobDetailData?.companyAddress,
         questionnaire: selectedJobQuestionnaire
-
-
       })).then(() => {
         toast.success("Job drafted successfully !!")
       });
@@ -185,8 +176,6 @@ const QuestionnaireForm = () => {
 
     if (buttonClick === 'Save' && userType && userId) {
       let draft = false;
-
-
       const jobEducation = jobDetailData?.education?.map((education: any) => ({ education: education?.value }));
       const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
       const jobLocation = jobDetailData?.jobLocation?.map((location: any) => ({ location: { id: location?.value } }));
@@ -232,7 +221,6 @@ const QuestionnaireForm = () => {
         companyWebsite: jobDetailData?.companyWebsite,
         aboutCompany: jobDetailData?.aboutCompany,
         companyAddress: jobDetailData?.companyAddress,
-
         hideSalaryDetails: jobDetailData?.hideSalaryDetails,
         videoProfile: jobDetailData?.videoProfile,
         includeWalkInDetails: jobDetailData?.includeWalkInDetails,
@@ -271,6 +259,7 @@ const QuestionnaireForm = () => {
     let newFormValues = [...formValues];
     newFormValues[i].questionType.value = val;
     newFormValues[i].questionType.label = label;
+
     setFormValues(newFormValues);
   }
 
@@ -293,7 +282,6 @@ const QuestionnaireForm = () => {
     if (fieldName === 'requiredCheck') {
       newFormValues[i].requiredCheck = val;
     }
-    console.log("newFormValues +++", newFormValues);
 
     setFormValues(newFormValues);
 
@@ -304,7 +292,9 @@ const QuestionnaireForm = () => {
   }
 
   let addFormSingleFields = (e: any, i: any, val: any) => {
+    let singleOption = formValues
     let newSingle = [...formValues];
+
     newSingle[i].singleSelection[formValues[i]?.singleSelection?.length || 0] = { option: val };
     setFormValues(newSingle);
 
@@ -336,10 +326,10 @@ const QuestionnaireForm = () => {
 
   useEffect(() => {
     if (Number(postId)) {
-      setPostBack({ postURL: `/postJob/response/${postId}`, backURL: `/postJob/recruiter/${postId}` });
+      setPostBack({ postURL: `/postJob/preview/${postId}`, backURL: `/postJob/response/${postId}` });
       setJobTitle(jobDetail?.title);
     } else {
-      setPostBack({ postURL: '/postJob/response', backURL: '/postJob/recruiter' })
+      setPostBack({ postURL: '/postJob/preview', backURL: '/postJob/response' })
     }
   }, []);
 
@@ -348,7 +338,7 @@ const QuestionnaireForm = () => {
   }
   console.log("formValues====", formValues);
   console.log("jobDetailData==", jobDetailData);
-  //console.log("errors==", errors);
+  console.log("errors==", errors);
   // console.log("watch==", watch());
 
   return (

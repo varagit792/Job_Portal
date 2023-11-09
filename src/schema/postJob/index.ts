@@ -280,11 +280,7 @@ export const PostJobSchema = yup.object().shape({
   questionnaire: yup.array().of(
     yup.object().shape({
       question: yup.string().nullable().optional(),
-      questionType: yup.object().shape({
-        value: yup.string().nullable().optional(),
-        label: yup.string().nullable().optional(),
-      }).nullable().optional(),
-
+      questionType: yup.string().optional(),
       characterLimit: yup.string().nullable().optional(),
       requiredCheck: yup.string().nullable().optional(),
       rangeMax: yup.string().nullable().optional(),
@@ -292,7 +288,9 @@ export const PostJobSchema = yup.object().shape({
       singleSelection: yup.array()
         .of(
           yup.object().when("singleSelection", (val, schema) => {
-            if (val?.length > 0) {
+            console.log("value-->", val);
+            if (val !== undefined) {
+
               return yup.object().shape({ option: yup.string().nullable().optional() }).nullable().optional();
             }
             else {
@@ -1149,11 +1147,12 @@ export const QuestionnaireSchema = yup.object({
       characterLimit: yup.string().nullable().optional(),
       requiredCheck: yup.string().nullable().optional(),
       rangeMax: yup.string().nullable().optional(),
-
       singleSelection: yup.array()
         .of(
           yup.object().when("singleSelection", (val, schema) => {
-            if (val?.length > 0) {
+            console.log("value-->", val);
+
+            if (val !== undefined) {
               return yup.object().shape({ option: yup.string().nullable().optional() }).nullable().optional();
             }
             else {

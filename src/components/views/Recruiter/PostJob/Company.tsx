@@ -236,6 +236,7 @@ const Company = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
+  console.log(Cookies);
 
   return (
     <>

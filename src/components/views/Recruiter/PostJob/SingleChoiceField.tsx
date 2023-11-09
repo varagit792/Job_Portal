@@ -9,9 +9,8 @@ const SingleChoiceField = ({ index, watch, register, addFormSingleFields }: any)
           <div className="w-6 h-6 justify-center items-center flex"><img src={smallCircle} /></div>
           <div className="text-slate-400 text-base font-normal leading-snug tracking-tight">
             <input
-              defaultValue={watch(`questionnaire.${index}.singleSelection`)}
               className="w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5"
-              placeholder={"Option 2"}
+              placeholder={"Option"}
               {...register(`questionnaire.${index}.singleSelection`)}
             />
           </div>
