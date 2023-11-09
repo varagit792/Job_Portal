@@ -27,6 +27,29 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
     const [clearAllToggle, setClearAllToggle] = useState(false);
     const [filtersCount, setFiltersCount] = useState(0);
 
+    useEffect(() => {
+        let filtersCount = 0;
+        if (maxExpYearId) {
+            filtersCount += 1
+        }
+        if (departmentIds?.length) {
+            filtersCount += departmentIds?.length
+        }
+        if (locationIds?.length) {
+            filtersCount += locationIds?.length
+        }
+        if (workModeIds?.length) {
+            filtersCount += workModeIds?.length
+        }
+        if (maxSalaryId) {
+            filtersCount += 1
+        }
+        if (companyTypeIds?.length) {
+            filtersCount += companyTypeIds?.length
+        }
+        setFiltersCount(filtersCount);
+    }, [maxExpYearId, maxSalaryId, departmentIds, locationIds, workModeIds, companyTypeIds]);
+
     const closeDialog = () => {
         setIsOpen(false);
         dispatch(resetCheckItem());
@@ -81,10 +104,14 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                 <Dialog.Title className="text-lg font-medium text-gray-900 text-right flex justify-between items-center p-5">
                                     <div className="flex justify-start items-center">
                                         <h1 className="font-bold leading-none mr-2">Filters</h1>
-                                        <span className="bg-[#F1F5F9] text-sm mr-2 w-6 h-6 rounded-full flex justify-center items-center">
-                                            {filtersCount}
-                                        </span>
-                                        <button className=" border-b border-[#475569] text-[#475569] text-sm" onClick={handleReset}>Reset</button>
+                                        {filtersCount !== 0 &&
+                                            <>
+                                                <span className="bg-[#F1F5F9] text-sm mr-2 w-6 h-6 rounded-full flex justify-center items-center">
+                                                    {filtersCount}
+                                                </span>
+                                                <button className=" border-b border-[#475569] text-[#475569] text-sm" onClick={handleReset}>Reset</button>
+                                            </>
+                                        }
                                     </div>
                                     <button
                                         onClick={closeDialog}
@@ -113,12 +140,6 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                             )
                                         }
                                     })}
-                                    {maxExpYearId === 31 &&
-                                        <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
-                                            <span className="mr-1">30+ Year</span>
-                                            <span className="cursor-pointer"><RxCross2 /></span>
-                                        </span>
-                                    }
                                     {maxSalaryId !== 51 && salary?.map((item: any) => {
                                         if (parseInt(item?.title) === parseInt(maxSalaryId)) {
                                             return (
@@ -135,12 +156,6 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         }
                                     }
                                     )}
-                                    {maxSalaryId === 51 &&
-                                        <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
-                                            <span className="mr-1">50+ LPA</span>
-                                            <span className="cursor-pointer"><RxCross2 /></span>
-                                        </span>
-                                    }
                                     {departmentIds?.map((item: any) => {
                                         const departmentFilter = department?.filter((departmentItem: any) => departmentItem?.id === item);
                                         return (

@@ -81,7 +81,7 @@ const AllJobs = () => {
             filtersCount += filtersData?.companyType?.length
         }
         setFiltersCount(filtersCount);
-    }, [filtersData])
+    }, [filtersData]);
 
     useEffect(() => {
         window.addEventListener("scroll", handelInfiniteScroll);
@@ -237,10 +237,6 @@ const AllJobs = () => {
     const handleClearAll = () => {
         dispatch(clearAll());
         setToggleDispach(true);
-    }
-
-    const handleClearIndividual = (item: any) => {
-        console.log(item);
     }
 
     return (
