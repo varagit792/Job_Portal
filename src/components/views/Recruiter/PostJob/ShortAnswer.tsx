@@ -10,7 +10,6 @@ const ShortAnswer = ({ index, register, handlesChange, watch, handleDoneStatusCh
           <div className="w-60 h-10 p-3  justify-start items-center gap-2 flex">
             <div className="w-[126px] self-stretch justify-start items-center gap-3 flex">
               <div className="text-slate-600 text-base font-normal  leading-snug tracking-tight">Character limit</div>
-              <div className="w-41 self-stretch origin-top-left rotate-90 border border-slate-200"></div>
             </div>
             <div className="grow shrink basis-0 h-[22px] justify-start items-center gap-2 flex">
               <div className="grow shrink basis-0 text-center text-slate-400 text-base font-normal  leading-snug tracking-tight">

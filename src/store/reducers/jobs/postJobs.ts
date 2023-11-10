@@ -112,6 +112,7 @@ export const postQuestionnaireSave = createAsyncThunk(
         }
       );
       if (response.status >= 200 && response.status < 300) {
+
         return response.data;
       }
     } catch (error) {
@@ -197,7 +198,6 @@ export const postJobDetailDraft = createAsyncThunk(
 
 export const postJobUpdate = createAsyncThunk(
   "postJob", async (data: PostJobUpdate) => {
-    console.log("data+++++++++++=========", data);
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
