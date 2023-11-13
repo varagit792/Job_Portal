@@ -31,7 +31,8 @@ const Header = () => {
             Cookies.remove("token");
             setName('')
             setAuth(false)
-            navigate('/')
+            window.location.reload()
+            //navigate('/')
         }
     }, [logOutSuccess])
 
@@ -44,11 +45,13 @@ const Header = () => {
     const logout = () => {
         dispatch(logOutUser() as any);
     }
-
+    
     return (
         <>
-            {(userType === 'jobSeeker' || userType === undefined) && <JobSeekerHeader auth={auth} name={name} logout={logout} />}
-            {userType === 'employer' && <EmployerHeader auth={auth} name={name} logout={logout} />}
+            {
+                (userType === 'jobSeeker' || userType === undefined) ? <JobSeekerHeader auth={auth} name={name} logout={logout} />
+                : <EmployerHeader auth={auth} name={name} logout={logout} />
+            }
         </>
     )
 }
