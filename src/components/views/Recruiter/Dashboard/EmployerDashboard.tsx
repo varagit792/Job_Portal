@@ -11,18 +11,14 @@ import { getEmployerCompanyList } from '../../../../store/reducers/companies/emp
 
 const EmployerDashboard = () => {
   const dispatch = useAppDispatch();
-    const { success,
-        companyDetails
-    } = useAppSelector((state) => state.getEmployerCompanyList);
-    
-    const userId = Cookies.get('userId');
+  const { success, companyDetails } = useAppSelector((state) => state.getEmployerCompanyList);
 
-    console.log("companyDetails--->", companyDetails);
-    
-    useEffect(() => {
-        dispatch(getEmployerCompanyList({ data: { user: { id: userId } } }));        
-    }, [dispatch]);
-  
+  const userId = Cookies.get('userId');
+
+  useEffect(() => {
+    dispatch(getEmployerCompanyList({ data: { user: { id: userId } } }));
+  }, [dispatch]);
+
   return (
     <>
       <div className="h-[10%] w-full"></div>
