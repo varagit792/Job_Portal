@@ -180,7 +180,16 @@ interface GetJob {
     aboutCompany: string,
     companyAddress: string,
     keyResponsibility: string,
-    hideSalaryDetails: boolean
+    hideSalaryDetails: boolean,
+    questionnaire: {
+        question: string
+        questionType: string
+        characterLimit: string
+        requiredCheck: string
+        rangeMax: string
+        singleSelection: { option: string }[]
+        multipleSelection: { option: string }[]
+    }[]
 }
 interface GetJobState {
     loading: boolean;
@@ -203,6 +212,8 @@ export const getJobDetail = createAsyncThunk(
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_PATH}/jobs/get/${data}`);
             if (response.status >= 200 && response.status < 300) {
+                console.log(response);
+
                 return response.data.data;
             }
         } catch (error) {

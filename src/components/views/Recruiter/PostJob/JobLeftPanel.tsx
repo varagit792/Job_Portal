@@ -25,26 +25,30 @@ const JobLeftPanel = ({ jobTitle }: any) => {
     pageName.requirements = "done";
     pageName.company = "done";
     pageName.recruiter = "working";
-  } else if (location.pathname === '/postJob/questionnaire/' || location.pathname === '/postJob/questionnaire' || location.pathname.substring(0, location.pathname.lastIndexOf('/')) === '/postJob/questionnaire') {
-    pageName.jobDetails = "done";
-    pageName.requirements = "done";
-    pageName.company = "done";
-    pageName.recruiter = "done";
-    pageName.questionnaire = "working";
+
   } else if (location.pathname === '/postJob/response/' || location.pathname === '/postJob/response' || location.pathname.substring(0, location.pathname.lastIndexOf('/')) === '/postJob/response') {
     pageName.jobDetails = "done";
     pageName.requirements = "done";
     pageName.company = "done";
     pageName.recruiter = "done";
-    pageName.questionnaire = "done";
     pageName.response = "working";
+  } else if (location.pathname === '/postJob/questionnaire/' || location.pathname === '/postJob/questionnaire' || location.pathname.substring(0, location.pathname.lastIndexOf('/')) === '/postJob/questionnaire') {
+    pageName.jobDetails = "done";
+    pageName.requirements = "done";
+    pageName.company = "done";
+    pageName.recruiter = "done";
+    pageName.response = "done";
+    pageName.questionnaire = "working";
   } else if (location.pathname === '/postJob/preview/' || location.pathname === '/postJob/preview' || location.pathname.substring(0, location.pathname.lastIndexOf('/')) === '/postJob/preview') {
     pageName.jobDetails = "done";
     pageName.requirements = "done";
     pageName.company = "done";
     pageName.recruiter = "done";
-    pageName.questionnaire = "done";
     pageName.response = "done";
+    pageName.questionnaire = "done";
+    pageName.preview = "working";
+
+
   }
   useEffect(() => {
     setPageStatus(pageName);
@@ -100,8 +104,17 @@ const JobLeftPanel = ({ jobTitle }: any) => {
               {!Number.isNaN(Number(postId)) && <u className="text-[#475569]" onClick={() => returnBack(postBack.recruiterURL)} >Edit</u>}
             </div>
           </li>
+
           <li className="flex items-center  mb-8">
-            <TickRecruiter tickNumber="5" tickStatus={pageStatus.questionnaire} />
+            <TickRecruiter tickNumber="5" tickStatus={pageStatus.response} />
+            <div className="text-sm w-full flex justify-between">
+              <span className="font-semibold">Response</span></div>
+            <div className="text-sm justify-between cursor-pointer">
+              {!Number.isNaN(Number(postId)) && <u className="text-[#475569]" onClick={() => returnBack(postBack.responseURL)} >Edit</u>}
+            </div>
+          </li>
+          <li className="flex items-center  mb-8">
+            <TickRecruiter tickNumber="6" tickStatus={pageStatus.questionnaire} />
             <div className="text-sm w-full flex justify-between">
               <span className="font-semibold">Questionnaire</span></div>
             <div className="text-sm justify-between cursor-pointer">
@@ -109,11 +122,11 @@ const JobLeftPanel = ({ jobTitle }: any) => {
             </div>
           </li>
           <li className="flex items-center  mb-8">
-            <TickRecruiter tickNumber="6" tickStatus={pageStatus.response} />
+            <TickRecruiter tickNumber="7" tickStatus={pageStatus.preview} />
             <div className="text-sm w-full flex justify-between">
-              <span className="font-semibold">Response</span></div>
+              <span className="font-semibold">Preview</span></div>
             <div className="text-sm justify-between cursor-pointer">
-              {!Number.isNaN(Number(postId)) && <u className="text-[#475569]" onClick={() => returnBack(postBack.responseURL)} >Edit</u>}
+              {!Number.isNaN(Number(postId)) && <u className="text-[#475569]" onClick={() => returnBack(postBack.previewURL)} >Edit</u>}
             </div>
           </li>
         </ul>

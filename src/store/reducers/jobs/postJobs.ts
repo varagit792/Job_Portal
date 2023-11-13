@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { PostCompanyDraft, PostCompanySave, PostJobDetailDraft, PostJobDetailSave, PostJobUpdate, PostRequirementDraft, PostRequirementSave, PostResponseDraft } from '../../../interface/employer';
+import { PostCompanyDraft, PostCompanySave, PostJobDetailDraft, PostJobDetailSave, PostJobUpdate, PostQuestionnaireDraft, PostQuestionnaireSave, PostRequirementDraft, PostRequirementSave, PostResponseDraft } from '../../../interface/employer';
 
 export interface registerUserState {
   loading: boolean;
@@ -59,6 +59,28 @@ export const postCompanyDraft = createAsyncThunk(
     }
   });
 
+
+export const postQuestionnaireDraft = createAsyncThunk(
+  "postJob", async (data: PostQuestionnaireDraft) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
+        data,
+        {
+          headers: {
+            'Authorization': `Bearer ${Cookies.get('token')}`
+          }
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        return response.data;
+      }
+    } catch (error) {
+      throw error;
+    }
+  });
+
+
+
 export const postCompanySave = createAsyncThunk(
   "postJob", async (data: PostCompanySave) => {
     try {
@@ -71,6 +93,26 @@ export const postCompanySave = createAsyncThunk(
         }
       );
       if (response.status >= 200 && response.status < 300) {
+        return response.data;
+      }
+    } catch (error) {
+      throw error;
+    }
+  });
+
+export const postQuestionnaireSave = createAsyncThunk(
+  "postJob", async (data: PostQuestionnaireSave) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
+        data,
+        {
+          headers: {
+            'Authorization': `Bearer ${Cookies.get('token')}`
+          }
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+
         return response.data;
       }
     } catch (error) {
@@ -156,6 +198,7 @@ export const postJobDetailDraft = createAsyncThunk(
 
 export const postJobUpdate = createAsyncThunk(
   "postJob", async (data: PostJobUpdate) => {
+
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_PATH}/jobs/post`,
         data,
