@@ -4,7 +4,22 @@ import verifiedProfile from '../../../../assets/svg/verifiedProfile.svg';
 import { BsBriefcase } from 'react-icons/bs';
 import { BiSolidToggleLeft, BiSolidToggleRight } from 'react-icons/bi';
 
-const TotalJobs = () => {
+const TotalJobs = ({ companyDetails }: any) => {    
+    const getActiveJobs = () => {
+        const filterActive = companyDetails?.[0]?.jobs?.filter((item:any) => item?.jobStatus?.title === "Open");
+        return filterActive?.length;
+    }
+
+    const getClosedJobs = () => {
+        const filterClosed = companyDetails?.[0]?.jobs?.filter((item:any) => item?.jobStatus?.title === "Close");
+        return filterClosed?.length;
+    }
+
+    const getPendingJobs = () => {
+        const filterPending = companyDetails?.[0]?.jobs?.filter((item:any) => item?.jobStatus?.title === "Pending");
+        return filterPending?.length;
+    }
+
     return (
         <div className="w-full mb-10">
             <Disclosure defaultOpen={true}>
@@ -26,7 +41,7 @@ const TotalJobs = () => {
                                             <BsBriefcase className="text-[#6366F1]" />
                                         </button>
                                     </div>
-                                    <h1 className="text-lg font-bold">35</h1>
+                                    <h1 className="text-lg font-bold">{companyDetails?.[0]?.jobs?.length}</h1>
                                 </div>
                                 <div className="bg-[#FBEEFF] rounded-xl p-5">
                                     <div className="flex justify-between items-start">
@@ -35,7 +50,7 @@ const TotalJobs = () => {
                                             <BiSolidToggleRight className="text-[#AC46CB]" />
                                         </button>
                                     </div>
-                                    <h1 className="text-lg font-bold">22</h1>
+                                    <h1 className="text-lg font-bold">{getActiveJobs()}</h1>
                                 </div>
                                 <div className="bg-[#FFEEF9] rounded-xl p-5">
                                     <div className="flex justify-between items-start">
@@ -44,7 +59,7 @@ const TotalJobs = () => {
                                             <BiSolidToggleLeft className="text-[#CE2D95]" />
                                         </button>
                                     </div>
-                                    <h1 className="text-lg font-bold">4</h1>
+                                    <h1 className="text-lg font-bold">{getPendingJobs()}</h1>
                                 </div>
                                 <div className="bg-[#FEE] rounded-xl p-5">
                                     <div className="flex justify-between items-start">
@@ -53,7 +68,7 @@ const TotalJobs = () => {
                                             <img src={verifiedProfile} alt="verifiedProfile" width="15rem" height="15rem" />
                                         </button>
                                     </div>
-                                    <h1 className="text-lg font-bold">9</h1>
+                                    <h1 className="text-lg font-bold">{getClosedJobs()}</h1>
                                 </div>
                             </div>
                         </Disclosure.Panel>
