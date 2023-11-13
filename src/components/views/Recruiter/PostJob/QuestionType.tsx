@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 
-const QuestionType = ({ register, setQuestion, watch }: any) => {
+const QuestionType = ({ register, setQuestion, watch, index }: any) => {
   const options = [
     { value: 'shortAnswer', label: 'Short Answer' },
     { value: 'multipleChoice', label: 'Multiple Choice' },
@@ -20,7 +20,7 @@ const QuestionType = ({ register, setQuestion, watch }: any) => {
             className="text-sm"
             options={options}
             onChange={(event: any) => setQuestion(event.value)}
-            defaultValue={watch("questionType")}
+            defaultValue={watch(`questionnaire.${index}.questionType`)}
             placeholder={"Select question Type"}
 
           />

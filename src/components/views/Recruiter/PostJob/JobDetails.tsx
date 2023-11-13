@@ -56,7 +56,7 @@ const JobDetails = () => {
   const selectedJobLocality: any = [];
   const selectedCandidateIndustry: any = [];
 
-  if (Object.keys(jobDetail).length !== 0) {
+  if (jobDetail !== undefined && jobDetail !== null && Object?.keys(jobDetail)?.length !== 0) {
     jobDetail?.jobsKeySkills?.filter((item: any) => item && selectedJobsKeySkills.push({ value: item?.keySkills?.id, label: item?.keySkills?.title }));
     jobDetail?.jobsLocation && jobDetail?.jobsLocation?.filter((item: any) => item && selectedJobsLocation.push({ value: item?.location?.id, label: item?.location?.title }));
     jobDetail?.jobLocality?.filter((item: any) => item && selectedJobLocality.push({ value: item?.locality?.id, label: item?.locality?.title }));
@@ -70,7 +70,7 @@ const JobDetails = () => {
   }
 
   useEffect(() => {
-    if (Object.keys(jobDetail).length !== 0) {
+    if (jobDetail !== undefined && jobDetail !== null && Object.keys(jobDetail).length !== 0) {
       jobDetail?.title && setValue('title', jobDetail?.title);
       jobDetail?.department && setValue('department', { label: jobDetail?.department?.title, value: jobDetail?.department?.id?.toString() });
       jobDetail?.roleCategory && setValue('roleCategory', { label: jobDetail?.roleCategory?.title, value: jobDetail?.roleCategory?.id?.toString() });
@@ -85,7 +85,7 @@ const JobDetails = () => {
       jobDetail?.payScaleUpperRange && setValue('toSalaryRange', { label: jobDetail?.payScaleUpperRange?.title, value: jobDetail?.payScaleUpperRange?.id?.toString() });
       jobDetail?.numberSystem && setValue('numberSystem', { label: jobDetail?.numberSystem?.title, value: jobDetail?.numberSystem?.id?.toString() });
       jobDetail?.recurrence && setValue('recurrence', { label: jobDetail?.recurrence?.title, value: jobDetail?.recurrence?.id?.toString() });
-      jobDetail?.jobExpiry && setValue('jobExpiry', { label: jobDetail?.jobExpiry?.title, value: jobDetail?.jobExpiry?.numberOfDays });
+      jobDetail?.jobExpiry && setValue('jobExpiry', { label: jobDetail?.jobExpiry?.title, value: jobDetail?.jobExpiry?.id });
       jobDetail?.jobStatus && setValue('jobStatus', { label: jobDetail?.jobStatus?.title, value: jobDetail?.jobStatus?.statusValue });
       jobDetail?.jobDescription && setValue('jobDescription', jobDetail?.jobDescription);
       jobDetail?.jobsOpening && setValue('jobsOpening', jobDetail?.jobsOpening);
@@ -570,7 +570,7 @@ const JobDetails = () => {
                               control={control}
                               isClearable={true}
                               fieldName={"jobExpiry"}
-                              dropdownData={jobExpiry?.map(({ numberOfDays, title }: any) => ({ value: numberOfDays, label: title }))}
+                              dropdownData={jobExpiry?.map(({ id, title }: any) => ({ value: id, label: title }))}
                               default={watch("jobExpiry")}
                               placeholder={"Select job expiry"}
                             />

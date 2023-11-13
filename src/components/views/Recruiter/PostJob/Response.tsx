@@ -136,6 +136,7 @@ const Response = () => {
         notifyMeAbout: data?.notifyMeAbout,
         notificationEmailAddress1: data?.notificationEmailAddress1,
         notificationEmailAddress2: data?.notificationEmailAddress2,
+        questionnaire: []
       })).then(() => {
         toast.success(successMessage)
       });
@@ -161,10 +162,10 @@ const Response = () => {
       }
     })();
     if (Number(postId)) {
-      setPostBack({ postURL: `/postJob/preview/${postId}`, backURL: `/postJob/recruiter/${postId}` });
+      setPostBack({ postURL: `/postJob/questionnaire/${postId}`, backURL: `/postJob/recruiter/${postId}` });
       setJobTitle(jobDetail?.title);
     } else {
-      setPostBack({ postURL: '/postJob/preview', backURL: '/postJob/recruiter' })
+      setPostBack({ postURL: '/postJob/questionnaire', backURL: '/postJob/recruiter' })
     }
   }, []);
 
@@ -176,7 +177,9 @@ const Response = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
+  console.log(errors);
 
+  console.log(jobDetailData);
   return (
     <>
       <div className="h-[10%] w-full"></div>
@@ -337,17 +340,17 @@ const Response = () => {
 
                     <button name='Back' className="text-indigo-900 font-medium leading-normal tracking-tight grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack.backURL)}>Back</button>
 
-                  {!isNaN(Number(postId)) &&
-                    <button name='Save' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex" onClick={() => setButtonClick('Save')}>Save</button>
-                  }
+                    {!isNaN(Number(postId)) &&
+                      <button name='Save' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex" onClick={() => setButtonClick('Save')}>Save</button>
+                    }
 
-                  {isNaN(Number(postId)) &&
-                    <button name='SaveAsDraft' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex " onClick={() => setButtonClick('Draft')}>Save as Draft</button>
-                  }
+                    {isNaN(Number(postId)) &&
+                      <button name='SaveAsDraft' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex " onClick={() => setButtonClick('Draft')}>Save as Draft</button>
+                    }
 
-                  <button type="submit" name='Continue' className="text-white font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex"
-                    onClick={() => setButtonClick('Continue')}>Continue</button>
-                    
+                    <button type="submit" name='Continue' className="text-white font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex"
+                      onClick={() => setButtonClick('Continue')}>Continue</button>
+
                   </div>
                 </div>
               </form>
