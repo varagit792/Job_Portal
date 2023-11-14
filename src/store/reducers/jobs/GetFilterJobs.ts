@@ -132,6 +132,8 @@ interface AllJobsState {
     maxExpYearId: any;
     maxSalaryId: any;
     errorMessage: string | undefined;
+    searchDepartment: boolean,
+    searchLocation: boolean,
 }
 const initialState: AllJobsState = {
     loading: false,
@@ -168,6 +170,8 @@ const initialState: AllJobsState = {
     maxExpYearId: null,
     maxSalaryId: null,
     errorMessage: undefined,
+    searchDepartment: true,
+    searchLocation: true,
 }
 
 export const getFilterJobs = createAsyncThunk(
@@ -572,6 +576,12 @@ const getFilterJobsSlice = createSlice({
                 });
                 state.checkItems.companyType = mapData;
             }
+        },
+        setSearchDepartment: (state, action) => {
+            state.searchDepartment = action?.payload;
+        },
+        setSearchLocation: (state, action) => {
+            state.searchLocation = action?.payload;
         }
     }
 });
@@ -604,4 +614,6 @@ export const { clearGetFilterJobsSlice,
     clearAll,
     modalReset,
     clearIndividual,
-    modalResetIndividual } = getFilterJobsSlice.actions;
+    modalResetIndividual,
+    setSearchDepartment,
+    setSearchLocation } = getFilterJobsSlice.actions;

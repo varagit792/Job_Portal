@@ -8,16 +8,18 @@ import { BiSearch } from 'react-icons/bi';
 
 export const LocationBasedFilter = ({ handleLocationCheckbox, setIsOpen }: any) => {
     const dispatch = useAppDispatch();
-    const { location } = useAppSelector((state) => state.getFilterJobs);
+    const { location, searchLocation } = useAppSelector((state) => state.getFilterJobs);
 
     useEffect(() => {
-        (async () => {
-            const locationList = await getLocationList();
-            if (Object.keys(locationList)?.length) {
-                dispatch(setLocation(locationList))
-            }
-        })();
-    }, []);
+        if (searchLocation) {
+            (async () => {
+                const locationList = await getLocationList();
+                if (Object.keys(locationList)?.length) {
+                    dispatch(setLocation(locationList))
+                }
+            })();
+        }
+    }, [searchLocation]);
 
     const handleViewAll = () => {
         setIsOpen(true)
