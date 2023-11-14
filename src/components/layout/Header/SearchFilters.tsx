@@ -5,40 +5,16 @@ import { getDepartmentList, getLocationList } from '../../utils/utils';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../';
 import {
-    getFilterJobs,
-    clearGetFilterJobsSlice,
     setDepartment,
     setLocation,
-    setWorkMode,
-    setCompanyType,
-    setRoleCategory,
     setFilterDepartment,
     setFilterLocation,
-    setFilterWorkMode,
-    setFilterCompanyType,
-    setFilterRoleCategory,
-    setFilterExpYear,
-    setFilterSalary,
-    setNavigateFilterOption,
-    clearAll,
-    clearIndividual
+    setSearchDepartment,
+    setSearchLocation
 } from '../../../store/reducers/jobs/GetFilterJobs';
 
 const SearchFilters = () => {
-    const { success,
-        allJobs,
-        loading,
-        department,
-        location,
-        workMode,
-        roleCategory,
-        companyType,
-        salary,
-        expYear,
-        filtersData } = useAppSelector((state) => state.getFilterJobs);
-
-    // const [filterDepartment, setFilterDepartment] = useState([]);
-    // const [filterLocation, setFilterLocation] = useState([]);
+    const { department, location } = useAppSelector((state) => state.getFilterJobs);
     const [query, setQuery] = useState('');
     const navigate = useNavigate();
     let locationPath = useLocation();
@@ -84,18 +60,22 @@ const SearchFilters = () => {
         navigate("/allJobs");
         dispatch(setDepartment(
             department?.map((item: any) =>
-                item?.id === id ? { ...item, isChecked: !item.isChecked } : item
+                item?.id === id ? { ...item, isChecked: true } : item
             )
         ));
-        // if (data?.isChecked === undefined || data?.isChecked === false) {
-        //     dispatch(setFilterDepartment(data?.id));
-        // } else {
-        //     dispatch(setFilterDepartment({ filterDepartment: data?.id }));
-        // }
+        dispatch(setSearchDepartment(false));
+        dispatch(setFilterDepartment(id));
     }
 
     const handleLocation = (id: number) => {
         navigate("/allJobs");
+        dispatch(setLocation(
+            location?.map((item: any) =>
+                item?.id === id ? { ...item, isChecked: true } : item
+            )
+        ));
+        dispatch(setSearchLocation(false));
+        dispatch(setFilterLocation(id));
     }
 
     return (

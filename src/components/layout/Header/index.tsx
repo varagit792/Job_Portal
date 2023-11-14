@@ -40,7 +40,8 @@ const Header = () => {
             Cookies.remove("token");
             setName('')
             setAuth(false)
-            navigate('/')
+            window.location.reload()
+            //navigate('/')
         }
     }, [logOutSuccess])
 

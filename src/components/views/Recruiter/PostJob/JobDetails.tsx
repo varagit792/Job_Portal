@@ -86,7 +86,7 @@ const JobDetails = () => {
       jobDetail?.numberSystem && setValue('numberSystem', { label: jobDetail?.numberSystem?.title, value: jobDetail?.numberSystem?.id?.toString() });
       jobDetail?.recurrence && setValue('recurrence', { label: jobDetail?.recurrence?.title, value: jobDetail?.recurrence?.id?.toString() });
       jobDetail?.jobExpiry && setValue('jobExpiry', { label: jobDetail?.jobExpiry?.title, value: jobDetail?.jobExpiry?.id });
-      jobDetail?.jobStatus && setValue('jobStatus', { label: jobDetail?.jobStatus?.title, value: jobDetail?.jobStatus?.statusValue });
+      jobDetail?.jobStatus && setValue('jobStatus', { label: jobDetail?.jobStatus?.title, value: jobDetail?.jobStatus?.id });
       jobDetail?.jobDescription && setValue('jobDescription', jobDetail?.jobDescription);
       jobDetail?.jobsOpening && setValue('jobsOpening', jobDetail?.jobsOpening);
       jobDetail?.keyResponsibility && setValue('keyResponsibility', jobDetail?.keyResponsibility);
@@ -584,7 +584,7 @@ const JobDetails = () => {
                               control={control}
                               isClearable={true}
                               fieldName={"jobStatus"}
-                              dropdownData={jobStatus?.map(({ statusValue, title }: any) => ({ value: statusValue, label: title }))}
+                              dropdownData={jobStatus?.map(({ id, title }: any) => ({ value: id, label: title }))}
                               default={watch("jobStatus")}
                               placeholder={"Select job expiry"}
                             />

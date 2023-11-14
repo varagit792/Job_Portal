@@ -8,15 +8,17 @@ import { BiSearch } from 'react-icons/bi';
 
 export const DepartmentBasedFilter = ({ handleDepartmentCheckbox, setIsOpen }: any) => {
     const dispatch = useAppDispatch();
-    const { department } = useAppSelector((state) => state.getFilterJobs);
+    const { department, searchDepartment } = useAppSelector((state) => state.getFilterJobs);
     useEffect(() => {
-        (async () => {
-            const departmentList = await getDepartmentList();
-            if (Object.keys(departmentList)?.length) {
-                dispatch(setDepartment(departmentList));
-            }
-        })();
-    }, []);
+        if (searchDepartment) {
+            (async () => {
+                const departmentList = await getDepartmentList();
+                if (Object.keys(departmentList)?.length) {
+                    dispatch(setDepartment(departmentList));
+                }
+            })();
+        }
+    }, [searchDepartment]);
     const handleViewAll = () => {
         setIsOpen(true)
         dispatch(setNavigateFilterOption("Department"));
