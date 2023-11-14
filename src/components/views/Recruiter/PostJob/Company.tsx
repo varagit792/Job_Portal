@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import JobLeftPanel from './JobLeftPanel'
 import { IFormInputsCompany, IFormInputsCompanyDraft, IFormInputsCompanySave } from '../../../../interface/employer';
 import AutocompleteBox from '../../../commonComponents/AutocompleteBox';
-import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
+import { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import star from '../../../../assets/svg/star.svg';
 import { getCompanyList } from '../../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../../..';
@@ -12,6 +12,7 @@ import { CompanyDraftSchema, CompanySaveSchema, CompanySchema } from '../../../.
 import { yupResolver } from '@hookform/resolvers/yup';
 import { formData, postCompanyDraft, postCompanySave } from '../../../../store/reducers/jobs/postJobs';
 import { getAllCompanies } from '../../../../store/reducers/companies/getAllCompanies';
+import { clearEmployerCompanyListSlice, getEmployerCompanyList } from '../../../../store/reducers/companies/employerCompanyList';
 import { toast } from 'react-toastify';
 import Toaster from '../../../commonComponents/Toaster';
 import Cookies from 'js-cookie';
@@ -29,6 +30,7 @@ const Company = () => {
   const [userType, setUserType] = useState(Cookies.get('userType'));
   const [userId, setUserId] = useState(Cookies.get('userId'));
   const { success, allCompanies } = useAppSelector((state) => state.getAllCompanies);
+  const { success: getEmployerSuccess, companyDetails } = useAppSelector((state) => state.getEmployerCompanyList);
 
   const {
     register,
@@ -49,6 +51,14 @@ const Company = () => {
       jobDetail?.aboutCompany && setValue('aboutCompany', jobDetail?.aboutCompany);
       jobDetail?.hideCompanyRating && setValue('hideCompanyRating', jobDetail?.hideCompanyRating);
       jobDetail?.companyAddress && setValue('companyAddress', jobDetail?.companyAddress);
+
+    } else if (companyDetails.length !== 0) {
+      companyDetails[0]?.title && setValue('companyName', { label: companyDetails[0]?.title, value: companyDetails[0]?.id });
+      companyDetails[0]?.websiteUrl && setValue('companyWebsite', companyDetails[0]?.websiteUrl);
+      companyDetails[0]?.companyDescription && setValue('aboutCompany', companyDetails[0]?.companyDescription);
+      jobDetailData?.hideCompanyRating && setValue('hideCompanyRating', jobDetailData?.hideCompanyRating);
+      companyDetails[0]?.companyAddress && setValue('companyAddress', companyDetails[0]?.companyAddress);
+
     } else {
       jobDetailData?.company && setValue('companyName', jobDetailData?.company);
       jobDetailData?.companyWebsite && setValue('companyWebsite', jobDetailData?.companyWebsite);
@@ -75,8 +85,6 @@ const Company = () => {
     }
     if (buttonClick === 'Draft' && userType && userId) {
       let draft = true;
-      let jobStatus = false;
-
 
       const jobEducation = jobDetailData?.education?.map((education: any) => ({ education: education?.value }));
       const jobLocality = jobDetailData?.jobLocality?.map((local: any) => ({ locality: { id: local?.value } }));
@@ -195,12 +203,28 @@ const Company = () => {
     if (Number(postId)) {
       dispatch(getJobDetail(postId));
     }
-  }, [dispatch]);
+    if (userId) {
+      const dataSend = {
+        data: {
+          user: {
+            id: userId
+          }
+        }
+      }
+
+      dispatch(getEmployerCompanyList(dataSend));
+    }
+
+  }, [dispatch, userId]);
 
   useEffect(() => {
     if (jobDetailSuccess)
       dispatch(clearGetJobDetailSlice());
-  }, [dispatch, jobDetailSuccess]);
+
+    if (getEmployerSuccess) {
+      dispatch(clearEmployerCompanyListSlice)
+    }
+  }, [dispatch, jobDetailSuccess, getEmployerSuccess]);
 
   useEffect(() => {
     (async () => {
@@ -236,7 +260,6 @@ const Company = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
-  console.log(Cookies);
 
   return (
     <>
@@ -266,12 +289,13 @@ const Company = () => {
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Company logo</div>
                         <div className="justify-start  inline-flex">
                           <div className="w-[120px] h-[120px] p-3 rounded-lg border border-indigo-300 flex-col justify-center items-center gap-2 inline-flex">
-                            <div className="w-6 h-6 flex-col justify-center items-center flex"></div>
-                            <div className="self-stretch justify-start  gap-5 inline-flex">
-                              <div className="grow shrink basis-0 self-stretch justify-center items-center gap-1 flex">
-                                <div className="grow shrink basis-0 text-center text-slate-400 text-xs font-normal  leading-[14.40px] tracking-tight">Formats: .png and .jpg</div>
+                            {<><div className="w-6 h-6 flex-col justify-center items-center flex"></div>
+                              <div className="self-stretch justify-start  gap-5 inline-flex">
+                                <div className="grow shrink basis-0 self-stretch justify-center items-center gap-1 flex">
+                                  <div className="grow shrink basis-0 text-center text-slate-400 text-xs font-normal  leading-[14.40px] tracking-tight">Formats: .png and .jpg</div>
+                                </div>
                               </div>
-                            </div>
+                            </>}
                           </div>
                         </div>
                       </div>
@@ -285,7 +309,8 @@ const Company = () => {
                               fieldName={"companyName"}
                               dropdownData={company?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
                               placeholder={"Select company"}
-                              defaultValue={watch("companyName")}
+                              defaultValue={{ value: companyDetails[0]?.id, label: companyDetails[0]?.title }}
+
                             />
                             {errors?.companyName && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyName?.message}</p>}
                           </div>
@@ -293,9 +318,10 @@ const Company = () => {
                         <div className="w-full grow shrink basis-0  flex-col justify-start  gap-2 inline-flex">
                           <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Website</div>
                           <div className='w-full'>
-                            <input defaultValue={''}
+                            <input defaultValue={companyDetails[0]?.websiteUrl}
                               className='w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                               placeholder={"Please enter company website (eg http://www.google.com)"}
+                              readOnly={true}
                               {...register("companyWebsite")} />
                             {errors?.companyWebsite && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyWebsite?.message}</p>}
                           </div>
@@ -304,8 +330,9 @@ const Company = () => {
                       <div className="w-full h-auto flex-col justify-start  gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">About Company</div>
                         <div className='w-full'>
-                          <textarea defaultValue={''}
+                          <textarea defaultValue={companyDetails[0]?.companyDescription}
                             maxLength={1000}
+                            readOnly={true}
                             className='w-full h-[75px] border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter about company"}
 
@@ -320,8 +347,9 @@ const Company = () => {
                       <div className="w-full h-auto flex-col justify-start  gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Company Address</div>
                         <div className='w-full'>
-                          <textarea defaultValue={''}
+                          <textarea defaultValue={companyDetails[0]?.companyAddress}
                             maxLength={1000}
+                            readOnly={true}
                             className='w-full border text-sm h-[75px] border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter company address"}
 
@@ -387,8 +415,8 @@ const Company = () => {
               </form>
             </div>
           </div>
-        </div>
-      </div>
+        </div >
+      </div >
       <Toaster />
     </>
   )
