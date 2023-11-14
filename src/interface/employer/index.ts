@@ -47,9 +47,9 @@ export interface IFormInputsResponse {
 
 export interface IFormInputsCompany {
   companyName: { value: string; label: string; }
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   hideCompanyRating: boolean
   fillCompanyInformation: boolean
 }
@@ -57,7 +57,6 @@ export interface IFormInputsCompany {
 export interface IFormInputsRecruiter {
   fillCompanyInformation: boolean
 }
-
 
 export interface IFormInputsResponse {
   //receiveUpdateOnEmail: string[]
@@ -67,10 +66,7 @@ export interface IFormInputsResponse {
   videoProfile: boolean
   includeWalkInDetails: boolean
   notifyMeAbout: boolean
-
 }
-
-
 
 export interface IFormInputsPostAJob {
   title: string
@@ -108,9 +104,9 @@ export interface IFormInputsPostAJob {
   notificationEmailAddress2: string
   keyResponsibility: string
   company: { value: string; label: string; }
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   jobExpiry: { value: number; label: string; }
   jobStatus: { value: number; label: string; }
   questionnaire: {
@@ -122,8 +118,6 @@ export interface IFormInputsPostAJob {
     singleSelection?: string[]
     multipleSelection?: string[]
   }[]
-
-
 }
 
 export interface IFormInputsRequirementDraft {
@@ -163,16 +157,13 @@ export interface IFormInputsRequirementDraft {
   notificationEmailAddress2: string
   keyResponsibility: string
   company: { value: string; label: string; }
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   jobExpiry: { value: number; label: string; }
   jobStatus: { value: number; label: string; }
 
 }
-
-
-
 
 export interface PostJobUpdate {
   id: number | null
@@ -219,9 +210,9 @@ export interface PostJobUpdate {
   notificationEmailAddress1: string
   notificationEmailAddress2: string
   company: string | null
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   user: string
   jobExpiry: number
   jobStatus: number
@@ -239,8 +230,6 @@ export interface PostJobUpdate {
     }[]
   }[]
 }
-
-
 
 export interface IFormInputsJobDetailDraft {
   title: string
@@ -282,13 +271,10 @@ export interface IFormInputsJobDetailDraft {
   notificationEmailAddress2: string
   keyResponsibility: string
   company: { value: string; label: string; }
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
-  // receiveUpdateOnEmail: string[]
-
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
 }
-
 
 export interface PostJobDetailDraft {
   id: number | null
@@ -299,7 +285,6 @@ export interface PostJobDetailDraft {
       id: string
     }
   }[]
-
   department: string;
   roleCategory: string;
   jobsRole: string;
@@ -335,15 +320,13 @@ export interface PostJobDetailDraft {
   notificationEmailAddress2: string
   company: string | null
   isDraft: boolean
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   user: string
   jobExpiry: number
   jobStatus: number
-
 }
-
 
 export interface PostRequirementDraft {
   id: number | null
@@ -354,7 +337,6 @@ export interface PostRequirementDraft {
       id: string
     }
   }[]
-
   department: string;
   roleCategory: string;
   jobsRole: string;
@@ -390,16 +372,13 @@ export interface PostRequirementDraft {
   notificationEmailAddress2: string
   company: string | null
   isDraft: boolean
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   user: string
   jobExpiry: number
   jobStatus: number
-
 }
-
-
 
 export interface PostCompanyDraft {
   id: number | null
@@ -410,7 +389,6 @@ export interface PostCompanyDraft {
       id: string
     }
   }[]
-
   department: string;
   roleCategory: string;
   jobsRole: string;
@@ -446,16 +424,13 @@ export interface PostCompanyDraft {
   notificationEmailAddress2: string
   company: string
   isDraft: boolean
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   user: string
   jobExpiry: number
   jobStatus: number
-
 }
-
-
 
 export interface IFormInputsCompanyDraft {
   title: string
@@ -497,14 +472,11 @@ export interface IFormInputsCompanyDraft {
   notificationEmailAddress1: string
   notificationEmailAddress2: string
   keyResponsibility: string
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   fillCompanyInformation: boolean
-  // receiveUpdateOnEmail: string[]
-
 }
-
 
 export interface PostResponseDraft {
   id: number | null
@@ -515,7 +487,6 @@ export interface PostResponseDraft {
       id: string
     }
   }[]
-
   department: string;
   roleCategory: string;
   jobsRole: string;
@@ -551,9 +522,9 @@ export interface PostResponseDraft {
   notificationEmailAddress2: string
   company: string
   isDraft: boolean
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   user: string
   jobExpiry: number
   jobStatus: number
@@ -612,14 +583,11 @@ export interface IFormInputsResponseDraft {
   notificationEmailAddress1: string
   notificationEmailAddress2: string
   keyResponsibility: string
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   fillCompanyInformation: boolean
-  // receiveUpdateOnEmail: string[]
-
 }
-
 
 export interface IFormInputsJobDetailSave {
   title: string
@@ -642,7 +610,6 @@ export interface IFormInputsJobDetailSave {
   currency: { value: string; label: string; }
   keyResponsibility: string
 }
-
 
 export interface PostJobDetailSave {
   id: number | null
@@ -670,7 +637,6 @@ export interface PostJobDetailSave {
   keyResponsibility: string
 }
 
-
 export interface PostRequirementSave {
   id: number | null
   title: string
@@ -680,7 +646,6 @@ export interface PostRequirementSave {
       id: string
     }
   }[]
-
   department: string;
   roleCategory: string;
   jobsRole: string;
@@ -711,9 +676,7 @@ export interface PostRequirementSave {
   userType: string
   isDraft: boolean
   user: string
-
 }
-
 
 export interface IFormInputsRequirementSave {
   title: string
@@ -746,10 +709,7 @@ export interface IFormInputsRequirementSave {
   jobDescription: string
   jobsOpening: number
   keyResponsibility: string
-  // receiveUpdateOnEmail: string[]
-
 }
-
 
 export interface PostCompanySave {
   id: number | null
@@ -760,7 +720,6 @@ export interface PostCompanySave {
       id: string
     }
   }[]
-
   department: string;
   roleCategory: string;
   jobsRole: string;
@@ -790,15 +749,13 @@ export interface PostCompanySave {
   userType: string
   company: string
   isDraft: boolean
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   user: string
   jobExpiry: string
   jobStatus: string
-
 }
-
 
 export interface IFormInputsCompanySave {
   title: string
@@ -832,12 +789,10 @@ export interface IFormInputsCompanySave {
   jobsOpening: number
   hideCompanyRating: boolean
   keyResponsibility: string
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   fillCompanyInformation: boolean
-  // receiveUpdateOnEmail: string[]
-
 }
 
 export interface IFormInputsQuestionnaire {
@@ -896,9 +851,9 @@ export interface IFormInputsQuestionnaireDraft {
   notificationEmailAddress1: string
   notificationEmailAddress2: string
   keyResponsibility: string
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   fillCompanyInformation: boolean
   questionnaire: {
     question?: string
@@ -909,7 +864,6 @@ export interface IFormInputsQuestionnaireDraft {
     singleSelection?: { option?: string | undefined }[]
     multipleSelection?: { option?: string | undefined }[]
   }[]
-
 }
 
 export interface IFormInputsQuestionnaireSave {
@@ -944,9 +898,9 @@ export interface IFormInputsQuestionnaireSave {
   jobsOpening: number
   hideCompanyRating: boolean
   keyResponsibility: string
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   fillCompanyInformation: boolean
   questionnaire: {
     question?: string
@@ -957,7 +911,6 @@ export interface IFormInputsQuestionnaireSave {
     singleSelection?: { option?: string | undefined }[]
     multipleSelection?: { option?: string | undefined }[]
   }[]
-
 }
 
 export interface PostQuestionnaireSave {
@@ -1005,9 +958,9 @@ export interface PostQuestionnaireSave {
   userType: string
   company: string
   isDraft: boolean
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   user: string
   jobExpiry: string
   jobStatus: string
@@ -1068,9 +1021,9 @@ export interface PostQuestionnaireDraft {
   notificationEmailAddress2: string
   company: string
   isDraft: boolean
-  companyWebsite: string
-  aboutCompany: string
-  companyAddress: string
+  companyWebsite?: string | undefined
+  aboutCompany?: string | undefined
+  companyAddress?: string | undefined
   user: string
   jobExpiry: number
   jobStatus: number

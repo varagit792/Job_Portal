@@ -120,14 +120,7 @@ export const CompanySchema = yup.object().shape({
     label: yup.string().required("Please select company"),
   }),
   fillCompanyInformation: yup.boolean().label("Please checked fill company information").required(),
-  companyWebsite: yup.string().label("Please enter company website").matches(
-    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-    'Enter correct url!'
-  ).required(),
-  aboutCompany: yup.string().label("Please enter about company").required(),
-  companyAddress: yup.string().label("Please enter company address").required(),
   hideCompanyRating: yup.boolean().label("Please checked hide company rating").required(),
-
 }).required();
 
 export const RecruiterSchema = yup.object().shape({
@@ -261,10 +254,7 @@ export const PostJobSchema = yup.object().shape({
     value: yup.string().required("Please select company"),
     label: yup.string().required("Please select company"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").matches(
-    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-    'Enter correct url!'
-  ).required(),
+
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
     'len', 'Minimum 200 characters are required',
     (data) => {
@@ -275,8 +265,6 @@ export const PostJobSchema = yup.object().shape({
       }
     }
   ),
-  aboutCompany: yup.string().label("Please enter about company").required(),
-  companyAddress: yup.string().label("Please enter company address").required(),
   questionnaire: yup.array().of(
     yup.object().shape({
       question: yup.string().nullable().optional(),
@@ -424,10 +412,7 @@ export const RequirementDraftSchema = yup.object().shape({
     value: yup.string().required("Please select company"),
     label: yup.string().required("Please select company"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").matches(
-    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-    'Enter correct url!'
-  ).required(),
+
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
     'len', 'Minimum 200 characters are required',
     (data) => {
@@ -438,11 +423,6 @@ export const RequirementDraftSchema = yup.object().shape({
       }
     }
   ),
-  aboutCompany: yup.string().label("Please enter about company").required(),
-  companyAddress: yup.string().label("Please enter company address").required(),
-  // receiveUpdateOnEmail: yup.array()
-  //   .min(1, 'Pick at least one location')
-  //   .max(3, 'Pick at most three location').required("Please check at least one"),
 }).required();
 
 
@@ -556,10 +536,7 @@ export const JobDetailDraftSchema = yup.object().shape({
     value: yup.string().required("Please select company"),
     label: yup.string().required("Please select company"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").matches(
-    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-    'Enter correct url!'
-  ).required(),
+
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
     'len', 'Minimum 200 characters are required',
     (data) => {
@@ -570,11 +547,6 @@ export const JobDetailDraftSchema = yup.object().shape({
       }
     }
   ),
-  aboutCompany: yup.string().label("Please enter about company").required(),
-  companyAddress: yup.string().label("Please enter company address").required(),
-  // receiveUpdateOnEmail: yup.array()
-  //   .min(1, 'Pick at least one location')
-  //   .max(3, 'Pick at most three location').required("Please check at least one"),
 }).required();
 
 
@@ -686,10 +658,7 @@ export const CompanyDraftSchema = yup.object().shape({
     value: yup.string().required("Please select company name"),
     label: yup.string().required("Please select company name"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").matches(
-    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-    'Enter correct url!'
-  ).required(),
+
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
     'len', 'Minimum 200 characters are required',
     (data) => {
@@ -700,11 +669,6 @@ export const CompanyDraftSchema = yup.object().shape({
       }
     }
   ),
-  aboutCompany: yup.string().label("Please enter about company").required(),
-  companyAddress: yup.string().label("Please enter company address").required(),
-  // receiveUpdateOnEmail: yup.array()
-  //   .min(1, 'Pick at least one location')
-  //   .max(3, 'Pick at most three location').required("Please check at least one"),
 }).required();
 
 
@@ -815,10 +779,7 @@ export const ResponseDraftSchema = yup.object().shape({
     value: yup.string().required("Please select company name"),
     label: yup.string().required("Please select company name"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").matches(
-    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-    'Enter correct url!'
-  ).required(),
+
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
     'len', 'Minimum 200 characters are required',
     (data) => {
@@ -829,8 +790,6 @@ export const ResponseDraftSchema = yup.object().shape({
       }
     }
   ),
-  aboutCompany: yup.string().label("Please enter about company").required(),
-  companyAddress: yup.string().label("Please enter company address").required(),
 }).required();
 
 
@@ -1116,10 +1075,7 @@ export const CompanySaveSchema = yup.object().shape({
     value: yup.string().required("Please select company name"),
     label: yup.string().required("Please select company name"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").matches(
-    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-    'Enter correct url!'
-  ).required(),
+
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
     'len', 'Minimum 200 characters are required',
     (data) => {
@@ -1130,8 +1086,6 @@ export const CompanySaveSchema = yup.object().shape({
       }
     }
   ),
-  aboutCompany: yup.string().label("Please enter about company").required(),
-  companyAddress: yup.string().label("Please enter company address").required(),
 }).required();
 
 
@@ -1287,10 +1241,7 @@ export const QuestionnaireDraftSchema = yup.object().shape({
     value: yup.string().required("Please select company name"),
     label: yup.string().required("Please select company name"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").matches(
-    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-    'Enter correct url!'
-  ).required(),
+
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
     'len', 'Minimum 1000 characters are required',
     (data) => {
@@ -1301,8 +1252,6 @@ export const QuestionnaireDraftSchema = yup.object().shape({
       }
     }
   ),
-  aboutCompany: yup.string().label("Please enter about company").required(),
-  companyAddress: yup.string().label("Please enter company address").required(),
   questionnaire: yup.array().of(
     yup.object().shape({
       question: yup.string().optional(),
@@ -1414,10 +1363,7 @@ export const QuestionnaireSaveSchema = yup.object().shape({
     value: yup.string().required("Please select company name"),
     label: yup.string().required("Please select company name"),
   }),
-  companyWebsite: yup.string().label("Please enter company website").matches(
-    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-    'Enter correct url!'
-  ).required(),
+
   keyResponsibility: yup.string().label("Please enter key responsibility").required().test(
     'len', 'Minimum 1000 characters are required',
     (data) => {
@@ -1428,8 +1374,6 @@ export const QuestionnaireSaveSchema = yup.object().shape({
       }
     }
   ),
-  aboutCompany: yup.string().label("Please enter about company").required(),
-  companyAddress: yup.string().label("Please enter company address").required(),
   questionnaire: yup.array().of(
     yup.object().shape({
       question: yup.string().optional(),

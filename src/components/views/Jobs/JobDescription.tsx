@@ -12,8 +12,12 @@ import locationIcon from '../../../assets/svg/LocationIcon.svg';
 import bookMarkIcon from '../../../assets/svg/bookMark.svg';
 import peopleIcon from '../../../assets/svg/peopleIcon.svg';
 import rightArrow from '../../../assets/svg/ArrowRight.svg';
+import Modal from '../../commonComponents/Modal';
+import ApplyJobs from './ApplyJobs/ApplyJobs';
 
 const JobDescription = () => {
+
+  const [isApplyJobsOpen, setIsApplyJobsOpen] = useState(false);
   const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<Date | null>(null);
   const { id } = useParams();
 
@@ -37,6 +41,17 @@ const JobDescription = () => {
   }, [jobDetail]);
 
   const locationCount = jobDetail?.company?.location?.length;
+
+  const applyJobs = () => {
+    setIsApplyJobsOpen(true);
+  }
+
+  const closeDialog = () => {
+    setIsApplyJobsOpen(false);
+  };
+  console.log(jobDetail);
+
+
 
   return (
     <Fragment>
@@ -97,7 +112,7 @@ const JobDescription = () => {
               </div>
             </div>
             <div className="justify-start items-center gap-5 inline-flex mt-4">
-              <button className="w-48  px-6 py-1.5 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex">
+              <button className="w-48  px-6 py-1.5 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex" onClick={applyJobs}>
                 <span className="text-white text-xl font-medium  leading-normal tracking-tight">Apply</span>
               </button>
               <button className="w-28 pl-6 pr-3 py-1.5 bg-indigo-50 rounded-lg justify-center items-center  gap-3 flex">
@@ -194,6 +209,15 @@ const JobDescription = () => {
           <div className=" mb-3"><ShortJobCard /></div>
         </div>
       </div >
+
+      <Modal
+        isOpen={isApplyJobsOpen}
+        setIsOpen={setIsApplyJobsOpen}
+        modalBody={
+          <ApplyJobs
+            questionnaire={jobDetail?.questionnaire} closeDialog={closeDialog} />
+        }
+      />
     </Fragment>
   )
 }
