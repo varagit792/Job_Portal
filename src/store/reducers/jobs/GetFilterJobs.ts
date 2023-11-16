@@ -366,6 +366,7 @@ const getFilterJobsSlice = createSlice({
             state.filtersData.location = action?.payload?.location;
             state.filtersData.workMode = action?.payload?.workMode;
             state.filtersData.companyType = action?.payload?.companyType;
+            state.filtersData.keySkills = action?.payload?.keySkills;
         },
         setNavigateFilterOption: (state, action) => {
             state.navigateFilterOption = action?.payload;
@@ -383,6 +384,9 @@ const getFilterJobsSlice = createSlice({
             if (action?.payload?.companyType) {
                 state.checkItems.companyType = action?.payload?.companyType;
             }
+            if (action?.payload?.keySkills) {
+                state.checkItems.keySkills = action?.payload?.keySkills;
+            }
         },
         setDepartmentIds: (state, action) => {
             if (action?.payload?.filter) {
@@ -398,6 +402,14 @@ const getFilterJobsSlice = createSlice({
                 state.locationIds = locationFilter;
             } else {
                 state.locationIds?.push(action.payload);
+            }
+        },
+        setKeySkillsIds: (state, action) => {
+            if (action?.payload?.filter) {
+                const keySkillsFilter = state?.keySkillsIds?.filter((item: any) => item !== action?.payload?.filter);
+                state.keySkillsIds = keySkillsFilter;
+            } else {
+                state.keySkillsIds?.push(action.payload);
             }
         },
         setWorkModeIds: (state, action) => {
@@ -445,6 +457,11 @@ const getFilterJobsSlice = createSlice({
             state.checkItems.companyType = state?.companyType;
             const companyType = JSON.stringify(state?.companyType?.filter((item: any) => item?.isChecked));
             state.companyTypeIds = JSON.parse(companyType).map((item: any) => item.id);
+
+
+            state.checkItems.keySkills = state?.keySkills;
+            const keySkills = JSON.stringify(state?.keySkills?.filter((item: any) => item?.isChecked));
+            state.keySkillsIds = JSON.parse(keySkills).map((item: any) => item.id);
         },
         clearAll: (state) => {
             state.filtersData.expYear = null;
@@ -481,12 +498,14 @@ const getFilterJobsSlice = createSlice({
             state.locationIds = [];
             state.workModeIds = [];
             state.companyTypeIds = [];
+            state.keySkillsIds = [];
             state.maxExpYearId = null;
             state.maxSalaryId = null;
             state.checkItems.department = state?.department?.map((item: any) => { return { ...item, isChecked: false } });
             state.checkItems.location = state?.location?.map((item: any) => { return { ...item, isChecked: false } });
             state.checkItems.workMode = state?.workMode?.map((item: any) => { return { ...item, isChecked: false } });
             state.checkItems.companyType = state?.companyType?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.keySkills = state?.keySkills?.map((item: any) => { return { ...item, isChecked: false } });
         },
         clearIndividual: (state, action) => {
             state.toggleFilter = true;
@@ -638,6 +657,18 @@ const getFilterJobsSlice = createSlice({
                 });
                 state.checkItems.companyType = mapData;
             }
+            if (action?.payload?.keySkills) {
+                const filterData = state.keySkillsIds?.filter((item: any) => item !== action?.payload?.keySkills);
+                state.keySkillsIds = filterData;
+                const mapData = state?.checkItems?.keySkills?.map((item: any) => {
+                    if (item?.id !== action?.payload?.keySkills) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.keySkills = mapData;
+            }
         },
         setSearchDepartment: (state, action) => {
             state.searchDepartment = action?.payload;
@@ -676,6 +707,7 @@ export const { clearGetFilterJobsSlice,
     setCheckItems,
     setDepartmentIds,
     setLocationIds,
+    setKeySkillsIds,
     setWorkModeIds,
     setCompanyTypeIds,
     setMaxExpYearId,

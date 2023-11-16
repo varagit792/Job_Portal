@@ -113,8 +113,8 @@ const AllJobs = () => {
                 || (filtersData?.keySkills !== undefined && filtersData?.keySkills?.length !== 0)
             ) {
                 dispatch(getFilterJobs({ page, data: filtersData }));
-                setPage(1);
                 if (toggleFilter) {
+                    setPage(1);
                     setJobCard([]);
                     dispatch(setToggleFilter());
                 }
@@ -122,7 +122,7 @@ const AllJobs = () => {
                 dispatch(getFilterJobs({ page }));
             }
         }
-    }, [dispatch, page, filtersData, toggleDispach]);
+    }, [dispatch, page, filtersData, toggleDispach, toggleFilter]);
 
     useEffect(() => {
         if (success) {
@@ -158,6 +158,7 @@ const AllJobs = () => {
 
     const handleDepartmentCheckbox = (data: any) => {
         scrollToTop();
+        setPage(1);
         setToggleDispach(true);
         setJobCard([]);
         dispatch(setDepartment(
@@ -174,6 +175,7 @@ const AllJobs = () => {
 
     const handleLocationCheckbox = (data: any) => {
         scrollToTop();
+        setPage(1);
         setToggleDispach(true);
         setJobCard([]);
         dispatch(setLocation(
@@ -190,6 +192,7 @@ const AllJobs = () => {
 
     const handleWorkModeCheckbox = (data: any) => {
         scrollToTop();
+        setPage(1);
         setToggleDispach(true);
         setJobCard([]);
         dispatch(setWorkMode(
@@ -214,6 +217,7 @@ const AllJobs = () => {
 
     const handleCompanyTypeCheckbox = (data: any) => {
         scrollToTop();
+        setPage(1);
         setToggleDispach(true);
         setJobCard([]);
         dispatch(setCompanyType(
@@ -230,6 +234,7 @@ const AllJobs = () => {
 
     const handleRoleCategoryCheckbox = (data: any) => {
         scrollToTop();
+        setPage(1);
         setToggleDispach(true);
         setJobCard([]);
         dispatch(setRoleCategory(
@@ -246,6 +251,7 @@ const AllJobs = () => {
 
     const handleKeySkillsCheckbox = (data: any) => {
         scrollToTop();
+        setPage(1);
         setToggleDispach(true);
         setJobCard([]);
         dispatch(setKeySkills(

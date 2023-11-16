@@ -13,17 +13,19 @@ import {
     resetCheckItem,
     modalReset,
     clearAll,
-    modalResetIndividual
+    modalResetIndividual,
+    setKeySkills
 } from '../../../store/reducers/jobs/GetFilterJobs';
 import FiltersLocation from './FiltersLocation';
 import FiltersWorkMode from './FiltersWorkMode';
 import FiltersExperience from './FiltersExperience';
 import FiltersSalary from './FiltersSalary';
 import FiltersCompanyType from './FiltersCompanyType';
+import FiltersKeySkills from './FiltersKeySkills';
 
 const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
     const dispatch = useAppDispatch();
-    const { navigateFilterOption, checkItems, departmentIds, locationIds, workModeIds, companyTypeIds, maxExpYearId, maxSalaryId, expYear, department, location, workMode, salary, companyType } = useAppSelector((state) => state.getFilterJobs);
+    const { navigateFilterOption, checkItems, departmentIds, locationIds, workModeIds, companyTypeIds, maxExpYearId, maxSalaryId, expYear, department, location, workMode, salary, companyType, keySkillsIds, roleCategoryIds, keySkills } = useAppSelector((state) => state.getFilterJobs);
     const [clearAllToggle, setClearAllToggle] = useState(false);
     const [filtersCount, setFiltersCount] = useState(0);
 
@@ -47,8 +49,11 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
         if (companyTypeIds?.length) {
             filtersCount += companyTypeIds?.length
         }
+        if (keySkillsIds?.length) {
+            filtersCount += keySkillsIds?.length
+        }
         setFiltersCount(filtersCount);
-    }, [maxExpYearId, maxSalaryId, departmentIds, locationIds, workModeIds, companyTypeIds]);
+    }, [maxExpYearId, maxSalaryId, departmentIds, locationIds, workModeIds, companyTypeIds, keySkillsIds]);
 
     const closeDialog = () => {
         setIsOpen(false);
@@ -57,11 +62,12 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
 
     const handleSubmit = () => {
         setToggleDispach(true);
-        dispatch(bulkFilter({ department: departmentIds, location: locationIds, workMode: workModeIds, companyType: companyTypeIds, expYear: maxExpYearId, salary: maxSalaryId }));
+        dispatch(bulkFilter({ department: departmentIds, location: locationIds, workMode: workModeIds, companyType: companyTypeIds, expYear: maxExpYearId, salary: maxSalaryId, keySkills: keySkillsIds }));
         dispatch(setDepartment(checkItems?.department));
         dispatch(setLocation(checkItems?.location));
         dispatch(setWorkMode(checkItems?.workMode));
         dispatch(setCompanyType(checkItems?.companyType));
+        dispatch(setKeySkills(checkItems?.keySkills));
         setIsOpen(false);
         if (clearAllToggle) {
             dispatch(clearAll());
@@ -121,7 +127,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         <RxCross1 />
                                     </button>
                                 </Dialog.Title>
-                                <div className="mb-5 flex flex-wrap justify-start items-center gap-2 mx-5">
+                                {filtersCount !== 0 && <div className="mb-5 flex flex-wrap justify-start items-center gap-2 mx-5">
                                     {maxExpYearId !== 0 && expYear?.map((item: any) => {
                                         let data = item?.title?.split('');
                                         let splitVal = data?.slice(0, data.length - 5);
@@ -212,7 +218,21 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                             </span>
                                         )
                                     })}
-                                </div>
+                                    {keySkillsIds?.map((item: any) => {
+                                        const keySkillsFilter = keySkills?.filter((keySkillsItem: any) => keySkillsItem?.id === item);
+                                        return (
+                                            <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                                <span className="mr-1">{keySkillsFilter[0]?.title}</span>
+                                                <span className="cursor-pointer"
+                                                    onClick={() => {
+                                                        dispatch(modalResetIndividual({ keySkills: keySkillsFilter[0]?.id }))
+                                                    }}>
+                                                    <RxCross2 />
+                                                </span>
+                                            </span>
+                                        )
+                                    })}
+                                </div>}
                                 <div className="grid grid-cols-12 border-y border-[#E0E7FF]">
                                     <div className="col-start-1 col-end-4 border-r border-[#E0E7FF]">
                                         <ul>
@@ -282,11 +302,28 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                                         {companyTypeIds?.length}
                                                     </span>}
                                             </li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Role category"))}>Role category</li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Posted by"))}>Posted by</li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Industry"))}>Industry</li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Top companies"))}>Top companies</li>
-                                            <li className="px-5 py-2" onClick={() => dispatch(setNavigateFilterOption("Posting date"))}>Posting date</li>
+                                            <li
+                                                className={navigateFilterOption !== "Key Skils" ?
+                                                    "px-5 py-2 cursor-pointer flex justify-between items-center"
+                                                    : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
+                                                onClick={() => dispatch(setNavigateFilterOption("Key Skils"))}>
+                                                <span>Key Skils</span>
+                                                {keySkillsIds?.length !== 0 &&
+                                                    <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
+                                                        {keySkillsIds?.length}
+                                                    </span>}
+                                            </li>
+                                            <li
+                                                className={navigateFilterOption !== "Role category" ?
+                                                    "px-5 py-2 cursor-pointer flex justify-between items-center"
+                                                    : "bg-[#F1F5F9] px-5 py-3 cursor-pointer flex justify-between items-center"}
+                                                onClick={() => dispatch(setNavigateFilterOption("Role category"))}>
+                                                <span>Role category</span>
+                                                {roleCategoryIds?.length !== 0 &&
+                                                    <span className="bg-[#F1F5F9] rounded-full w-8 h-8 flex justify-center items-center">
+                                                        {roleCategoryIds?.length}
+                                                    </span>}
+                                            </li>
                                         </ul>
                                     </div>
                                     <div className="col-start-4 col-end-13">
@@ -296,6 +333,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
                                         {navigateFilterOption === "Work mode" && <FiltersWorkMode />}
                                         {navigateFilterOption === "Salary" && <FiltersSalary />}
                                         {navigateFilterOption === "Company type" && <FiltersCompanyType />}
+                                        {navigateFilterOption === "Key Skils" && <FiltersKeySkills />}
                                     </div>
                                 </div>
                                 <div className="p-5 float-right">
