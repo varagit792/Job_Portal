@@ -5,8 +5,7 @@ const QuestionnaireDescriptiveField = ({ index, questionSet, register, handlesCh
 
   return (
     <>
-
-      <div className="mb-4" key={index}>
+      <div className="mb-4" key={`QuestionnaireDescriptive${index}`}>
         <div className="block text-sm font-medium leading-6 text-gray-900 ">{questionSet?.question}</div>
         <div className="mt-1">
           <input

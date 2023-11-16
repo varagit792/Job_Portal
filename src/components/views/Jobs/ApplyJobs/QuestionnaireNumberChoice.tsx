@@ -1,12 +1,11 @@
 import React from 'react'
-import { Controller } from 'react-hook-form'
 
 const QuestionnaireNumberChoice = ({ index, questionSet, register, handlesChange, watch }: any) => {
 
   return (
     <>
 
-      <div className="mb-4" key={index}>
+      <div className="mb-4" key={`QuestionnaireNumberChoice${index}`}>
         <div className="block text-sm font-medium leading-6 text-gray-900 ">{questionSet?.question}</div>
         <div className="mt-1">
           <input

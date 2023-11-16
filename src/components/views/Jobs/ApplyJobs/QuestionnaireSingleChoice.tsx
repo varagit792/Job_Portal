@@ -4,12 +4,12 @@ function QuestionnaireSingleChoice({ index, questionSet, control, Controller, ge
 
   return (
     <>
-      <div className="mb-4" key={index}>
+      <div className="mb-4" key={`QuestionnaireSingleChoice${index}`}>
         <div className="block text-sm font-medium leading-6 text-gray-900 ">{questionSet?.question}</div>
         <div className="mt-1  flex justify-between ">
           {
-            questionSet?.singleSelection?.map((option: any) => (
-              <div key={option}>
+            questionSet?.singleSelection?.map((option: any, key: any) => (
+              <div key={key}>
                 <label className="mr-3">
                   {option.option}
                   <Controller
