@@ -5,9 +5,10 @@ import QuestionnaireMultipleChoice from './QuestionnaireMultipleChoice'
 import QuestionnaireSingleChoice from './QuestionnaireSingleChoice'
 import QuestionnaireNumberChoice from './QuestionnaireNumberChoice'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { applyJobsSchema } from '../../../../schema/applyJobs';
+import { IFormApplyJobs } from '../../../../interface/jobSeeker/applyJobs';
 
 const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
-
 
   const [formValues, setFormValues] = useState([{ question: "", questionType: { label: "", value: "" }, characterLimit: "", requiredCheck: "", rangeMax: "", multipleSelection: [{ option: "" }], singleSelection: [{ option: "" }] }]);
 
@@ -19,16 +20,17 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
     setValue,
     formState: { errors },
     getValues
-  } = useForm<any>({
-    // resolver: yupResolver(any) as any,
+  } = useForm<IFormApplyJobs>({
+    resolver: yupResolver(applyJobsSchema) as any,
   });
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
-    control,
-    name: "questionnaire",
-  });
+  // const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+  //   control,
+  //   name: "questionnaire",
+  // });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: IFormApplyJobs) => {
+    console.log(data);
 
   }
 
@@ -57,7 +59,6 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
     setFormValues(newFormValues);
 
   }
-  console.log(questionnaire);
 
   return (
     <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]" >
@@ -70,7 +71,7 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
       <span className="text-sm text-gray-500">
       </span>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {questionnaire && questionnaire?.map((questionSet: any, index: any) => <>
+        {questionnaire && questionnaire?.map((questionSet: any, index: any) => <div key={index}>
           {questionSet?.questionType === 'Descriptive' && <QuestionnaireDescriptiveField
             index={index}
             questionSet={questionSet}
@@ -101,7 +102,7 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
             handlesChange={handlesChange}
             watch={watch}
           />}
-        </>)}
+        </div>)}
         <div className="mt-5 flex justify-end items-center">
           <div>
             <button
