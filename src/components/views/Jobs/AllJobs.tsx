@@ -18,7 +18,10 @@ import {
     setFilterSalary,
     setNavigateFilterOption,
     clearAll,
-    clearIndividual
+    clearIndividual,
+    setKeySkills,
+    setFilterKeySkills,
+    setToggleFilter
 } from '../../../store/reducers/jobs/GetFilterJobs';
 import { scrollToTop } from '../../utils/utils';
 import JobCard from './JobCard';
@@ -28,6 +31,7 @@ import { LocationBasedFilter } from './FiltersLocation';
 import { WorkModeBasedFilter } from './FiltersWorkMode';
 import { SalaryBasedFilter } from './FiltersSalary';
 import { CompanyTypeBasedFilter } from './FiltersCompanyType';
+import { KeySkillsBasedFilter } from './FiltersKeySkills';
 import FiltersRoleCategory from './FiltersRoleCategory';
 import FiltersModal from './FiltersModal';
 import compenyBrand from '../../../assets/png/companyBrand.png';
@@ -53,7 +57,10 @@ const AllJobs = () => {
         companyType,
         salary,
         expYear,
-        filtersData } = useAppSelector((state) => state.getFilterJobs);
+        filtersData,
+        keySkills,
+        toggleFilter } = useAppSelector((state) => state.getFilterJobs);
+
     const [jobCard, setJobCard] = useState<any>([]);
     const [page, setPage] = useState(1);
     const [toggleDispach, setToggleDispach] = useState(true);
@@ -80,6 +87,12 @@ const AllJobs = () => {
         if (filtersData?.companyType?.length) {
             filtersCount += filtersData?.companyType?.length
         }
+        if (filtersData?.roleCategory?.length) {
+            filtersCount += filtersData?.roleCategory?.length
+        }
+        if (filtersData?.keySkills?.length) {
+            filtersCount += filtersData?.keySkills?.length
+        }
         setFiltersCount(filtersCount);
     }, [filtersData]);
 
@@ -97,10 +110,14 @@ const AllJobs = () => {
                 || filtersData?.salary !== null
                 || (filtersData?.companyType !== undefined && filtersData?.companyType?.length !== 0)
                 || (filtersData?.roleCategory !== undefined && filtersData?.roleCategory?.length !== 0)
+                || (filtersData?.keySkills !== undefined && filtersData?.keySkills?.length !== 0)
             ) {
                 dispatch(getFilterJobs({ page, data: filtersData }));
-                setJobCard([]);
                 setPage(1);
+                if (toggleFilter) {
+                    setJobCard([]);
+                    dispatch(setToggleFilter());
+                }
             } else {
                 dispatch(getFilterJobs({ page }));
             }
@@ -136,6 +153,7 @@ const AllJobs = () => {
         setPage(1);
         scrollToTop();
         setToggleDispach(true);
+        setJobCard([]);
     };
 
     const handleDepartmentCheckbox = (data: any) => {
@@ -191,6 +209,7 @@ const AllJobs = () => {
         setPage(1);
         scrollToTop();
         setToggleDispach(true);
+        setJobCard([]);
     };
 
     const handleCompanyTypeCheckbox = (data: any) => {
@@ -222,6 +241,22 @@ const AllJobs = () => {
             dispatch(setFilterRoleCategory(data?.id));
         } else {
             dispatch(setFilterRoleCategory({ filterRoleCategory: data?.id }));
+        }
+    };
+
+    const handleKeySkillsCheckbox = (data: any) => {
+        scrollToTop();
+        setToggleDispach(true);
+        setJobCard([]);
+        dispatch(setKeySkills(
+            keySkills?.map((item: any) =>
+                item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
+            )
+        ));
+        if (data?.isChecked === undefined || data?.isChecked === false) {
+            dispatch(setFilterKeySkills(data?.id));
+        } else {
+            dispatch(setFilterKeySkills({ filterKeySkills: data?.id }));
         }
     };
 
@@ -340,6 +375,36 @@ const AllJobs = () => {
                                     </span>
                                 )
                             })}
+                            {filtersData?.keySkills?.map((item: any) => {
+                                const keySkillsFilter = keySkills?.filter((keySkillsItem: any) => keySkillsItem?.id === item);
+                                return (
+                                    <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                        <span className="mr-1">{keySkillsFilter[0]?.title}</span>
+                                        <span className="cursor-pointer"
+                                            onClick={() => {
+                                                dispatch(clearIndividual({ keySkills: keySkillsFilter[0]?.id }))
+                                                setToggleDispach(true)
+                                            }}>
+                                            <RxCross2 />
+                                        </span>
+                                    </span>
+                                )
+                            })}
+                            {filtersData?.roleCategory?.map((item: any) => {
+                                const roleCategoryFilter = roleCategory?.filter((roleCategoryItem: any) => roleCategoryItem?.id === item);
+                                return (
+                                    <span className="bg-[#F1F5F9] px-3 py-1.5 rounded-lg flex justify-start items-center text-xs">
+                                        <span className="mr-1">{roleCategoryFilter[0]?.title}</span>
+                                        <span className="cursor-pointer"
+                                            onClick={() => {
+                                                dispatch(clearIndividual({ roleCategory: roleCategoryFilter[0]?.id }))
+                                                setToggleDispach(true)
+                                            }}>
+                                            <RxCross2 />
+                                        </span>
+                                    </span>
+                                )
+                            })}
                             {filtersCount >= 4 &&
                                 <button className=" border-b border-[#475569] text-[#475569] text-xs" onClick={handleViewAll}>All</button>
                             }
@@ -368,10 +433,15 @@ const AllJobs = () => {
                             setIsOpen={setIsOpen}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
+                        <KeySkillsBasedFilter
+                            handleKeySkillsCheckbox={handleKeySkillsCheckbox}
+                            setIsOpen={setIsOpen}
+                        />
+                        <hr className="bg-[#E0E7FF] my-5" />
                         <FiltersRoleCategory
                             handleRoleCategoryCheckbox={handleRoleCategoryCheckbox}
                         />
-                        <hr className="bg-[#E0E7FF] my-5" />
+                        {/* <hr className="bg-[#E0E7FF] my-5" />
                         <div className="w-full">
                             <Disclosure>
                                 {({ open }) => (
@@ -560,7 +630,7 @@ const AllJobs = () => {
                                     </>
                                 )}
                             </Disclosure>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="col-start-4 col-end-11">
