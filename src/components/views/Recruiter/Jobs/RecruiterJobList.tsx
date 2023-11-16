@@ -18,11 +18,11 @@ const RecruiterJobList = () => {
         companyDetails
     } = useAppSelector((state) => state.getEmployerCompanyList);
     let [categories, setCategories] = useState({
-        All: [],
         Open: [],
-        Pending: [],
+        //Pending: [],
         Drafts: [],
         Closed: [],
+        All: [],
     });
     // using for pagination
     const [itemOffset, setItemOffset] = useState(0);
@@ -39,11 +39,11 @@ const RecruiterJobList = () => {
             setCategories((preValue: any) => {
                 return {
                     ...preValue,
-                    All: companyDetails[0]?.jobs,
                     Open: companyDetails[0]?.jobs?.filter((item: any) => item?.jobStatus?.title === "Open"),
-                    Pending: companyDetails[0]?.jobs?.filter((item: any) => item?.jobStatus?.title === "Pending"),
+                    //Pending: companyDetails[0]?.jobs?.filter((item: any) => item?.jobStatus?.title === "Pending"),
+                    Drafts: companyDetails[0]?.jobs?.filter((item: any) => item?.isDraft),
                     Closed: companyDetails[0]?.jobs?.filter((item: any) => item?.jobStatus?.title === "Close"),
-                    Drafts: companyDetails[0]?.jobs?.filter((item: any) => item?.isDraft)
+                    All: companyDetails[0]?.jobs,
                 }
             });
         }
@@ -53,6 +53,15 @@ const RecruiterJobList = () => {
         <>
             <div className="h-[10%] w-full"></div>
             <div className="w-full px-32 py-8 bg-[#F8FAFC]">
+                <div className="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 className="text-lg font-bold">All Job Posting</h1>
+                        <p className="text-[#64748B]">Showing list of all the jobs posted</p>
+                    </div>
+                    <div>
+                        <Link to="/postJob/jobDetails" className=" text-white bg-[#4F46E5] rounded-lg px-6 py-2 font-semibold">Post a Job</Link>
+                    </div>
+                </div>
                 <Tab.Group>
                     <Tab.List className="flex">
                         {Object.keys(categories).map((category) => (
@@ -71,15 +80,6 @@ const RecruiterJobList = () => {
                             const currentItems = posts?.slice(itemOffset, endOffset);
                             return (
                                 <Tab.Panel key={idx}>
-                                    <div className="flex justify-between items-center mt-8 mb-8">
-                                        <div>
-                                            <h1 className="text-lg font-bold">All Job Posting</h1>
-                                            <p className="text-[#64748B]">Showing list of all the jobs posted</p>
-                                        </div>
-                                        <div>
-                                            <Link to="/postJob/jobDetails" className=" text-white bg-[#4F46E5] rounded-lg px-6 py-2 font-semibold">Post a Job</Link>
-                                        </div>
-                                    </div>
                                     {currentItems !== undefined && currentItems?.length !== 0 ?
                                         <>
                                             <div className="bg-white rounded-xl overflow-hidden w-full border border-[#E0E7FF]">
@@ -140,7 +140,7 @@ const RecruiterJobList = () => {
                                                                         </td>
                                                                         <td className="py-3 px-6 text-left">
                                                                             {post?.jobStatus?.title === "Open" && < button className="bg-[#F0FFF5] text-[#16A34A] rounded px-3 py-1 flex justify-center items-center">{post?.jobStatus?.title}</button>}
-                                                                            {post?.jobStatus?.title === "Pending" && < button className="bg-[#FFFAF2] text-[#EA580C] rounded px-3 py-1 flex justify-center items-center">{post?.jobStatus?.title}</button>}
+                                                                            {/* {post?.jobStatus?.title === "Pending" && < button className="bg-[#FFFAF2] text-[#EA580C] rounded px-3 py-1 flex justify-center items-center">{post?.jobStatus?.title}</button>} */}
                                                                             {post?.jobStatus?.title === "Close" && < button className="bg-[#fadee3] text-[#ED0A34] rounded px-3 py-1 flex justify-center items-center">{post?.jobStatus?.title}</button>}
                                                                         </td>
                                                                     </tr >

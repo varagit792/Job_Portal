@@ -8,10 +8,10 @@ import { FiEdit2 } from "react-icons/fi";
 import { formatDistanceToNow } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
-const RecentJobItems = ({ item }: any) => {
+const RecentJobItems = ({ item }: any) => {    
     const navigate = useNavigate();
     return (
-        <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5 cursor-pointer">
+        <div className="p-5 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg mr-4 mb-5">
             <h1 className="text-base font-bold">{item?.title}</h1>
             <h2 className="text-[#94A3B8] text-xs text-ellipsis w-56 overflow-hidden whitespace-nowrap">{formatDistanceToNow(new Date(item?.createdAt), { addSuffix: true })}</h2>
             <hr className="my-5" />
@@ -37,7 +37,7 @@ const RecentJobItems = ({ item }: any) => {
                 </div>
                 <div className="flex justify-start items-center">
                     <button className="text-gray-500">
-                        <FiEdit2 onClick={() => navigate(`/postJob/jobDetails/${item?.id}`)}/>
+                        {item?.jobStatus?.title === "Open" && <FiEdit2 onClick={() => navigate(`/postJob/jobDetails/${item?.id}`)}/>}
                     </button>
                     <button className="ml-2 text-gray-500">
                         <img src={ThreeDots} alt="ThreeDots" />
