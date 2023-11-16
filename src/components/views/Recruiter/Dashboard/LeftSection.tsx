@@ -47,10 +47,10 @@ const LeftSection = ({ companyDetails }: any) => {
                                 <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{companyDetails?.[0]?.user?.[0]?.mobileNumber}</span>
                             </div>
                         }
-                        <div className="flex justify-start items-center">
+                        {companyDetails?.[0]?.location?.length ? <div className="flex justify-start items-center">
                             <img src={LocationIcon} alt="LocationIcon" width="12rem" height="12rem" />
                             {companyDetails?.[0]?.location?.map((loc: any) => <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{loc?.title}, </span>)}
-                        </div>
+                        </div>:<></>}
                     </div>
                     <hr className="mt-5 mb-5" />
                     <div className="flex justify-start items-center mb-4">
