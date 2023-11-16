@@ -32,7 +32,7 @@ import { WorkModeBasedFilter } from './FiltersWorkMode';
 import { SalaryBasedFilter } from './FiltersSalary';
 import { CompanyTypeBasedFilter } from './FiltersCompanyType';
 import { KeySkillsBasedFilter } from './FiltersKeySkills';
-import FiltersRoleCategory from './FiltersRoleCategory';
+import { RoleCategoryBasedFilter } from './FiltersRoleCategory';
 import FiltersModal from './FiltersModal';
 import compenyBrand from '../../../assets/png/companyBrand.png';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
@@ -444,8 +444,9 @@ const AllJobs = () => {
                             setIsOpen={setIsOpen}
                         />
                         <hr className="bg-[#E0E7FF] my-5" />
-                        <FiltersRoleCategory
+                        <RoleCategoryBasedFilter
                             handleRoleCategoryCheckbox={handleRoleCategoryCheckbox}
+                            setIsOpen={setIsOpen}
                         />
                         {/* <hr className="bg-[#E0E7FF] my-5" />
                         <div className="w-full">

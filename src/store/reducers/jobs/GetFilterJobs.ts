@@ -245,6 +245,7 @@ const getFilterJobsSlice = createSlice({
         },
         setRoleCategory: (state, action) => {
             state.roleCategory = action.payload;
+            state.checkItems.roleCategory = action.payload;
         },
         setExpYears: (state, action) => {
             state.expYear = action.payload;
@@ -299,8 +300,11 @@ const getFilterJobsSlice = createSlice({
         setFilterRoleCategory: (state, action) => {
             if (!action?.payload?.filterRoleCategory) {
                 state?.filtersData?.roleCategory?.push(action.payload);
+                state?.roleCategoryIds.push(action.payload);
             } else {
-                state.filtersData.roleCategory = state?.filtersData?.roleCategory?.filter((item: any) => action?.payload?.filterRoleCategory !== item);
+                const filterData = state?.filtersData?.roleCategory?.filter((item: any) => action?.payload?.filterRoleCategory !== item);
+                state.filtersData.roleCategory = filterData;
+                state.roleCategoryIds = filterData;
             }
         },
         setFilterKeySkills: (state, action) => {
@@ -367,6 +371,7 @@ const getFilterJobsSlice = createSlice({
             state.filtersData.workMode = action?.payload?.workMode;
             state.filtersData.companyType = action?.payload?.companyType;
             state.filtersData.keySkills = action?.payload?.keySkills;
+            state.filtersData.roleCategory = action?.payload?.roleCategory;
         },
         setNavigateFilterOption: (state, action) => {
             state.navigateFilterOption = action?.payload;
@@ -386,6 +391,9 @@ const getFilterJobsSlice = createSlice({
             }
             if (action?.payload?.keySkills) {
                 state.checkItems.keySkills = action?.payload?.keySkills;
+            }
+            if (action?.payload?.roleCategory) {
+                state.checkItems.roleCategory = action?.payload?.roleCategory;
             }
         },
         setDepartmentIds: (state, action) => {
@@ -410,6 +418,14 @@ const getFilterJobsSlice = createSlice({
                 state.keySkillsIds = keySkillsFilter;
             } else {
                 state.keySkillsIds?.push(action.payload);
+            }
+        },
+        setRoleCategoryIds: (state, action) => {
+            if (action?.payload?.filter) {
+                const roleCategoryFilter = state?.roleCategoryIds?.filter((item: any) => item !== action?.payload?.filter);
+                state.roleCategoryIds = roleCategoryFilter;
+            } else {
+                state.roleCategoryIds?.push(action.payload);
             }
         },
         setWorkModeIds: (state, action) => {
@@ -462,6 +478,10 @@ const getFilterJobsSlice = createSlice({
             state.checkItems.keySkills = state?.keySkills;
             const keySkills = JSON.stringify(state?.keySkills?.filter((item: any) => item?.isChecked));
             state.keySkillsIds = JSON.parse(keySkills).map((item: any) => item.id);
+
+            state.checkItems.roleCategory = state?.roleCategory;
+            const roleCategory = JSON.stringify(state?.roleCategory?.filter((item: any) => item?.isChecked));
+            state.roleCategoryIds = JSON.parse(roleCategory).map((item: any) => item.id);
         },
         clearAll: (state) => {
             state.filtersData.expYear = null;
@@ -499,6 +519,7 @@ const getFilterJobsSlice = createSlice({
             state.workModeIds = [];
             state.companyTypeIds = [];
             state.keySkillsIds = [];
+            state.roleCategoryIds = [];
             state.maxExpYearId = null;
             state.maxSalaryId = null;
             state.checkItems.department = state?.department?.map((item: any) => { return { ...item, isChecked: false } });
@@ -506,6 +527,7 @@ const getFilterJobsSlice = createSlice({
             state.checkItems.workMode = state?.workMode?.map((item: any) => { return { ...item, isChecked: false } });
             state.checkItems.companyType = state?.companyType?.map((item: any) => { return { ...item, isChecked: false } });
             state.checkItems.keySkills = state?.keySkills?.map((item: any) => { return { ...item, isChecked: false } });
+            state.checkItems.roleCategory = state?.roleCategory?.map((item: any) => { return { ...item, isChecked: false } });
         },
         clearIndividual: (state, action) => {
             state.toggleFilter = true;
@@ -669,6 +691,18 @@ const getFilterJobsSlice = createSlice({
                 });
                 state.checkItems.keySkills = mapData;
             }
+            if (action?.payload?.roleCategory) {
+                const filterData = state.roleCategoryIds?.filter((item: any) => item !== action?.payload?.roleCategory);
+                state.roleCategoryIds = filterData;
+                const mapData = state?.checkItems?.roleCategory?.map((item: any) => {
+                    if (item?.id !== action?.payload?.roleCategory) {
+                        return item
+                    } else {
+                        return { ...item, isChecked: false }
+                    }
+                });
+                state.checkItems.roleCategory = mapData;
+            }
         },
         setSearchDepartment: (state, action) => {
             state.searchDepartment = action?.payload;
@@ -708,6 +742,7 @@ export const { clearGetFilterJobsSlice,
     setDepartmentIds,
     setLocationIds,
     setKeySkillsIds,
+    setRoleCategoryIds,
     setWorkModeIds,
     setCompanyTypeIds,
     setMaxExpYearId,
