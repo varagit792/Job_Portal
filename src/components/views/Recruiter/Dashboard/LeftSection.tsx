@@ -11,7 +11,7 @@ import ArrowRight from '../../../../assets/svg/ArrowRight.svg';
 import ExperienceIcon from '../../../../assets/svg/ExperienceIcon.svg';
 import applications from '../../../../assets/svg/applications.svg';
 
-const LeftSection = ({companyDetails}:any) => {
+const LeftSection = ({ companyDetails }: any) => {
     return (
         <div className="col-start-1 col-end-3">
             <div className="bg-[#FFF] rounded-lg shadow-sm w-full sticky top-[13%] ">
@@ -25,25 +25,31 @@ const LeftSection = ({companyDetails}:any) => {
                     </div>
                 </div>
                 <div className="px-5 py-5">
-                    <h1 className="text-xl font-bold mb-1">{ companyDetails?.[0]?.user?.[0]?.name }</h1>
+                    <h1 className="text-xl font-bold mb-1">{companyDetails?.[0]?.user?.[0]?.name}</h1>
                     <div>
                         <h1 className="mb-1 overflow-hidden whitespace-nowrap text-ellipsis ">Reactjs Developer
                         </h1>
-                        <h1 className="overflow-hidden whitespace-nowrap text-ellipsis">@ {companyDetails?.[0]?.title}
+                        <h1 className="overflow-hidden whitespace-nowrap text-ellipsis">{companyDetails?.[0]?.title && `@ ${companyDetails?.[0]?.title}`}
                         </h1>
                     </div>
                     <div className="mt-5 text-sm text-[#64748B]">
-                        <div className="flex justify-start items-center mb-1">
-                            <img src={EmailIcon} alt="EmailIcon" width="12rem" height="12rem" />
-                            <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{companyDetails?.[0]?.user?.[0]?.email}</span>
-                        </div>
-                        <div className="flex justify-start items-center mb-1">
-                            <img src={PhoneIcon} alt="PhoneIcon" width="12rem" height="12rem" />
-                            <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{companyDetails?.[0]?.user?.[0]?.mobileNumber}</span>
-                        </div>
+                        {
+                            companyDetails?.[0]?.user?.[0]?.email &&
+                            <div className="flex justify-start items-center mb-1">
+                                <img src={EmailIcon} alt="EmailIcon" width="12rem" height="12rem" />
+                                <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{companyDetails?.[0]?.user?.[0]?.email}</span>
+                            </div>
+                        }
+                        {
+                            companyDetails?.[0]?.user?.[0]?.mobileNumber &&
+                            <div className="flex justify-start items-center mb-1">
+                                <img src={PhoneIcon} alt="PhoneIcon" width="12rem" height="12rem" />
+                                <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{companyDetails?.[0]?.user?.[0]?.mobileNumber}</span>
+                            </div>
+                        }
                         <div className="flex justify-start items-center">
                             <img src={LocationIcon} alt="LocationIcon" width="12rem" height="12rem" />
-                            <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">Balasore, 756019, Odisha</span>
+                            {companyDetails?.[0]?.location?.map((loc: any) => <span className="ml-2 overflow-hidden inline-block whitespace-nowrap text-ellipsis">{loc?.title}, </span>)}
                         </div>
                     </div>
                     <hr className="mt-5 mb-5" />
@@ -55,7 +61,7 @@ const LeftSection = ({companyDetails}:any) => {
                     <hr className="mt-5 mb-5" />
                     <div className="flex justify-start items-center mb-3">
                         <img src={ExperienceIcon} alt="ExperienceIcon" width="15rem" height="15rem" />
-                        <span className="ml-2">Manage Jobs</span>
+                        <Link to="/recruiterJobList"><span className="ml-2">Manage Jobs</span></Link>
                     </div>
                     <div className="flex justify-start items-center">
                         <img src={applications} alt="Applications" />

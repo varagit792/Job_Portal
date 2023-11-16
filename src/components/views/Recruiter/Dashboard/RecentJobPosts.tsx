@@ -40,13 +40,13 @@ const ButtonGroup = ({ next, previous, goToSlide, ...rest }: any) => {
     );
 };
 
-const RecentJobPosts = () => {
+const RecentJobPosts = ({ companyDetails }: any) => {
     let items = [{}, {}, {}, {}, {}, {}]
     return (
-        <div>
+        <>{companyDetails && companyDetails?.[0]?.jobs && <div>
             <div className="flex justify-between items-center mb-10 font-bold">
                 <h1 className="text-xl">Recent Job Posts</h1>
-                <Link to="/" className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">All Jobs</span><img src={ArrowRight} alt="ArrowRight" /></Link>
+                <Link to="/recruiterJobList" className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">All Jobs</span><img src={ArrowRight} alt="ArrowRight" /></Link>
             </div>
             <Carousel
                 swipeable={false}
@@ -64,11 +64,12 @@ const RecentJobPosts = () => {
                 renderButtonGroupOutside={true}
                 customButtonGroup={<ButtonGroup />}
             >
-                {items?.map(() =>
-                    <RecentJobItems />
+                {companyDetails?.[0]?.jobs && companyDetails?.[0]?.jobs?.map((item: any) =>
+                    <RecentJobItems item={item} />
                 )}
             </Carousel>
-        </div>
+        </div>}
+        </>
     )
 }
 
