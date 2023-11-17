@@ -4,6 +4,7 @@ import { FiChevronLeft } from 'react-icons/fi';
 import { BiChevronRight } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import RecentJobItems from "./RecentJobItems";
+import NoRecords from "../../../commonComponents/NoRecords";
 
 const responsive = {
     superLargeDesktop: {
@@ -40,34 +41,37 @@ const ButtonGroup = ({ next, previous, goToSlide, ...rest }: any) => {
     );
 };
 
-const RecentJobPosts = () => {
+const RecentJobPosts = ({ companyDetails }: any) => {
     let items = [{}, {}, {}, {}, {}, {}]
     return (
         <div>
             <div className="flex justify-between items-center mb-10 font-bold">
                 <h1 className="text-xl">Recent Job Posts</h1>
-                <Link to="/" className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">All Jobs</span><img src={ArrowRight} alt="ArrowRight" /></Link>
+                <Link to="/recruiterJobList" className="text-base flex justify-center items-center text-[#312E81]"><span className="mr-2">All Jobs</span><img src={ArrowRight} alt="ArrowRight" /></Link>
             </div>
-            <Carousel
-                swipeable={false}
-                draggable={false}
-                showDots={false}
-                responsive={responsive}
-                ssr={true} // means to render carousel on server-side.
-                infinite={true}
-                autoPlay={true}
-                autoPlaySpeed={4000}
-                keyBoardControl={true}
-                customTransition="all .5s ease-in-out"
-                transitionDuration={500}
-                arrows={false}
-                renderButtonGroupOutside={true}
-                customButtonGroup={<ButtonGroup />}
-            >
-                {items?.map(() =>
-                    <RecentJobItems />
-                )}
-            </Carousel>
+            {companyDetails && companyDetails?.[0]?.jobs?.length ?
+                <Carousel
+                    swipeable={false}
+                    draggable={false}
+                    showDots={false}
+                    responsive={responsive}
+                    ssr={true} // means to render carousel on server-side.
+                    infinite={true}
+                    autoPlay={true}
+                    autoPlaySpeed={4000}
+                    keyBoardControl={true}
+                    customTransition="all .5s ease-in-out"
+                    transitionDuration={500}
+                    arrows={false}
+                    renderButtonGroupOutside={true}
+                    customButtonGroup={<ButtonGroup />}
+                >
+                    {companyDetails?.[0]?.jobs && companyDetails?.[0]?.jobs?.map((item: any) =>
+                        <RecentJobItems item={item} />
+                    )}
+                </Carousel>
+                : <NoRecords height="auto"/>
+            }
         </div>
     )
 }

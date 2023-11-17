@@ -1,29 +1,29 @@
 import { useEffect, useState } from 'react';
-import { getLocationList } from '../../utils/utils';
+import { getKeySkillsList } from '../../utils/utils';
 import { useAppSelector, useAppDispatch } from '../../../';
-import { setLocation, setNavigateFilterOption, setLocationIds, setCheckItems } from '../../../store/reducers/jobs/GetFilterJobs';
+import { setKeySkills, setNavigateFilterOption, setKeySkillsIds, setCheckItems } from '../../../store/reducers/jobs/GetFilterJobs';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { BiSearch } from 'react-icons/bi';
 
-export const LocationBasedFilter = ({ handleLocationCheckbox, setIsOpen }: any) => {
+export const KeySkillsBasedFilter = ({ handleKeySkillsCheckbox, setIsOpen }: any) => {
     const dispatch = useAppDispatch();
-    const { location, searchLocation } = useAppSelector((state) => state.getFilterJobs);
+    const { keySkills, searchKeySkills } = useAppSelector((state) => state.getFilterJobs);
 
     useEffect(() => {
-        if (searchLocation) {
+        if (searchKeySkills) {
             (async () => {
-                const locationList = await getLocationList();
-                if (Object.keys(locationList)?.length) {
-                    dispatch(setLocation(locationList))
+                const keySkills = await getKeySkillsList();
+                if (Object.keys(keySkills)?.length) {
+                    dispatch(setKeySkills(keySkills));
                 }
             })();
         }
-    }, [searchLocation]);
+    }, [searchKeySkills]);
 
     const handleViewAll = () => {
         setIsOpen(true)
-        dispatch(setNavigateFilterOption("Location"));
+        dispatch(setNavigateFilterOption("Key Skils"));
     }
 
     return (
@@ -33,12 +33,12 @@ export const LocationBasedFilter = ({ handleLocationCheckbox, setIsOpen }: any) 
                     open
                 }) => <>
                         <Disclosure.Button className="flex w-full justify-between items-center">
-                            <label className="text-[#475569] font-semibold">Location</label>
+                            <label className="text-[#475569] font-semibold">Key Skills</label>
                             <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-600`} />
                         </Disclosure.Button>
                         <Disclosure.Panel className="mt-5">
-                            {location?.slice(0, 5)?.map((item: any) => <div className="text-[#475569] mb-2 flex justify-start items-center">
-                                <input type="checkbox" defaultChecked={false} checked={item?.isChecked} onChange={() => handleLocationCheckbox(item)} />
+                            {keySkills?.slice(0, 5)?.map((item: any) => <div className="text-[#475569] mb-2 flex justify-start items-center">
+                                <input type="checkbox" defaultChecked={false} checked={item?.isChecked} onChange={() => handleKeySkillsCheckbox(item)} />
                                 <label className="ml-2 text-sm overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
                             </div>)}
                             <button className="text-[#4F46E5] text-sm" onClick={handleViewAll}>View all...</button>
@@ -49,21 +49,21 @@ export const LocationBasedFilter = ({ handleLocationCheckbox, setIsOpen }: any) 
     )
 };
 
-const FiltersLocation = () => {
+const FiltersKeySkills = () => {
     const dispatch = useAppDispatch();
     const { checkItems } = useAppSelector((state) => state.getFilterJobs);
     const [searchQuery, setSearchQuery] = useState("");
 
-    const handleLocationCheckbox = (data: any) => {
+    const handleKeySkillsCheckbox = (data: any) => {
         dispatch(setCheckItems({
-            location: checkItems?.location?.map((item: any) =>
+            keySkills: checkItems?.keySkills?.map((item: any) =>
                 item?.id === data?.id ? { ...item, isChecked: !item.isChecked } : item
             )
         }));
         if (data?.isChecked === undefined || data?.isChecked === false) {
-            dispatch(setLocationIds(data?.id));
+            dispatch(setKeySkillsIds(data?.id));
         } else {
-            dispatch(setLocationIds({ filter: data?.id }));
+            dispatch(setKeySkillsIds({ filter: data?.id }));
         }
     };
 
@@ -71,7 +71,7 @@ const FiltersLocation = () => {
         setSearchQuery(event.target.value);
     };
 
-    const filteredItems = checkItems?.location?.filter((item: any) =>
+    const filteredItems = checkItems?.keySkills?.filter((item: any) =>
         item?.title?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -93,7 +93,7 @@ const FiltersLocation = () => {
                 <div className="h-96 overflow-x-auto overflow-y-hidden flex flex-col flex-wrap">
                     {filteredItems?.map((item: any) =>
                         <div className="text-[#475569] flex justify-start items-center mt-1 text-sm w-1/4">
-                            <input type="checkbox" defaultChecked={false} checked={item?.isChecked !== undefined && item?.isChecked} onChange={() => handleLocationCheckbox(item)} />
+                            <input type="checkbox" defaultChecked={false} checked={item?.isChecked !== undefined && item?.isChecked} onChange={() => handleKeySkillsCheckbox(item)} />
                             <label className="ml-2 text-sm overflow-hidden inline-block whitespace-nowrap text-ellipsis">{item?.title}</label>
                         </div>
                     )}
@@ -103,4 +103,4 @@ const FiltersLocation = () => {
     )
 };
 
-export default FiltersLocation;
+export default FiltersKeySkills;

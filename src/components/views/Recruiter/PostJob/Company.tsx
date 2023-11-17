@@ -25,6 +25,7 @@ const Company = () => {
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
   const [postBack, setPostBack] = useState({ postURL: '', backURL: '' });
+  const [selectedCompanyName, setSelectedCompanyName] = useState({ label: '', value: '' })
   const [jobTitle, setJobTitle] = useState('');
   const [buttonClick, setButtonClick] = useState('');
   const [userType, setUserType] = useState(Cookies.get('userType'));
@@ -40,7 +41,7 @@ const Company = () => {
     setValue,
     formState: { errors }
   } = useForm<IFormInputsCompany | IFormInputsCompanyDraft | IFormInputsCompanySave>({
-    resolver: yupResolver(CompanySchema || CompanyDraftSchema || CompanySaveSchema),
+    resolver: yupResolver(CompanySchema || CompanyDraftSchema || CompanySaveSchema)
   });
 
   useEffect(() => {
@@ -211,11 +212,9 @@ const Company = () => {
           }
         }
       }
-
       dispatch(getEmployerCompanyList(dataSend));
     }
-
-  }, [dispatch, userId]);
+  }, [dispatch, userId, postId]);
 
   useEffect(() => {
     if (jobDetailSuccess)
@@ -243,7 +242,9 @@ const Company = () => {
   }, []);
   useEffect(() => {
     dispatch(getAllCompanies({} as any));
-  }, [dispatch])
+    if (companyDetails)
+      setSelectedCompanyName({ label: companyDetails[0]?.title, value: companyDetails[0]?.id })
+  }, [dispatch, companyDetails])
 
   useEffect(() => {
     setCompany(allCompanies as any)
@@ -260,6 +261,7 @@ const Company = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
+  console.log(companyDetails);
 
   return (
     <>
@@ -285,7 +287,7 @@ const Company = () => {
                       <div className="text-black text-base font-normal  leading-snug tracking-tight">Fill saved company information</div>
                     </div>
                     <div className="flex-col justify-start  gap-7 flex">
-                      <div className="flex-col justify-start  gap-2 flex">
+                      {/* <div className="flex-col justify-start  gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Company logo</div>
                         <div className="justify-start  inline-flex">
                           <div className="w-[120px] h-[120px] p-3 rounded-lg border border-indigo-300 flex-col justify-center items-center gap-2 inline-flex">
@@ -298,7 +300,7 @@ const Company = () => {
                             </>}
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                       <div className="self-stretch justify-start  gap-5 inline-flex">
                         <div className="w-full grow shrink basis-0 flex-col justify-start  gap-2 inline-flex">
                           <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Company name</div>
@@ -309,8 +311,7 @@ const Company = () => {
                               fieldName={"companyName"}
                               dropdownData={company?.map(({ id, title }: any) => ({ value: id, label: title } as any))}
                               placeholder={"Select company"}
-                              defaultValue={{ value: companyDetails[0]?.id, label: companyDetails[0]?.title }}
-
+                              defaultValue={selectedCompanyName}
                             />
                             {errors?.companyName && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyName?.message}</p>}
                           </div>
@@ -321,7 +322,6 @@ const Company = () => {
                             <input defaultValue={companyDetails[0]?.websiteUrl}
                               className='w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                               placeholder={"Please enter company website (eg http://www.google.com)"}
-                              readOnly={true}
                               {...register("companyWebsite")} />
                             {errors?.companyWebsite && <p className="font-normal text-xs text-red-500 absolute">{errors?.companyWebsite?.message}</p>}
                           </div>
@@ -332,7 +332,6 @@ const Company = () => {
                         <div className='w-full'>
                           <textarea defaultValue={companyDetails[0]?.companyDescription}
                             maxLength={1000}
-                            readOnly={true}
                             className='w-full h-[75px] border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter about company"}
 
@@ -349,7 +348,6 @@ const Company = () => {
                         <div className='w-full'>
                           <textarea defaultValue={companyDetails[0]?.companyAddress}
                             maxLength={1000}
-                            readOnly={true}
                             className='w-full border text-sm h-[75px] border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
                             placeholder={"Please enter company address"}
 

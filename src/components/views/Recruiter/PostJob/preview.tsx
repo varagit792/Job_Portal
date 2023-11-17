@@ -597,11 +597,7 @@ const Preview = () => {
                         </div>
                       </div>
                     </div>
-
                   </div>
-
-
-
                   {<div className="w-full h-auto p-7 bg-white rounded-xl border border-indigo-100 flex-col justify-start items-start gap-7 inline-flex">
                     {jobDetailData?.questionnaire?.map(((itemQuestionnaire: any, indexQuestionnaire: any) => <div key={indexQuestionnaire}>
                       {itemQuestionnaire.questionType?.value === 'Descriptive' &&
@@ -609,7 +605,6 @@ const Preview = () => {
                           <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Question {indexQuestionnaire + 1}</div>
                           <div className="self-stretch h-[54px] flex-col justify-center items-start gap-2 flex">
                             <div className="self-stretch justify-start items-center gap-2 inline-flex">
-                              <div className="w-6 h-6 flex-col justify-center items-center inline-flex"></div>
                               <div className="grow shrink basis-0 text-black text-base font-normal leading-snug tracking-tight">{itemQuestionnaire?.question}</div>
                             </div>
                             <div className="w-full self-stretch justify-start items-center gap-2 inline-flex">
@@ -623,7 +618,6 @@ const Preview = () => {
                           <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Question {indexQuestionnaire + 1}</div>
                           <div className="self-stretch h-[54px] flex-col justify-center items-start gap-2 flex">
                             <div className="self-stretch justify-start items-center gap-2 inline-flex">
-                              <div className="w-6 h-6 flex-col justify-center items-center inline-flex"></div>
                               <div className="grow shrink basis-0 text-black text-base font-normal leading-snug tracking-tight">{itemQuestionnaire?.question}</div>
                             </div>
                             <div className="self-stretch justify-start items-center gap-2 inline-flex">
@@ -639,7 +633,6 @@ const Preview = () => {
                           <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Question {indexQuestionnaire + 1}</div>
                           <div className="self-stretch h-[54px] flex-col justify-center items-start gap-2 flex">
                             <div className="self-stretch justify-start items-center gap-2 inline-flex">
-                              <div className="w-6 h-6 flex-col justify-center items-center inline-flex"></div>
                               <div className="grow shrink basis-0 text-black text-base font-normal leading-snug tracking-tight">{itemQuestionnaire?.question}</div>
                             </div>
                             <div className="self-stretch justify-start items-center gap-2 inline-flex">
@@ -653,13 +646,11 @@ const Preview = () => {
                       }
 
                       {itemQuestionnaire.questionType?.value === 'multipleChoice' &&
-                        <> <div className="self-stretch h-[114px] flex-col justify-start items-start gap-2 flex">
+                        <> <div className="self-stretch h-auto flex-col justify-start items-start gap-2 flex">
                           <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Question {indexQuestionnaire + 1}</div>
-                          <div className="self-stretch h-[84px] flex-col justify-center items-start gap-2 flex">
+                          <div className="self-stretch h-auto flex-col justify-center items-start gap-2 flex">
                             <div className="self-stretch justify-start items-center gap-2 inline-flex">
-                              <div className="w-6 h-6 flex-col justify-center items-center inline-flex">
-                                <img className="w-3.5 h-3.5" src="https://via.placeholder.com/14x14" />
-                              </div>
+
                               <div className="grow shrink basis-0 text-black text-base font-normal leading-snug tracking-tight">{itemQuestionnaire?.question}</div>
                             </div>
                             <div className="self-stretch justify-start items-center gap-2 inline-flex">
