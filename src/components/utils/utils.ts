@@ -140,6 +140,10 @@ export const getJobStatusList = async () => {
   return await axios.get(`${process.env.REACT_APP_API_PATH}/jobStatus/get`).then((res: any) => res.data.data)
 }
 
+export const getJobApplicantCount = async (data: number) => {
+  return await axios.get(`${process.env.REACT_APP_API_PATH}/applyJob/countApplicant/${data}`).then((res: any) => res.data.data.count)
+}
+
 export const calculateWorkedTime = (startYear: any, startMonth: any) => {
   const months: any = [
     'Jan', 'Feb', 'Mar', 'Apr',

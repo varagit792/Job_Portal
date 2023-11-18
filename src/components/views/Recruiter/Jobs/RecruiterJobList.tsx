@@ -7,6 +7,7 @@ import { formatDistanceToNow, format, add, differenceInMilliseconds, parseISO, d
 import NoRecords from "../../../commonComponents/NoRecords";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
+import { getJobApplicantCount } from "../../../utils/utils";
 
 function classNames(...classes: any) {
     return classes.filter(Boolean).join(' ')
@@ -17,6 +18,9 @@ const RecruiterJobList = () => {
     const { success,
         companyDetails
     } = useAppSelector((state) => state.getEmployerCompanyList);
+    const [applicantCount, setApplicantCount] = useState([{ jobId: 0, count: 0 }])
+
+
     let [categories, setCategories] = useState({
         All: [],
         Open: [],
@@ -48,6 +52,13 @@ const RecruiterJobList = () => {
             });
         }
     }, [success]);
+
+    const countApplicant = async (id: number) => {
+        let count: any = 0;
+        count = await getJobApplicantCount(id);
+        let applicantCounts: any = [...applicantCount, { jobId: id, count: count }]
+        setApplicantCount([...applicantCount, { jobId: id, count: count }].filter((ele, ind) => ind === applicantCounts.findIndex((elem: { jobId: number; }) => elem.jobId === ele.jobId && elem.jobId !== 0)))
+    }
 
     return (
         <>
@@ -135,8 +146,8 @@ const RecruiterJobList = () => {
                                                                         <td className="py-3 px-6 text-left text-[#64748B]">
                                                                             {formatDistanceToNow(new Date(post?.createdAt), { addSuffix: true })}
                                                                         </td>
-                                                                        <td className="py-3 px-6 text-left">
-                                                                            53
+                                                                        <td className="py-3 px-6 text-left" >
+                                                                            {applicantCount.filter(item => item.jobId === post?.id)[0]?.count ? applicantCount.filter(item => item.jobId === post?.id)[0]?.count : <button onClick={() => countApplicant(post?.id)}>View</button>}
                                                                         </td>
                                                                         <td className="py-3 px-6 text-left">
                                                                             {post?.jobStatus?.title === "Open" && < button className="bg-[#F0FFF5] text-[#16A34A] rounded px-3 py-1 flex justify-center items-center">{post?.jobStatus?.title}</button>}
