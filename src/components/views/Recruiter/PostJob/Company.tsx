@@ -287,7 +287,7 @@ const Company = () => {
                       <div className="text-black text-base font-normal  leading-snug tracking-tight">Fill saved company information</div>
                     </div>
                     <div className="flex-col justify-start  gap-7 flex">
-                      <div className="flex-col justify-start  gap-2 flex">
+                      {/* <div className="flex-col justify-start  gap-2 flex">
                         <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Company logo</div>
                         <div className="justify-start  inline-flex">
                           <div className="w-[120px] h-[120px] p-3 rounded-lg border border-indigo-300 flex-col justify-center items-center gap-2 inline-flex">
@@ -300,7 +300,7 @@ const Company = () => {
                             </>}
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                       <div className="self-stretch justify-start  gap-5 inline-flex">
                         <div className="w-full grow shrink basis-0 flex-col justify-start  gap-2 inline-flex">
                           <div className="text-slate-700 text-sm font-normal  leading-[16.80px] tracking-tight">Company name</div>

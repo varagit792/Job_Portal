@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Combobox, Transition } from '@headlessui/react';
 import { BiSearch } from 'react-icons/bi';
-import { getDepartmentList, getLocationList } from '../../utils/utils';
+import { getDepartmentList, getLocationList, getKeySkillsList } from '../../utils/utils';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../';
 import {
@@ -10,11 +10,15 @@ import {
     setFilterDepartment,
     setFilterLocation,
     setSearchDepartment,
-    setSearchLocation
+    setSearchLocation,
+    setSearchKeySkills,
+    clearAll,
+    setKeySkills,
+    setFilterKeySkills
 } from '../../../store/reducers/jobs/GetFilterJobs';
 
 const SearchFilters = () => {
-    const { department, location } = useAppSelector((state) => state.getFilterJobs);
+    const { department, location, keySkills } = useAppSelector((state) => state.getFilterJobs);
     const [query, setQuery] = useState('');
     const navigate = useNavigate();
     let locationPath = useLocation();
@@ -34,7 +38,19 @@ const SearchFilters = () => {
                 dispatch(setLocation(locationList))
             }
         })();
+        (async () => {
+            const keySkills = await getKeySkillsList();
+            if (Object.keys(keySkills)?.length) {
+                dispatch(setKeySkills(keySkills))
+            }
+        })();
     }, []);
+
+    useEffect(() => {
+        if (locationPath?.pathname !== "/allJobs") {
+            dispatch(clearAll());
+        }
+    }, [locationPath]);
 
     const filteredDepartment =
         query === ''
@@ -56,6 +72,16 @@ const SearchFilters = () => {
                     .includes(query.toLowerCase().replace(/\s+/g, ''))
             );
 
+    const filteredKeySkills =
+        query === ''
+            ? keySkills
+            : keySkills.filter((item: any) =>
+                item.title
+                    .toLowerCase()
+                    .replace(/\s+/g, '')
+                    .includes(query.toLowerCase().replace(/\s+/g, ''))
+            );
+
     const handleDepartment = (id: number) => {
         navigate("/allJobs");
         dispatch(setDepartment(
@@ -70,12 +96,23 @@ const SearchFilters = () => {
     const handleLocation = (id: number) => {
         navigate("/allJobs");
         dispatch(setLocation(
-            location?.map((item: any) =>
+            keySkills?.map((item: any) =>
                 item?.id === id ? { ...item, isChecked: true } : item
             )
         ));
         dispatch(setSearchLocation(false));
         dispatch(setFilterLocation(id));
+    }
+
+    const handleKeySkills = (id: number) => {
+        navigate("/allJobs");
+        dispatch(setKeySkills(
+            keySkills?.map((item: any) =>
+                item?.id === id ? { ...item, isChecked: true } : item
+            )
+        ));
+        dispatch(setSearchKeySkills(false));
+        dispatch(setFilterKeySkills(id));
     }
 
     return (
@@ -101,7 +138,7 @@ const SearchFilters = () => {
                         afterLeave={() => setQuery('')}
                     >
                         <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                            {filteredDepartment.length === 0 && filteredLocation.length === 0 && query !== '' ? (
+                            {filteredDepartment?.length === 0 && filteredLocation?.length === 0 && filteredKeySkills?.length === 0 && query !== '' ? (
                                 <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                                     Nothing found.
                                 </div>
@@ -128,6 +165,19 @@ const SearchFilters = () => {
                                                 }`
                                             }
                                             onClick={() => handleLocation(item?.id)}
+                                            value={item}
+                                        >
+                                            <span className="font-normal w-full h-full">{item.title}</span>
+                                        </Combobox.Option>
+                                    ))}
+                                    {filteredKeySkills.map((item: any) => (
+                                        <Combobox.Option
+                                            key={item?.id}
+                                            className={({ active }) =>
+                                                `relative cursor-pointer select-none py-2 pl-10 pr-4 ${active ? 'bg-teal-600 text-white' : 'text-gray-900'
+                                                }`
+                                            }
+                                            onClick={() => handleKeySkills(item?.id)}
                                             value={item}
                                         >
                                             <span className="font-normal w-full h-full">{item.title}</span>
