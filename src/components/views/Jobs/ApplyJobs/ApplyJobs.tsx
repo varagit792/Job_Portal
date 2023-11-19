@@ -17,6 +17,8 @@ import { useParams } from 'react-router-dom';
 const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  const [checkboxRequired, isCheckboxRequired] = useState(true);
+
   //const { applyJobs } = useAppSelector((state) => state.applyJobs);
 
   const {
@@ -27,6 +29,7 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
     formState: { errors },
   } = useForm<IFormApplyJobs>({
     resolver: yupResolver(applyJobsSchema) as any,
+    shouldUseNativeValidation: true
   });
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
@@ -38,7 +41,6 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
     console.log("data", data);
     const selectedQuestionnaireAnswer: any = [];
     const selectedMultipleChoiceQuestionnaireAnswer: any = [];
-
     data?.questionnaire?.filter((item: any) => item?.questionType !== 'multipleChoice' && selectedQuestionnaireAnswer?.push({ questionnaire: item?.question, answer: item?.numberChoice ? item?.numberChoice : item?.descriptive ? item?.descriptive : item?.singleChoice ? item?.singleChoice : undefined }));
 
     data?.questionnaire?.filter((item: any) => item?.questionType === 'multipleChoice' && item?.multipleChoice && item?.multipleChoice?.map((item1: any) => selectedMultipleChoiceQuestionnaireAnswer?.push({ multipleChoiceQuestionnaire: item1, answer: item1 })));
@@ -57,6 +59,7 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
       closeDialog(true);
     });
   }
+  console.log(errors);
 
   return (
     <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]" >
@@ -85,6 +88,8 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
             register={register}
             questionSet={questionSet}
             errors={errors}
+            checkboxRequired={checkboxRequired}
+            isCheckboxRequired={isCheckboxRequired}
           />}
           {questionSet?.questionType === 'singleChoice' && <QuestionnaireSingleChoice
             index={index}

@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const QuestionnaireMultipleChoice = ({ index, questionSet, watch, register, errors }: any) => {
+const QuestionnaireMultipleChoice = ({ index, questionSet, watch, register, errors, checkboxRequired, isCheckboxRequired }: any) => {
+  const handleCheckBox = (e: any) => {
+    console.log(e.currentTarget.checked);
+
+    isCheckboxRequired(!e.currentTarget.checked);
+  }
+
+  console.log(checkboxRequired);
 
   return (
     <>
@@ -16,9 +23,11 @@ const QuestionnaireMultipleChoice = ({ index, questionSet, watch, register, erro
                     defaultValue={option.id}
                     className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5 mt-1"
                     type="checkbox"
-                    // required={true}
+                    required={checkboxRequired}
                     maxLength={questionSet?.characterLimit}
-                    {...register(`questionnaire.${index}.multipleChoice`)}
+                    onClick={handleCheckBox}
+                    {...register(`questionnaire.${index}.multipleChoice`, {
+                    })}
                   />}
                   {!questionSet?.requiredCheck && <input
                     defaultValue={option.id}
