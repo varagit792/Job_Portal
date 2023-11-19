@@ -495,7 +495,7 @@ const JobDetails = () => {
                               fieldName={"fromSalaryRange"}
                               dropdownData={salaryRange?.map(({ id, title }: any) => ({ value: id, label: title }))}
                               default={watch("fromSalaryRange")}
-                              placeholder={"Salary start range"}
+                              placeholder={"Min range"}
                             />
                             {errors?.fromSalaryRange && <div className="font-normal text-xs text-red-500 ">{errors?.fromSalaryRange?.label?.message}</div>}
                           </div>
@@ -506,7 +506,7 @@ const JobDetails = () => {
                               fieldName={"toSalaryRange"}
                               dropdownData={salaryRange?.map(({ id, title }: any) => ({ value: id, label: title }))}
                               default={watch("toSalaryRange")}
-                              placeholder={"Salary last range"}
+                              placeholder={"Max range"}
                             />
                             {errors?.toSalaryRange && <div className="font-normal text-xs text-red-500 ">{errors?.toSalaryRange?.label?.message}</div>}
                           </div>
@@ -517,7 +517,7 @@ const JobDetails = () => {
                               fieldName={"numberSystem"}
                               dropdownData={numberSystem?.map(({ id, title }: any) => ({ value: id, label: title }))}
                               default={watch("numberSystem")}
-                              placeholder={"Select number system"}
+                              placeholder={"Number system"}
                             />
                             {errors?.numberSystem && <div className="font-normal text-xs text-red-500 ">{errors?.numberSystem?.label?.message}</div>}
                           </div>

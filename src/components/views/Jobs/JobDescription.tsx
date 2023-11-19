@@ -14,15 +14,58 @@ import peopleIcon from '../../../assets/svg/peopleIcon.svg';
 import rightArrow from '../../../assets/svg/ArrowRight.svg';
 import Modal from '../../commonComponents/Modal';
 import ApplyJobs from './ApplyJobs/ApplyJobs';
+import { ToastContainer, toast } from 'react-toastify';
+import { IFormApplyJobs, IFormApplyJobsWithoutQuestionnaire } from '../../../interface/jobSeeker/applyJobs';
+import { applyJobsSchema } from '../../../schema/applyJobs';
+import { applyJobs } from '../../../store/reducers/applyJobs/applyJobs';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import Cookies from 'js-cookie';
 
 const JobDescription = () => {
 
   const [isApplyJobsOpen, setIsApplyJobsOpen] = useState(false);
+  const [checkEmpty, isCheckEmpty] = useState(true);
   const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<Date | null>(null);
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
-  const { success, jobDetail } = useAppSelector((state) => state.getJobDetail)
+  const { success, jobDetail } = useAppSelector((state) => state.getJobDetail);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm<IFormApplyJobsWithoutQuestionnaire>({
+    resolver: yupResolver(applyJobsSchema) as any,
+  });
+
+
+  const onSubmit = (data: IFormApplyJobsWithoutQuestionnaire) => {
+    console.log("data", id);
+    const userId = Cookies.get("userId");
+    const selectedQuestionnaireAnswer: any = [];
+    const selectedMultipleChoiceQuestionnaireAnswer: any = [];
+
+    dispatch(applyJobs({
+      "user": userId && parseInt(userId),
+      "jobs": id && parseInt(id),
+      "questionnaireAnswer": selectedQuestionnaireAnswer,
+      "multipleChoiceQuestionnaireAnswer": selectedMultipleChoiceQuestionnaireAnswer
+    })).then((data: any) => {
+
+      console.log("payload", data);
+
+      if (data?.payload?.count > 0) {
+        toast.info("job already applied !!")
+      } else {
+        toast.success("job Applied successfully !!")
+      }
+      // closeDialog(true);
+    });
+  }
 
   useEffect(() => {
     dispatch(getJobDetail(id));
@@ -38,18 +81,25 @@ const JobDescription = () => {
     if (!isNaN(parsedDate.getDate())) {
       setLastUpdatedTimestamp(parsedDate);
     }
+
+    jobDetail?.questionnaire?.map(item => {
+      if (item.question === '') {
+        isCheckEmpty(false)
+      }
+    })
   }, [jobDetail]);
 
   const locationCount = jobDetail?.company?.location?.length;
 
-  const applyJobs = () => {
+  const applyJobsAction = () => {
     setIsApplyJobsOpen(true);
   }
 
   const closeDialog = () => {
     setIsApplyJobsOpen(false);
   };
-  console.log(jobDetail);
+
+  console.log("errors", Cookies.get("userId"));
 
 
 
@@ -112,9 +162,16 @@ const JobDescription = () => {
               </div>
             </div>
             <div className="justify-start items-center gap-5 inline-flex mt-4">
-              <button className="w-48  px-6 py-1.5 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex" onClick={applyJobs}>
+              {checkEmpty && <button className="w-48  px-6 py-1.5 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex" onClick={applyJobsAction}>
                 <span className="text-white text-xl font-medium  leading-normal tracking-tight">Apply</span>
-              </button>
+              </button>}
+              {!checkEmpty && <>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <button type='submit' className="w-48  px-6 py-1.5 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex" >
+                    <span className="text-white text-xl font-medium  leading-normal tracking-tight">Apply</span>
+                  </button>
+                </form>
+              </>}
               <button className="w-28 pl-6 pr-3 py-1.5 bg-indigo-50 rounded-lg justify-center items-center  gap-3 flex">
                 <span className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight ">Save</span>
                 <span>
@@ -218,6 +275,7 @@ const JobDescription = () => {
             questionnaire={jobDetail?.questionnaire} closeDialog={closeDialog} />
         }
       />
+      <ToastContainer />
     </Fragment>
   )
 }
