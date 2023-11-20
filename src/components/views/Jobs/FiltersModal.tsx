@@ -25,7 +25,7 @@ import FiltersCompanyType from './FiltersCompanyType';
 import FiltersKeySkills from './FiltersKeySkills';
 import FiltersRoleCategory from './FiltersRoleCategory';
 
-const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
+const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach, setJobCard }: any) => {
     const dispatch = useAppDispatch();
     const { navigateFilterOption, checkItems, departmentIds, locationIds, workModeIds, companyTypeIds, maxExpYearId, maxSalaryId, expYear, department, location, workMode, salary, companyType, keySkillsIds, roleCategoryIds, keySkills, roleCategory } = useAppSelector((state) => state.getFilterJobs);
     const [clearAllToggle, setClearAllToggle] = useState(false);
@@ -79,6 +79,7 @@ const FiltersModal = ({ isOpen, setIsOpen, setToggleDispach }: any) => {
             dispatch(clearAll());
             setClearAllToggle(false);
         }
+        setJobCard([]);
     }
 
     const handleReset = () => {
