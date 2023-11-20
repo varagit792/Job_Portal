@@ -675,7 +675,7 @@ const AllJobs = () => {
                     </div>
                 </div>
             </div >
-            <FiltersModal isOpen={isOpen} setIsOpen={setIsOpen} setToggleDispach={setToggleDispach} />
+            <FiltersModal isOpen={isOpen} setIsOpen={setIsOpen} setToggleDispach={setToggleDispach} setJobCard={setJobCard} />
         </>
     )
 }
