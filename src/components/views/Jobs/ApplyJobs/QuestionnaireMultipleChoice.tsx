@@ -7,8 +7,6 @@ const QuestionnaireMultipleChoice = ({ index, questionSet, watch, register, erro
     isCheckboxRequired(!e.currentTarget.checked);
   }
 
-  console.log(checkboxRequired);
-
   return (
     <>
       <div className="mb-4" key={`QuestionnaireMultipleChoice${index}`}>

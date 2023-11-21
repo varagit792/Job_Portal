@@ -107,11 +107,16 @@ const JobDetails = () => {
       jobDetailData?.numberSystem && setValue('numberSystem', jobDetailData?.numberSystem);
       jobDetailData?.recurrence && setValue('recurrence', jobDetailData?.recurrence);
       jobDetailData?.jobExpiry && setValue('jobExpiry', jobDetailData?.jobExpiry);
-      jobDetailData?.jobStatus && setValue('jobStatus', jobDetailData?.jobStatus);
+      if (!(postId ? Number(postId) : null)) {
+        setValue('jobStatus', { label: 'open', value: 1 });
+      } else {
+        jobDetailData?.jobStatus && setValue('jobStatus', jobDetailData?.jobStatus);
+      }
       jobDetailData?.jobDescription && setValue('jobDescription', jobDetailData?.jobDescription);
       jobDetailData?.jobsOpening && setValue('jobsOpening', jobDetailData?.jobsOpening);
       jobDetailData?.keyResponsibility && setValue('keyResponsibility', jobDetailData?.keyResponsibility);
     }
+
   }, [setValue, jobDetail, jobDetailData]);
 
   const onSubmit = (data: IFormInputsJobDetail | IFormInputsJobDetailDraft | IFormInputsJobDetailSave) => {
