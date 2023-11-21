@@ -9,7 +9,7 @@ const ProfileBanner = () => {
     <div className="bg-gradient-to-r from-[#EEF2FF] to-[#C7D2FE] rounded-lg mb-12 grid grid-cols-5 gap-8 px-10 py-20">
       <div className="col-start-1 col-end-4 flex flex-col justify-center">
         <h1 className="text-3xl font-bold text-[#312E81] flex flex-col items-start justify-start mb-10">
-          <span>Discover your <span className="text-[#818CF8]">dream job</span> & empower you career</span>
+          <span>Discover your <span className="text-[#818CF8]">dream job</span> & empower your career</span>
         </h1>
         <button className="bg-[#4F46E5] rounded-md py-3 text-white w-44 flex items-center justify-center"><span className="mr-3">Explore</span><img src={SearchIcon} alt="SearchIcon" /></button>
       </div>
