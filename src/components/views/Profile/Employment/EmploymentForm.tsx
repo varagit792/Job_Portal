@@ -594,9 +594,8 @@ export default function ({ closeDialog, selectedEmployment }: any) {
   };
   
   return (
-    <div>
+    <div className="mt-3">
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="mb-2 text-lg font-medium text-gray-900">Add Employment</h1>
         <div className="col-span-full mb-4">
           <label htmlFor="currentEmployment" className="block text-sm font-medium leading-6 text-gray-900">Is this your current employment?</label>
           <div className="grid grid-cols-4 gap-4 mt-2 justify-between items-center">

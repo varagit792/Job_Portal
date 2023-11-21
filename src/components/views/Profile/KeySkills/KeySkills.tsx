@@ -73,6 +73,7 @@ const KeySkills = ({ profileDashboard }: any) => {
         : <span className="text-sm text-gray-500">Mention your key skill details.</span>
       }
       <Modal
+        title={"Key skills"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         modalBody={<KeySkillsForm

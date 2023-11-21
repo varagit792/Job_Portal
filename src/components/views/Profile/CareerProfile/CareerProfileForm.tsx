@@ -177,10 +177,10 @@ const CareerProfileForm = ({ id, profileDashboard, closeDialog }: any) => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-between mb-3">
+      {/* <div className="flex items-center justify-between mb-3">
         <h1 className="text-lg font-medium text-gray-900">Career profile</h1>
-      </div>
-      <span className="text-sm text-gray-500 mb-3">
+      </div> */}
+      <span className="text-sm text-gray-500 mb-3 mt-2">
         This information will help the recruiters  know about your current job profile and also your desired job criteria. This will also help us personalize your job recommendations.
       </span>
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
