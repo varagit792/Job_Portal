@@ -52,22 +52,17 @@ const RecruiterJobList = () => {
                     All: companyDetails[0]?.jobs,
                 }
             });
+
+            let applicantCountArray: any = [];
+            companyDetails[0]?.jobs?.map((item: any) => {
+                getJobApplicantCount(item?.id).then((count) => {
+                    applicantCountArray.push({ jobId: item?.id, count: count });
+                    setApplicantCount([...applicantCount, ...applicantCountArray])
+                })
+            })
+
         }
     }, [success]);
-
-
-    useEffect(() => {
-        let applicantCountArray: any = [];
-        categories.All.map(async (item: any) => {
-            let count: any = 0;
-            count = await getJobApplicantCount(item?.id).then(() => {
-                applicantCountArray = [...applicantCount, { jobId: item?.id, count: count }]
-            })
-        })
-        console.log("applicantCounts", applicantCountArray);
-
-        setApplicantCount([...applicantCountArray].filter((ele, ind) => ind === applicantCountArray.findIndex((elem: { jobId: number; }) => elem.jobId === ele.jobId && elem.jobId !== 0)))
-    }, [])
 
     const handleClickEditJob = (postId: number) => {
         navigate(`/postJob/jobDetails/${postId}`);
@@ -77,7 +72,6 @@ const RecruiterJobList = () => {
         dispatch(formDataReset())
         navigate(`/postJob/jobDetails`);
     }
-    console.log("applicantCount==", applicantCount);
 
     return (
         <>
@@ -167,7 +161,7 @@ const RecruiterJobList = () => {
                                                                             {formatDistanceToNow(new Date(post?.createdAt), { addSuffix: true })}
                                                                         </td>
                                                                         <td className="py-3 px-6 text-left" >
-                                                                            {applicantCount.filter(item => item.jobId === post?.id)[0]?.count ? applicantCount.filter(item => item.jobId === post?.id)[0]?.count : 0}
+                                                                            {applicantCount.filter(item => item.jobId === post?.id)[0]?.count}
                                                                         </td>
                                                                         <td className="py-3 px-6 text-left">
                                                                             {post?.jobStatus?.title === "Open" && < button className="bg-[#F0FFF5] text-[#16A34A] rounded px-3 py-1 flex justify-center items-center">{post?.jobStatus?.title}</button>}
