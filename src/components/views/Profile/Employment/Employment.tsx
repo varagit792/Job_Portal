@@ -59,7 +59,7 @@ export default function Employment() {
       }
     })();
   }, [])
-  
+
   return (
     <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]" >
       <div className="flex items-center justify-between mb-4 font-bold">
@@ -123,6 +123,7 @@ export default function Employment() {
           : <span className="text-sm text-gray-500">Mention your employment details.</span>
       }
       <Modal
+        title={"Add Employment"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         modalTitle={"Add Employment"}

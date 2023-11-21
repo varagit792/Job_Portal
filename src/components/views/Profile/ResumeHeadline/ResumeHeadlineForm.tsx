@@ -38,6 +38,7 @@ const ResumeHeadlineForm: FC<Parameters> = ({ resumeHeadlineSummery, id, default
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors }
   } = useForm<IFormInputs>({
     resolver: yupResolver(SignUpSchema)
@@ -51,28 +52,15 @@ const ResumeHeadlineForm: FC<Parameters> = ({ resumeHeadlineSummery, id, default
     dispatch(resumeHeadlineUpdate({ id, resumeHeadline: data.resumeHeadline }));
   }
 
-  const handleDelete = () => {
-    dispatch(resumeHeadlineUpdate({ id, resumeHeadline: null }));
-  }
+  // const handleDelete = () => {
+  //   dispatch(resumeHeadlineUpdate({ id, resumeHeadline: null }));
+  // }
 
   const watchResumeHeadline = watch('resumeHeadline')?.length;
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-between mb-3">
-        <h1 className="text-lg font-medium text-gray-900">Resume headline</h1>
-        <div>
-          {
-            defaultResumeHeadline
-            &&
-            <button className="text-blue-700 font-semibold hover:underline"
-              onClick={handleDelete}>
-              Delete
-            </button>
-          }
-        </div>
-      </div>
-      <span className="text-sm text-gray-500 mb-3">
+      <span className="text-sm text-gray-500 mb-5">
         {resumeHeadlineSummery}
       </span>
       <form id="my-form"
@@ -82,7 +70,7 @@ const ResumeHeadlineForm: FC<Parameters> = ({ resumeHeadlineSummery, id, default
           <textarea
             id="message"
             maxLength={1000}
-            className="block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none"
+            className="block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none mb-1"
             placeholder="Type here..."
             {...register("resumeHeadline")}
             rows={4}
@@ -94,8 +82,13 @@ const ResumeHeadlineForm: FC<Parameters> = ({ resumeHeadlineSummery, id, default
               {errors.resumeHeadline.message}
             </p>
           }
-          <div className="text-xs font-light text-gray-600 text-right">
-            {watchResumeHeadline ? 1000 - watchResumeHeadline : 1000} character(s) left
+          <div className="flex justify-between items-center">
+            {!errors.resumeHeadline ?
+              <span className="text-xs font-light text-gray-600">{watchResumeHeadline ? 1000 - watchResumeHeadline : 1000} character(s) left</span> : <span></span>}
+            {
+              watchResumeHeadline ?
+              <span className="text-gray-500 border-b-2 text-sm font-semibold border-gray-500 leading-none cursor-pointer" onClick={() => reset()}>Clear</span>:<span></span>
+            }
           </div>
         </div>
         <div className="mt-5 flex justify-end items-center">

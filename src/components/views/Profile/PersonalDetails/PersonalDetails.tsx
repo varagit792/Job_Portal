@@ -157,6 +157,7 @@ const PersonalDetails = () => {
                     : <span className="text-sm text-gray-500">Mention your personal details.</span>
             }
             <Modal
+                title={"Personal details"}
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 modalBody={

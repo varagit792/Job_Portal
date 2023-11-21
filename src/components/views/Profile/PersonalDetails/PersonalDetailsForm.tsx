@@ -151,8 +151,7 @@ const PersonalDetailsForm = ({ closeDialog, defaultPersonalDetails, id }: any) =
     };
 
     return (
-        <div>
-            <h1 className="text-black font-semibold text-xl mb-4">Personal details</h1>
+        <div className="mt-2">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-5">
                     <h6 className="font-semibold">Gender</h6>

@@ -83,7 +83,7 @@ export default function Education() {
         <Modal
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          modalTitle={"Add Education"}
+          title={"Add Education"}
           modalBody={
             <EducationForm
               closeDialog={closeDialog}
