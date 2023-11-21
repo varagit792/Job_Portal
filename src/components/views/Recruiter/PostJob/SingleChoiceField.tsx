@@ -11,13 +11,14 @@ const SingleChoiceField = ({ index, watch, register, addFormSingleFields }: any)
             <input
               className="w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5"
               placeholder={"Option"}
-              {...register(`questionnaire.${index}.singleSelection`)}
+              {...register(`questionnaire.${index}.singleSelectionField`)}
+              defaultValue={watch(`questionnaire.${index}.singleSelectionField`)}
             />
           </div>
         </div>
         <div className="justify-start items-center flex">
           <div className="border-b border-slate-600 justify-start items-center gap-2.5 flex">
-            <div className="text-slate-600 text-sm font-medium leading-[16.80px] tracking-tight cursor-pointer" onClick={(e) => addFormSingleFields(e, index, watch(`questionnaire.${index}.singleSelection`))}>Add</div>
+            <div className="text-slate-600 text-sm font-medium leading-[16.80px] tracking-tight cursor-pointer" onClick={(e) => addFormSingleFields(e, index, watch(`questionnaire.${index}.singleSelectionField`))}>Add</div>
           </div>
         </div>
       </div>

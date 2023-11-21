@@ -9,19 +9,19 @@ const MultipleChoiceField = ({ index, watch, register, addFormMultipleFields }: 
           <div className="w-6 h-6 relative"><img src={checkbox} /></div>
           <div className="text-black text-base font-normal leading-snug tracking-tight">
             <input
-              defaultValue={watch(`questionnaire.${index}.multipleSelection`)}
               className="w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5"
               placeholder={"Option"}
-              {...register(`questionnaire.${index}.multipleSelection`)}
+              {...register(`questionnaire.${index}.multipleSelectionField`)}
+              defaultValue={watch(`questionnaire.${index}.multipleSelectionField`)}
             />
           </div>
         </div>
         <div className="justify-start items-center flex">
           <div className="border-b border-slate-600 justify-start items-center gap-2.5 flex">
-            <div className="text-slate-600 text-sm font-medium leading-[16.80px] tracking-tight cursor-pointer" onClick={() => addFormMultipleFields(index, watch(`questionnaire.${index}.multipleSelection`))}>Add</div>
+            <div className="text-slate-600 text-sm font-medium leading-[16.80px] tracking-tight cursor-pointer" onClick={() => addFormMultipleFields(index, watch(`questionnaire.${index}.multipleSelectionField`))}>Add</div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   )
 }

@@ -126,7 +126,7 @@ const JobLeftPanel = ({ jobTitle }: any) => {
             <div className="text-sm w-full flex justify-between">
               <span className="font-semibold">Preview</span></div>
             <div className="text-sm justify-between cursor-pointer">
-              {!Number.isNaN(Number(postId)) && <u className="text-[#475569]" onClick={() => returnBack(postBack.previewURL)} >Edit</u>}
+              {!Number.isNaN(Number(postId)) && <u className="text-[#475569]" onClick={() => returnBack(postBack.previewURL)} >View</u>}
             </div>
           </li>
         </ul>

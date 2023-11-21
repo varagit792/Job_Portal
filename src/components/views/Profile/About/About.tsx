@@ -51,6 +51,7 @@ const About = () => {
             <Modal
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
+                title={"About"}
                 modalBody={
                     <AboutForm
                         testAbout={testAbout}

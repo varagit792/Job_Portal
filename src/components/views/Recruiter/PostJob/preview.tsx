@@ -6,7 +6,7 @@ import JobLeftPanel from './JobLeftPanel';
 import { useAppDispatch, useAppSelector } from '../../../..';
 import { useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { formData, postJobUpdate, postResponseDraft } from '../../../../store/reducers/jobs/postJobs';
+import { formData, formDataReset, postJobUpdate, postResponseDraft } from '../../../../store/reducers/jobs/postJobs';
 import GetJobDetails, { clearGetJobDetailSlice, getJobDetail } from '../../../../store/reducers/jobs/GetJobDetails';
 import { PostJobSchema, ResponseSchema } from '../../../../schema/postJob';
 import smallCircle from '../../../../assets/svg/smallCircle.svg';
@@ -27,7 +27,7 @@ const Preview = () => {
   const [buttonClick, setButtonClick] = useState('');
   const [userType, setUserType] = useState(Cookies.get('userType'));
   const [userId, setUserId] = useState(Cookies.get('userId'));
-  const [sectionURL, setSectionURL] = useState({ jobDetailsURL: "", requirementsURL: "", companyURL: "", recruiterURL: "", responseURL: "", previewURL: "" });
+  const [sectionURL, setSectionURL] = useState({ jobDetailsURL: "", requirementsURL: "", companyURL: "", recruiterURL: "", responseURL: "", questionnaireURL: "", previewURL: "" });
 
   const {
     handleSubmit,
@@ -182,6 +182,7 @@ const Preview = () => {
         notificationEmailAddress2: jobDetailData?.notificationEmailAddress2,
         questionnaire: selectedJobQuestionnaire,
       })).then(() => {
+        dispatch(formDataReset());
         navigate("/recruiterJobList");
       });
     }
@@ -256,7 +257,7 @@ const Preview = () => {
     if (Number(postId)) {
       setPostBack({ postURL: `/postJob/preview/${postId}`, backURL: `/postJob/recruiter/${postId}`, DiscardURL: `/postJob/jobDetails` });
       setJobTitle(jobDetail?.title);
-      setSectionURL({ jobDetailsURL: `/postJob/jobDetails/${postId}`, requirementsURL: `/postJob/requirements/${postId}`, companyURL: `/postJob/company/${postId}`, recruiterURL: `/postJob/recruiter/${postId}`, responseURL: `/postJob/response/${postId}`, previewURL: `/postJob/preview/${postId}` })
+      setSectionURL({ jobDetailsURL: `/postJob/jobDetails/${postId}`, requirementsURL: `/postJob/requirements/${postId}`, companyURL: `/postJob/company/${postId}`, recruiterURL: `/postJob/recruiter/${postId}`, responseURL: `/postJob/response/${postId}`, questionnaireURL: `/postJob/questionnaire/${postId}`, previewURL: `/postJob/preview/${postId}` })
     } else {
       setJobTitle(jobDetailData?.title);
       setPostBack({ postURL: '/postJob/preview', backURL: '/postJob/recruiter', DiscardURL: `/postJob/jobDetails` })
@@ -282,7 +283,6 @@ const Preview = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
-  console.log("jobDetailData====", jobDetailData);
 
   return (
     <>
@@ -599,6 +599,12 @@ const Preview = () => {
                     </div>
                   </div>
                   {<div className="w-full h-auto p-7 bg-white rounded-xl border border-indigo-100 flex-col justify-start items-start gap-7 inline-flex">
+                    <div className="self-stretch justify-start items-center gap-3 inline-flex">
+                      <div className="grow shrink basis-0 text-black text-2xl font-bold leading-[28.80px] tracking-tight">Questionnaire</div>
+                      <div className="border-b border-slate-600 justify-start items-center gap-2.5 flex">
+                        {!Number.isNaN(Number(postId)) && <div className="text-right text-slate-600 text-sm font-medium leading-[16.80px] tracking-tight cursor-pointer" onClick={() => returnBack(sectionURL.questionnaireURL)}>Edit</div>}
+                      </div>
+                    </div>
                     {jobDetailData?.questionnaire?.map(((itemQuestionnaire: any, indexQuestionnaire: any) => <div key={indexQuestionnaire}>
                       {itemQuestionnaire.questionType?.value === 'Descriptive' &&
                         <><div className="self-stretch h-[84px] flex-col justify-start items-start gap-2 flex">
@@ -613,7 +619,7 @@ const Preview = () => {
                             </div>
                           </div>
                         </div></>}
-                      {itemQuestionnaire.questionType?.value === 'NumberChoice' &&
+                      {itemQuestionnaire.questionType?.value === 'Number' &&
                         <><div className="self-stretch h-[84px] flex-col justify-start items-start gap-2 flex">
                           <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Question {indexQuestionnaire + 1}</div>
                           <div className="self-stretch h-[54px] flex-col justify-center items-start gap-2 flex">
@@ -628,7 +634,7 @@ const Preview = () => {
                         </div></>
                       }
 
-                      {itemQuestionnaire.questionType?.value === 'singleChoice' &&
+                      {itemQuestionnaire.questionType?.value === 'SingleChoice' &&
                         <>   <div className="self-stretch h-[84px] flex-col justify-start items-start gap-2 flex">
                           <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Question {indexQuestionnaire + 1}</div>
                           <div className="self-stretch h-[54px] flex-col justify-center items-start gap-2 flex">
@@ -645,7 +651,7 @@ const Preview = () => {
                         </div></>
                       }
 
-                      {itemQuestionnaire.questionType?.value === 'multipleChoice' &&
+                      {itemQuestionnaire.questionType?.value === 'MultipleChoice' &&
                         <> <div className="self-stretch h-auto flex-col justify-start items-start gap-2 flex">
                           <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Question {indexQuestionnaire + 1}</div>
                           <div className="self-stretch h-auto flex-col justify-center items-start gap-2 flex">
@@ -676,18 +682,21 @@ const Preview = () => {
                 </div>
                 <div className="w-full justify-start  gap-5 inline-flex">
 
-                  <button name='Discard' className="text-indigo-900 font-medium leading-normal tracking-tight grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack.DiscardURL)}>Discard</button>
+                  {isNaN(Number(postId)) && <button name='Discard' className="text-indigo-900 font-medium leading-normal tracking-tight grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack.DiscardURL)}>Discard</button>}
 
-                  {!isNaN(Number(postId)) &&
+                  {/* {!isNaN(Number(postId)) &&
                     <button name='Save' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex" onClick={() => setButtonClick('Save')}>Save</button>
-                  }
+                  } */}
 
                   {isNaN(Number(postId)) &&
                     <button name='SaveAsDraft' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex " onClick={() => setButtonClick('Draft')}>Save as Draft</button>
                   }
-
-                  <button type="submit" name='Continue' className="text-white font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex"
-                    onClick={() => setButtonClick('Continue')}>Post a Job</button>
+                  {!isNaN(Number(postId)) &&
+                    <button type="submit" name='Continue' className="text-white font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex"
+                      onClick={() => setButtonClick('Continue')}>Save Job</button>
+                  }
+                  {isNaN(Number(postId)) && <button type="submit" name='Continue' className="text-white font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 px-6 py-3 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex"
+                    onClick={() => setButtonClick('Continue')}>Post a Job</button>}
                 </div>
               </div>
             </form>
