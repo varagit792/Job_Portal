@@ -59,7 +59,6 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
       closeDialog(true);
     });
   }
-  console.log(errors);
 
   return (
     <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]" >
