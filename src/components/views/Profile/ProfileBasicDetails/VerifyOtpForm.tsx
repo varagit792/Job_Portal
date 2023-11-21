@@ -34,7 +34,7 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
   const { success: successVerifyOtp, errorMessage } = useAppSelector((state) => state.jobSeekerVerifyMobile);
 
   useEffect(() => {
-   dispatch(sendUserOtp())
+    dispatch(sendUserOtp())
   }, [dispatch]);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
   }, [dispatch, successVerifyOtp])
 
   //react hook form controls
-  const { control, formState: { errors }, handleSubmit, watch, setValue, getValues,  } = useForm<IFormInputs>({
+  const { control, formState: { errors }, handleSubmit, watch, setValue, getValues, } = useForm<IFormInputs>({
     resolver: yupResolver(verifySchema)
   });
 
@@ -69,10 +69,10 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
   }, [counter]);
 
   console.log('message ', errorMessage);
-  const onSubmit = (data:IFormInputs) => {
+  const onSubmit = (data: IFormInputs) => {
     const mobileOtp = data.mobileOtp1 + data.mobileOtp2 + data.mobileOtp3 + data.mobileOtp4;
     const dataObj = {
-      mobileOtp:mobileOtp
+      mobileOtp: mobileOtp
     }
     dispatch(verifyMobileOtp(dataObj));
   };
@@ -95,8 +95,8 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
   //   dispatch(clearVerifyMobileOtpSlice());
   // },[errorMessage]);
   return (
-    <Fragment>
-      <div className="flex flex-col items-center justify-center mt-24">
+    <div className="mt-10 mb-10">
+      <div className="flex flex-col items-center justify-center">
         <h1 className="text-black text-xl ">  Enter the code sent on +91 {mobileNumber}</h1>
         <div className="flex flex-row ">
           <span className="text-slate-400">Expires in </span>
@@ -104,9 +104,9 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
           <span className="ml-1 text-slate-400">secs</span>
         </div>
       </div>
-      <form id="my-form" className="mx-2"  onSubmit={handleSubmit(onSubmit)}>
+      <form id="my-form" className="mx-2" onSubmit={handleSubmit(onSubmit)}>
         <div className=" mt-8 flex items-center justify-center flex-col ">
-          <div className="flex flex-row gap-4 items-center justify-center w-12">     
+          <div className="flex flex-row  gap-7 items-center justify-center  w-64">
             <span>
               <Controller
                 name="mobileOtp1"
@@ -120,7 +120,7 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
                     value={watch("mobileOtp1")}
                     maxLength={1}
                     pattern="\d"
-                    className={`w-8 border  outline-none rounded-lg focus:border-blue-500 p-2 ${fieldState.error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"}`}
+                    className={`w-10 text-center border  outline-none rounded-lg focus:border-blue-500 py-2 ${fieldState.error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"}`}
                     placeholder=" "
                     onInput={(e) => {
                       const target = e.target as HTMLInputElement;
@@ -145,7 +145,7 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
               <Controller
                 name="mobileOtp2"
                 control={control}
-                render={({ field ,fieldState}) => (
+                render={({ field, fieldState }) => (
                   <input
                     id="mobileOtp2"
                     {...field}
@@ -154,7 +154,7 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
                     value={watch("mobileOtp2")}
                     maxLength={1}
                     pattern="\d"
-                    className={`w-8 border  outline-none rounded-lg focus:border-blue-500 p-2 ${fieldState.error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"}`}
+                    className={`w-10 text-center border  outline-none rounded-lg focus:border-blue-500 py-2 ${fieldState.error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"}`}
                     placeholder=" "
                     onInput={(e) => {
                       const target = e.target as HTMLInputElement;
@@ -179,7 +179,7 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
               <Controller
                 name="mobileOtp3"
                 control={control}
-                render={({ field,fieldState }) => (
+                render={({ field, fieldState }) => (
                   <input
                     id="mobileOtp3"
                     {...field}
@@ -188,7 +188,7 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
                     value={watch("mobileOtp3")}
                     maxLength={1}
                     pattern="\d"
-                    className={`w-8 border  outline-none rounded-lg focus:border-blue-500 p-2 ${fieldState.error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"}`}
+                    className={`w-10 text-center border  outline-none rounded-lg focus:border-blue-500 py-2 ${fieldState.error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"}`}
                     placeholder=" "
                     onInput={(e) => {
                       const target = e.target as HTMLInputElement;
@@ -213,7 +213,7 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
               <Controller
                 name="mobileOtp4"
                 control={control}
-                render={({ field,fieldState }) => (
+                render={({ field, fieldState }) => (
                   <input
                     id="mobileOtp4"
                     {...field}
@@ -222,7 +222,7 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
                     value={watch("mobileOtp4")}
                     maxLength={1}
                     pattern="\d"
-                    className={`w-8 border  outline-none rounded-lg focus:border-blue-500 p-2 ${fieldState.error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"}`}
+                    className={`w-10 text-center border  outline-none rounded-lg focus:border-blue-500 py-2 ${fieldState.error ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-blue-500"}`}
                     placeholder=" "
                     onInput={(e) => {
                       const target = e.target as HTMLInputElement;
@@ -239,21 +239,21 @@ const VerifyOtpForm: FC<Parameters> = ({ closeOtpDialog, mobileNumber }) => {
                         }
                       }
                     }}
-                  />  
+                  />
                 )}
               />
             </span>
           </div>
-          <button form="my-form" className={(watch("mobileOtp1")?.length === 0 || watch("mobileOtp2") === null || watch("mobileOtp2")?.length === 0 || watch("mobileOtp2") === null || watch("mobileOtp3")?.length === 0 || watch("mobileOtp3") === null || watch("mobileOtp4")?.length === 0 || watch("mobileOtp4") === null ) ? " px-20 py-3 rounded-lg bg-blue-100 text-white mt-8" : " px-20 py-3 rounded-lg bg-indigo-600 text-white mt-8"}   
+          <button form="my-form" className={(watch("mobileOtp1")?.length === 0 || watch("mobileOtp2") === null || watch("mobileOtp2")?.length === 0 || watch("mobileOtp2") === null || watch("mobileOtp3")?.length === 0 || watch("mobileOtp3") === null || watch("mobileOtp4")?.length === 0 || watch("mobileOtp4") === null) ? " px-28 py-3 rounded-lg bg-blue-100 text-white mt-8" : " px-20 py-3 rounded-lg bg-indigo-600 text-white mt-8"}
           >Verify
-          </button>                    
+          </button>
         </div>
       </form>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center mt-2">
         <span className="text-sm text-gray-400"> Didn’t receive OTP?</span>
         <button className="text-sm text-slate-600 ml-1 font-medium underline" onClick={handleResendOtp}>Send again</button>
       </div>
-    </Fragment>
+    </div>
   )
 }
 
