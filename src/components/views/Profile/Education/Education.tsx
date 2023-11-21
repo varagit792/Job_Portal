@@ -67,7 +67,12 @@ export default function Education() {
                     </span> */}
                   </div>
                   <span className="text-gray-400 hover:scale-125 cursor-pointer">
-                    <FiEdit2 />
+                    {/* <FiEdit2 /> */}
+                    <FiEdit2 onClick={() => {
+                    setIsOpen(true)
+                    setIsEdit(true)
+                    setSelectedEducation(item as any)
+                  }} />
                   </span>
                 </div>
                 {Object.keys(educationDetails)?.length !== index + 1 && <hr className="my-5" />}

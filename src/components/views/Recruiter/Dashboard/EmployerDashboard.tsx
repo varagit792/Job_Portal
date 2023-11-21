@@ -26,10 +26,10 @@ const EmployerDashboard = () => {
         <LeftSection companyDetails={companyDetails} />
         <div className="col-start-3 col-end-8">
           <Banner />
-          <TopApplicants />
-          <TotalJobs companyDetails={companyDetails} />
-          <JobChart />
           <RecentJobPosts companyDetails={companyDetails} />
+          <TotalJobs companyDetails={companyDetails} />
+          <TopApplicants />          
+          <JobChart />
         </div>
       </div >
     </>

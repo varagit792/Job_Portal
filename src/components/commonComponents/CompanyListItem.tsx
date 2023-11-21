@@ -28,10 +28,10 @@ const CompanyListItem = ({ item }: any) => {
               <div className="flex justify-start items-center text-xs">
                 <div className="flex justify-start items-center">
                   <img src={StarIcon} alt="StarIcon" width="15rem" height="15rem" />
-                  <span className="ml-1 text-[#64748B]">{item?.rating ? item?.rating : 'NA'}</span>
+                  <span className="ml-1 text-[#64748B]">{item?.rating && item?.rating}</span>
                 </div>
-                <span className="border border-gray-300 h-5 mx-2"></span>
-                <span className="text-[#64748B]">{item?.reviews ? `${item?.reviews} Reviews`  : 'NA'}</span>
+                {item?.reviews && <span className="border border-gray-300 h-5 mx-2"></span>}
+                <span className="text-[#64748B]">{item?.reviews && `${item?.reviews} Reviews`}</span>
               </div>
             </div>
           </>
