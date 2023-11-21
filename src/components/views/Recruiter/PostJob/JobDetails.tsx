@@ -536,7 +536,7 @@ const JobDetails = () => {
                       </div>
                       <div className="w-full grid grid-cols-2 items-start gap-5 inline-flex">
                         <div className=" flex-col justify-start  gap-2 inline-flex">
-                          <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Roll Category</div>
+                          <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Role Category</div>
                           <div className='w-full'>
                             <AutocompleteBox
                               control={control}
