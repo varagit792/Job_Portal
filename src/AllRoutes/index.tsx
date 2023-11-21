@@ -21,6 +21,8 @@ import EmployerDashboard from '../components/views/Recruiter/Dashboard/EmployerD
 import RecruiterJobList from '../components/views/Recruiter/Jobs/RecruiterJobList';
 import Questionnaire from '../components/views/Recruiter/PostJob/Questionnaire';
 import SignIn from '../components/views/SignIn';
+import EmailSuccessPage from '../components/views/EmailSuccessPage';
+import EmailAlreadyVerifiedPage from '../components/views/EmailAlreadyVerified';
 
 const AllRoutes = () => {
 
@@ -30,6 +32,8 @@ const AllRoutes = () => {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/registration" element={<SignUp />} />
                 <Route path="/login" element={<SignIn />} />
+                <Route path="/emailSuccess" element={<EmailSuccessPage />} />
+                <Route path="/emailAlreadyVerified" element={<EmailAlreadyVerifiedPage/>} />
             </Route>
             <Route path="/allJobs" element={<AllJobs />} />
             <Route path="/allCompanies" element={<AllCompanies />} />
