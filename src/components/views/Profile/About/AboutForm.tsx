@@ -38,6 +38,7 @@ const AboutForm: FC<Parameters> = ({ testAbout, id, defaultAbout, closeDialog })
         handleSubmit,
         setValue,
         watch,
+        reset,
         formState: { errors }
     } = useForm<IFormInputs>({
         resolver: yupResolver(SignUpSchema)
@@ -51,28 +52,15 @@ const AboutForm: FC<Parameters> = ({ testAbout, id, defaultAbout, closeDialog })
         dispatch(profileDashboardUpdate({ id, about: data.about }));
     }
 
-    const handleDelete = () => {
-        dispatch(profileDashboardUpdate({ id, about: null }));
-    }
+    // const handleDelete = () => {
+    //     dispatch(profileDashboardUpdate({ id, about: null }));
+    // }
 
     const watchAbout = watch('about')?.length;
 
     return (
         <div className="flex flex-col">
-            <div className="flex items-center justify-between mb-3">
-                <h1 className="text-lg font-medium text-gray-900">About</h1>
-                <div>
-                    {
-                        defaultAbout
-                        &&
-                        <button className="text-blue-700 font-semibold hover:underline"
-                            onClick={handleDelete}>
-                            Delete
-                        </button>
-                    }
-                </div>
-            </div>
-            <span className="text-sm text-gray-500 mb-3">
+            <span className="text-sm text-gray-500 mb-5">
                 {testAbout}
             </span>
             <form id="my-form"
@@ -82,7 +70,7 @@ const AboutForm: FC<Parameters> = ({ testAbout, id, defaultAbout, closeDialog })
                     <textarea
                         id="message"
                         maxLength={150}
-                        className="block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none"
+                        className="block p-2.5 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 outline-none mb-1"
                         placeholder="Type here..."
                         {...register("about")}
                         rows={4}
@@ -94,9 +82,16 @@ const AboutForm: FC<Parameters> = ({ testAbout, id, defaultAbout, closeDialog })
                             {errors?.about?.message}
                         </p>
                     }
-                    <div className="text-xs font-light text-gray-600 text-right">
-                        {watchAbout ? 150 - watchAbout : 150} character(s) left
+                    <div className="flex justify-between items-center">
+                        {!errors?.about ?
+                            <span className="text-xs font-light text-gray-600">{watchAbout ? 150 - watchAbout : 150} character(s) left</span>:<span></span>
+                        }
+                         {
+                            watchAbout ?
+                            <span className="text-gray-500 border-b-2 text-sm font-semibold border-gray-500 leading-none cursor-pointer" onClick={()=>reset()}>Clear</span>:<span></span>
+                        }
                     </div>
+
                 </div>
                 <div className="mt-5 flex justify-end items-center">
                     <div>

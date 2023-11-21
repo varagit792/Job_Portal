@@ -81,11 +81,7 @@ const KeySkillsForm = ({ keySkill, profileDashboard, setDatabaseSkillSet, keySki
   }, [dispatch, keySkillsSuccess, keySkillsUpdateSuccess]);
 
   return (
-    <div className="h-full">
-      <div className="flex items-center justify-between mb-3">
-        <h1 className="text-lg font-medium text-gray-900">Key skills
-        </h1>
-      </div>
+    <div className="h-full mt-1">
       <div className="col-start-2 col-end-4">
         <h1 className="text-sm text-gray-500 mb-3"> Tell recruiters what you know or what you are known for e.g. Direct Marketing, Oracle, Java etc. We will send you job recommendations based on these skills. each skill is separated by a comma.
         </h1>

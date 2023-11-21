@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { RxCross1 } from 'react-icons/rx';
 
-const Modal = ({ modalBody, isOpen, setIsOpen, width = undefined }: any) => {
+const Modal = ({ modalBody, isOpen, setIsOpen, width = undefined,title="" }: any) => {
   const closeDialog = () => {
     setIsOpen(false);
   };
@@ -33,7 +33,8 @@ const Modal = ({ modalBody, isOpen, setIsOpen, width = undefined }: any) => {
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className={`w-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all ${width ? width : 'max-w-3xl'}`}>
-                <Dialog.Title className="text-lg font-medium text-gray-900 text-right">
+                <Dialog.Title className="text-lg font-medium text-gray-900 text-right flex justify-between items-center">
+                <h1 className="text-lg font-medium text-gray-900">{title}</h1>
                   <button
                     onClick={closeDialog}
                     type="button"
