@@ -268,6 +268,7 @@ const JobDescription = () => {
       </div >
 
       <Modal
+        title={"Apply Now"}
         isOpen={isApplyJobsOpen}
         setIsOpen={setIsApplyJobsOpen}
         modalBody={

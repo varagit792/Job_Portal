@@ -10,20 +10,7 @@ const NumberChoice = ({ index, register, handlesChange, watch, handleDoneStatusC
             <div className="w-[61px] self-stretch justify-start items-center gap-3 flex">
               <div className="text-slate-600 text-base font-normal leading-snug tracking-tight">Range</div>
             </div>
-            {/* <div className="grow shrink basis-0 h-[22px] justify-center items-center gap-2 flex">
-              <div className="grow shrink basis-0 text-center text-slate-400 text-base font-normal leading-snug tracking-tight">
-                <input
-                  className="w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5"
-                  placeholder={"Min"}
-                  {...register("RangeMin")}
-                  defaultValue={watch("RangeMin")}
-                  onChange={e => handlesChange(index, e, e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="justify-start items-center gap-2 flex">
-              <div className="text-center text-slate-400 text-base font-normal leading-snug tracking-tight">-</div>
-            </div> */}
+
             <div className="grow shrink basis-0 h-[22px] justify-center items-center gap-2 flex">
               <div className="grow shrink basis-0 text-center text-slate-400 text-base font-normal leading-snug tracking-tight">
                 <input

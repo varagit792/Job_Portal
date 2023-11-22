@@ -43,7 +43,7 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
     const selectedMultipleChoiceQuestionnaireAnswer: any = [];
     data?.questionnaire?.filter((item: any) => item?.questionType !== 'MultipleChoice' && selectedQuestionnaireAnswer?.push({ questionnaire: item?.question, answer: item?.numberChoice ? item?.numberChoice : item?.descriptive ? item?.descriptive : item?.singleChoice ? item?.singleChoice : undefined }));
 
-    data?.questionnaire?.filter((item: any) => item?.questionType === 'MultipleChoice' && item?.multipleChoice && item?.multipleChoice?.map((item1: any) => selectedMultipleChoiceQuestionnaireAnswer?.push({ multipleChoiceQuestionnaire: item1, answer: item1 })));
+    data?.questionnaire?.filter((item: any) => item?.questionType === 'MultipleChoice' && Array.isArray(item?.multipleChoice) ? item?.multipleChoice?.map((item1: any) => selectedMultipleChoiceQuestionnaireAnswer?.push({ multipleChoiceQuestionnaire: item1, answer: item1 })) : selectedMultipleChoiceQuestionnaireAnswer?.push({ multipleChoiceQuestionnaire: item?.multipleChoice, answer: item?.multipleChoice }));
 
     dispatch(applyJobs({
       "user": Cookies.get("userId"),
@@ -61,14 +61,16 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
   }
 
   return (
-    <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]" >
-      <div className="flex items-center justify-between mb-4">
+    <div className="flex flex-col" >
+      {/* <div className="flex items-center justify-between mb-4">
         <div className="flex items-center font-bold">
           <h1>Apply Jobs</h1>
         </div>
 
-      </div>
-      <span className="text-sm text-gray-500">
+      </div> */}
+
+      <span className="text-sm text-gray-500 mb-3 mt-2">
+
       </span>
       <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -96,7 +98,7 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
             register={register}
             questionSet={questionSet}
           />}
-          {questionSet?.questionType === 'Number' && <QuestionnaireNumberChoice
+          {questionSet?.questionType === 'NumberChoice' && <QuestionnaireNumberChoice
             index={index}
             questionSet={questionSet}
             register={register}
