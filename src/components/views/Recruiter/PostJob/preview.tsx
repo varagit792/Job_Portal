@@ -324,7 +324,7 @@ const Preview = () => {
                           <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{jobDetailData?.jobsType?.label}</div>
                         </div>
                         <div className="grow shrink basis-0 flex-col justify-start  gap-2 inline-flex">
-                          <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Roll Category</div>
+                          <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Role Category</div>
                           <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{jobDetailData?.roleCategory?.label}</div>
                         </div>
                       </div>

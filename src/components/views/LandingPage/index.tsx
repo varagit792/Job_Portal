@@ -90,7 +90,7 @@ const LandingPage = () => {
             <div className="h-[90%] bg-[#FFF] px-32 grid grid-cols-2 gap-2">
                 <div className="flex flex-col justify-center items-start">
                     <h1 className="text-5xl font-bold text-black flex flex-col items-start justify-start mb-3">
-                        <span>Get a<span className="text-[#818CF8]">perfect match</span>for</span><span>your skills in one click</span>
+                        <span>Get a<span className="text-[#818CF8]"> perfect match </span>for</span><span>your skills in one click</span>
                     </h1>
                     <div className="text-base text-[#312E81] mb-16">
                         Just upload your resume and apply for your dream job

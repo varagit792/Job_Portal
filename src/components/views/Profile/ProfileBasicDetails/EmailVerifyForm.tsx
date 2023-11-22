@@ -37,11 +37,11 @@ const EmailVerifyForm: FC<Parameters> = ({ closeEmailVerifyDialog, email }) => {
     <Fragment>
       <form id="id-form">
         <div className="flex justify-center items-center mb-4 mt-8">
-          {emailSent ? <img src={greenTickIcon} alt="greenTickIcon" width="22rem" /> : <img src={emailVerifyIcon} alt="emailVerifyIcon" width="22rem" /> }  
+          {emailSent ? <img src={greenTickIcon} alt="greenTickIcon" width="40rem" /> : <img src={emailVerifyIcon} alt="emailVerifyIcon" width="40rem" /> }  
         </div>
-        <h1 className="flex items-center justify-center text-center font-bold text-xl  ">{buttonText} {email}</h1>
+        <h1 className="flex items-center justify-center text-center font-bold text-lg  ">{buttonText} {email}</h1>
         <div className="flex items-center justify-center mt-6 ">
-          {!emailSent ? <button type="button" onClick={handleSubmit} className="bg-indigo-600 text-white text-xl font-medium px-6 py-3 rounded-lg shadow">
+          {!emailSent ? <button type="button" onClick={handleSubmit} className="bg-indigo-600 text-white text-lg font-medium px-6 py-3 rounded-lg shadow">
             Request Verification Link
           </button> :
             <div className="flex flex-col">
@@ -64,23 +64,23 @@ const EmailVerifyForm: FC<Parameters> = ({ closeEmailVerifyDialog, email }) => {
           <div className=" flex-col justify-center items-center gap-2 inline-flex">
             <div className="w-10 h-10 rounded-3xl border border-indigo-600 flex-col justify-center items-center flex">
 
-              <div className="text-center text-indigo-600 text-xl font-medium  leading-normal tracking-tight">1</div>
+              <div className="text-center text-indigo-600 text-xl font-medium  leading-normal tracking-tight ">1</div>
             </div>
             <div className="self-stretch text-center text-black text-sm font-normal  leading-none tracking-tight">Recruiters trust candidates with verified Email IDs</div>
           </div>
           <div className=" flex-col justify-center items-center gap-2 inline-flex">
             <div className="w-10 h-10 rounded-3xl border border-indigo-600 flex-col justify-center items-center flex">
 
-              <div className="text-center text-indigo-600 text-xl font-medium  leading-normal tracking-tight">1</div>
+              <div className="text-center text-indigo-600 text-xl font-medium  leading-normal tracking-tight">2</div>
             </div>
-            <div className="self-stretch text-center text-black text-sm font-normal  leading-none tracking-tight">Recruiters trust candidates with verified Email IDs</div>
+            <div className="self-stretch text-center text-black text-sm font-normal  leading-none tracking-tight">You can apply to jobs in your inbox with just one click</div>
           </div>
           <div className=" flex-col justify-center items-center gap-2 inline-flex ">
             <div className="w-10 h-10 rounded-3xl border border-indigo-600 flex-col justify-center items-center flex">
 
-              <div className="text-center text-indigo-600 text-xl font-medium  leading-normal tracking-tight">1</div>
+              <div className="text-center text-indigo-600 text-xl font-medium  leading-normal tracking-tight">3</div>
             </div>
-            <div className="self-stretch text-center text-black text-sm font-normal  leading-none tracking-tight">Recruiters trust candidates with verified Email IDs</div>
+            <div className="self-stretch text-center text-black text-sm font-normal  leading-none tracking-tight">It boosts chances of the right job finding you</div>
           </div>
         </div>
       </form>

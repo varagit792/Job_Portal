@@ -29,7 +29,7 @@ const EmployerDashboard = () => {
           <RecentJobPosts companyDetails={companyDetails} />
           <TotalJobs companyDetails={companyDetails} />
           <TopApplicants />          
-          <JobChart />
+          <JobChart companyDetails={companyDetails} />
         </div>
       </div >
     </>

@@ -59,8 +59,8 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
               <div>
                 <h1 className="mb-1 overflow-hidden whitespace-nowrap text-ellipsis ">{profileDashboard?.currentJobTitle?.title}
                 </h1>
-                <h1 className="overflow-hidden whitespace-nowrap text-ellipsis">@ {profileDashboard?.currentCompany?.title}
-                </h1>
+                {profileDashboard?.currentCompany?.title && <h1 className="overflow-hidden whitespace-nowrap text-ellipsis">@ {profileDashboard?.currentCompany?.title}
+                </h1>}
               </div>
             }
             <div className="mt-5 text-sm text-[#64748B]">
