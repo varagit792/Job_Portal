@@ -61,14 +61,16 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
   }
 
   return (
-    <div className="w-full rounded-2xl bg-white p-4 mt-4 border border-[#E0E7FF]" >
-      <div className="flex items-center justify-between mb-4">
+    <div className="flex flex-col" >
+      {/* <div className="flex items-center justify-between mb-4">
         <div className="flex items-center font-bold">
           <h1>Apply Jobs</h1>
         </div>
 
-      </div>
-      <span className="text-sm text-gray-500">
+      </div> */}
+
+      <span className="text-sm text-gray-500 mb-3 mt-2">
+
       </span>
       <form onSubmit={handleSubmit(onSubmit)}>
 
