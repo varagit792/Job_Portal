@@ -22,7 +22,7 @@ import Cookies from 'js-cookie';
 
 const questionTypeOptions = [
   { value: 'Descriptive', label: 'Descriptive' },
-  { value: 'Number', label: 'Number' },
+  { value: 'NumberChoice', label: 'NumberChoice' },
   { value: 'SingleChoice', label: 'SingleChoice' },
   { value: 'MultipleChoice', label: 'MultipleChoice' }
 ];
@@ -31,6 +31,7 @@ const QuestionnaireForm = () => {
 
   const dispatch = useAppDispatch();
   const { postId } = useParams();
+  const updatePostId = postId ? Number(postId) : null;
   const navigate = useNavigate();
   const { formData: jobDetailData } = useAppSelector((state) => state.updatePostJobUpdate);
   const { success: jobDetailSuccess, jobDetail } = useAppSelector((state) => state.getJobDetail);
@@ -148,7 +149,7 @@ const QuestionnaireForm = () => {
 
   const onSubmit = (data: IFormInputsQuestionnaire | IFormInputsQuestionnaireDraft | IFormInputsQuestionnaireSave) => {
 
-    const updatePostId = postId ? Number(postId) : null;
+
 
     if (buttonClick === 'Continue') {
 
@@ -434,7 +435,8 @@ const QuestionnaireForm = () => {
                     </div>
                     <div className=" flex-col justify-start  gap-2 ">
                       <div className='w-full'>
-                        <Select
+
+                        {updatePostId ? <Select
                           {...register(`questionnaire.${index}.questionType`)}
                           isClearable={true}
                           isSearchable={true}
@@ -443,7 +445,18 @@ const QuestionnaireForm = () => {
                           onChange={(e: any) => handleQuestionTypeChange(index, e, e.value, e.label)}
                           value={watch(`questionnaire.${index}.questionType`)}
                           placeholder={"Select question Type"}
-                        />
+                        /> :
+                          <Select
+                            {...register(`questionnaire.${index}.questionType`)}
+                            isClearable={true}
+                            isSearchable={true}
+                            className="text-sm"
+                            options={questionTypeOptions}
+                            onChange={(e: any) => handleQuestionTypeChange(index, e, e.value, e.label)}
+                            defaultValue={watch(`questionnaire.${index}.questionType`)}
+                            placeholder={"Select question Type"}
+                          />
+                        }
                       </div>
                     </div>
                   </div>
@@ -484,7 +497,7 @@ const QuestionnaireForm = () => {
                     watch={watch}
                   />
                 }
-                {question[index] === "Number" && doneStatus[index] &&
+                {question[index] === "NumberChoice" && doneStatus[index] &&
                   <NumberChoice
                     index={index}
                     register={register}

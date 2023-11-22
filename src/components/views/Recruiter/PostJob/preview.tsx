@@ -619,7 +619,7 @@ const Preview = () => {
                             </div>
                           </div>
                         </div></>}
-                      {itemQuestionnaire.questionType?.value === 'Number' &&
+                      {itemQuestionnaire.questionType?.value === 'NumberChoice' &&
                         <><div className="self-stretch h-[84px] flex-col justify-start items-start gap-2 flex">
                           <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Question {indexQuestionnaire + 1}</div>
                           <div className="self-stretch h-[54px] flex-col justify-center items-start gap-2 flex">

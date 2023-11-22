@@ -98,7 +98,7 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
             register={register}
             questionSet={questionSet}
           />}
-          {questionSet?.questionType === 'Number' && <QuestionnaireNumberChoice
+          {questionSet?.questionType === 'NumberChoice' && <QuestionnaireNumberChoice
             index={index}
             questionSet={questionSet}
             register={register}
