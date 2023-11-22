@@ -50,7 +50,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 
-const JobChart = () => {
+const JobChart = ({ companyDetails }: any) => {
     return (
         <div className="mb-16 p-10 bg-[#EEF2FF] rounded-xl flex justify-center items-center flex-col">
             <div className="mb-8 flex justify-between items-center w-full">
