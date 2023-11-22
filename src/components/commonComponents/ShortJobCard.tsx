@@ -3,10 +3,10 @@ const ShortJobCard = () => {
 
   return (
 
-    <div className=" p-5 bg-white rounded-xl flex-col justify-start items-start inline-flex w-full">
-      <div className="self-stretch  flex-col justify-start items-start gap-3 flex">
-        <div className="self-stretch  flex-col justify-start items-start gap-1 flex">
-          <div className="flex justify-between w-full">
+    <div className=" p-5 bg-white rounded-xl flex-col justify-start items-start inline-flex w-full border border-[#E0E7FF]">
+      <div className="self-stretch  flex-col justify-start items-start gap-3 flex ">
+        <div className="self-stretch  flex-col justify-start items-start gap-1 flex ">
+          <div className="flex justify-between w-full ">
             <div className="self-stretch text-slate-900 text-base font-bold  leading-snug tracking-tight">Global Head of Supply Chain Finance
             </div>
             <button><img src={bookMarkIcon} alt="bookMark" /></button>

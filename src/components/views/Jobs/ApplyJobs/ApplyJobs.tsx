@@ -41,9 +41,9 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
     console.log("data", data);
     const selectedQuestionnaireAnswer: any = [];
     const selectedMultipleChoiceQuestionnaireAnswer: any = [];
-    data?.questionnaire?.filter((item: any) => item?.questionType !== 'multipleChoice' && selectedQuestionnaireAnswer?.push({ questionnaire: item?.question, answer: item?.numberChoice ? item?.numberChoice : item?.descriptive ? item?.descriptive : item?.singleChoice ? item?.singleChoice : undefined }));
+    data?.questionnaire?.filter((item: any) => item?.questionType !== 'MultipleChoice' && selectedQuestionnaireAnswer?.push({ questionnaire: item?.question, answer: item?.numberChoice ? item?.numberChoice : item?.descriptive ? item?.descriptive : item?.singleChoice ? item?.singleChoice : undefined }));
 
-    data?.questionnaire?.filter((item: any) => item?.questionType === 'multipleChoice' && item?.multipleChoice && item?.multipleChoice?.map((item1: any) => selectedMultipleChoiceQuestionnaireAnswer?.push({ multipleChoiceQuestionnaire: item1, answer: item1 })));
+    data?.questionnaire?.filter((item: any) => item?.questionType === 'MultipleChoice' && item?.multipleChoice && item?.multipleChoice?.map((item1: any) => selectedMultipleChoiceQuestionnaireAnswer?.push({ multipleChoiceQuestionnaire: item1, answer: item1 })));
 
     dispatch(applyJobs({
       "user": Cookies.get("userId"),
@@ -81,7 +81,7 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
             register={register}
             watch={watch}
           />}
-          {questionSet?.questionType === 'multipleChoice' && <QuestionnaireMultipleChoice
+          {questionSet?.questionType === 'MultipleChoice' && <QuestionnaireMultipleChoice
             index={index}
             watch={watch}
             register={register}
@@ -90,13 +90,13 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
             checkboxRequired={checkboxRequired}
             isCheckboxRequired={isCheckboxRequired}
           />}
-          {questionSet?.questionType === 'singleChoice' && <QuestionnaireSingleChoice
+          {questionSet?.questionType === 'SingleChoice' && <QuestionnaireSingleChoice
             index={index}
             watch={watch}
             register={register}
             questionSet={questionSet}
           />}
-          {questionSet?.questionType === 'NumberChoice' && <QuestionnaireNumberChoice
+          {questionSet?.questionType === 'Number' && <QuestionnaireNumberChoice
             index={index}
             questionSet={questionSet}
             register={register}
