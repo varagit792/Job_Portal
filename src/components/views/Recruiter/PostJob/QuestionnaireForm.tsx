@@ -152,11 +152,12 @@ const QuestionnaireForm = () => {
 
 
     if (buttonClick === 'Continue') {
-
       dispatch(formData({
-        questionnaire: data?.questionnaire
-      }));
+        questionnaire: formValues
+      }))
       navigate(postBack?.postURL);
+
+
     }
     if (buttonClick === 'Draft' && userType && userId) {
       let draft = true;
