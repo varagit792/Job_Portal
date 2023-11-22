@@ -1,10 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Dashboard from "../../../../assets/svg/Dashboard.svg";
 import Line from "../../../../assets/svg/Line.svg";
 import Chart from "../../../../assets/svg/Chart.svg";
 import Password from "../../../../assets/svg/Password.svg";
+import { useAppDispatch } from "../../../..";
+import { formDataReset } from "../../../../store/reducers/jobs/postJobs";
+import { resetJobDetail } from "../../../../store/reducers/jobs/GetJobDetails";
 
 const Banner = () => {
+
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const postAJob = () => {
+        dispatch(formDataReset())
+        dispatch(resetJobDetail())
+        navigate(`/postJob/jobDetails`);
+    }
+
     return (
         <div className="bg-gradient-to-r from-[#E0E7FF] from-10% to-[#a56aff] to-80% rounded-lg mb-16 grid grid-cols-5 gap-8 px-10 py-16 relative overflow-hidden">
             <div className="col-start-1 col-end-4 flex flex-col justify-center z-10">
@@ -12,7 +25,7 @@ const Banner = () => {
                     <span> Discover the <span className="text-[#818CF8]">best talent</span> & grow you company</span>
                 </h1>
                 <div className="flex justify-start items-center">
-                    <Link to="/postJob/jobDetails" className="bg-[#4F46E5] rounded-md py-3 text-white w-32 flex items-center justify-center mr-3 font-semibold"><span className="mr-3">New Job</span><span>+</span></Link>
+                    <button onClick={() => postAJob()} className="bg-[#4F46E5] rounded-md py-3 text-white w-32 flex items-center justify-center mr-3 font-semibold"><span className="mr-3">New Job</span><span>+</span></button>
                     <button className="rounded-md py-3 bg-white text-[#312E81] w-44 flex items-center justify-center font-semibold">Explore talent</button>
                 </div>
             </div>

@@ -210,6 +210,7 @@ const initialState: GetJobState = {
 export const getJobDetail = createAsyncThunk(
     "getJobDetail", async (data: any) => {
         try {
+
             const response = await axios.get(`${process.env.REACT_APP_API_PATH}/jobs/get/${data}`);
             if (response.status >= 200 && response.status < 300) {
                 console.log(response);
@@ -250,7 +251,11 @@ const getJobDetailSlice = createSlice({
             state.success = false;
             return state;
         },
+
+        resetJobDetail: (state) => {
+            state.jobDetail = job
+        }
     }
 });
 export default getJobDetailSlice.reducer;
-export const { clearGetJobDetailSlice } = getJobDetailSlice.actions;
+export const { clearGetJobDetailSlice, resetJobDetail } = getJobDetailSlice.actions;

@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { getJobApplicantCount } from "../../../utils/utils";
 import { formDataReset } from "../../../../store/reducers/jobs/postJobs";
+import { resetJobDetail } from "../../../../store/reducers/jobs/GetJobDetails";
 
 function classNames(...classes: any) {
     return classes.filter(Boolean).join(' ')
@@ -70,6 +71,7 @@ const RecruiterJobList = () => {
 
     const postAJob = () => {
         dispatch(formDataReset())
+        dispatch(resetJobDetail())
         navigate(`/postJob/jobDetails`);
     }
 

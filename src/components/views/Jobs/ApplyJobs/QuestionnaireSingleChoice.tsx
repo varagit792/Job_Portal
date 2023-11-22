@@ -25,7 +25,7 @@ function QuestionnaireSingleChoice({ index, questionSet, watch, register }: any)
                   maxLength={questionSet?.characterLimit}
                   {...register(`questionnaire.${index}.singleChoice`)}
                 />}
-                {option.option}{questionSet?.requiredCheck}
+                <label>{option.option}</label>
               </div>
             ))
           }
