@@ -70,23 +70,23 @@ const CompanyDescription = () => {
               <hr className="indigo-100 w-full"/>
               <div className="self-stretch flex-col justify-start items-start gap-5 flex">
                 <div className="self-stretch justify-start items-start gap-5 inline-flex">
-                  <div className="justify-start items-center gap-2 flex">
+                  {companyDetail?.employeeCount && <div className="justify-start items-center gap-2 flex">
                     <img src={employeeCount} alt="employeeCount" />
                     <span className="text-slate-500 text-base leading-snug tracking-tight">
                       {addLabel(companyDetail?.employeeCount)} employees
                     </span>
-                  </div>
+                  </div>}
                   {
                     companyDetail?.employeeCount && Object.keys(companyDetail?.location).length
                       ? <span className=" border-l h-5 border-gray-300 mx-3"></span> : <></>
                   }
-                  <div className="justify-start items-center gap-2 flex">
+                 { companyDetail?.location && Object.keys(companyDetail?.location).length ? <div className="justify-start items-center gap-2 flex">
                     <img src={locationIcon} alt="location" />
                     {companyDetail?.location?.map((loc: any) =>
                       <div className="text-slate-500 text-base leading-snug tracking-tight">
                         {loc?.title},
                       </div>)}
-                  </div>
+                  </div> : <></>}
 
                 </div>
                 <div>
@@ -111,7 +111,7 @@ const CompanyDescription = () => {
               <div className="self-stretch flex-col justify-start items-start gap-5 flex">
                 <div className="self-stretch text-slate-900 text-base font-bold  leading-snug tracking-tight">
                   About the company</div>
-                <span className="self-stretch text-slate-500 text-base leading-snug tracking-tight">
+                <span className="self-stretch text-slate-500 text-sm leading-snug tracking-tight">
                   {companyDetail?.companyDescription}
                 </span>
               </div>
@@ -172,19 +172,19 @@ const CompanyDescription = () => {
               <div className="grid grid-cols-2 gap-y-4 w-full">
                   <div>
                     <span className=" block text-gray-400">Type</span>
-                    <span>Private</span>
+                    <span className="text-sm">Private</span>
                   </div>
                   <div>
                   <span className=" block text-gray-400">Founded</span>
-                    <span>1865</span>
+                    <span className="text-sm">1865</span>
                   </div>
                   <div>
                   <span className=" block text-gray-400">Headquarters</span>
-                    <span>India</span>
+                    <span className="text-sm">India</span>
                   </div>
                   <div>
                   <span className=" block text-gray-400">Website</span>
-                    <span>www.ratnaglobaltech.com</span>
+                    <span className="text-sm">www.ratnaglobaltech.com</span>
                   </div>
                 </div>
               </div>

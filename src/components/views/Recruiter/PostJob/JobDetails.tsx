@@ -587,11 +587,12 @@ const JobDetails = () => {
                           <div className='w-full'>
                             <AutocompleteBox
                               control={control}
+                              defaultValue={postId && {label:"Open", value:1}}
                               isClearable={true}
                               fieldName={"jobStatus"}
                               dropdownData={jobStatus?.map(({ id, title }: any) => ({ value: id, label: title }))}
                               default={watch("jobStatus")}
-                              placeholder={"Select job expiry"}
+                              placeholder={"Select job status"}
                             />
                             {errors?.jobStatus && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobStatus?.label?.message}</p>}
                           </div>

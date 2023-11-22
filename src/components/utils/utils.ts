@@ -173,6 +173,9 @@ export const scrollToTop = () => {
 };
 
 export const addLabel = (limit: any) => {
+  if (!limit) {
+    return undefined;
+  }
   let label = '';
   let crores = Math.round(limit / 10000000);
   let lakhs = Math.round(limit / 100000);
