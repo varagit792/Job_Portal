@@ -23,37 +23,44 @@ import Questionnaire from '../components/views/Recruiter/PostJob/Questionnaire';
 import SignIn from '../components/views/SignIn';
 import EmailSuccessPage from '../components/views/EmailSuccessPage';
 import EmailAlreadyVerifiedPage from '../components/views/EmailAlreadyVerified';
+import { EmployerRoute, JobSeekerRoute } from './UserTypeRoute';
 
 const AllRoutes = () => {
-
     return (
         <Routes>
             <Route path="/" element={<PublicRoute />}>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/registration" element={<SignUp />} />
                 <Route path="/login" element={<SignIn />} />
-                <Route path="/emailSuccess" element={<EmailSuccessPage />} />
-                <Route path="/emailAlreadyVerified" element={<EmailAlreadyVerifiedPage/>} />
             </Route>
+
+            <Route path="/emailSuccess" element={<EmailSuccessPage />} />
+            <Route path="/emailAlreadyVerified" element={<EmailAlreadyVerifiedPage />} />
             <Route path="/allJobs" element={<AllJobs />} />
             <Route path="/allCompanies" element={<AllCompanies />} />
             <Route path="/allJobs/jobDescription/:id" element={<JobDescription />} />
             <Route path="/allCompanies/companyDescription/:id" element={<CompanyDescription />} />
+
             <Route path="/" element={<ProtectedRoute />}>
-                <Route path="/homePage" element={<HomePage />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/employerDashboard" element={<EmployerDashboard />} />
-                <Route path="/recruiterJobList" element={<RecruiterJobList />} />
-                <Route path="/postJob" >
-                    <Route path="jobDetails?/:postId" element={<JobDetails />} />
-                    <Route path="requirements/:postId?" element={<Requirements />} />
-                    <Route path="company/:postId?" element={<Company />} />
-                    <Route path="recruiter/:postId?" element={<Recruiter />} />
-                    <Route path="questionnaire/:postId?" element={<Questionnaire />} />
-                    <Route path="response/:postId?" element={<Response />} />
-                    <Route path="preview/:postId?" element={<Preview />} />
+                <Route path="/" element={<JobSeekerRoute />}>
+                    <Route path="/homePage" element={<HomePage />} />
+                    <Route path="/profile" element={<Profile />} />
+                </Route>
+                <Route path="/" element={<EmployerRoute />}>
+                    <Route path="/employerDashboard" element={<EmployerDashboard />} />
+                    <Route path="/recruiterJobList" element={<RecruiterJobList />} />
+                    <Route path="/postJob" >
+                        <Route path="jobDetails?/:postId" element={<JobDetails />} />
+                        <Route path="requirements/:postId?" element={<Requirements />} />
+                        <Route path="company/:postId?" element={<Company />} />
+                        <Route path="recruiter/:postId?" element={<Recruiter />} />
+                        <Route path="questionnaire/:postId?" element={<Questionnaire />} />
+                        <Route path="response/:postId?" element={<Response />} />
+                        <Route path="preview/:postId?" element={<Preview />} />
+                    </Route>
                 </Route>
             </Route>
+            
             <Route path="*" element={<NoMatch />} />
         </Routes>
     )
