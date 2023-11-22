@@ -7,9 +7,9 @@ import LocationIcon from '../../../assets/svg/LocationIcon.svg';
 import defaultPicture from '../../../../src/assets/jpeg/default_picture.jpg';
 import { useAppDispatch, useAppSelector } from '../../..';
 import { getUserData, clearGetUserDataSlice } from "../../../store/reducers/user/getUserDetails";
-import {  AiOutlineInfoCircle } from 'react-icons/ai'
+import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { BiChevronRight } from 'react-icons/bi';
-import  PopoverHover  from '../../commonComponents/PopoverHover';
+import PopoverHover from '../../commonComponents/PopoverHover';
 import ProfilePerformanceText from './ProfilePerformanceText';
 
 const ProfileLeftSection = ({ profileDashboard }: any) => {
@@ -59,8 +59,8 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
               <div>
                 <h1 className="mb-1 overflow-hidden whitespace-nowrap text-ellipsis ">{profileDashboard?.currentJobTitle?.title}
                 </h1>
-                <h1 className="overflow-hidden whitespace-nowrap text-ellipsis">@ {profileDashboard?.currentCompany?.title}
-                </h1>
+                {profileDashboard?.currentCompany?.title && <h1 className="overflow-hidden whitespace-nowrap text-ellipsis">@ {profileDashboard?.currentCompany?.title}
+                </h1>}
               </div>
             }
             <div className="mt-5 text-sm text-[#64748B]">
@@ -91,36 +91,36 @@ const ProfileLeftSection = ({ profileDashboard }: any) => {
             }
           </div>
           <div className="p-2">
-          <div className=" rounded-lg shadow-sm w-full overflow-visible py-2 px-4 border border-blue-200 bg-[#EEF2FF] bg-gradient-to-r from-[#EEF2FF] to-[#929397] rounded-t-lg">
-            <div className="flex flex-row  items-center gap-2">
-              <h1 className="font-bold text-sm mt-0 mb-1">Profile performance</h1>
-              <span className="h-full overflow-visible">
-                <PopoverHover
-                  title={<AiOutlineInfoCircle />}
-                  body={<ProfilePerformanceText />}
-                />
-             </span>
-            </div>
-            <div className="flex flex-row gap-4 justify-between ">
-              <div className="flex flex-col items-start text-start">
-                <span className="w-16 text-start">Search appearances</span>
-                <div className="flex flex-row items-center justify-center">
-                  <button className="text-blue-600 font-semibold mt-1">345</button>
-                  <button><BiChevronRight /></button>
-                </div>
+            <div className=" rounded-lg shadow-sm w-full overflow-visible py-2 px-4 border border-blue-200 bg-[#EEF2FF] bg-gradient-to-r from-[#EEF2FF] to-[#929397] rounded-t-lg">
+              <div className="flex flex-row  items-center gap-2">
+                <h1 className="font-bold text-sm mt-0 mb-1">Profile performance</h1>
+                <span className="h-full overflow-visible">
+                  <PopoverHover
+                    title={<AiOutlineInfoCircle />}
+                    body={<ProfilePerformanceText />}
+                  />
+                </span>
               </div>
-              <span className="border-l border-gray-400"></span>
-              <div className="flex flex-col">
-                <span className="w-16">Recruiter actions</span>
-                <div className="flex flex-row items-center justify-center">
-                  <button className="text-blue-600 font-semibold mt-1">25</button>
-                  <button className="items-center"><BiChevronRight /></button>
+              <div className="flex flex-row gap-4 justify-between ">
+                <div className="flex flex-col items-start text-start">
+                  <span className="w-16 text-start">Search appearances</span>
+                  <div className="flex flex-row items-center justify-center">
+                    <button className="text-blue-600 font-semibold mt-1">345</button>
+                    <button><BiChevronRight /></button>
+                  </div>
+                </div>
+                <span className="border-l border-gray-400"></span>
+                <div className="flex flex-col">
+                  <span className="w-16">Recruiter actions</span>
+                  <div className="flex flex-row items-center justify-center">
+                    <button className="text-blue-600 font-semibold mt-1">25</button>
+                    <button className="items-center"><BiChevronRight /></button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          </div>
-          
+
         </div>
 
       </div>

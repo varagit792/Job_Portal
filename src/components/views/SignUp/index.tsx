@@ -97,12 +97,17 @@ const SignUp = () => {
             if (Cookies.get('userType') === 'employer')
                 navigate('/employerDashboard');
         }
-    }, [success, navigate, dispatch])
+        if (errorMessage) {
+            alert(`Error occurred ${errorMessage}`);
+        }
+    }, [success, navigate, dispatch,errorMessage])
 
     const onSubmit = (data: IFormInputs) => {
         const companyArray = filterArray(companyList, parseInt(data?.companies?.value));
 
-
+        if (errorMessage) {
+            dispatch(clearRegisterSlice());
+        }
         dispatch(registerUser({
             name: data?.name,
             password: data?.password,
@@ -112,9 +117,7 @@ const SignUp = () => {
             userType: data?.role && data?.role,
             companies: data?.companies && companyArray[0]
         }));
-        if (errorMessage) {
-            alert(`Error occured ${errorMessage}`);
-        }
+
     };
 
     const googleAuth = () => {

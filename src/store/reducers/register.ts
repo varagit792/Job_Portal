@@ -9,7 +9,7 @@ interface User {
     mobileNumber: string,
     userType: string,
     workStatus?: boolean
-    companies:any
+    companies: any
 }
 export interface registerUserState {
     loading: boolean;
@@ -40,7 +40,7 @@ export const registerUser = createAsyncThunk(
                     mobileNumber: data.mobileNumber,
                     userType: data.userType,
                     workStatus: data.workStatus,
-                    companies:data.companies
+                    companies: data.companies
                 }
             );
 
@@ -84,6 +84,7 @@ const registerSlice = createSlice({
             state.loading = false;
             state.error = false;
             state.success = false;
+            state.errorMessage = ""
             return state;
         },
     }
