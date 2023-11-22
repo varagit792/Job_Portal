@@ -252,6 +252,8 @@ const updatePostJobUpdateSlice = createSlice({
 
     formDataReset: (state) => {
       state.formData = {}
+
+
     }
   }
 });
