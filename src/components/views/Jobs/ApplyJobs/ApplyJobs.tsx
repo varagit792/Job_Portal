@@ -43,7 +43,7 @@ const ApplyJobs = ({ questionnaire, closeDialog }: any) => {
     const selectedMultipleChoiceQuestionnaireAnswer: any = [];
     data?.questionnaire?.filter((item: any) => item?.questionType !== 'MultipleChoice' && selectedQuestionnaireAnswer?.push({ questionnaire: item?.question, answer: item?.numberChoice ? item?.numberChoice : item?.descriptive ? item?.descriptive : item?.singleChoice ? item?.singleChoice : undefined }));
 
-    data?.questionnaire?.filter((item: any) => item?.questionType === 'MultipleChoice' && item?.multipleChoice && item?.multipleChoice?.map((item1: any) => selectedMultipleChoiceQuestionnaireAnswer?.push({ multipleChoiceQuestionnaire: item1, answer: item1 })));
+    data?.questionnaire?.filter((item: any) => item?.questionType === 'MultipleChoice' && Array.isArray(item?.multipleChoice) ? item?.multipleChoice?.map((item1: any) => selectedMultipleChoiceQuestionnaireAnswer?.push({ multipleChoiceQuestionnaire: item1, answer: item1 })) : selectedMultipleChoiceQuestionnaireAnswer?.push({ multipleChoiceQuestionnaire: item?.multipleChoice, answer: item?.multipleChoice }));
 
     dispatch(applyJobs({
       "user": Cookies.get("userId"),
