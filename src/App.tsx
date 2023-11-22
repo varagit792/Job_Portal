@@ -14,9 +14,9 @@ const App = () => {
 
   return (
     <div className="h-screen">
-      {(location?.pathname !== "/registration" && location?.pathname !== "/login") && <Header />}
+      {(location?.pathname !== "/registration" && location?.pathname !== "/login") && (location?.pathname !== "/emailAlreadyVerified") && (location?.pathname !== "/emailSuccess") &&<Header />}
       <AllRoutes />
-      {(location?.pathname !== "/registration" && location?.pathname !== "/login") && <Footer />}
+      {(location?.pathname !== "/registration" && location?.pathname !== "/login") && (location?.pathname !== "/emailAlreadyVerified") && (location?.pathname !== "/emailSuccess") &&<Footer />}
     </div>
   );
 }
