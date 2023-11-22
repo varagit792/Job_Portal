@@ -31,7 +31,8 @@ const QuestionnaireMultipleChoice = ({ index, questionSet, watch, register, erro
                   type="checkbox"
                   maxLength={questionSet?.characterLimit}
                   {...register(`questionnaire.${index}.multipleChoice`)}
-                />}{option.option}
+                />}
+                <label>{option.option}</label>
               </div>
             ))
           }
