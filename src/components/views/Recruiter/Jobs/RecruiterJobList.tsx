@@ -6,8 +6,9 @@ import { getEmployerCompanyList } from "../../../../store/reducers/companies/emp
 import { formatDistanceToNow, format, add, differenceInMilliseconds, parseISO, differenceInDays, isAfter, getMonth } from 'date-fns';
 import NoRecords from "../../../commonComponents/NoRecords";
 import Cookies from "js-cookie";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getJobApplicantCount } from "../../../utils/utils";
+import { formDataReset } from "../../../../store/reducers/jobs/postJobs";
 
 function classNames(...classes: any) {
     return classes.filter(Boolean).join(' ')
@@ -15,6 +16,7 @@ function classNames(...classes: any) {
 
 const RecruiterJobList = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { success,
         companyDetails
     } = useAppSelector((state) => state.getEmployerCompanyList);
@@ -50,14 +52,25 @@ const RecruiterJobList = () => {
                     All: companyDetails[0]?.jobs,
                 }
             });
+
+            let applicantCountArray: any = [];
+            companyDetails[0]?.jobs?.map((item: any) => {
+                getJobApplicantCount(item?.id).then((count) => {
+                    applicantCountArray.push({ jobId: item?.id, count: count });
+                    setApplicantCount([...applicantCount, ...applicantCountArray])
+                })
+            })
+
         }
     }, [success]);
 
-    const countApplicant = async (id: number) => {
-        let count: any = 0;
-        count = await getJobApplicantCount(id);
-        let applicantCounts: any = [...applicantCount, { jobId: id, count: count }]
-        setApplicantCount([...applicantCount, { jobId: id, count: count }].filter((ele, ind) => ind === applicantCounts.findIndex((elem: { jobId: number; }) => elem.jobId === ele.jobId && elem.jobId !== 0)))
+    const handleClickEditJob = (postId: number) => {
+        navigate(`/postJob/jobDetails/${postId}`);
+    }
+
+    const postAJob = () => {
+        dispatch(formDataReset())
+        navigate(`/postJob/jobDetails`);
     }
 
     return (
@@ -66,11 +79,11 @@ const RecruiterJobList = () => {
             <div className="w-full px-32 py-8 bg-[#F8FAFC]">
                 <div className="flex justify-between items-center mb-8">
                     <div>
-                        <h1 className="text-lg font-bold">All Job Posting</h1>
+                        <h1 className="text-lg font-bold">All Job Listing</h1>
                         <p className="text-[#64748B]">Showing list of all the jobs posted</p>
                     </div>
                     <div>
-                        <Link to="/postJob/jobDetails" className=" text-white bg-[#4F46E5] rounded-lg px-6 py-2 font-semibold">Post a Job</Link>
+                        <button onClick={() => postAJob()} className=" text-white bg-[#4F46E5] rounded-lg px-6 py-2 font-semibold">Post a Job</button>
                     </div>
                 </div>
                 <Tab.Group>
@@ -102,6 +115,7 @@ const RecruiterJobList = () => {
                                                             <th className="py-3 px-6 text-left">Posted</th>
                                                             <th className="py-3 px-6 text-left">Applicants</th>
                                                             <th className="py-3 px-6 text-left">Status</th>
+
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -131,9 +145,9 @@ const RecruiterJobList = () => {
 
                                                             return (
                                                                 <>
-                                                                    <tr className={currentItems?.length - 1 !== index ? "border-b-2 border-[#F1F5F9]" : ""}>
+                                                                    <tr className={currentItems?.length - 1 !== index ? "border-b-2 border-[#F1F5F9]" : ""} >
                                                                         <td className="py-3 px-6 text-left whitespace-nowrap">
-                                                                            <div>{post?.title}</div>
+                                                                            <div className="cursor-pointer" onClick={() => handleClickEditJob(post?.id)}>{post?.title}</div>
                                                                             <div className="text-[#64748B] text-xs">
                                                                                 <span>Full-time</span>
                                                                                 <span className=" border-l border-[#E0E7FF] h-1 mx-2"></span>
@@ -147,14 +161,14 @@ const RecruiterJobList = () => {
                                                                             {formatDistanceToNow(new Date(post?.createdAt), { addSuffix: true })}
                                                                         </td>
                                                                         <td className="py-3 px-6 text-left" >
-                                                                            {applicantCount.filter(item => item.jobId === post?.id)[0]?.count ? applicantCount.filter(item => item.jobId === post?.id)[0]?.count : <button onClick={() => countApplicant(post?.id)}>View</button>}
+                                                                            {applicantCount.filter(item => item.jobId === post?.id)[0]?.count}
                                                                         </td>
                                                                         <td className="py-3 px-6 text-left">
                                                                             {post?.jobStatus?.title === "Open" && < button className="bg-[#F0FFF5] text-[#16A34A] rounded px-3 py-1 flex justify-center items-center">{post?.jobStatus?.title}</button>}
-                                                                            {/* {post?.jobStatus?.title === "Pending" && < button className="bg-[#FFFAF2] text-[#EA580C] rounded px-3 py-1 flex justify-center items-center">{post?.jobStatus?.title}</button>} */}
                                                                             {post?.jobStatus?.title === "Close" && < button className="bg-[#fadee3] text-[#ED0A34] rounded px-3 py-1 flex justify-center items-center">{post?.jobStatus?.title}</button>}
                                                                         </td>
                                                                     </tr >
+
                                                                 </>
                                                             )
                                                         })

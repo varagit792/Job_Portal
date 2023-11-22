@@ -58,6 +58,7 @@ const ProfileSummary = () => {
                 {profileDashboard?.profileSummary}
             </span>
             <Modal
+                title={"Profile summary"}
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 modalBody={

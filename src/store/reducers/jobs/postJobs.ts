@@ -249,7 +249,11 @@ const updatePostJobUpdateSlice = createSlice({
     formData: (state, action) => {
       state.formData = { ...state.formData, ...action.payload };
     },
+
+    formDataReset: (state) => {
+      state.formData = {}
+    }
   }
 });
 export default updatePostJobUpdateSlice.reducer;
-export const { clearUpdatePostJobUpdateSlice, formData } = updatePostJobUpdateSlice.actions;
+export const { clearUpdatePostJobUpdateSlice, formData, formDataReset } = updatePostJobUpdateSlice.actions;

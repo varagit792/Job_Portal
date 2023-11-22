@@ -208,8 +208,7 @@ const ProfileBasicDetailsForm: FC<Parameters> = ({ closeDialog, profileDashboard
 
   return (
     <div>
-      <h1 className="text-xl font-semibold mr-6 ml-6">Basic details</h1>
-      <form action="" className="m-6" id="my-form" onSubmit={handleSubmit(onSubmit)}>
+      <form action="" id="my-form" onSubmit={handleSubmit(onSubmit)}>
         <div>
           {/* <label htmlFor="name" className="font-medium">Name</label> */}
           <h1 className="font-medium mb-2 mt-4">Name</h1>

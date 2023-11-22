@@ -154,9 +154,8 @@ export default function ({ closeDialog, educationDetails, selectedEducation, isE
   };
   
   return (
-    <div>
+    <div className="mt-2">
       <form id="my-form" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="text-lg font-medium text-gray-900 mb-2">Add Education</h1>
         <div className="col-span-full mb-4">
           <label htmlFor="education" className="block text-sm font-medium leading-6 text-gray-900">Education</label>
           <div className="mt-1">

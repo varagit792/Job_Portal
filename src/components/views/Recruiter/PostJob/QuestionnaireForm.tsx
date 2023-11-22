@@ -19,6 +19,14 @@ import { formData, postQuestionnaireDraft, postQuestionnaireSave } from '../../.
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 
+
+const questionTypeOptions = [
+  { value: 'Descriptive', label: 'Descriptive' },
+  { value: 'Number', label: 'Number' },
+  { value: 'SingleChoice', label: 'SingleChoice' },
+  { value: 'MultipleChoice', label: 'MultipleChoice' }
+];
+
 const QuestionnaireForm = () => {
 
   const dispatch = useAppDispatch();
@@ -55,7 +63,8 @@ const QuestionnaireForm = () => {
   const selectedJobQuestionnaire: any = [];
 
   if (Object.keys(jobDetail)?.length !== 0) {
-    if (!jobDetail?.questionnaire || (formValues?.length >= jobDetail?.questionnaire?.length)) {
+    if (!jobDetail?.questionnaire || (formValues?.length > jobDetail?.questionnaire?.length)) {
+
       formValues?.filter((item: any) => item && selectedJobQuestionnaire.push({
         question: item?.question,
         questionType: { label: item?.questionType?.label, value: item?.questionType?.value },
@@ -65,7 +74,9 @@ const QuestionnaireForm = () => {
         singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle?.option !== ''),
         multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple?.option !== '')
       }));
+
     } else {
+
       jobDetail?.questionnaire?.filter((item: any) => item && selectedJobQuestionnaire?.push({
         question: item?.question,
         questionType: { label: item?.questionType, value: item?.questionType },
@@ -75,10 +86,13 @@ const QuestionnaireForm = () => {
         singleSelection: item?.singleSelection?.filter((itemSingle: any) => itemSingle?.option !== ''),
         multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple?.option !== '')
       }));
+
     }
 
   } else {
-    if (!jobDetailData?.questionnaire || (formValues?.length >= jobDetailData?.questionnaire?.length)) {
+
+    if (!jobDetailData?.questionnaire || (formValues?.length > jobDetailData?.questionnaire?.length)) {
+
       formValues?.filter((item: any) => item && selectedJobQuestionnaire.push({
         question: item?.question,
         questionType: { label: item?.questionType?.label, value: item?.questionType?.value },
@@ -89,6 +103,7 @@ const QuestionnaireForm = () => {
         multipleSelection: item?.multipleSelection?.filter((itemMultiple: any) => itemMultiple?.option !== '')
       }));
     } else {
+
       jobDetailData?.questionnaire?.filter((item: any) => item && selectedJobQuestionnaire.push({
         question: item?.question,
         questionType: { label: item?.questionType?.label, value: item?.questionType?.value },
@@ -103,7 +118,7 @@ const QuestionnaireForm = () => {
 
   useEffect(() => {
     if (jobDetail?.questionnaire && Object.keys(jobDetail?.questionnaire)?.length !== 0) {
-      if (!jobDetail?.questionnaire || (formValues?.length >= jobDetail?.questionnaire?.length)) {
+      if (!jobDetail?.questionnaire || (formValues?.length > jobDetail?.questionnaire?.length)) {
         formValues && setValue('questionnaire', selectedJobQuestionnaire);
       } else {
         jobDetail?.questionnaire && setValue('questionnaire', selectedJobQuestionnaire);
@@ -120,20 +135,23 @@ const QuestionnaireForm = () => {
       setQuestion(newQuestion);
 
     } else {
-      if (!jobDetailData?.questionnaire || (formValues?.length >= jobDetailData?.questionnaire?.length)) {
+
+      if (!jobDetailData?.questionnaire || (formValues?.length > jobDetailData?.questionnaire?.length)) {
         formValues && setValue('questionnaire', selectedJobQuestionnaire);
       } else {
         jobDetailData?.questionnaire && setValue('questionnaire', selectedJobQuestionnaire);
       }
+      setFormValues(selectedJobQuestionnaire);
     }
 
-  }, [setValue, jobDetail, jobDetailData, formValues]);
+  }, [setValue, setFormValues, jobDetail, jobDetailData]);
 
   const onSubmit = (data: IFormInputsQuestionnaire | IFormInputsQuestionnaireDraft | IFormInputsQuestionnaireSave) => {
 
     const updatePostId = postId ? Number(postId) : null;
 
     if (buttonClick === 'Continue') {
+
       dispatch(formData({
         questionnaire: data?.questionnaire
       }));
@@ -274,12 +292,7 @@ const QuestionnaireForm = () => {
     }
   }
 
-  const options = [
-    { value: 'Descriptive', label: 'Descriptive' },
-    { value: 'NumberChoice', label: 'Number' },
-    { value: 'singleChoice', label: 'Single Choice' },
-    { value: 'multipleChoice', label: 'Multiple Choice' }
-  ];
+
 
   const handleDoneStatusChange = (i: any, val: boolean) => {
     let newDoneStatus = [...doneStatus];
@@ -334,10 +347,11 @@ const QuestionnaireForm = () => {
   }
 
   let addFormSingleFields = (e: any, i: any, val: any) => {
-    let singleOption = formValues
     let newSingle = [...formValues];
 
     newSingle[i].singleSelection[formValues[i]?.singleSelection?.length || 0] = { option: val };
+    setValue('questionnaire', newSingle);
+
     setFormValues(newSingle);
 
   }
@@ -352,17 +366,20 @@ const QuestionnaireForm = () => {
     let newFormValues = [...formValues];
     newFormValues[index].singleSelection.splice(parseInt(innerIndex), 1);
     setFormValues(newFormValues);
+    setValue("questionnaire", newFormValues)
   }
 
   let removeMultipleFormFields = (index: any, innerIndex: any) => {
     let newFormValues = [...formValues];
     newFormValues[index].multipleSelection.splice(parseInt(innerIndex), 1);
-    setFormValues(newFormValues)
+    setFormValues(newFormValues);
+    setValue("questionnaire", newFormValues)
   }
 
   let addFormMultipleFields = (i: any, val: any) => {
     let newMultiple = [...formValues];
     newMultiple[i].multipleSelection[formValues[i]?.multipleSelection?.length || 0] = { option: val };
+    setValue('questionnaire', newMultiple);
     setFormValues(newMultiple);
   }
 
@@ -378,6 +395,7 @@ const QuestionnaireForm = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
+
 
   return (
     <>
@@ -421,9 +439,9 @@ const QuestionnaireForm = () => {
                           isClearable={true}
                           isSearchable={true}
                           className="text-sm"
-                          options={options}
+                          options={questionTypeOptions}
                           onChange={(e: any) => handleQuestionTypeChange(index, e, e.value, e.label)}
-                          defaultValue={watch(`questionnaire.${index}.questionType`)}
+                          value={watch(`questionnaire.${index}.questionType`)}
                           placeholder={"Select question Type"}
                         />
                       </div>
@@ -441,7 +459,7 @@ const QuestionnaireForm = () => {
                     watch={watch}
                   />
                 }
-                {question[index] === "multipleChoice" && doneStatus[index] &&
+                {question[index] === "MultipleChoice" && doneStatus[index] &&
                   <MultipleChoice
                     index={index}
                     register={register}
@@ -453,7 +471,7 @@ const QuestionnaireForm = () => {
                     watch={watch}
                   />
                 }
-                {question[index] === "singleChoice" && doneStatus[index] &&
+                {question[index] === "SingleChoice" && doneStatus[index] &&
                   <SingleChoice
                     index={index}
                     register={register}
@@ -466,7 +484,7 @@ const QuestionnaireForm = () => {
                     watch={watch}
                   />
                 }
-                {question[index] === "NumberChoice" && doneStatus[index] &&
+                {question[index] === "Number" && doneStatus[index] &&
                   <NumberChoice
                     index={index}
                     register={register}

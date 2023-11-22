@@ -173,6 +173,7 @@ const ProfileBasicDetails = () => {
         </div>
       </div>
       {isOpen && <Modal
+        title={"Basic details"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         modalBody={
