@@ -6,7 +6,7 @@ const CityItem = ({ item }: any) => {
   
   return (
     <>
-      {item?.jobsLocation?.map((loc: any) => loc?.location?.title && <div className="p-4 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg flex flex-col justify-center items-start">
+      {item?.jobsLocation?.slice(0,2)?.map((loc: any) => loc?.location?.title && <div className="p-4 bg-[#FFF] rounded-xl shadow-sm hover:shadow-lg flex flex-col justify-center items-start">
         <div className="flex justify-between items-center mb-3 text-sm font-semibold w-full">
           <span>
             <span>{loc?.location?.title}, India </span>
