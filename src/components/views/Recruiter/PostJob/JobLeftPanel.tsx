@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TickRecruiter from '../../../commonComponents/TickRecruiter'
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-const JobLeftPanel = ({ jobTitle }: any) => {
+const JobLeftPanel = ({ jobTitle, status }: any) => {
   const { postId } = useParams();
   const navigate = useNavigate();
   const [postBack, setPostBack] = useState({ jobDetailsURL: "", requirementsURL: "", companyURL: "", recruiterURL: "", questionnaireURL: "", responseURL: "", previewURL: "" });
@@ -65,7 +65,7 @@ const JobLeftPanel = ({ jobTitle }: any) => {
   return (
     <>
       <div className="border border-[#E0E7FF] rounded-lg bg-white px-10 py-10 sticky top-[13%]">
-        <div className=" text-black text-xl font-medium mb-4  leading-normal tracking-tight">{jobTitle ? jobTitle : "Job Title"}</div>
+        <div className=" text-black text-xl font-medium mb-4  leading-normal tracking-tight">{jobTitle ? jobTitle + ' - ' +  status?.title : "Job Title"}</div>
         <div className=" text-slate-500 text-base font-normal  leading-snug tracking-tight">Please enter the details precisely to get best talent for the job</div>
 
         <hr className="my-10" />

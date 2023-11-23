@@ -81,8 +81,8 @@ const RecruiterJobList = () => {
             <div className="w-full px-32 py-8 bg-[#F8FAFC]">
                 <div className="flex justify-between items-center mb-8">
                     <div>
-                        <h1 className="text-lg font-bold">All Job Listing</h1>
-                        <p className="text-[#64748B]">Showing list of all the jobs posted</p>
+                        <h1 className="text-lg font-bold">Job Listing</h1>
+                        <p className="text-[#64748B]">Showing the list of jobs posted</p>
                     </div>
                     <div>
                         <button onClick={() => postAJob()} className=" text-white bg-[#4F46E5] rounded-lg px-6 py-2 font-semibold">Post a Job</button>
@@ -149,7 +149,7 @@ const RecruiterJobList = () => {
                                                                 <>
                                                                     <tr className={currentItems?.length - 1 !== index ? "border-b-2 border-[#F1F5F9]" : ""} >
                                                                         <td className="py-3 px-6 text-left whitespace-nowrap">
-                                                                            <div className="cursor-pointer" onClick={() => handleClickEditJob(post?.id)}>{post?.title}</div>
+                                                                            <div className="cursor-pointer text-[#4F46E5]" onClick={() => handleClickEditJob(post?.id)}>{post?.title}</div>
                                                                             <div className="text-[#64748B] text-xs">
                                                                                 <span>Full-time</span>
                                                                                 <span className=" border-l border-[#E0E7FF] h-1 mx-2"></span>

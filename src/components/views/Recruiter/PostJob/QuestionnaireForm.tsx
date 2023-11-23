@@ -427,7 +427,7 @@ const QuestionnaireForm = () => {
                     <div className=" flex-col justify-start items-start gap-2 ">
                       <div className='w-full'>
                         <input defaultValue={watch(`questionnaire.${index}.question`)}
-                          className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5'
+                          className='w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5 text-sm'
                           placeholder={"Please enter question"}
                           {...register(`questionnaire.${index}.question`)}
                           onChange={e => handlesChange(index, e, e.target.value, "question")} />
