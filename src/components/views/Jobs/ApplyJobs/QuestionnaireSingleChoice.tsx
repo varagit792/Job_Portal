@@ -1,34 +1,40 @@
 import React from 'react';
 
-function QuestionnaireSingleChoice({ index, questionSet, watch, register }: any) {
+function QuestionnaireSingleChoice({ index, questionSet, register }: any) {
 
   return (
     <>
-      <div className="mb-4" key={`QuestionnaireSingleChoice${index}`}>
-        <div className="block text-sm font-medium leading-6 text-gray-900 ">{index + 1}. {questionSet?.question}</div>
-        <div className="mt-1 grid-cols-3 flex ">
-          {
-            questionSet?.singleSelection?.map((option: any, key: any) => (
-              <div key={key} className='mr-8'>
-                {questionSet?.requiredCheck && <input
-                  value={option.id}
-                  className="mr-2 w-4 h-4"
-                  type="radio"
-                  maxLength={questionSet?.characterLimit}
-                  required={key === 1 && true}
-                  {...register(`questionnaire.${index}.singleChoice`)}
-                />}
-                {!questionSet?.requiredCheck && <input
-                  value={option.id}
-                  className="mr-2 w-4 h-4"
-                  type="radio"
-                  maxLength={questionSet?.characterLimit}
-                  {...register(`questionnaire.${index}.singleChoice`)}
-                />}
-                <label>{option.option}</label>
-              </div>
-            ))
-          }
+      <hr className="w-full my-10" />
+      <div className="flex flex-col">
+        <p><span className="mr-2">{index + 1}/10</span><span className="font-bold mr-2">{questionSet?.question}</span></p>
+        <div className="mt-3 flex flex-col gap-2">
+          {questionSet?.singleSelection?.map((option: any, key: any) => (
+            <>
+              {questionSet?.requiredCheck &&
+                <div>
+                  <input
+                    value={option.id}
+                    type="radio"
+                    maxLength={questionSet?.characterLimit}
+                    required={key === 1 && true}
+                    {...register(`questionnaire.${index}.singleChoice`)}
+                  />
+                  <label className="ml-2">{option.option}</label>
+                </div>
+              }
+              {!questionSet?.requiredCheck &&
+                <div>
+                  <input
+                    value={option.id}
+                    type="radio"
+                    maxLength={questionSet?.characterLimit}
+                    {...register(`questionnaire.${index}.singleChoice`)}
+                  />
+                  <label className="ml-2">{option.option}</label>
+                </div>
+              }
+            </>
+          ))}
         </div>
       </div>
     </>

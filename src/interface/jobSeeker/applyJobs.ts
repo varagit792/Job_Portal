@@ -10,6 +10,7 @@ export interface IFormApplyJobsWithoutQuestionnaire {
 
 }
 
+
 export interface IFormApplyJobsPost {
 
 }
