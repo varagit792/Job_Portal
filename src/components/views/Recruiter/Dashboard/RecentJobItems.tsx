@@ -27,13 +27,13 @@ const RecentJobItems = ({ item }: any) => {
                 <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" />
                 {/* <span className="ml-2">Hyderabad</span> */}
                 {
-                    item?.jobsLocation?.map((loc:any) => <span className="ml-2">{ loc?.location?.title}, </span>)
+                    item?.jobsLocation?.map((loc:any) => <span className="ml-2 overflow-hidden whitespace-nowrap text-ellipsis">{ loc?.location?.title}, </span>)
                 }
             </div>
             <div className="flex justify-between items-center">
                 <div className="flex justify-start items-center">
-                    <button className="bg-[#FFFAF2] text-sm text-[#EA580C] px-2 py-1 rounded-lg">{item?.employmentType?.title}</button>
-                    <button className="bg-[#F0FFF5] text-sm text-[#16A34A] px-2 py-1 rounded-lg ml-2">{ item?.workMode?.title}</button>
+                    <button className="bg-[#FFFAF2] text-xs text-[#EA580C] px-2 py-1 rounded-lg">{item?.employmentType?.title}</button>
+                    <button className="bg-[#F0FFF5] text-xs text-[#16A34A] px-2 py-1 rounded-lg ml-2">{ item?.workMode?.title}</button>
                 </div>
                 <div className="flex justify-start items-center">
                     <button className="text-gray-500">

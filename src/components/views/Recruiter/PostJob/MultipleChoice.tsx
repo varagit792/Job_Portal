@@ -13,7 +13,7 @@ const MultipleChoice = ({ index, register, watch, handleDoneStatusChange, doneSt
             element.option && <div className="w-full h-12 border-b border-slate-200 justify-start items-center inline-flex" key={innerMultipleIndex}>
               <div className="grow shrink basis-0 h-6 justify-start items-center gap-2 flex">
                 <div className="w-6 h-6 relative"><img src={checkbox} /></div>
-                <div className="text-black text-base font-normal leading-snug tracking-tight">{element.option}</div>
+                <div className="text-black font-normal leading-snug tracking-tight text-sm">{element.option}</div>
               </div>
               <div className="justify-start items-center flex">
                 <div className="w-6 h-6 bg-slate-100 rounded justify-center items-center flex cursor-pointer" onClick={() => removeMultipleFormFields(index, innerMultipleIndex)}><img src={close} /></div>

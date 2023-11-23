@@ -349,7 +349,7 @@ const JobDetails = () => {
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
         <div className="grid grid-cols-9 gap-4">
           <div className="col-start-1 col-end-4">
-            <JobLeftPanel jobTitle={jobTitle} />
+            <JobLeftPanel jobTitle={jobTitle} status={jobDetail?.jobStatus} />
           </div>
           <div className="col-start-4 col-end-11">
             <div id="jobDetails" className="scroll-mt-24 scroll-smooth">
