@@ -38,7 +38,7 @@ const Footer = () => {
                     </div>
                     <div className="flex flex-col items-start justify-between">
                         <h1 className="text-4xl font-bold  text-white mb-5">
-                            <p><span className="text-[#818CF8]">Subscribe</span>to get latest updates</p>
+                            <p><span className="text-[#818CF8]"> Subscribe </span>to get latest updates</p>
                         </h1>
                         <div className="flex items-center h-10 w-full">
                             <input type="text" className=" w-[90%] h-full rounded-l-lg" />

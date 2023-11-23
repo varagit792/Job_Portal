@@ -7,7 +7,7 @@ const SingleChoiceField = ({ index, watch, register, addFormSingleFields }: any)
       <div className="w-full h-12 border-b border-slate-200 justify-start items-center inline-flex">
         <div className="grow shrink basis-0 h-6 justify-start items-center gap-2 flex">
           <div className="w-6 h-6 justify-center items-center flex"><img src={smallCircle} /></div>
-          <div className="text-slate-400 text-base font-normal leading-snug tracking-tight">
+          <div className="text-slate-400 font-normal leading-snug tracking-tight text-sm">
             <input
               className="w-full border text-sm border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5"
               placeholder={"Option"}

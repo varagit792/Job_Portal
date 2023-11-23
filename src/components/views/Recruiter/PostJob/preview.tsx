@@ -290,7 +290,7 @@ const Preview = () => {
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
         <div className="grid grid-cols-9 gap-4">
           <div className="col-start-1 col-end-4">
-            <JobLeftPanel jobTitle={jobTitle} />
+            <JobLeftPanel jobTitle={jobTitle} status={jobDetail?.jobStatus} />
           </div>
           <div className="col-start-4 col-end-11">
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -324,7 +324,7 @@ const Preview = () => {
                           <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{jobDetailData?.jobsType?.label}</div>
                         </div>
                         <div className="grow shrink basis-0 flex-col justify-start  gap-2 inline-flex">
-                          <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Roll Category</div>
+                          <div className="self-stretch text-slate-500 text-base font-normal leading-snug tracking-tight">Role Category</div>
                           <div className="self-stretch text-black text-base font-normal leading-snug tracking-tight">{jobDetailData?.roleCategory?.label}</div>
                         </div>
                       </div>
@@ -683,10 +683,6 @@ const Preview = () => {
                 <div className="w-full justify-start  gap-5 inline-flex">
 
                   {isNaN(Number(postId)) && <button name='Discard' className="text-indigo-900 font-medium leading-normal tracking-tight grow shrink basis-0 h-14 px-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex cursor-pointer" onClick={() => returnBack(postBack.DiscardURL)}>Discard</button>}
-
-                  {/* {!isNaN(Number(postId)) &&
-                    <button name='Save' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex" onClick={() => setButtonClick('Save')}>Save</button>
-                  } */}
 
                   {isNaN(Number(postId)) &&
                     <button name='SaveAsDraft' className="text-indigo-900 font-medium leading-normal tracking-tight cursor-pointer grow shrink basis-0 h-14 pl-3 pr-6 py-3 bg-indigo-50 rounded-lg justify-center items-center gap-3 flex " onClick={() => setButtonClick('Draft')}>Save as Draft</button>

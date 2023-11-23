@@ -24,7 +24,7 @@ interface IFormInputs {
     mobileNumber: string;
     workStatus: boolean;
     role: string;
-    companies:any
+    companies: any
 }
 
 const SignUpSchema = yup
@@ -52,7 +52,7 @@ const SignUpSchema = yup
         role: yup.string().label("User Type").required(),
         companies: yup.object().when(
             'role', {
-                is: 'employer',
+            is: 'employer',
             then: (schema) => schema.required("Please select current company"),
             otherwise: (schema) => schema.notRequired(),
         }),
@@ -199,85 +199,88 @@ const SignUp = () => {
                                         </div>
                                     </div>
                                 </div>
-                                {((isContinueWithEmail && watch("role") === "jobSeeker") || watch("role") === "employer") && (<> <div>
-                                    <label className="block text-sm font-semibold mb-2">
-                                        Full name
-                                    </label>
-                                    <input className="shadow-sm appearance-none border rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        type="text"
-                                        placeholder="What is your name?"
-                                        {...register("name")}
-                                        required
-                                    />
-                                    {errors?.name && <p className="font-normal text-xs text-red-500">{errors?.name?.message}</p>}
-                                </div>
-                                    <div>
-                                        <label className="block text-sm font-semibold mb-2">
-                                            Email
-                                        </label>
-                                        <input className="shadow-sm appearance-none border rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            type="email"
-                                            placeholder="Tell us your Email ID"
-                                            {...register("email")}
-                                            required
-                                        />
-                                        {errors?.email && <p className="font-normal text-xs text-red-500">{errors?.email?.message}</p>}
-                                        {/* {!errors?.email && <span className="font-normal text-xs text-gray-500">We'll send you relevant jobs in your mail</span>} */}
-                                    </div>
-                                    {watch("role") === "employer" && <div>
-                                        <label className="block text-sm font-semibold mb-2">
-                                           Company
-                                        </label>
-                                        <div className="appearance-none border rounded-xl w-full text-gray-600 leading-tight shadow-sm">
-                                            <Controller
-                                                control={control}
-                                                name="companies"
-                                                render={({ field }) => (
-                                                    <Select className="shadow-sm appearance-none border rounded-xl w-full  text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
-                                                        {...field}
-                                                        isClearable
-                                                        placeholder="Select company"
-                                                        options={companyList?.map(({ id, title }: any) => ({ value: id, label: title }))}
-                                                        defaultValue={watch("companies")}
-                                                    />
-                                                )}
-                                            />
-                                        </div>
-                                        {errors?.companies && <p className="font-normal text-xs text-red-500">Please select your Company</p>}
-                                        {/* {!errors?.email && <span className="font-normal text-xs text-gray-500">We'll send you relevant jobs in your mail</span>} */}
-                                    </div> }
-                                    <div className="grid grid-cols-2 gap-5">
-                                        <div className="">
+                                {((isContinueWithEmail && watch("role") === "jobSeeker") || watch("role") === "employer") && (
+                                    <>
+                                        <div>
                                             <label className="block text-sm font-semibold mb-2">
-                                                Password
+                                                Full name
                                             </label>
                                             <input className="shadow-sm appearance-none border rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                type="password"
-                                                placeholder="Create a password for your account"
-                                                {...register("password")}
+                                                type="text"
+                                                placeholder="What is your name?"
+                                                {...register("name")}
                                                 required
                                             />
-                                            {errors?.password && <p className="font-normal text-xs text-red-500">{errors?.password?.message}</p>}
-                                            {!errors?.password && <span className="font-normal text-xs text-gray-500">Minimum 6 characters required</span>}
+                                            {errors?.name && <p className="font-normal text-xs text-red-500">{errors?.name?.message}</p>}
                                         </div>
-                                        <div className="">
+                                        <div>
                                             <label className="block text-sm font-semibold mb-2">
-                                                Mobile number
+                                                Email
                                             </label>
-                                            <div className="relative">
-                                                <input className="shadow-sm appearance-none border rounded-xl w-full py-3 pl-10 pr-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                    type="number"
-                                                    placeholder="Mobile Number"
-                                                    {...register("mobileNumber")}
+                                            <input className="shadow-sm appearance-none border rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                type="email"
+                                                placeholder="Tell us your Email ID"
+                                                {...register("email")}
+                                                required
+                                            />
+                                            {errors?.email && <p className="font-normal text-xs text-red-500">{errors?.email?.message}</p>}
+                                            {/* {!errors?.email && <span className="font-normal text-xs text-gray-500">We'll send you relevant jobs in your mail</span>} */}
+                                        </div>
+                                        {watch("role") === "employer" && <div>
+                                            <label className="block text-sm font-semibold mb-2">
+                                                Company
+                                            </label>
+                                            <div className="appearance-none border rounded-xl w-full text-gray-600 leading-tight shadow-sm">
+                                                <Controller
+                                                    control={control}
+                                                    name="companies"
+                                                    render={({ field }) => (
+                                                        <Select className="shadow-sm appearance-none border rounded-xl w-full  text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
+                                                            {...field}
+                                                            isClearable
+                                                            placeholder="Select company"
+                                                            options={companyList?.map(({ id, title }: any) => ({ value: id, label: title }))}
+                                                            defaultValue={watch("companies")}
+                                                        />
+                                                    )}
+                                                />
+                                            </div>
+                                            {errors?.companies && <p className="font-normal text-xs text-red-500">Please select your Company</p>}
+                                            {/* {!errors?.email && <span className="font-normal text-xs text-gray-500">We'll send you relevant jobs in your mail</span>} */}
+                                        </div>}
+                                        <div className="grid grid-cols-2 gap-5">
+                                            <div className="">
+                                                <label className="block text-sm font-semibold mb-2">
+                                                    Password
+                                                </label>
+                                                <input className="shadow-sm appearance-none border rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                    type="password"
+                                                    placeholder="Create a password for your account"
+                                                    {...register("password")}
                                                     required
                                                 />
-                                                <span className="absolute top-3 left-1">+91</span>
+                                                {errors?.password && <p className="font-normal text-xs text-red-500">{errors?.password?.message}</p>}
+                                                {!errors?.password && <span className="font-normal text-xs text-gray-500">Minimum 6 characters required</span>}
                                             </div>
-                                            {errors?.mobileNumber && <p className="font-normal text-xs text-red-500">{errors?.mobileNumber?.message}</p>}
-                                            {/* {!errors?.mobileNumber && <span className="font-normal text-xs text-gray-500">Recruiters will call on this number</span>} */}
+                                            <div className="">
+                                                <label className="block text-sm font-semibold mb-2">
+                                                    Mobile number
+                                                </label>
+                                                <div className="relative">
+                                                    <input className="shadow-sm appearance-none border rounded-xl w-full py-3 pl-10 pr-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                        type="number"
+                                                        placeholder="Mobile Number"
+                                                        {...register("mobileNumber")}
+                                                        required
+                                                    />
+                                                    <span className="absolute top-3 left-1">+91</span>
+                                                </div>
+                                                {errors?.mobileNumber && <p className="font-normal text-xs text-red-500">{errors?.mobileNumber?.message}</p>}
+                                                {/* {!errors?.mobileNumber && <span className="font-normal text-xs text-gray-500">Recruiters will call on this number</span>} */}
+                                            </div>
                                         </div>
-                                    </div>
-                                </>)}
+                                    </>
+                                )}
 
                                 {
                                     isContinueWithEmail && watch("role") === "jobSeeker" &&
@@ -296,14 +299,14 @@ const SignUp = () => {
                                                         onClick={() => field.onChange(true)}
                                                     >
                                                         <span>
-                                                            <span className="text-left m-0 block mb-4   ">Experienced</span>
+                                                            <span className="text-left m-0 block mb-4">Experienced</span>
                                                         </span>
                                                         <img
                                                             src={experienced}
                                                             alt="experienced"
                                                             //width="25.2px"
                                                             //height="28px"
-                                                            className=" h-7 w-[25.2]"
+                                                            className=" h-6 w-[25.2]"
                                                         />
                                                     </button>
                                                 )}
@@ -326,7 +329,7 @@ const SignUp = () => {
                                                             alt="fresher"
                                                             //width="50px"
                                                             //height="50px"
-                                                            className=" h-7 w-[25.2]"
+                                                            className=" h-6 w-[25.2]"
                                                         />
                                                     </button>
                                                 )}
@@ -338,8 +341,8 @@ const SignUp = () => {
                                 }
 
                                 {((isContinueWithEmail && watch("role") === "jobSeeker") || watch("role") === "employer") && <div>
-                                    <button className="bg-indigo-600 text-white font-bold px-3 py-2 rounded-lg w-full" type="submit">Register now</button>
-                                    <div className="flex justify-center items-center text-sm">
+                                    <button className="bg-indigo-600 text-white font-bold rounded-lg w-full h-12" type="submit">Register now</button>
+                                    <div className="flex justify-center font-semibold items-center text-sm mt-2">
                                         <span className=" text-[#94A3B8] mr-1">
                                             Already have an account?
                                         </span>
@@ -353,6 +356,21 @@ const SignUp = () => {
                                 <div className="text-sm font-semibold flex flex-col gap-2 justify-center">
 
                                     <div className=" grid grid-cols-1 gap-5">
+                                    <div>
+                                            <button className="bg-indigo-600 text-white font-bold rounded-lg w-full h-12" type="button" onClick={() => setIsContinueWithEmail(true)}>Continue with email</button>
+                                            <div className="flex justify-center items-center text-sm mt-2">
+                                                <span className=" text-[#94A3B8] mr-1">
+                                                    Already have an account?
+                                                </span>
+                                                <Link to='/login' className=" underline"> Login</Link>
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-between items-center">
+                                            <hr className=" w-2/5" />
+                                            <span className=" py-3">OR</span>
+                                            <hr className=" w-2/5" />
+                                        </div>
+
                                         <div>
                                             <button className=" bg-white flex justify-center items-center drop-shadow-lg rounded-lg w-full h-14"
                                                 onClick={googleAuth}
@@ -361,20 +379,8 @@ const SignUp = () => {
                                                 <span className="ml-1">Sign up with Google</span>
                                             </button>
                                         </div>
-                                        <div className="flex justify-between items-center">
-                                            <hr className=" w-2/5" />
-                                            <span className=" py-3">OR</span>
-                                            <hr className=" w-2/5" />
-                                        </div>
-                                        <div>
-                                            <button className="bg-indigo-600 text-white font-bold px-3 py-2 rounded-lg w-full" type="button" onClick={() => setIsContinueWithEmail(true)}>Continue with email</button>
-                                            <div className="flex justify-center items-center text-sm">
-                                                <span className=" text-[#94A3B8] mr-1">
-                                                    Already have an account?
-                                                </span>
-                                                <Link to='/login' className=" underline"> Login</Link>
-                                            </div>
-                                        </div>
+
+                                        
                                     </div>
                                 </div>
                             </div>}

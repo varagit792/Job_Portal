@@ -85,7 +85,7 @@ const KeySkillsForm = ({ keySkill, profileDashboard, setDatabaseSkillSet, keySki
       <div className="col-start-2 col-end-4">
         <h1 className="text-sm text-gray-500 mb-3"> Tell recruiters what you know or what you are known for e.g. Direct Marketing, Oracle, Java etc. We will send you job recommendations based on these skills. each skill is separated by a comma.
         </h1>
-        <h2 className=" text-lg mb-5 col-start-1 col-end-5"> Skills</h2>
+        <h2 className=" text-base font-semibold mb-1 col-start-1 col-end-5">Skills</h2>
         {isAddDelete.state && <p className={`font-normal text-xs text-${isAddDelete.color}-500`}> {isAddDelete.message}</p>}
         <div className="flex flex-wrap">
           {keySkillFetch && keySkillFetch?.map((item: any, key: number) =>
@@ -97,15 +97,16 @@ const KeySkillsForm = ({ keySkill, profileDashboard, setDatabaseSkillSet, keySki
             <div className="mb-4">
               <Select
                 {...register("keySkills")}
+                className="text-sm"
                 options={keySkill.map(({ id, title }: any) => ({ value: id, label: title }))}
                 onChange={handleChange}
                 placeholder={"Select key skill"}
               />
               {errors.keySkills && <p className="font-normal text-xs text-red-500">{errors.keySkills.message}</p>}
             </div>
-            <div className="mt-10 mb-10 text-sm text-gray-500 mb-3">
+            <div className="mt-4 mb-4 text-sm text-gray-500">
               <h2>Or you can select from the suggested set of skills</h2>
-              <div className="flex flex-wrap mt-5">
+              <div className="flex flex-wrap mt-2">
                 {keySkill && keySkill.filter((items: any) => items.title?.toLowerCase()
                   .replace(/\s+/g, "")
                   .includes(query.toLowerCase().replace(/\s+/g, ""))

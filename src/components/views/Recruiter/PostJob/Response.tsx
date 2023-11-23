@@ -46,10 +46,10 @@ const Response = () => {
     if (Object.keys(jobDetail).length !== 0) {
       jobDetail?.notificationEmailAddress1 && setValue('notificationEmailAddress1', jobDetail?.notificationEmailAddress1);
       jobDetail?.notificationEmailAddress2 && setValue('notificationEmailAddress2', jobDetail?.notificationEmailAddress2);
-      jobDetail?.hideSalaryDetails && setValue('hideSalaryDetails', jobDetail?.hideSalaryDetails);
-      jobDetail?.videoProfile && setValue('videoProfile', jobDetail?.videoProfile);
-      jobDetail?.includeWalkInDetails && setValue('includeWalkInDetails', jobDetail?.includeWalkInDetails);
-      jobDetail?.notifyMeAbout && setValue('notifyMeAbout', jobDetail?.notifyMeAbout);
+      jobDetail?.hideSalaryDetails && setValue('hideSalaryDetails', Boolean(Number(jobDetail?.hideSalaryDetails)));
+      jobDetail?.videoProfile && setValue('videoProfile', Boolean(Number(jobDetail?.videoProfile)));
+      jobDetail?.includeWalkInDetails && setValue('includeWalkInDetails', Boolean(Number(jobDetail?.includeWalkInDetails)));
+      jobDetail?.notifyMeAbout && setValue('notifyMeAbout', Boolean(Number(jobDetail?.notifyMeAbout)));
     } else {
       jobDetailData?.notificationEmailAddress1 && setValue('notificationEmailAddress1', jobDetailData?.notificationEmailAddress1);
       jobDetailData?.notificationEmailAddress2 && setValue('notificationEmailAddress2', jobDetailData?.notificationEmailAddress2);
@@ -177,16 +177,14 @@ const Response = () => {
   const returnBack = (returnURL: string) => {
     navigate(returnURL);
   }
-  console.log(errors);
 
-  console.log(jobDetailData);
   return (
     <>
       <div className="h-[10%] w-full"></div>
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
         <div className="grid grid-cols-9 gap-4">
           <div className="col-start-1 col-end-4">
-            <JobLeftPanel jobTitle={jobTitle} />
+            <JobLeftPanel jobTitle={jobTitle} status={jobDetail?.jobStatus} />
           </div>
           <div className="col-start-4 col-end-11">
             <div id="jobDetails" className="scroll-mt-24 scroll-smooth">

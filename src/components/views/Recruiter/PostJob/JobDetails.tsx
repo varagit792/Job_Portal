@@ -349,7 +349,7 @@ const JobDetails = () => {
       <div className="bg-[#F8FAFC] font-sans px-32 py-10">
         <div className="grid grid-cols-9 gap-4">
           <div className="col-start-1 col-end-4">
-            <JobLeftPanel jobTitle={jobTitle} />
+            <JobLeftPanel jobTitle={jobTitle} status={jobDetail?.jobStatus} />
           </div>
           <div className="col-start-4 col-end-11">
             <div id="jobDetails" className="scroll-mt-24 scroll-smooth">
@@ -541,7 +541,7 @@ const JobDetails = () => {
                       </div>
                       <div className="w-full grid grid-cols-2 items-start gap-5 inline-flex">
                         <div className=" flex-col justify-start  gap-2 inline-flex">
-                          <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Roll Category</div>
+                          <div className="text-slate-700 text-sm font-normal leading-[16.80px] tracking-tight">Role Category</div>
                           <div className='w-full'>
                             <AutocompleteBox
                               control={control}
@@ -587,11 +587,12 @@ const JobDetails = () => {
                           <div className='w-full'>
                             <AutocompleteBox
                               control={control}
+                              defaultValue={postId && {label:"Open", value:1}}
                               isClearable={true}
                               fieldName={"jobStatus"}
                               dropdownData={jobStatus?.map(({ id, title }: any) => ({ value: id, label: title }))}
                               default={watch("jobStatus")}
-                              placeholder={"Select job expiry"}
+                              placeholder={"Select job status"}
                             />
                             {errors?.jobStatus && <p className="font-normal text-xs text-red-500 absolute">{errors?.jobStatus?.label?.message}</p>}
                           </div>

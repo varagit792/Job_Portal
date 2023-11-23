@@ -135,7 +135,7 @@ const ProfileBasicDetails = () => {
           <h1 className="text-lg font-bold mb-1">{userData?.name}</h1>
           <span className="ml-2 text-gray-400 hover:scale-125 cursor-pointer" onClick={openModal}> <FiEdit2 /> </span>
         </div>
-        {(profileDashboard?.jobSeekerType === 'Experienced') ? (profileDashboard?.currentCompany ? <div className="flex justify-start items-center text-[#475569] text-base">
+        {(profileDashboard?.jobSeekerType === 'Experienced') ? (profileDashboard?.currentCompany ? <div className="flex justify-start items-center text-[#475569] text-sm font-semibold">
           <h1 className="mr-2">{profileDashboard?.currentJobTitle?.title}</h1>
           <h1>@ {profileDashboard?.currentCompany?.title}</h1>
         </div> : <div className="mr-4 text-blue-600 font-md cursor-pointer font-semibold" onClick={openModal}>
