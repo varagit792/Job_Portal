@@ -50,12 +50,15 @@ const JobListItem = ({ jobItem, onClickJobItem }: any) => {
       }
       <div className="mb-5 text-[#475569] text-xs flex justify-start items-center">
         <img src={LocationIcon} alt="LocationIcon" width="15rem" height="15rem" />
-        {Object.keys(jobItem?.jobsLocation).length ? jobItem?.jobsLocation?.map((jobLocation: any) =>
-          <span className="ml-2">{jobLocation?.location?.title},</span>) : <span className="ml-2">Not Disclosed.</span>}
+        <div className="overflow-hidden whitespace-nowrap text-ellipsis">
+          {Object.keys(jobItem?.jobsLocation).length ? jobItem?.jobsLocation?.map((jobLocation: any) =>
+            <span className="ml-2 ">{jobLocation?.location?.title},</span>) : <span className="ml-2">Not Disclosed.</span>
+          }
+          </div>
       </div>
       <div className="flex">
-        {jobItem?.workMode && <span className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-sm">{jobItem?.workMode?.title}</span>}
-        {jobItem?.employmentType && <span className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-sm">{jobItem?.employmentType?.title}</span>}
+        {jobItem?.workMode && <span className="bg-[#FFFAF2] text-[#EA580C] px-3 py-2 rounded-lg mr-2 text-xs">{jobItem?.workMode?.title}</span>}
+        {jobItem?.employmentType && <span className="bg-[#F0FFF5] text-[#16A34A] px-3 py-2 rounded-lg text-xs">{jobItem?.employmentType?.title}</span>}
       </div>
     </div>
   )
