@@ -22,9 +22,7 @@ const ProtectedRoute = () => {
         "/postJob/preview",
     ]
     
-    const location = useLocation();
-    console.log('test-->', location.pathname, employerArr.some(a =>location.pathname.includes(a)));
-    
+    const location = useLocation();    
 
     return (user_token !== undefined && user_token !== null)
         ? (user_type === "jobSeeker" && seekerArr.includes(location.pathname)
