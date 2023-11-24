@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const QuestionnaireMultipleChoice = ({ index, questionSet, watch, register, errors, checkboxRequired, isCheckboxRequired }: any) => {
+const QuestionnaireMultipleChoice = ({ index, questionSet, register, checkboxRequired, isCheckboxRequired }: any) => {
   const handleCheckBox = (e: any) => {
     console.log(e.currentTarget.checked);
 
@@ -9,33 +9,41 @@ const QuestionnaireMultipleChoice = ({ index, questionSet, watch, register, erro
 
   return (
     <>
-      <div className="mb-4" key={`QuestionnaireMultipleChoice${index}`}>
-        <div className="block text-sm font-medium leading-6 text-gray-900 ">{index + 1}. {questionSet?.question}</div>
-        <div className="mt-1 grid-cols-3 flex">
-          {
-            questionSet?.multipleSelection?.map((option: any, key: any) => (
-              <div key={key} className='mr-8'>
-                {questionSet?.requiredCheck && <input
-                  defaultValue={option.id}
-                  className="mr-2 w-4 h-4"
-                  type="checkbox"
-                  required={checkboxRequired}
-                  maxLength={questionSet?.characterLimit}
-                  onClick={handleCheckBox}
-                  {...register(`questionnaire.${index}.multipleChoice`, {
-                  })}
-                />}
-                {!questionSet?.requiredCheck && <input
-                  defaultValue={option.id}
-                  className="mr-2 w-4 h-4"
-                  type="checkbox"
-                  maxLength={questionSet?.characterLimit}
-                  {...register(`questionnaire.${index}.multipleChoice`)}
-                />}
-                <label>{option.option}</label>
-              </div>
-            ))
-          }
+      <hr className="w-full my-10" />
+      <div className="flex flex-col">
+        <p><span className="mr-2">{index + 1}/10</span><span className="font-bold">{questionSet?.question}</span></p>
+        <div className="mt-3 flex flex-col gap-2">
+          {questionSet?.multipleSelection?.map((option: any, key: any) => (
+            <>
+              {questionSet?.requiredCheck &&
+                <div>
+                  <input
+                    defaultValue={option.id}
+                    type="checkbox"
+                    required={checkboxRequired}
+                    maxLength={questionSet?.characterLimit}
+                    onClick={handleCheckBox}
+                    {...register(`questionnaire.${index}.multipleChoice`, {
+                    })}
+                  />
+                  <label className="ml-2"> {option.option}</label>
+                </div>
+              }
+              {!questionSet?.requiredCheck &&
+                <div>
+                  <input
+                    defaultValue={option.id}
+                    type="checkbox"
+                    maxLength={questionSet?.characterLimit}
+                    {...register(`questionnaire.${index}.multipleChoice`)}
+                  />
+                  <label className="ml-2"> {option.option}</label>
+                </div>
+              }
+            </>
+          ))}
+
+
         </div>
       </div>
     </>

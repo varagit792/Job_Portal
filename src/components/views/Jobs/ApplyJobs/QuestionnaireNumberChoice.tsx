@@ -4,20 +4,18 @@ const QuestionnaireNumberChoice = ({ index, questionSet, register, watch }: any)
 
   return (
     <>
-
-      <div className="mb-4" key={`QuestionnaireNumberChoice${index}`}>
-        <div className="block text-sm font-medium leading-6 text-gray-900 ">{index + 1}. {questionSet?.question}</div>
-        <div className="mt-1">
-          <input
-            defaultValue={watch(`questionnaire.${index}.numberChoice`)}
-            className="w-full border border-gray-200 focus:border-blue-500 outline-none rounded-md px-2 py-1.5 mt-1"
-            placeholder={""}
-            type='number'
-            maxLength={questionSet?.characterLimit}
-            required={questionSet?.requiredCheck}
-            {...register(`questionnaire.${index}.numberChoice`)}
-          />
-        </div>
+      <hr className="w-full my-10" />
+      <div className="flex flex-col">
+        <label><span className="mr-2">{index + 1}/10</span><span className="font-bold">{questionSet?.question}</span></label>
+        <input
+          defaultValue={watch(`questionnaire.${index}.numberChoice`)}
+          className="outline-none rounded-lg p-3 border border-[#E2E8F0] mt-3"
+          placeholder="Your answer here"
+          type='number'
+          maxLength={questionSet?.characterLimit}
+          required={questionSet?.requiredCheck}
+          {...register(`questionnaire.${index}.numberChoice`)}
+        />
       </div>
     </>
   )
