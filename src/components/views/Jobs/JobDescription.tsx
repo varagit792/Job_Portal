@@ -26,7 +26,7 @@ import TickRecruiter from '../../commonComponents/TickRecruiter';
 import TickIcons from '../../../assets/svg/tick_icons.svg';
 import PDFIcon from '../../../assets/svg/PDFIcon.svg';
 import DeleteIcon from '../../../assets/svg/Delete.svg';
-import { scrollToTop } from '../../utils/utils';
+import { getJobApplicantCount, scrollToTop } from '../../utils/utils';
 import LeftJobDescription from './ApplyJobs/LeftJobDescription';
 
 const JobDescription = () => {
@@ -37,10 +37,10 @@ const JobDescription = () => {
   const [toggleResumeUpload, setToggleResumeUpload] = useState(false);
   const [toggleQuestionnaire, setToggleQuestionnaire] = useState(false);
   const [toggleReview, setToggleReview] = useState(false);
+  const [applicantCount, setApplicantCount] = useState(false);
 
   const dispatch = useAppDispatch();
   const { success, jobDetail } = useAppSelector((state) => state.getJobDetail);
-
   const {
     register,
     handleSubmit,
@@ -55,9 +55,7 @@ const JobDescription = () => {
     control,
     name: "questionnaire",
   });
-  console.log("watch------------------------>", watch());
   const onSubmit = (data: IFormApplyJobsWithoutQuestionnaire) => {
-    console.log("data--------------------->", data);
 
     const userId = Cookies.get("userId");
     const selectedQuestionnaireAnswer: any = [];
@@ -89,6 +87,12 @@ const JobDescription = () => {
     }
   }, [success, dispatch]);
 
+  useEffect(() => {
+    getJobApplicantCount(Number(id)).then((count: any) => {
+      if (count > 0)
+        setApplicantCount(true)
+    })
+  }, [id])
 
   useEffect(() => {
     const parsedDate = parseISO(jobDetail?.createdAt);
@@ -189,7 +193,7 @@ const JobDescription = () => {
                 </div>
               </div>
               <div className="justify-start items-center gap-5 inline-flex mt-4">
-                {!checkEmpty ?
+                {(!checkEmpty || applicantCount) ?
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <button type='submit' className="w-48  px-6 py-1.5 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex" >
                       <span className="text-white text-xl font-medium  leading-normal tracking-tight">Apply</span>

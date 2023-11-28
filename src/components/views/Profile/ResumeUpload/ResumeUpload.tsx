@@ -29,6 +29,7 @@ const ResumeUpload = () => {
     useAppSelector((state) => state.jobSeekerDeleteResume);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState('');
+  console.log(profileDashboard);
 
   useEffect(() => {
     if (success) {

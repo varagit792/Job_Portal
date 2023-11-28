@@ -25,15 +25,11 @@ const ApplyJobReview = ({ watch, jobDetail, setToggleResumeUpload, setToggleQues
 
   const handleNextReviewToResume = () => {
 
-    setToggleResumeUpload(true);
+    setToggleResumeUpload(false);
+    setToggleQuestionnaire(false);
 
   }
 
-  const handleNextReviewToQuestionnaire = () => {
-
-    setToggleQuestionnaire(true);
-
-  }
 
   return (
     <>
@@ -50,7 +46,7 @@ const ApplyJobReview = ({ watch, jobDetail, setToggleResumeUpload, setToggleQues
         </div>
       </div>
       <div className="p-5 bg-white rounded-xl mb-10 w-full  border border-[#E0E7FF] relative">
-        <span className="border-b border-[#475569] text-[#475569] leading-none absolute right-0 mr-5 cursor-pointer" onClick={handleNextReviewToQuestionnaire}>Edit</span>
+        <span className="border-b border-[#475569] text-[#475569] leading-none absolute right-0 mr-5 cursor-pointer" onClick={() => setToggleQuestionnaire(false)}>Edit</span>
         {watch("questionnaire").map((item: any, index: number) => <>
           {item.questionType === "Descriptive" && <div className="flex flex-col mb-10">
             <label><span className="mr-2">{index + 1}/10</span><span className="font-bold">

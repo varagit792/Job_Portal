@@ -1,4 +1,3 @@
-import React from 'react';
 import { ChangeEvent, Fragment, useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '../../../..';
 import { useAppDispatch } from '../../../..';
@@ -8,7 +7,6 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { resumeDelete, clearresumeDeleteState } from '../../../../store/reducers/jobSeekerProfile/deleteResume';
 import axios from 'axios';
 import { clearGetProfileDashboardSlice, profileDashboardGet } from '../../../../store/reducers/jobSeekerProfile/ProfileDashboardGet';
-import { clearGetProfileIndicator, profileIndicatorGet } from '../../../../store/reducers/jobSeekerProfile/profileIndicator';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { MdOutlinePictureAsPdf } from 'react-icons/md';
 import { FaRegFileWord } from 'react-icons/fa';
@@ -29,12 +27,8 @@ const ApplyJobResume = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (success) {
-      dispatch(profileDashboardGet());
-      dispatch(clearUploadState);
-      dispatch(clearGetProfileIndicator());
-      dispatch(profileIndicatorGet());
-    }
+    dispatch(profileDashboardGet());
+    dispatch(clearUploadState);
     if (error) {
       dispatch(clearUploadState)
     }
@@ -44,8 +38,6 @@ const ApplyJobResume = () => {
     if (successDelete) {
       dispatch(profileDashboardGet());
       dispatch(clearresumeDeleteState);
-      dispatch(clearGetProfileIndicator());
-      dispatch(profileIndicatorGet());
     }
     if (errorDelete) {
       dispatch(clearresumeDeleteState)
@@ -66,6 +58,7 @@ const ApplyJobResume = () => {
     }
   }, [successProfile]);
 
+
   useEffect(() => {
     setResumeFile(profileDashboard?.resumeFile)
     setResumeCompletePath(`${process.env.REACT_APP_RESUME_FILE_LOCATION}/${profileDashboard?.resumePath}`)
@@ -74,6 +67,7 @@ const ApplyJobResume = () => {
   const resumeFileSplit = resumeFile?.split('.');
   let resumeFilePrefix;
   let resumeFileSuffix;
+
   if (resumeFile) {
     resumeFilePrefix = resumeFileSplit[0];
     resumeFileSuffix = resumeFileSplit[1];
