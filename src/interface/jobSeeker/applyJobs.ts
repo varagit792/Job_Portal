@@ -10,6 +10,10 @@ export interface IFormApplyJobsWithoutQuestionnaire {
 
 }
 
+export interface IFormSaveJobs {
+  questionnaire?: {}[] | undefined
+}
+
 
 export interface IFormApplyJobsPost {
 

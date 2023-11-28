@@ -15,8 +15,8 @@ import rightArrow from '../../../assets/svg/ArrowRight.svg';
 import Modal from '../../commonComponents/Modal';
 import ApplyJobs from './ApplyJobs/ApplyJobs';
 import { ToastContainer, toast } from 'react-toastify';
-import { IFormApplyJobs, IFormApplyJobsWithoutQuestionnaire } from '../../../interface/jobSeeker/applyJobs';
-import { applyJobsSchema } from '../../../schema/applyJobs';
+import { IFormApplyJobs, IFormApplyJobsWithoutQuestionnaire, IFormSaveJobs } from '../../../interface/jobSeeker/applyJobs';
+import { SaveJobsSchema, applyJobsSchema } from '../../../schema/applyJobs';
 import { applyJobs } from '../../../store/reducers/applyJobs/applyJobs';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,6 +28,7 @@ import PDFIcon from '../../../assets/svg/PDFIcon.svg';
 import DeleteIcon from '../../../assets/svg/Delete.svg';
 import { getJobApplicantCount, scrollToTop } from '../../utils/utils';
 import LeftJobDescription from './ApplyJobs/LeftJobDescription';
+import { saveJobs } from '../../../store/reducers/applyJobs/saveJob';
 
 const JobDescription = () => {
   const [checkEmpty, isCheckEmpty] = useState(true);
@@ -38,6 +39,7 @@ const JobDescription = () => {
   const [toggleQuestionnaire, setToggleQuestionnaire] = useState(false);
   const [toggleReview, setToggleReview] = useState(false);
   const [applicantCount, setApplicantCount] = useState(false);
+  const [buttonClick, setButtonClick] = useState('');
 
   const dispatch = useAppDispatch();
   const { success, jobDetail } = useAppSelector((state) => state.getJobDetail);
@@ -47,15 +49,15 @@ const JobDescription = () => {
     watch,
     control,
     formState: { errors },
-  } = useForm<IFormApplyJobsWithoutQuestionnaire>({
-    resolver: yupResolver(applyJobsSchema) as any,
+  } = useForm<IFormApplyJobsWithoutQuestionnaire | IFormSaveJobs>({
+    resolver: yupResolver(applyJobsSchema || SaveJobsSchema) as any,
   });
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
     control,
     name: "questionnaire",
   });
-  const onSubmit = (data: IFormApplyJobsWithoutQuestionnaire) => {
+  const onSubmit = (data: IFormApplyJobsWithoutQuestionnaire | IFormSaveJobs) => {
 
     const userId = Cookies.get("userId");
     const selectedQuestionnaireAnswer: any = [];
@@ -63,19 +65,33 @@ const JobDescription = () => {
 
     data?.questionnaire && data?.questionnaire?.filter((item: any) => item?.questionType !== 'MultipleChoice' && selectedQuestionnaireAnswer?.push({ questionnaire: item?.question, answer: item?.numberChoice ? item?.numberChoice : item?.descriptive ? item?.descriptive : item?.singleChoice ? item?.singleChoice : undefined }));
     data?.questionnaire && data?.questionnaire?.filter((item: any) => item?.questionType === 'MultipleChoice' && Array.isArray(item?.multipleChoice) ? item?.multipleChoice?.map((item1: any) => selectedMultipleChoiceQuestionnaireAnswer?.push({ multipleChoiceQuestionnaire: item1, answer: item1 })) : selectedMultipleChoiceQuestionnaireAnswer?.push({ multipleChoiceQuestionnaire: item?.multipleChoice, answer: item?.multipleChoice }));
+    if (buttonClick === 'Apply') {
+      dispatch(applyJobs({
+        "user": userId && parseInt(userId),
+        "jobs": id && parseInt(id),
+        "questionnaireAnswer": selectedQuestionnaireAnswer,
+        "multipleChoiceQuestionnaireAnswer": selectedMultipleChoiceQuestionnaireAnswer
+      })).then((data: any) => {
+        if (data?.payload?.count > 0) {
+          toast.info("job already applied !!")
+        } else {
+          toast.success("job Applied successfully !!")
+        }
+      });
+    }
 
-    dispatch(applyJobs({
-      "user": userId && parseInt(userId),
-      "jobs": id && parseInt(id),
-      "questionnaireAnswer": selectedQuestionnaireAnswer,
-      "multipleChoiceQuestionnaireAnswer": selectedMultipleChoiceQuestionnaireAnswer
-    })).then((data: any) => {
-      if (data?.payload?.count > 0) {
-        toast.info("job already applied !!")
-      } else {
-        toast.success("job Applied successfully !!")
-      }
-    });
+    if (buttonClick === 'Save') {
+      dispatch(saveJobs({
+        "user": userId && parseInt(userId),
+        "jobs": id && parseInt(id)
+      })).then((data: any) => {
+        if (data?.payload?.count > 0) {
+          toast.info("job already saved !!")
+        } else {
+          toast.success("job save successfully !!")
+        }
+      });
+    }
   }
 
   useEffect(() => {
@@ -131,6 +147,7 @@ const JobDescription = () => {
       setToggleQuestionnaire(true);
     }
   }
+  console.log(buttonClick);
 
   return (
     <Fragment>
@@ -192,25 +209,31 @@ const JobDescription = () => {
                   </div>
                 </div>
               </div>
-              <div className="justify-start items-center gap-5 inline-flex mt-4">
-                {(!checkEmpty || applicantCount) ?
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    <button type='submit' className="w-48  px-6 py-1.5 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex" >
-                      <span className="text-white text-xl font-medium  leading-normal tracking-tight">Apply</span>
-                    </button>
-                  </form>
-                  :
-                  <button className="w-48  px-6 py-1.5 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex" onClick={() => setToggleJobApply(true)}>
-                    <span className="text-white text-xl font-medium  leading-normal tracking-tight">Apply</span>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="justify-start items-center gap-5 inline-flex mt-4">
+                  {!applicantCount && <>
+                    {!checkEmpty ?
+                      <button type='submit' className="w-48  px-6 py-1.5 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex" >
+                        <span className="text-white text-xl font-medium  leading-normal tracking-tight">Apply</span>
+                      </button>
+
+                      :
+                      <button className="w-48  px-6 py-1.5 bg-indigo-600 rounded-lg shadow justify-center items-center gap-3 flex" onClick={() => { setToggleJobApply(true); setButtonClick('Apply'); }}>
+                        <span className="text-white text-xl font-medium  leading-normal tracking-tight">Apply</span>
+                      </button>
+                    }
+                  </>}
+                  {applicantCount && <button className="w-48  px-6 py-1.5 bg-green-600 rounded-lg shadow justify-center items-center gap-3 flex" >
+                    <span className="text-white text-xl font-medium  leading-normal tracking-tight">Applied</span>
+                  </button>}
+                  <button className="w-28 pl-6 pr-3 py-1.5 bg-indigo-50 rounded-lg justify-center items-center  gap-3 flex">
+                    <button className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight " onClick={() => setButtonClick('Save')}>Save</button>
+                    <span>
+                      <img src={bookMarkIcon} alt="bookMark" />
+                    </span>
                   </button>
-                }
-                <button className="w-28 pl-6 pr-3 py-1.5 bg-indigo-50 rounded-lg justify-center items-center  gap-3 flex">
-                  <span className="text-indigo-900 text-xl font-medium  leading-normal tracking-tight ">Save</span>
-                  <span>
-                    <img src={bookMarkIcon} alt="bookMark" />
-                  </span>
-                </button>
-              </div>
+                </div>
+              </form>
             </div>
             <div className="border border-[#E0E7FF] rounded-xl p-5 mt-4 bg-white " >
               <div className="  flex-col justify-start items-start gap-5 flex-wrap">
@@ -314,7 +337,7 @@ const JobDescription = () => {
         </div>
       </div >
       <ToastContainer />
-    </Fragment>
+    </Fragment >
   )
 }
 

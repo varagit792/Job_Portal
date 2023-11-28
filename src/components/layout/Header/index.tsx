@@ -111,17 +111,35 @@ const Header = () => {
                                     >
                                         <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                             <div className="px-1 py-1 ">
+                                                {userType !== 'employer' && <>
+                                                    <Menu.Item>
+                                                        {({ active }) => (
+                                                            <button className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                                            >
+                                                                <Link to="/saveJobs">Applied Job</Link>
+                                                            </button>
+                                                        )}
+                                                    </Menu.Item>
+                                                    <Menu.Item>
+                                                        {({ active }) => (
+                                                            <button className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                                            >
+                                                                <Link to="/saveJobs">Saved Job</Link>
+                                                            </button>
+                                                        )}
+                                                    </Menu.Item>
+                                                </>}
                                                 <Menu.Item>
                                                     {({ active }) => (
                                                         <button
                                                             onClick={() => logout()}
-                                                            className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                                                                } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                                            className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                                         >
                                                             Logout
                                                         </button>
                                                     )}
                                                 </Menu.Item>
+
                                             </div>
                                         </Menu.Items>
                                     </Transition>

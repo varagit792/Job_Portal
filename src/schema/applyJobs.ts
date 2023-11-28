@@ -15,3 +15,8 @@ export const applyJobsSchema = yup.object().shape({
   ).optional()
 
 }).required();
+
+export const SaveJobsSchema = yup.object().shape({
+
+
+}).required();
