@@ -23,6 +23,7 @@ import Questionnaire from '../components/views/Recruiter/PostJob/Questionnaire';
 import SignIn from '../components/views/SignIn';
 import EmailSuccessPage from '../components/views/EmailSuccessPage';
 import EmailAlreadyVerifiedPage from '../components/views/EmailAlreadyVerified';
+import SaveJob from '../components/views/Jobs/SaveJobs/SaveJobs';
 
 const AllRoutes = () => {
 
@@ -33,7 +34,7 @@ const AllRoutes = () => {
                 <Route path="/registration" element={<SignUp />} />
                 <Route path="/login" element={<SignIn />} />
                 <Route path="/emailSuccess" element={<EmailSuccessPage />} />
-                <Route path="/emailAlreadyVerified" element={<EmailAlreadyVerifiedPage/>} />
+                <Route path="/emailAlreadyVerified" element={<EmailAlreadyVerifiedPage />} />
             </Route>
             <Route path="/allJobs" element={<AllJobs />} />
             <Route path="/allCompanies" element={<AllCompanies />} />
@@ -44,6 +45,7 @@ const AllRoutes = () => {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/employerDashboard" element={<EmployerDashboard />} />
                 <Route path="/recruiterJobList" element={<RecruiterJobList />} />
+                <Route path="/saveJobs" element={<SaveJob />} />
                 <Route path="/postJob" >
                     <Route path="jobDetails?/:postId" element={<JobDetails />} />
                     <Route path="requirements/:postId?" element={<Requirements />} />

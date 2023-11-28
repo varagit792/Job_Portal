@@ -6,15 +6,15 @@ const initialState: any = {
   loading: false,
   error: false,
   success: false,
-  applyJobs: {},
+  saveJobs: {},
   errorMessage: undefined,
 }
 
-export const applyJobs = createAsyncThunk(
-  "applyJobs", async (data: any) => {
+export const saveJobs = createAsyncThunk(
+  "saveJobs", async (data: any) => {
     try {
 
-      const response = await axios.post(`${process.env.REACT_APP_API_PATH}/applyJob/post`,
+      const response = await axios.post(`${process.env.REACT_APP_API_PATH}/saveJob/post`,
         {
           params: data,
           headers: {
@@ -31,10 +31,10 @@ export const applyJobs = createAsyncThunk(
     }
   });
 
-export const applyJobsCount = createAsyncThunk(
-  "applyJobs", async (data: any) => {
+export const deleteSaveJob = createAsyncThunk(
+  "saveJobs", async (data: any) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_PATH}/applyJob/countApplicantWithList/${data}`,
+      const response = await axios.get(`${process.env.REACT_APP_API_PATH}/saveJob/deleteJob/${data.jobId}/${data.userId}`,
         {
           params: data,
           headers: {
@@ -52,10 +52,10 @@ export const applyJobsCount = createAsyncThunk(
   });
 
 
-export const applyJobList = createAsyncThunk(
-  "applyJobs", async (data: any) => {
+export const saveJobList = createAsyncThunk(
+  "saveJobs", async (data: any) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_PATH}/applyJob/applyJobList/${data}`,
+      const response = await axios.get(`${process.env.REACT_APP_API_PATH}/saveJob/saveJobList/${data}`,
         {
           params: data,
           headers: {
@@ -72,22 +72,22 @@ export const applyJobList = createAsyncThunk(
     }
   });
 
-const applyJobsSlice = createSlice({
-  name: 'applyJobs',
+const saveJobsSlice = createSlice({
+  name: 'saveJobs',
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(applyJobs.pending, (state) => {
+    builder.addCase(saveJobs.pending, (state) => {
       state.loading = true;
       state.success = false;
       state.error = false;
     });
-    builder.addCase(applyJobs.fulfilled, (state, action: PayloadAction<any>) => {
+    builder.addCase(saveJobs.fulfilled, (state, action: PayloadAction<any>) => {
       state.loading = false;
       state.success = true;
       state.error = false;
       state.companyDetails = action.payload;
     });
-    builder.addCase(applyJobs.rejected, (state, action) => {
+    builder.addCase(saveJobs.rejected, (state, action) => {
       state.success = false;
       state.loading = false;
       state.error = true;
@@ -103,5 +103,5 @@ const applyJobsSlice = createSlice({
     },
   }
 });
-export default applyJobsSlice.reducer;
-export const { clearApplyJobsSlice } = applyJobsSlice.actions;
+export default saveJobsSlice.reducer;
+export const { clearApplyJobsSlice } = saveJobsSlice.actions;
