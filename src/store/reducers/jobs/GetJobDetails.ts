@@ -213,8 +213,6 @@ export const getJobDetail = createAsyncThunk(
 
             const response = await axios.get(`${process.env.REACT_APP_API_PATH}/jobs/get/${data}`);
             if (response.status >= 200 && response.status < 300) {
-                console.log(response);
-
                 return response.data.data;
             }
         } catch (error) {
